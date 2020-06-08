@@ -1,0 +1,177 @@
+<html>
+<head><title>Identifying the limiting reagent</title>
+<style>
+#qspot {position:absolute;left:320;top:220}
+#ansspot {position:absolute;left:320;top:360;height:200}
+#tspot {position:absolute;left:10;top:300}
+#refspot {position:absolute;left:10;top:600;height:100}
+</style>
+<script src=reactionsets.js></script>
+<script src="reflist.js"></script>
+<script src="numberconvert.js"></script>
+<script language="javascript">
+refnumber=174
+var ie4=(document.all)?true:false;
+totl=0
+corrt=0
+first=0
+second=0
+theanswer=0
+theform1="<form><input type=radio name=theans onClick=answer(0)>"
+theform2="<input type=radio name=theans onClick=answer(1)>"
+theform3="</form>"
+given=""
+thesolution=""
+seq=new Array()
+theunits=new Array("moles","grams")
+qphrase=new Array("For the balanced equation shown below, what would be the limiting reagent if "," grams of "," were reacted with "," grams of ","?")
+ansphrase=new Array("To answer this question, calculate the grams of "," needed to react fully with "," grams of ",", using the gram ratio provided by the balanced equation, as shown below.<br>From the balanced equation: ","Since the needed mass is "," than the mass given in the problem, the "," is "," and the "," is ",".") 
+inserts=new Array()
+inserts[0]=new Array(" <B>less than</B> "," <B>excess</B> "," <B>limiting</B> ")
+inserts[1]=new Array(" <B>more than</B> "," <B>limiting</B> "," <B>excess</B> ")
+function cleanse(){
+	clear()
+	document.forms[0].total.value=0
+	document.forms[0].correct.value=0
+}
+function clear(){
+	document.forms[0].results.value=""
+	clearansspot()
+	tried=0
+	attempts=0
+}
+//clears values and selects an equation using the choose function(part of reactionsets.js)
+function startit(){
+	clear()
+	totl++
+	document.forms[0].total.value=totl
+	choose()
+	if(rxn[choice][0]<2)startit();
+	else{
+	buildquestion()
+	}
+}
+//thefollowing builds an array of the formulas, stoichiometric coeffs and masses in balanced equation
+//each array row consists of the formula, the coeff and the reaction mass
+//there is one row per compound
+//choice is the index of the selected reaction
+function buildquestion(){
+	first=Math.ceil(rxn[choice][0]*Math.random())
+	second=first
+	while(second==first)second=Math.ceil(rxn[choice][0]*Math.random())
+	first+=1
+	second+=1
+	if(second<first){
+		temp=second
+		second=first
+		first=temp
+	}
+	//this creates a random factor that will generate the values for the question
+	factor=0
+	while(factor<.5 || factor>.8)factor=Math.random();
+	factor=number(factor,3,3)
+	masses=new Array()
+	thecmpds=new Array()
+	thecmpds[0]=getformula(first)
+	thecmpds[1]=getformula(second)
+	masses[0]=getmass(first)
+	masses[1]=getmass(second)
+	given=new Array()
+	given[0]=number(100*Math.random(),3,3)
+	given[1]=number(given[0]*masses[1]/masses[0],3,3)
+	if(Math.random()>.5){
+		given[2]=number(given[1]*factor,3,3)
+		theanswer=1
+	}
+	else{
+		given[2]=number(given[1]/factor,3,3)
+		theanswer=0
+	}
+	thequest=qphrase[0]+given[0]+qphrase[1]+thecmpds[0]+qphrase[2]+given[2]+qphrase[3]+thecmpds[1]+qphrase[4]+"<br>"+equation+theform1+thecmpds[0]+theform2+thecmpds[1]+theform3
+	buildanswer(first,second)
+	showquest(thequest)
+}
+function buildanswer(first,second,findex,sindex){
+	equn1="(mass of "+thecmpds[1]+")/(mass of "+thecmpds[0]+")="+masses[1]+"/"+masses[0]+"<br>"
+	equn2="("+masses[1]+"/"+masses[0]+")*"+given[0]+"="+given[1]
+	thesolution=ansphrase[0]+thecmpds[1]+ansphrase[1]+given[0]+ansphrase[2]+thecmpds[0]+ansphrase[3]+equn1+equn2+"<br>"
+	thesolution+=ansphrase[4]+inserts[theanswer][0]+ansphrase[5]+thecmpds[1]+ansphrase[6]+inserts[theanswer][1]+ansphrase[7]+thecmpds[0]+ansphrase[8]+inserts[theanswer][2]+ansphrase[9]
+}	
+function showquest(thequest){
+	if(ie4){
+		qspot.innerHTML=thequest
+		}
+	else{
+		document.qspot.document.open()
+		document.qspot.document.write(thequest);
+		document.qspot.document.close()
+	}
+}
+
+function answer(ans){
+	if(tried==1)alert("You've done this one. Get a new problem!")
+	else{
+	if(tried==2){totl++;document.forms[0].total.value=totl}
+	if(ans==theanswer){
+		document.forms[0].results.value="correct"
+		corrt++
+		document.forms[0].correct.value=corrt
+		tried=1
+	}
+	else{
+		document.forms[0].results.value="incorrect"
+		tried=1
+		showanswer()
+	}}
+}
+function showanswer(){
+	if(ie4){
+		ansspot.innerHTML=thesolution
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.write(thesolution)
+		document.ansspot.document.close()
+	}
+}	
+function clearansspot(){
+	if(ie4){
+		ansspot.innerHTML=""
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.clear()
+		document.ansspot.document.close()
+	}
+}
+
+</script>	
+</head>
+<body onLoad=cleanse(),setrefs()>
+<h3>Identifying The Limiting Reagent</h3>
+This page provides exercises in identifying the limiting reagent. When you press "New Problem", a balanced chemical equation with a question will be displayed.  Click on the circle in front of the limting reagent. Results will appear immediately in the scoring table. If you miss a problem a complete solution will appear.
+<form>
+<table>
+<tr><td><input type=button value="New Problem" onClick="startit()"><td></tr>
+</tr>
+</table>
+<table border=4>
+<tr><td align=center><b>Results</td>
+<td align=center><b>Total Done</td>
+<td><b>Total Correct</td>
+</tr>
+<tr>
+<td><input type="text" name=results size=12></td>
+<td align=center><input type="text" name=total size=4 ></td>
+<td align=center><input type="text" name=correct size=4 ></td>
+</tr>
+<tr>
+</table>
+</form>
+<div id=qspot></div>
+<div id=ansspot></div>
+<div id=refspot></div>
+<br>
+</body>
+</html>
+

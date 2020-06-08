@@ -1,0 +1,126 @@
+<html>
+<title>R and S</title>
+<script>
+//globals
+thepage="R and S(88)"
+corrt=0
+tried=0
+totl=0
+theanswer=0
+which=0
+function clear(){
+document.forms[0].results.value=""
+	document.forms[0].correct.value=corrt
+	document.forms[0].total.value=totl
+	document.forms[0].time.value=""
+	document.forms[0].page.value=""
+	document.forms[0].verify.value=""
+	}
+function MakeArray(n){
+	this.length=n
+	for (var i=1;i<=n;i++){
+	this[i]= 0}
+}
+function display(){
+	totl++
+	document.forms[0].total.value=totl
+	document.forms[0].results.value=""
+	tried=0
+choice=Math.ceil(150*Math.random())
+randy=Math.ceil(12*Math.random())
+if(randy==2 || randy==7 || randy==12){first="a"}
+if(randy==5 || randy==8 || randy==11){first="b"}
+if(randy==3 || randy==6 || randy==10){first="c"}
+if(randy==1 || randy==4 || randy==9){first="d"}
+a="form"+choice+first+".gif"
+if(choice%2==0){
+if(first=="a" || first=="c"){theanswer=1}
+else{theanswer=0}}
+else{
+if(first=="a" || first=="c"){theanswer=0}
+else{theanswer=1}}
+message="<img src='"+a+"'>"
+var newone=window.open("","newone","toolbar='yes',width=200,height=200")
+newone.document.writeln ("<html>");
+newone.document.writeln ("<head>");
+newone.document.writeln ("</head>");
+newone.document.writeln ("<body bgcolor = FFFFFF");
+newone.document.writeln ("<font size = +1>");
+newone.document.writeln (message);
+//newone.document.writeln (a);
+newone.document.writeln ("<form method='post'>");
+newone.document.writeln ("<input type=radio name='ans' size=8 onClick='opener.answr(1)'><b>R</b>");
+newone.document.writeln ("<input type=radio name='ans' size=8 onClick='opener.answr(0)'><b>S</b>");
+newone.document.writeln ("</form>");
+newone.document.writeln ("</font>");
+newone.document.writeln ("</html>");
+newone.document.close();
+newone.focus();
+}
+function answr(test){
+if(tried==1){
+		alert("Sorry, you've already submitted this problem! Get a new one!")
+		}
+else{
+	if(tried==2){totl++;document.forms[0].total.value=totl}	
+	if (theanswer==test){	
+	document.forms[0].results.value="correct"
+		corrt++
+		document.forms[0].correct.value=corrt
+		tried=1
+}	
+else {
+		document.forms[0].results.value="incorrect"
+		tried=2}
+}}
+function timer(z){
+tt=z
+var b=Math.floor(tt/60)
+var j = (tt % 60)
+if (j<10){c="0"}
+else {c=""}
+howlong=b + ":" + c + j
+running=setTimeout("timer(tt+1)",1000)
+}
+function update(){
+	document.forms[0].total.value=totl
+	document.forms[0].correct.value=corrt
+	document.forms[0].time.value=howlong
+	document.forms[0].page.value=thepage
+	document.forms[0].verify.value=Math.round(10000*Math.random())
+}
+
+</script>
+</head>
+<body onLoad="clear(),timer(0)">
+<h3>R and S Configurations</h3>
+This page is an exercise is assigning R and S configurations. Its operation is 
+straightforward. When you click on "New Structure" a window with a Fischer projection
+will open. The first time this window opens, it may obscure something you wish to
+see. As with all such windows, it can be dragged to a new location. Once positioned, it will not move unless
+you close it. Determine the classification of the structure and click on the 
+appropriate bubble. The results immediately appear in the table on the main window.
+A running score is also kept. The projections follow the convention:<br>
+<img src="fisher.gif">
+<form ACTION = "../../../cgi-bin/homework/hw_turnin.cgi" METHOD = "POST">
+<input type=button value="New Structure" onClick="display()">
+<table border=4>
+<td><b>Results</b></td>
+<td><b>Total</b></td>
+<td><b>Correct</b></td>
+</tr>
+<tr>
+<td align=center><input type=text name=results size=12><br></td>
+<td align=center><input type=text name=total size=2><br></td>
+<td align=center><input type=text name=correct size=2><br></td>
+</table>
+<input type=text name="page" size=1>
+<input type=text name="verify" size=1>
+<input type=text name="time" size=1><br>
+<INPUT TYPE = "submit" VALUE = "Submit your score" onClick="update()">
+</form>
+<br><br>
+<a href="../../homework/hwintro.html"><img src="back.gif"></a><br>
+<a href="mailto:gwiger@chemistry.csudh.edu"><img src=email1.gif></a>
+</body>
+</html>

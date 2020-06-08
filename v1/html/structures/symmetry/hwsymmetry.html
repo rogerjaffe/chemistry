@@ -1,0 +1,337 @@
+<html>
+<head>
+<title>Symmetry</title>
+<script>
+//globals
+thepage="Symmetry Class."
+structure=""
+theanswer=""
+totl=0
+corrt=0
+tried=0
+instruct=0
+function clear(){
+	document.forms[0].results.value=""
+	document.forms[0].total.value=totl
+	document.forms[0].correct.value=corrt
+}
+function MakeArray(n){
+	this.length=n
+	for (var i=1;i<=n;i++){
+	this[i]= 0}
+}
+function dataset(cmpd,type){
+	this.cmpd=cmpd
+	this.type=type
+}
+compound=new MakeArray(100)
+compound[1]=new dataset("CH<sub>4</sub>")
+compound[2]=new dataset("CF<sub>4</sub>")
+compound[3]=new dataset("CO<sub>2</sub>")
+compound[4]=new dataset("CCl<sub>4</sub>")
+compound[5]=new dataset("H<sub>2</sub>O")
+compound[6]=new dataset("H<sub>2</sub>C=O")
+compound[7]=new dataset("CO")
+compound[8]=new dataset("H<sub>2</sub>C=CH<sub>2</sub>")
+compound[9]=new dataset("BF<SUB>3</SUB>")
+compound[10]=new dataset("BCl<SUB>3</SUB>")
+compound[11]=new dataset("HCN:")
+compound[12]=new dataset(":NH<SUB>3</SUB>")
+compound[13]=new dataset("HCCH",1)
+compound[14]=new dataset("H<sub>2</sub>S")
+ansset=new MakeArray(200)
+ansset[1]="Td"
+ansset[2]="Td"
+ansset[3]="D#h"
+ansset[4]="Td"
+ansset[5]="C2v"
+ansset[6]="C2v"
+ansset[7]="C#v"
+ansset[8]="D2h"
+ansset[9]="D3h"
+ansset[10]="D3h"
+ansset[11]="C#v"
+ansset[12]="C3v"
+ansset[13]="D#h"
+ansset[14]="C2v"
+ansset[15]=""
+ansset[16]=""
+ansset[17]=""
+ansset[18]=""
+ansset[19]=""
+ansset[20]=""
+ansset[21]=""
+ansset[22]=""
+ansset[23]=""
+ansset[24]=""
+ansset[25]=""
+ansset[26]=""
+ansset[27]=""
+ansset[28]=""
+ansset[29]=""
+ansset[30]=""
+ansset[31]=""
+ansset[32]=""
+ansset[33]=""
+ansset[34]=""
+ansset[35]=""
+ansset[36]=""
+ansset[37]=""
+ansset[38]=""
+ansset[39]=""
+ansset[40]=""
+ansset[41]=""
+ansset[42]=""
+ansset[43]=""
+ansset[44]=""
+ansset[45]=""
+ansset[46]=""
+ansset[47]=""
+ansset[48]=""
+ansset[49]=""
+ansset[50]=""
+ansset[51]="C#v"
+ansset[52]="C2v"
+ansset[53]="Cs"
+ansset[54]="C2v"
+ansset[55]="Td"
+ansset[56]="Td"
+ansset[57]="C3v"
+ansset[58]="C2v"
+ansset[59]="Td"
+ansset[60]="D2h"
+ansset[61]="Cs"
+ansset[62]="C2h"
+ansset[63]="Cs"
+ansset[64]="C2v"
+ansset[65]="C2v"
+ansset[66]="D6h"
+ansset[67]="C2v"
+ansset[68]="C2v"
+ansset[69]="C2v"
+ansset[70]="C2v"
+ansset[71]="Cs"
+ansset[72]="D2h"
+ansset[73]="C2v"
+ansset[74]="D3h"
+ansset[75]="C2v"
+ansset[76]="Cs"
+ansset[77]="D4h"
+ansset[78]="C2v"
+ansset[79]="C2v"
+ansset[80]="C2v"
+ansset[81]="C2v"
+ansset[82]="C2v"
+ansset[83]="C2v"
+ansset[84]="D3h"
+ansset[85]="C3v"
+ansset[86]="D3h"
+ansset[87]="C2v"
+ansset[88]="C1"
+ansset[89]="C3v"
+ansset[90]="C3v"
+ansset[91]="Cs"
+ansset[92]="Cs"
+ansset[93]="D2d"
+ansset[94]="Cs"
+ansset[95]="C2v"
+ansset[96]="C2"
+ansset[97]="D#h"
+ansset[98]="C#v"
+ansset[99]="C2v"
+ansset[100]="Cs"
+ansset[101]="C2v"
+ansset[102]="Cs"
+ansset[103]="C2v"
+ansset[104]="C2v"
+ansset[105]="Cs"
+ansset[106]="C#v"
+ansset[107]="Oh"
+ansset[108]="C4v"
+ansset[109]="D4h"
+ansset[110]="C2v"
+ansset[111]="C2v"
+ansset[112]="C3v"
+ansset[113]="C2v"
+ansset[114]="Cs"
+ansset[115]="C4v"
+ansset[116]="C3v"
+ansset[117]="Td"
+ansset[118]="C3v"
+ansset[119]="C2v"
+ansset[120]="Cs"
+ansset[121]="C2v"
+ansset[122]="C2h"
+ansset[123]="Cs"
+ansset[124]="C3v"
+ansset[125]="Cs"
+ansset[126]="D2h"
+ansset[127]="Cs"
+ansset[128]="C2v"
+ansset[129]="C2v"
+ansset[130]="C2h"
+ansset[131]="C2h"
+ansset[132]="C2v"
+ansset[133]=""
+ansset[134]=""
+ansset[135]=""
+ansset[136]=""
+ansset[137]=""
+ansset[138]=""
+ansset[139]=""
+ansset[140]=""
+ansset[141]=""
+ansset[142]=""
+ansset[143]=""
+ansset[144]=""
+ansset[145]=""
+ansset[146]=""
+ansset[147]=""
+ansset[148]=""
+ansset[149]=""
+ansset[150]=""
+ansset[151]=""
+ansset[152]=""
+ansset[153]=""
+ansset[154]=""
+ansset[155]=""
+ansset[156]=""
+ansset[157]=""
+ansset[158]=""
+ansset[159]=""
+ansset[160]=""
+ansset[161]=""
+ansset[162]=""
+ansset[163]=""
+ansset[164]=""
+ansset[165]=""
+ansset[166]=""
+ansset[167]=""
+ansset[168]=""
+ansset[169]=""
+ansset[170]=""
+ansset[171]=""
+ansset[172]=""
+ansset[173]=""
+ansset[174]=""
+ansset[175]=""
+ansset[176]=""
+ansset[177]=""
+ansset[178]=""
+ansset[179]=""
+ansset[180]=""
+ansset[181]=""
+ansset[182]=""
+ansset[183]=""
+ansset[184]=""
+ansset[185]=""
+ansset[186]=""
+ansset[187]=""
+ansset[188]=""
+ansset[189]=""
+ansset[190]=""
+ansset[191]=""
+ansset[192]=""
+ansset[193]=""
+ansset[194]=""
+ansset[195]=""
+ansset[196]=""
+ansset[197]=""
+ansset[198]=""
+ansset[199]=""
+ansset[200]=""
+function timer(z){
+tt=z
+var b=Math.floor(tt/60)
+var j = (tt % 60)
+if (j<10){c="0"}
+else {c=""}
+howlong=b + ":" + c + j
+running=setTimeout("timer(tt+1)",1000)
+}
+//begin programs
+function begin(){
+document.forms[0].results.value=""
+totl++
+tried=0
+document.forms[0].total.value=totl
+document.forms[0].results.value=""
+if(Math.random()<.2){
+	which=Math.ceil(14*Math.random())
+	structure=compound[which]['cmpd']
+	theanswer=ansset[which]
+	}
+else{which=Math.ceil(82*Math.random())
+	structure="<img src='symm"+which+".gif'></img>"
+	theanswer=ansset[50+which]}
+display()
+}
+function display(){
+var newone=window.open("","newone","scrolling=yes,width=200,height=200")
+newone.document.writeln ("<html>");
+newone.document.writeln ("<head>");
+newone.document.writeln ("</head>");
+newone.document.writeln ("<body bgcolor = FFFFFF>");
+newone.document.writeln (structure);
+newone.document.write ("<form><input type=text name=ans size=6>");
+newone.document.write ("<input type=button value=Submit onClick=opener.answer(this.form.ans.value)>");
+newone.document.writeln ("</form>");
+newone.document.writeln ("</body>");
+newone.document.writeln ("</html>");
+newone.document.close();
+newone.focus();
+}
+function answer(f){
+if(tried==1){
+	alert("Get a new problem. You already answered this one!")}
+else{
+check=theanswer.toUpperCase()
+ans=f.toUpperCase()
+if(ans==check){
+	document.forms[0].results.value="correct"
+	corrt++
+	document.forms[0].correct.value=corrt
+	tried=1}
+else{document.forms[0].results.value="incorrect"
+	if(tried==2){totl++;document.forms[0].total.value=totl}
+	tried=2}
+}
+}
+function update(){
+	document.forms[0].total.value=totl
+	document.forms[0].correct.value=corrt
+	document.forms[0].time.value=howlong
+	document.forms[0].page.value=thepage
+	document.forms[0].verify.value=Math.round(10000*Math.random())
+}
+
+</script>
+</head>
+<body onLoad=clear(),timer(0)>
+<h2>Symmetry</h2>
+This page presents exercises in classifying species in their symmetry point groups.. When you press "New Problem", a window will appear with a structure/formula. Determine the point group, enter the value in the cell and press submit. Results appear in the table and the main window. When the small window first appears, you may have to drag it out of the way. When entering the answer, following the following rules:<ul>
+<li>Enter the point group as a single "word". Do not use any spaces.
+<li>You should try to use proper cases. Thus, enter D2h, not d2H. However, the page will correct for such errors.
+<li>Substitute # for the infinity sign.
+</ul>
+<form ACTION = "../../../cgi-bin/homework/hw_turnin.cgi" METHOD = "POST">
+<input type=button value="New Problem" onClick=begin()><br>
+<table border=4>
+<tr>
+<td align=center>Results</td>
+<td>Total</td>
+<td>Correct</td>
+</tr>
+<tr>
+<td><input type=text size=12 name=results></td>
+<td align=center><input type=text size=2 name=total></td>
+<td align=center><input type=text size=2 name=correct></td>
+</tr>
+</table>
+<input type=text name="page" size=1>
+<input type=text name="verify" size=1>
+<input type=text name="time" size=1><br>
+<INPUT TYPE = "submit" VALUE = "Submit your score" onClick="update()">
+</form>
+</body>
+</html>

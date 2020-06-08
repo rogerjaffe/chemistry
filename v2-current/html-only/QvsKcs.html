@@ -1,0 +1,264 @@
+<html>
+<head><title>Q vs K-cs</title>
+<style>
+#qspot {position:absolute;left:320;top:200}
+#ansspot {position:absolute;left:320;top:440;height:300}
+#tspot {position:absolute;left:10;top:300}
+#refspot {position:absolute;left:10;top:600}
+</style>
+<script src="reflist.js"></script>
+<script src="numberconvert.js"></script>
+<script language=javascript>
+//updated 1/9/01 added complete solution
+var ie4 = (document.all) ? true : false;
+refnumber=197
+theform="<form>The reaction is proceeding:<input type=radio name=choice onClick='answer(0)'>L to R<input type=radio name=choice onClick='answer(1)'>R to L</form>"
+totl=0
+corrt=0
+tried=0
+attempts=0
+which=0
+threaction=0
+conc=0
+econc=0
+theK=0
+theQ=0
+anser=0
+theanswer=""
+vformula=""
+gformula=""
+cmpd=new Array()
+coef=new Array()
+cmpd[1]=new Array(2,"H<SUB>2</SUB>","O<SUB>2</SUB>","H<SUB>2</SUB>O")
+coef[1]=new Array(-2,-1,2)
+cmpd[2]=new Array(2,"N<SUB>2</SUB>","H<SUB>2</SUB>","NH<SUB>3</SUB>") 
+coef[2]=new Array(-1,-3,2)
+cmpd[3]=new Array(1,"CH<SUB>3</SUB>OH","CO","H<SUB>2</SUB>")
+coef[3]=new Array(-1,1,2)
+cmpd[4]=new Array(2,"CO","H<SUB>2</SUB>","CH<SUB>3</SUB>OH")
+coef[4]=new Array(-1,-2,1)
+cmpd[5]=new Array(2,"NO","O<SUB>2</SUB>","NO<SUB>3</SUB>")
+coef[5]=new Array(-1,-1,1)
+cmpd[6]=new Array(1,"NO<SUB>3</SUB>","NO"," O<SUB>2</SUB>")
+coef[6]=new Array(-1,1,1)
+cmpd[7]=new Array(2,"NO<SUB>3</SUB>"," NO","NO<SUB>2</SUB>")
+coef[7]=new Array(-1,-1,2)
+cmpd[8]=new Array(1,"NO<SUB>2</SUB>","NO<SUB>3</SUB>"," NO")
+coef[8]=new Array(-2,1,1)
+cmpd[9]=new Array(2,"NO","O<SUB>2</SUB>","NO<SUB>2</SUB>")
+coef[9]=new Array(-2,-1,2)
+cmpd[10]=new Array(2,"H<SUB>2</SUB>","ICl","I<SUB>2</SUB>","HCl")
+coef[10]=new Array(-1,-2,1,2)
+cmpd[11]=new Array(2,"I<SUB>2</SUB>","HCl","H<SUB>2</SUB>","ICl")
+coef[11]=new Array(-1,-2,1,2)
+cmpd[12]=new Array(2,"CO","NO","CO<SUB>2</SUB>","N<SUB>2</SUB>")
+coef[12]=new Array(-2,-2,2,1)
+cmpd[13]=new Array(2,"CO<SUB>2</SUB>","N<SUB>2</SUB>","CO","NO")
+coef[13]=new Array(-2,-1,2,2)
+cmpd[14]=new Array("SO<SUB>2</SUB>","O<SUB>2</SUB>","SO<SUB>3</SUB>")
+coef[14]=new Array(2,1,2)
+cmpd[15]=new Array(1,"SO<SUB>3</SUB>","SO<SUB>2</SUB>","O<SUB>2</SUB>")
+coef[15]=new Array(-2,2,1)
+cmpd[16]=new Array(1,"N<SUB>2</SUB>O<SUB>4</SUB>","NO<SUB>2</SUB>")
+coef[16]=new Array(-1,2)
+cmpd[17]=new Array(1,"NO<SUB>2</SUB>","N<SUB>2</SUB>O<SUB>4</SUB>")
+coef[17]=new Array(-2,1)
+cmpd[18]=new Array(1,"NOBr","NO"," Br<SUB>2</SUB>")
+coef[18]=new Array(-2,1,2)
+cmpd[19]=new Array(2,"CH<SUB>4</SUB>"," O<SUB>2</SUB>","H<SUB>2</SUB>CO","H<SUB>2</SUB>O")
+coef[19]=new Array(-1,-1,1,1)
+cmpd[20]=new Array(2,"NO","Br<SUB>2</SUB>","NOBr")
+coef[20]=new Array(-2,-1,2)
+cmpd[21]=new Array(2,"CS<SUB>2</SUB>","4H<SUB>2</SUB>","CH<SUB>4</SUB>","H<SUB>2</SUB>S")
+coef[21]=new Array(-1,-4,1,2)
+cmpd[22]=new Array(2,"CO","H<SUB>2</SUB>O","CO<SUB>2</SUB>","H<SUB>2</SUB>")
+coef[22]=new Array(-1,-1,1,1)
+cmpd[23]=new Array(2,"CO<SUB>2</SUB>","H<SUB>2</SUB>","CO","H<SUB>2</SUB>O")
+coef[23]=new Array(-1,-1,1,1)
+cmpd[24]=new Array(2,"CH<SUB>4</SUB>","H<SUB>2</SUB>S","CS<SUB>2</SUB>","4H<SUB>2</SUB>")
+coef[24]=new Array(-1,-2,1,4)
+cmpd[25]=new Array(1,"SO<SUB>2</SUB>Cl<SUB>2</SUB>","SO<SUB>2</SUB>","Cl<SUB>2</SUB>")
+coef[25]=new Array(-1,1,1)
+cmpd[26]=new Array(2,"SO<SUB>2</SUB>","Cl<SUB>2</SUB>","SO<SUB>2</SUB>Cl<SUB>2</SUB>")
+coef[26]=new Array(-1,-1,1)
+cmpd[27]=new Array(2,"Cl<SUB>2</SUB>","F<SUB>2</SUB>","ClF<SUB>3</SUB>")
+coef[27]=new Array(-1,-3,2)
+cmpd[28]=new Array(1,"ClF<SUB>3</SUB>","Cl<SUB>2</SUB>","F<SUB>2</SUB>")
+coef[28]=new Array(-2,1,3)
+cmpd[29]=new Array(1,"COF<SUB>2</SUB>","CO<SUB>2</SUB>","CF<SUB>4</SUB>")
+coef[29]=new Array(-2,1,1)
+cmpd[30]=new Array(2,"CO<SUB>2</SUB>","CF<SUB>4</SUB>","COF<SUB>2</SUB>")
+coef[30]=new Array(-1,-1,2)
+cmpd[31]=new Array(2,"CO","Cl<SUB>2</SUB>","COCl<SUB>2</SUB>")
+coef[31]=new Array(-1,-1,1)
+cmpd[32]=new Array(1,"COCl<SUB>2</SUB>","CO","Cl<SUB>2</SUB>")
+coef[32]=new Array(-1,1,1)
+cmpd[33]=new Array(1,"PCl<SUB>5</SUB>","PCl<SUB>3</SUB>","Cl<SUB>2</SUB>")
+coef[33]=new Array(-1,1,1)
+cmpd[34]=new Array(2,"PCl<SUB>3</SUB>","Cl<SUB>2</SUB>","PCl<SUB>5</SUB>")
+coef[34]=new Array(-1,-1,1)
+cmpd[35]=new Array(2,"N<SUB>2</SUB>O","O<SUB>2</SUB>","N<SUB>2</SUB>O<SUB>4</SUB>")
+coef[35]=new Array(-2,-3,2)
+cmpd[36]=new Array(1,"N<SUB>2</SUB>O<SUB>4</SUB>","N<SUB>2</SUB>O","O<SUB>2</SUB>")
+coef[36]=new Array(-2,2,3)
+basequest=new Array("The reaction:<br>","<br>has the K shown. If a reaction mixture has the concentrations as shown, in which direction is the reaction proceeding?<br>")
+ansphrase=new Array("First, write the equation for Q","Then carefully substitute in the values and calculate Q, making sure that you include the exponents in your calculation.", "Compare Q with K to determine the direction of reaction.")
+finish=new Array("Since Q is less than K, the reaction is proceeding <B>left to right</B>.", "Since Q is greater than K, the reaction is proceeding <B>right to left</B>.")
+//begin programs
+function clear(){
+	document.forms[0].results.value=""
+	attempts=0
+	tried=0
+	if(ie4) ansspot.innerHTML=""
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.clear()
+		document.ansspot.document.close()
+		}
+}
+
+function startit(){
+	clear()
+	tried=0
+	totl++
+	document.forms[0].total.value=totl
+	which=Math.ceil(36*Math.random())
+	getreaction()
+	econc=getconcs()
+	conc=getconcs()
+	getform()
+	theQ=getconstant(conc)
+	theK=getconstant(econc)
+	if(theQ>theK)anser=1;
+	else anser=0;
+	buildquest()
+	buildanswer()
+}
+function getreaction(){
+	cef=new Array()
+	thereaction=""
+	for(var b=0;b<coef[which].length;b++){
+		(Math.abs(coef[which][b])==1)?cef[b]="":cef[b]=Math.abs(coef[which][b]);
+	}
+	for(var l=1;l<=cmpd[which][0];l++){
+		l<cmpd[which][0]?thereaction+=(cef[l-1]+cmpd[which][l]+" + "):thereaction+=(cef[l-1]+cmpd[which][l]+"=>");
+	}
+	for(var l=(cmpd[which][0]+1);l<cmpd[which].length;l++){
+		l<(cmpd[which].length-1)?thereaction+=(cef[l-1]+cmpd[which][l]+" + "):thereaction+=(cef[l-1]+cmpd[which][l]);
+	}
+	return thereaction
+}
+function getconcs(order){
+	con=new Array()
+	j=1
+	for(var j=0;j<coef[which].length;j++){
+		con[j]=0
+		while(con[j]<.01 || con[j]>.5)con[j]=number(Math.random(),3,3);
+	}
+	return con
+}
+function getconstant(dataset){
+	constant=1
+	for(var j=0;j<coef[which].length;j++)constant=constant*Math.pow(dataset[j],coef[which][j]);
+	return constant
+}
+function getform(){
+	gformula="Q="
+	vformula=""
+	for(var j=cmpd[which][0]+1;j<cmpd[which].length;j++){
+		gformula+=("["+cmpd[which][j]+"]")
+		vformula+=("["+conc[j-1]+"]")
+		if(Math.abs(coef[which][j-1])!=1){
+			gformula+=("<sup>"+Math.abs(coef[which][j-1])+"</sup>");
+			vformula+=("<sup>"+Math.abs(coef[which][j-1])+"</sup>");
+		}
+	}
+	gformula+="<B>/</B>"
+	vformula+="<B>/</B>"
+	for(var j=1;j<=cmpd[which][0];j++){
+		gformula+=("["+cmpd[which][j]+"]")
+		vformula+=("["+conc[j-1]+"]")
+		if(Math.abs(coef[which][j-1])!=1){
+			gformula+=("<sup>"+Math.abs(coef[which][j-1])+"</sup>");
+			vformula+=("<sup>"+Math.abs(coef[which][j-1])+"</sup>");
+		}
+	}
+}
+function buildquest(){
+	thequest=basequest[0]+thereaction+"<br>K="+number(theK,3,2)+basequest[1]
+	for(j=1;j<=coef[which].length;j++)thequest+=(cmpd[which][j]+":"+conc[j-1]+"<b>M</b><br>");
+	thequest+=theform
+	showquest(thequest)
+}
+function buildanswer(){
+	theanswer=ansphrase[0]+"<br>"+gformula+"<br>"+ansphrase[1]+"<br>"+vformula+"="+number(theQ,3,2)+"<br>"+ansphrase[2]+"<br>"+finish[anser]
+}
+function showquest(thequest){
+	if(ie4){
+		qspot.innerHTML=thequest
+		}
+	else{
+		document.qspot.document.open()
+		document.qspot.document.write(thequest)	
+		document.qspot.document.close()
+	}
+}
+
+function showanswer(){
+	if(ie4){
+		ansspot.innerHTML=theanswer
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.write(theanswer)
+		document.ansspot.document.close()
+	}
+}	
+	
+function answer(ans){
+	if(tried==1)alert("You've done this one! Get a new problem.");
+	else{
+	if(tried==2){
+		totl++
+		document.forms[0].total.value=totl
+	}
+	if(ans==anser){
+		document.forms[0].results.value="correct"
+		corrt++
+		document.forms[0].correct.value=corrt
+		tried=1
+	}
+	else{
+		document.forms[0].results.value="incorrect"
+		showanswer()
+		tried=2
+	}
+}}
+</script>
+</head>
+<body onLoad="clear(),setrefs()">
+<h2>Q vs K</h2>
+This page is an exercise in comparing the equilibrium constant with the reaction quotient. When you press "New Question" a  a balanced equation, its K value and a set of non equilibrium concentrations will be displayed to the right of the table.  Use the information provided to determine the direction in which the reaction will be proceeding. Click on the appropriate circle and the results will appear in the table on the main page.<br>
+<ul>
+<li>If you a problem, a complete solution will appear.
+</ul>
+<form>
+<input type="button" value="New Problem" onClick=startit()><br>
+<td><input type="button" value="Show Answer" onClick=showanswer()><br>
+<table border=4>
+<tr><td align=center><b>Results</td>
+<td align=center><b>Total Done</td>
+<td><b>Total Correct</td>
+</tr>
+<tr>
+<td><input type="text" name=results size=12></td>
+<td align=center><input type="text" name=total size=4 ></td>
+<td align=center><input type="text" name=correct size=4 ></td>
+</tr>
+</table>
+</form>
+<div id=qspot></div>
+<div id=ansspot></div>
+<div id=refspot></div>
+</body>
+</html>

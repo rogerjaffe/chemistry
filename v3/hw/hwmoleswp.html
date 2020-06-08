@@ -1,0 +1,280 @@
+</html>
+<head><Title>Moles Word Problems-Homework</Title>
+<script>
+//Last Update 7/28/98
+thepage="Moles Word Problems(10)"
+totl=0
+corrt=0
+theanswer=0
+which=0
+function clear(){
+	document.forms[0].results.value=""
+	document.forms[0].correct.value=corrt
+	document.forms[0].total.value=totl
+}
+function MakeArray(n){
+	this.length=n
+	for (var i=1;i<=n;i++){
+	this[i]= 0}
+}
+function question(p1,p2,p3,p4){
+	this.p1=p1
+	this.p2=p2
+	this.p3=p3
+	this.p4=p4
+}
+function atom(sym,mass){
+	this.sym=sym
+	this.mass=mass
+}
+quest=new MakeArray(3);
+//quest[1]=new question("How many moles is ","grams of ","?")
+//quest[2]=new question("What is the mass of "," moles of ","?")
+//quest[3]=new question("What is the element if "," moles, has a mass of "," grams?")
+quest[1]=new question("How many "," is "," of ","?")
+quest[2]=new question("What is the mass in "," of "," of ","?")
+quest[3]=new question("What is the element if "," has a mass of ","?","")
+at=new MakeArray(94);
+at[1]=new atom("H",1.008)
+at[2]=new atom("He",4.003)
+at[3]=new atom("Li",6.941)
+at[4]=new atom("Be",9.01218)
+at[5]=new atom("B",10.811)
+at[6]=new atom("C",12.011)
+at[7]=new atom("N",14.0067)
+at[8]=new atom("O",15.9994)
+at[9]=new atom("F",18.99840)
+at[10]=new atom("Ne",20.1797)
+at[11]=new atom("Na",22.98977)
+at[12]=new atom("Mg",24.305)
+at[13]=new atom("Al",26.981)
+at[14]=new atom("Si",28.086)
+at[15]=new atom("P",30.974)
+at[16]=new atom("S",32.066)
+at[17]=new atom("Cl",35.453)
+at[18]=new atom("Ar",39.948)
+at[19]=new atom("K",39.098)
+at[20]=new atom("Ca",40.08)
+at[21]=new atom("Sc",44.956)
+at[22]=new atom("Ti",47.88)
+at[23]=new atom("V",50.9415)
+at[24]=new atom("Cr",51.996)
+at[25]=new atom("Mn",54.938)
+at[26]=new atom("Fe",55.847)
+at[27]=new atom("Co",58.933)
+at[28]=new atom("Ni",58.69)
+at[29]=new atom("Cu",63.546)
+at[30]=new atom("Zn",65.39)
+at[31]=new atom("Ga",69.723)
+at[32]=new atom("Ge",72.61)
+at[33]=new atom("As",74.922)
+at[34]=new atom("Se",78.98)
+at[35]=new atom("Br",79.904)
+at[36]=new atom("Kr",83.80)
+at[37]=new atom("Rb",85.468)
+at[38]=new atom("Sr",87.62)
+at[39]=new atom("Y",88.906)
+at[40]=new atom("Zr",91.224)
+at[41]=new atom("Nb",92.906)
+at[42]=new atom("Mo",95.94)
+at[43]=new atom("Tc",98)
+at[44]=new atom("Ru",101.07)
+at[45]=new atom("Rh",102.905)
+at[46]=new atom("Pd",106.42)
+at[47]=new atom("Ag",107.87)
+at[48]=new atom("Cd",112.411)
+at[49]=new atom("In",114.82)
+at[50]=new atom("Sn",118.71)
+at[51]=new atom("Sb",121.75)
+at[52]=new atom("Te",127.60)
+at[53]=new atom("I",126.905)
+at[54]=new atom("Xe",131.29)
+at[55]=new atom("Cs",132.9054)
+at[56]=new atom("Ba",137.27)
+at[57]=new atom("La",138.905)
+at[58]=new atom("Ce",140.115)
+at[59]=new atom("Pr",140.908)
+at[60]=new atom("Nd",144.24)
+at[61]=new atom("Pm",145)
+at[62]=new atom("Sm",150.36)
+at[63]=new atom("Eu",151.985)
+at[64]=new atom("Gd",157.25)
+at[65]=new atom("Tb",158.925)
+at[66]=new atom("Dy",162.50)
+at[67]=new atom("Ho",164.930)
+at[68]=new atom("Er",167.26)
+at[69]=new atom("Tm",168.934)
+at[70]=new atom("Yb",173.04)
+at[71]=new atom("Lu",174.97)
+at[72]=new atom("Hf",178.49)
+at[73]=new atom("Ta",180.948)
+at[74]=new atom("W",183.85)
+at[75]=new atom("Re",186.207)
+at[76]=new atom("Os",190.2)
+at[77]=new atom("Ir",192.22)
+at[78]=new atom("Pt",195.08)
+at[79]=new atom("Au",196.966)
+at[80]=new atom("Hg",200.59)
+at[81]=new atom("Tl",204.383)
+at[82]=new atom("Pb",207.2)
+at[83]=new atom("Bi",208.980)
+at[84]=new atom("Po",209)
+at[85]=new atom("At",210)
+at[86]=new atom("Rn",222)
+at[87]=new atom("Fr",223)
+at[88]=new atom("Ra",226.025)
+at[89]=new atom("Ac",227.028)
+at[90]=new atom("Th",232.038)
+at[91]=new atom("Pa",231.036)
+at[92]=new atom("U",238.029)
+at[93]=new atom("Np",237.0482)
+at[94]=new atom("Pu",244)
+
+function start(){
+	which=0
+	totl++
+	document.forms[0].total.value=totl
+	document.forms[0].results.value=""
+	tried=0
+var i=Math.ceil(3*Math.random())
+a=quest[i]["p1"]
+b=quest[i]["p2"]
+c=quest[i]["p3"]
+d=quest[i]["p4"]
+var k=Math.ceil(94*Math.random())
+symbol=at[k]["sym"]
+f=at[k]["mass"]
+var mass=(1000*Math.random())
+var moles=mass/f
+var moles=Math.round(10000*moles)/10000
+var mass=Math.round(100*mass)/100
+//choose mass unit
+if (Math.random()<.33){
+	massunit="<b>grams</b>"}
+else {if(Math.random()<.5){
+	massunit="<b>kg</b>"
+	mass=Math.round(100*mass)/100000}
+else{
+	massunit="<b>mg</b>"
+	mass=mass*1000}}
+//choose mole unit
+if (Math.random()<.50){
+	moleunit="<b>moles</b>"}
+else {
+	moleunit="<b>mmoles</b>"
+	moles=Math.round(1000*moles)}
+if (i==1){
+	qust=a+moleunit+b+mass+massunit+c+symbol+d
+	tryit(qust)
+	theanswer=moles}
+if (i==2){
+	qust=a+massunit+b+moles+moleunit+c+symbol+d
+	tryit(qust)
+	theanswer=mass}
+if (i==3){
+	qust=a+moles+moleunit+b+mass+massunit+c
+	tryit(qust)
+	theanswer=symbol
+	which=1}
+document.forms[0].ans.focus()
+document.forms[0].ans.select()
+}
+function tryit(qust)    {
+parent.frames[0].document.clear();
+parent.frames[0].document.open();
+parent.frames[0].document.writeln ("<html>");
+parent.frames[0].document.writeln ("<head>");
+parent.frames[0].document.writeln ("</head>");
+parent.frames[0].document.writeln ("<body bgcolor = FFFFFF");
+parent.frames[0].document.writeln ("<font size = +1>");
+parent.frames[0].document.writeln ("");
+parent.frames[0].document.write (qust);
+parent.frames[0].document.writeln ("<br>")
+parent.frames[0].document.writeln ("</font>");
+parent.frames[0].document.close();
+}
+function answer(){
+if(tried==1){
+		alert("Sorry, you've already submitted this problem! We'll get you a new one!")
+		start()}
+else{
+if(tried==2){totl++;document.forms[0].total.value=totl}
+//need to fix the following for string comparisons
+if(which==1){
+if (theanswer==document.forms[0].ans.value){
+	document.forms[0].results.value="correct"
+		corrt++
+		document.forms[0].correct.value=corrt
+		tried=1}
+else{document.forms[0].results.value="incorrect"
+	tried=2}
+}
+else{if (theanswer<1.01*document.forms[0].ans.value &
+	theanswer>.99*document.forms[0].ans.value){
+	document.forms[0].results.value="correct"
+		corrt++
+		document.forms[0].correct.value=corrt
+		tried=1}
+else{document.forms[0].results.value="incorrect"
+	tried=2}
+}}}
+function timer(z){
+tt=z
+var b=Math.floor(tt/60)
+var j = (tt % 60)
+if (j<10){c="0"}
+else {c=""}
+howlong=b + ":" + c + j
+running=setTimeout("timer(tt+1)",1000)
+}
+function update(){
+	document.forms[0].total.value=totl
+	document.forms[0].correct.value=corrt
+	document.forms[0].time.value=howlong
+	document.forms[0].page.value=thepage
+	document.forms[0].verify.value=Math.round(10000*Math.random())
+}
+
+
+</script>
+</head>
+<BODY onLoad=clear(),timer(0)>
+<h3>Elements, mass and moles</h3>
+This page presents random "word" problems in the area of elements, mass and moles.
+When you press "New Question", a question will appear in the top frame. Calculate the
+answer and enter it in the cell. Then, press "Check Answer" and the results appear in the
+table. If you get a problem wrong, you should redo it until you get it correct, but you
+can press "New Question" at any time. You need a periodic table or chart of the elements
+to do these problems. Be very careful about the atomic symbol. You must enter it exactly as
+is shown on the Periodic Table.<br>
+<form ACTION = "../cgi-bin/homework/hw_turnin.php" METHOD = "POST">
+<table>
+<tr><td><input type=button value="New Question" onClick="start()"><td></tr>
+<tr><td><b>Enter your answer</b></td>
+<td><input type="text" name=ans size=12></td>
+</tr>
+<tr>
+<td><input type=button value="Check answer" onClick="answer()"></td>
+</tr>
+</table>
+<table border=4>
+<tr>
+<td align=center><b>Results</td>
+<td align=center><b>Done</td>
+<td><b>Correct</td>
+</tr>
+<tr>
+<td><input type="text" name=results size=12></td>
+<td align=center><input type="text" name=total size=4 ></td>
+<td align=center><input type="text" name=correct size=4 ></td>
+</tr>
+</table>
+<input type=text name="page" size=1>
+<input type=text name="verify" size=1>
+<input type=text name="time" size=1><br>
+<INPUT TYPE = "submit" VALUE = "Submit your score" onClick="update()">
+ </FORM>
+<br>
+<a href="index.html"><img src="back.gif"></a><br>
+</body>
+</html>

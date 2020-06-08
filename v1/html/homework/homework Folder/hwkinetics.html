@@ -1,0 +1,317 @@
+<html>
+<head>
+<title>Determining Rate Laws-Homework</title>
+<script>
+//globals
+thepage="Kinetics(44)"
+corrt=0
+triedorders=0
+triedk=0
+totl=0
+theanswer=0
+which=0
+thek=0
+gotorders=0
+function clear(){
+	empty()
+	document.forms[0].results.value=""
+	document.forms[0].goof.value=0
+	document.forms[0].correct.value=corrt
+	document.forms[0].total.value=totl
+	}
+function empty(){
+	document.forms[0].cell11.value=""
+	document.forms[0].cell12.value=""
+	document.forms[0].cell13.value=""
+	document.forms[0].cell14.value=""
+	document.forms[0].cell21.value=""
+	document.forms[0].cell22.value=""
+	document.forms[0].cell23.value=""
+	document.forms[0].cell24.value=""
+	document.forms[0].cell31.value=""
+	document.forms[0].cell32.value=""
+	document.forms[0].cell33.value=""
+	document.forms[0].cell34.value=""
+	document.forms[0].cell41.value=""
+	document.forms[0].cell42.value=""
+	document.forms[0].cell43.value=""
+	document.forms[0].cell44.value=""
+	document.forms[0].order1.value=""
+	document.forms[0].order2.value=""
+	document.forms[0].order3.value=""
+	document.forms[0].kvalue.value=""
+}	
+function MakeArray(n){
+	this.length=n
+	for (var i=1;i<=n;i++){
+	this[i]= 0}
+}
+function factors(f1,f2,f3,f4,f5,f6,f7,f8,f9){
+	this.f1=f1
+	this.f2=f2
+	this.f3=f3
+	this.f4=f4
+	this.f5=f5
+	this.f6=f6
+	this.f7=f7
+	this.f8=f8
+	this.f9=f9
+}
+function firsttrial(c1,c2,c3){
+	this.c1=c1
+	this.c2=c2
+	this.c3=c3
+}
+order=new MakeArray(4)
+sets=new MakeArray(10)
+sets[1]=new firsttrial(.1,.1,.1)
+sets[2]=new firsttrial(.1,.05,.1)
+sets[3]=new firsttrial(.05,.1,.1)
+sets[4]=new firsttrial(.1,.1,.05)
+sets[5]=new firsttrial(.05,.02,.06)
+sets[6]=new firsttrial(.07,.5,.2)
+sets[7]=new firsttrial(.05,.05,.05)
+sets[8]=new firsttrial(.06,.04,.08)
+sets[9]=new firsttrial(.025,.075,.050)
+sets[10]=new firsttrial(.24,.16,.08)
+coeffs=new MakeArray(10)
+coeffs[1]=new firsttrial(1,1,1)
+coeffs[2]=new firsttrial(1,0,1)
+coeffs[3]=new firsttrial(0,1,1)
+coeffs[4]=new firsttrial(2,1,1)
+coeffs[5]=new firsttrial(1,2,1)
+coeffs[6]=new firsttrial(1,1,2)
+coeffs[7]=new firsttrial(2,0,1)
+coeffs[8]=new firsttrial(2,1,0)
+coeffs[9]=new firsttrial(0,2,1)
+coeffs[10]=new firsttrial(1,0,2)
+times=new MakeArray(10)
+times[1]=new factors(1,2,1,2,1,1,1,1,2)
+times[2]=new factors(1,3,1,2,3,1,2,3,2)
+times[3]=new factors(3,1,1,1,3,1,3,1,2)
+times[4]=new factors(1,1,3,3,1,1,3,3,1)
+times[5]=new factors(2,2,2,2,2,1,1,2,1)
+times[6]=new factors(3,3,1,1,1,3,3,1,1)
+times[7]=new factors(2,3,2,1,3,1,2,3,1)
+times[8]=new factors(3,1,2,3,1,1,1,3,1)
+times[9]=new factors(1,2,1,2,2,2,2,2,1)
+times[10]=new factors(2,3,1,2,3,2,1,3,1)
+function begin(){
+	empty()
+	gotorders=0
+	totl++
+	document.forms[0].total.value=totl
+	document.forms[0].results.value=""
+	triedorders=0
+	triedk=0
+//first calculate a rate constant
+var k=Math.round(100*(Math.pow(10,Math.random())))/100
+var E=Math.round(.5+3*Math.random())
+if (Math.random()>.5){sign="-"}
+else{sign=""}
+var k=k + "e" +sign+E
+//document.forms[0].elements[19].value=k
+thek=k
+setdata(k)
+}
+function setdata(k){
+var h=Math.round(.5+10*Math.random())
+var s=Math.round(.5+10*Math.random())
+row=new MakeArray(4)
+row[1]=new firsttrial(sets[h]["c1"],sets[h]["c2"],sets[h]["c3"])
+row[2]=new firsttrial(times[s]["f1"]*row[1]["c1"],times[s]["f2"]*row[1]["c2"],times[s]["f3"]*row[1]["c3"])
+row[3]=new firsttrial(times[s]["f4"]*row[1]["c1"],times[s]["f5"]*row[1]["c2"],times[s]["f6"]*row[1]["c3"])
+row[4]=new firsttrial(times[s]["f7"]*row[1]["c1"],times[s]["f8"]*row[1]["c2"],times[s]["f9"]*row[1]["c3"])
+var f=Math.ceil(10*Math.random())
+for (i=1;i<=3;i++){
+//document.forms[0].elements[15+i].value=coeffs[f]["c"+i]
+order[i]=coeffs[f]["c"+i]}
+rate=new MakeArray(5)
+for (var i=1;i<=4;i++){
+rate[i]=k*(Math.pow(row[i]["c1"],coeffs[f]["c1"]))*(Math.pow(row[i]["c2"],coeffs[f]["c2"]))*(Math.pow(row[i]["c3"],coeffs[f]["c3"]))}
+number(rate[1],rate[2],rate[3],rate[4])
+for(var i=0;i<=3;i++){
+	k=4*i
+	for(var j=1;j<=3;j++){
+		document.forms[0].elements[k+j-1].value=row[i+1]["c"+j]}
+	document.forms[0].elements[k+3].value=rate[1+i]
+}
+document.forms[0].order1.focus()
+document.forms[0].order1.select()
+}
+function number(b,c,d,e){
+rate=new MakeArray(4)
+rate[1]=b
+rate[2]=c
+rate[3]=d
+rate[4]=e
+for (var i=1;i<=4;i++){
+if (rate[i]>1 & rate[i]<10){
+	rate[i]=Math.round(100*rate[i])/100}
+else{
+	if(rate[i]>10){
+	sign=""
+	n=0
+	while(rate[i]>10){
+	rate[i]=rate[i]/10
+	n++}
+	rate[i]=Math.round(100*rate[i])/100 + "e" + sign + n}
+	else{
+	sign="-"
+	n=0
+	while(rate[i]<1){
+	rate[i]=rate[i]*10
+	n++}
+	rate[i]=Math.round(100*rate[i])/100 + "e" + sign + n}
+	k=4*(i-1)
+	document.forms[0].elements[k+3].value=rate[1+i]
+}
+}}
+//this function checks the reaction orders
+function orders(){
+if(triedorders==1){
+		alert("Sorry, you've gotten the orders already! Work on k!")
+		}
+else{
+if(triedorders==2){
+	totl++
+	document.forms[0].total.value=totl
+	}
+if(order[1]==document.forms[0].order1.value &
+	order[2]==document.forms[0].order2.value &
+      order[3]==document.forms[0].order3.value){
+	document.forms[0].results.value="correct"
+	gotorders=1
+	triedorders=1
+	corrt++
+	document.forms[0].correct.value=corrt
+	document.forms[0].kvalue.focus()
+	document.forms[0].kvalue.select()
+}
+else{document.forms[0].results.value="incorrect"
+	document.forms[0].goof.value++
+	triedorders=2}
+}}
+//this function checks the k value, but only if the reaction orders are correct
+function checkk(){
+if (gotorders==0){
+ alert("You must get the orders correct before you submit the k value!")}
+else{
+if(triedk!=1){
+totl++;document.forms[0].total.value=totl
+if(document.forms[0].kvalue.value<1.05*thek &
+   document.forms[0].kvalue.value>.95*thek){
+	document.forms[0].results.value="correct"
+	corrt++
+	document.forms[0].correct.value=corrt
+	triedk=1
+	}
+else{document.forms[0].results.value="incorrect"
+	document.forms[0].goof.value++
+	triedk=2}}
+}}
+function timer(z){
+tt=z
+var b=Math.floor(tt/60)
+var j = (tt % 60)
+if (j<10){c="0"}
+else {c=""}
+howlong=b + ":" + c + j
+running=setTimeout("timer(tt+1)",1000)
+}
+function update(){
+	document.forms[0].total.value=totl
+	document.forms[0].correct.value=corrt
+	document.forms[0].time.value=howlong
+	document.forms[0].page.value=thepage
+	document.forms[0].verify.value=Math.round(10000*Math.random())
+}
+
+</script>
+</head>
+<body onLoad=clear(),timer(0)>
+<h2>Determining Rate Laws and Rate Constants</h2>
+This is an exercise in the analysis of basic kinetic data. When you press "New Problem",
+a set of kinetic data for the reaction of three species A,B and C will appear in the table. First, 
+use the data to determine the reaction orders for all three and enter these in the
+appropriate cells. Then press "Check Orders" and the results appear in the box below the button. Once you have obtained the orders, determine the value of the rate
+constant, enter it in the box and press "Check k". The results will appear in the box below the button.
+The final table will keep track of problems done and total errors.<br>
+<form ACTION = "../cgi-bin/homework/hw_turnin.php" METHOD = "POST">
+<table>
+<tr>
+<td><b>Trial</b></td>
+<td align=center><b>[A]</td>
+<td align=center><b>[B]</td>
+<td align=center><b>[C]</td>
+<td align=center><b>Rate(M/sec)</td>
+</tr>
+<tr>
+<td align=center><b>I</cd>
+<td align=center><input type="text" name=cell11 size=6></td>
+<td align=center><input type="text" name=cell12 size=6></td>
+<td align=center><input type="text" name=cell13 size=6></td>
+<td align=center><input type="text" name=cell14 size=10></td>
+</tr>
+<td align=center><b>II</cd>
+<td align=center><input type="text" name=cell21 size=6></td>
+<td align=center><input type="text" name=cell22 size=6></td>
+<td align=center><input type="text" name=cell23 size=6></td>
+<td align=center><input type="text" name=cell24 size=10></td>
+</tr>
+<td align=center><b>III</cd>
+<td align=center><input type="text" name=cell31 size=6></td>
+<td align=center><input type="text" name=cell32 size=6></td>
+<td align=center><input type="text" name=cell33 size=6></td>
+<td align=center><input type="text" name=cell34 size=10></td>
+</tr>
+<td align=center><b>IV</cd>
+<td align=center><input type="text" name=cell41 size=6></td>
+<td align=center><input type="text" name=cell42 size=6></td>
+<td align=center><input type="text" name=cell43 size=6></td>
+<td align=center><input type="text" name=cell44 size=10></td>
+</tr>
+<tr><td><b>Orders</b></td></tr>
+<tr>
+<td align=center><b>A</b></td>
+<td align=center><b>B</b></td>
+<td align=center><b>C</b></td>
+<td align=center><b>k value</b></td>
+</tr>
+<tr>
+<td align=center><input type="text" name=order1 size=2></td>
+<td align=center><input type="text" name=order2 size=2></td>
+<td align=center><input type="text" name=order3 size=2></td>
+<td align=center><input type="text" name=kvalue size=8></td>
+</tr>
+</table>
+<table>
+<tr>
+<td><input type="button" value="New Problem" onClick=begin()></td>
+<td><input type="button" value="Check Orders" onClick=orders()></td>
+<td><input type="button" value="Check k" onClick=checkk()></td>
+</tr>
+</table>
+<table border=4>
+<tr>
+<td align=center>Results</td>
+<td align=center><b>Total Done</td>
+<td align=center><b>Correct</td>
+<td align=center><b>Total Errors</td>
+</tr>
+<tr>
+<td align=center><input type="test" size=10 name="results"></td>
+<td align=center><input type="text" name=total size=4></td>
+<td align=center><input type="text" name=correct size=4 ></td>
+<td align=center><input type="text" name=goof size=4 ></td>
+</tr>
+</table>
+<input type=text name="page" size=1>
+<input type=text name="verify" size=1>
+<input type=text name="time" size=1><br>
+<INPUT TYPE = "submit" VALUE = "Submit your score" onClick="update()">
+ </FORM>
+<br>
+<a href="hwintro.html"><img src="back.gif"></a><br>
+</body>
+</html>

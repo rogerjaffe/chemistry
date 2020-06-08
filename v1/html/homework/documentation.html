@@ -1,0 +1,44 @@
+<html>
+<head>
+<title>Homework System</title>
+</head>
+<body>
+<h2>Homework System</h2>
+The WWW based homework system is now available to anyone interested, in two forms. The  first appraoch is to download all of the scripts, gifs and web materials from my server and install them locally. If you can do that, I would very much recommend that approach. The second method ,and the simplest, is to utilize is to access the materials on my server. Regardless of which method you choose (or to be safe you can do both), please read all of the following material before proceeding. I know that everyone always says that and I know that most of you, like I do, generally ignore such admonitions. In this case, given what you must do in terms of configurations, etc, it really is important to understand what's involved. It is also very strongly recommended tthat interested individuals "play" with the materials available here to see whether they are appropriate for your programs. You can follow the links below to the "Homework" and "Lecture Help" systems to see how they work. In addition, you can print this document, since it is a single web page.
+<h3>Links</h3>
+
+<h3>Structure of the System</h3>
+The system is designed to provide problem sets across a very broad range of topics. It is not a tutorial system. The basic philosophy is that a quality textbook is the core instructional material. The pages utilize a combination of HTML and Javascript to generate individualized questions. There are no "question banks". In general, the questions are generated on the fly and will not repeat. Further , input is normally numeric, not multiple choice." In Fully installed, this system has four major parts. Given that individuals who want to use the materials may not want to use the entire setup and, also, to ease installation, I have packaged the four pieces separately. They are:
+<li>The Lecture Help Pages-this set is easily installed simply by untarring or unzipping the file(s) below. In addition, these pages do not require a webserver, so they can be run by
+<li>Homework Pages-identical to the Lecture Helop materials with the added capability of submitting results to the instructor. These pages require the cgi scripts noted below, a PERL interpreter and specific permissions and directory structures on the server.
+<li>CGI-scripts. Since HTMl and Javascript are not capable of writing to the server disk, in order to run the homework pages with full interactivity, you need to install a few PERl scripts, again provided below, on your server. You also need to set up permissions and directory structures. In other words, you need system administrator support. Before you go to the trouble to download the homework pages and the scripts, make sure you're going to tbe able to install things properly. Details on the installation/configuration needs are given in a later section.
+<li>Graphics files. If you wish to be able to run the pages which involve structures, symmetry, etc, you ned to download and install the struture data base. This consists of about 1000 gif and jpg files. Without them you will not be able to run the following pages:
+
+<h3>Directory structures</h3>
+A smooth installation will be more likely if your server has a directory structure identical to what is present here at CSUDH, as shown below. Beyond the diaram below, the PERl interpreter should be located in "user/bin/perl" which is the default position. If your Perl interpreter is not in that directory, you will have to modofy the cgi scripts. How to do that is discussed in a later section. The following assumes that you are running Unix (or Linux) and that you have a partition called /home used for the user installed applications
+<br>
+<pre>
+   /home/httpd
+		|
+		|/html
+		|	/homework
+		|	/lecture_help
+		|	/strucures
+		|		/butyls
+		|		/equations
+		|		/hybrids
+		|		/rands
+		|		/symmetry
+		|	
+		|/cgi-bin
+		|	/homework
+		|
+		|/savedata
+			/directory for each of the faculty who is going to receive student data
+</pre>
+<br>
+Hopefully the above is understandable. If not, some further discussion provided about the installation and execution of the programs should help clarify the issue<br>
+<h3>Permissions</h3>
+Having proper file permissions is key to getting the scripts to execute properly.
+</body>
+</html>

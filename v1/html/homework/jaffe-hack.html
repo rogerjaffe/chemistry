@@ -1,0 +1,47 @@
+<html>
+<head><title>Significant Figures-Homework</title>
+</head>
+<body onLoad=clear(),timer(0)>
+<h2>Significant Figures</h2>
+Here you can drill regarding significant figures. When you hit "New Number",
+a number will appear in the left cell. Enter the number of signifcant figures
+in the right cell and press "Check Answer". The results appear in the second table.<br>
+
+<form ACTION = "../cgi-bin/homework/hw_turnin.php" METHOD = "POST">
+<table border=4>
+<tr>
+<TD ALIGN=CENTER><b>Number</td>
+<td align=center><b>Sig Figures</td>
+<td></td>
+</tr>
+<tr>
+<td align=center><input type="text" size=12 ></td>
+<td align=center><input type="text" size=12 ></td>
+</tr>
+<tr>
+<td><input type="button" value="New Number" onClick=begin()></td>
+<td><input type="button" value="Check Answer" onClick=answer(this.form)></td>
+</tr>
+</table>
+<br>
+<table border=4>
+<tr>
+<td align=center><b>Results</td>
+<td align=center><b>Total Done</td>
+<td><b>Total Correct</td>
+</tr>
+<tr>
+<td><input type="text" name="results" size=12></td>
+<td align=center><input type="text" name="total" size=4 value="100"></td>
+<td align=center><input type="text" name="correct" size=4 value="98"></td>
+</tr>
+</table>
+<input type=text name="page" size=1>
+<input type=text name="verify" size=1>
+<input type=text name="time" size=1><br>
+<INPUT TYPE = "submit" VALUE = "Submit your score" >
+</form>
+<br>  
+<a href="hwintro.html"><img src="back.gif"></a><br>
+</body>
+</html>

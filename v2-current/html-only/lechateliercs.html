@@ -1,0 +1,276 @@
+<html>
+<head><title>LeChatelier-cs</title>
+<style>
+#qspot {position:absolute;left:320;top:200}
+#ansspot {position:absolute;left:320;top:360;height:300}
+#tspot {position:absolute;left:10;top:300}
+#refspot {position:absolute;left:10;top:600}
+</style>
+<script src="reflist.js"></script>
+<script src="numberconvert.js"></script>
+<script language=javascript>
+//updated 1/9/01 added complete solution
+var ie4 = (document.all) ? true : false;
+refnumber=198
+theform="<form>The reaction will shift:<input type=radio name=choice onClick='answer(0)'>to the <b>left</b><input type=radio name=choice onClick='answer(1)'>to the <b>right</b><input type=radio name=choice onClick='answer(2)'><b>no change</b></form>"
+totl=0
+corrt=0
+tried=0
+attempts=0
+which=0
+threaction=0
+anser=0
+thestress=0
+theanswer=""
+thecmpd=""
+rcount=0
+pcount=0
+dn=0
+H=0
+cmpd=new Array()
+coef=new Array()
+cmpd[1]=new Array(2,"H<SUB>2</SUB>","O<SUB>2</SUB>","H<SUB>2</SUB>O")
+coef[1]=new Array(-2,-1,2)
+cmpd[2]=new Array(2,"N<SUB>2</SUB>","H<SUB>2</SUB>","NH<SUB>3</SUB>") 
+coef[2]=new Array(-1,-3,2)
+cmpd[3]=new Array(1,"CH<SUB>3</SUB>OH","CO","H<SUB>2</SUB>")
+coef[3]=new Array(-1,1,2)
+cmpd[4]=new Array(2,"CO","H<SUB>2</SUB>","CH<SUB>3</SUB>OH")
+coef[4]=new Array(-1,-2,1)
+cmpd[5]=new Array(2,"NO","O<SUB>2</SUB>","NO<SUB>3</SUB>")
+coef[5]=new Array(-1,-1,1)
+cmpd[6]=new Array(1,"NO<SUB>3</SUB>","NO"," O<SUB>2</SUB>")
+coef[6]=new Array(-1,1,1)
+cmpd[7]=new Array(2,"NO<SUB>3</SUB>"," NO","NO<SUB>2</SUB>")
+coef[7]=new Array(-1,-1,2)
+cmpd[8]=new Array(1,"NO<SUB>2</SUB>","NO<SUB>3</SUB>"," NO")
+coef[8]=new Array(-2,1,1)
+cmpd[9]=new Array(2,"NO","O<SUB>2</SUB>","NO<SUB>2</SUB>")
+coef[9]=new Array(-2,-1,2)
+cmpd[10]=new Array(2,"H<SUB>2</SUB>","ICl","I<SUB>2</SUB>","HCl")
+coef[10]=new Array(-1,-2,1,2)
+cmpd[11]=new Array(2,"I<SUB>2</SUB>","HCl","H<SUB>2</SUB>","ICl")
+coef[11]=new Array(-1,-2,1,2)
+cmpd[12]=new Array(2,"CO","NO","CO<SUB>2</SUB>","N<SUB>2</SUB>")
+coef[12]=new Array(-2,-2,2,1)
+cmpd[13]=new Array(2,"CO<SUB>2</SUB>","N<SUB>2</SUB>","CO","NO")
+coef[13]=new Array(-2,-1,2,2)
+cmpd[14]=new Array("SO<SUB>2</SUB>","O<SUB>2</SUB>","SO<SUB>3</SUB>")
+coef[14]=new Array(2,1,2)
+cmpd[15]=new Array(1,"SO<SUB>3</SUB>","SO<SUB>2</SUB>","O<SUB>2</SUB>")
+coef[15]=new Array(-2,2,1)
+cmpd[16]=new Array(1,"N<SUB>2</SUB>O<SUB>4</SUB>","NO<SUB>2</SUB>")
+coef[16]=new Array(-1,2)
+cmpd[17]=new Array(1,"NO<SUB>2</SUB>","N<SUB>2</SUB>O<SUB>4</SUB>")
+coef[17]=new Array(-2,1)
+cmpd[18]=new Array(1,"NOBr","NO"," Br<SUB>2</SUB>")
+coef[18]=new Array(-2,1,2)
+cmpd[19]=new Array(2,"CH<SUB>4</SUB>"," O<SUB>2</SUB>","H<SUB>2</SUB>CO","H<SUB>2</SUB>O")
+coef[19]=new Array(-1,-1,1,1)
+cmpd[20]=new Array(2,"NO","Br<SUB>2</SUB>","NOBr")
+coef[20]=new Array(-2,-1,2)
+cmpd[21]=new Array(2,"CS<SUB>2</SUB>","H<SUB>2</SUB>","CH<SUB>4</SUB>","H<SUB>2</SUB>S")
+coef[21]=new Array(-1,-4,1,2)
+cmpd[22]=new Array(2,"CO","H<SUB>2</SUB>O","CO<SUB>2</SUB>","H<SUB>2</SUB>")
+coef[22]=new Array(-1,-1,1,1)
+cmpd[23]=new Array(2,"CO<SUB>2</SUB>","H<SUB>2</SUB>","CO","H<SUB>2</SUB>O")
+coef[23]=new Array(-1,-1,1,1)
+cmpd[24]=new Array(2,"CH<SUB>4</SUB>","H<SUB>2</SUB>S","CS<SUB>2</SUB>","H<SUB>2</SUB>")
+coef[24]=new Array(-1,-2,1,4)
+cmpd[25]=new Array(1,"SO<SUB>2</SUB>Cl<SUB>2</SUB>","SO<SUB>2</SUB>","Cl<SUB>2</SUB>")
+coef[25]=new Array(-1,1,1)
+cmpd[26]=new Array(2,"SO<SUB>2</SUB>","Cl<SUB>2</SUB>","SO<SUB>2</SUB>Cl<SUB>2</SUB>")
+coef[26]=new Array(-1,-1,1)
+cmpd[27]=new Array(2,"Cl<SUB>2</SUB>","F<SUB>2</SUB>","ClF<SUB>3</SUB>")
+coef[27]=new Array(-1,-3,2)
+cmpd[28]=new Array(1,"ClF<SUB>3</SUB>","Cl<SUB>2</SUB>","F<SUB>2</SUB>")
+coef[28]=new Array(-2,1,3)
+cmpd[29]=new Array(1,"COF<SUB>2</SUB>","CO<SUB>2</SUB>","CF<SUB>4</SUB>")
+coef[29]=new Array(-2,1,1)
+cmpd[30]=new Array(2,"CO<SUB>2</SUB>","CF<SUB>4</SUB>","COF<SUB>2</SUB>")
+coef[30]=new Array(-1,-1,2)
+cmpd[31]=new Array(2,"CO","Cl<SUB>2</SUB>","COCl<SUB>2</SUB>")
+coef[31]=new Array(-1,-1,1)
+cmpd[32]=new Array(1,"COCl<SUB>2</SUB>","CO","Cl<SUB>2</SUB>")
+coef[32]=new Array(-1,1,1)
+cmpd[33]=new Array(1,"PCl<SUB>5</SUB>","PCl<SUB>3</SUB>","Cl<SUB>2</SUB>")
+coef[33]=new Array(-1,1,1)
+cmpd[34]=new Array(2,"PCl<SUB>3</SUB>","Cl<SUB>2</SUB>","PCl<SUB>5</SUB>")
+coef[34]=new Array(-1,-1,1)
+cmpd[35]=new Array(2,"N<SUB>2</SUB>O","O<SUB>2</SUB>","N<SUB>2</SUB>O<SUB>4</SUB>")
+coef[35]=new Array(-2,-3,2)
+cmpd[36]=new Array(1,"N<SUB>2</SUB>O<SUB>4</SUB>","N<SUB>2</SUB>O","O<SUB>2</SUB>")
+coef[36]=new Array(-2,2,3)
+basequest="Assume that the reaction below is at equilibrium. A stress is then applied as described. Click on the appropriate circle to indicate how the system will respond to the stress.<br>"
+stresslist=new Array(" is added."," is removed."," is added."," is removed.","Volume is increased.","Volume is decreased.","A catalyst is added.","The temperature is increased.","The tenperature is decreased.")
+heatlist=new Array("reagent","product")
+ansphrase=new Array()
+ansphrase[0]="Adding a reagent causes a system at equilibrium to shift to the right to consume the added reagent."
+ansphrase[1]="Removing a reagent causes a system at equilibrium to shift to the left to replace the added reagent."
+ansphrase[2]="Adding a product causes a system at equilibrium to shift to the left to consume the added product."
+ansphrase[3]="Removing a product causes a system at equilibrium to shift to the right to replace the removed product."
+ansphrase[4]=new Array("Since the number of gaseous reagents and products are equal, changing the volume will not affect the equilbrium.","Since the number of gaseous products is greater than the reagents, increasing the volume will shift the equilibrium to the right.","Since the number of gaseous reagents is greater than the products, increasing the volume will shift the equilibrium to the left.")
+ansphrase[5]=new Array("Since the number of gaseous reagents and products are equal, changing the volume will not affect the equilbrium.","Since the number of gaseous products is greater than the reagents, decreasing the volume will shift the equilibrium to the left.","Since the number of gaseous reagents is greater than the products, decreasing the volume will shift the equilibrium to the right.")
+ansphrase[6]="Adding a catalyst does not affect the equilibrium."
+ansphrase[7]=new Array("Increasing the T adds heat to the system. Since heat is a "," the reaction will shift to the ")
+ansphrase[8]=new Array("Decreasing the T removes heat from the system. Since heat is a "," the reaction will shift to the ")
+//begin programs
+function clear(){
+	document.forms[0].results.value=""
+	attempts=0
+	tried=0
+	if(ie4) ansspot.innerHTML=""
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.clear()
+		document.ansspot.document.close()
+		}
+}
+function startit(){
+	clear()
+	stress=""
+	tried=0
+	totl++
+	document.forms[0].total.value=totl
+	which=Math.ceil(36*Math.random())
+	rcount=0;
+	pcount=0;
+	for(var j=0;j<cmpd[which][0];j++)rcount+=1*Math.abs(coef[which][j]);
+	for(var j=cmpd[which][0];j<coef[which].length;j++)pcount+=coef[which][j];
+	dn=pcount-rcount;
+	Math.random()>.5?H=10:H=-10;
+	getreaction()
+	thestress=Math.floor(9*Math.random())
+	if(thestress<4)getcmpd()
+	buildquest()
+	getanswer()
+}
+function getreaction(){
+	cef=new Array()
+	thereaction=""
+	for(var b=0;b<coef[which].length;b++){
+		(Math.abs(coef[which][b])==1)?cef[b]="":cef[b]=Math.abs(coef[which][b]);
+	}
+	for(var l=1;l<=cmpd[which][0];l++){
+		l<cmpd[which][0]?thereaction+=(cef[l-1]+cmpd[which][l]+"(g) + "):thereaction+=(cef[l-1]+cmpd[which][l]+"(g) =>");
+	}
+	for(var l=(cmpd[which][0]+1);l<cmpd[which].length;l++){
+		l<(cmpd[which].length-1)?thereaction+=(cef[l-1]+cmpd[which][l]+"(g) + "):thereaction+=(cef[l-1]+cmpd[which][l])+"(g)  H="+H+"KJ";
+	}
+	return thereaction
+}
+function getcmpd(){
+	if(thestress<2)thecmpd=Math.ceil(Math.random()*cmpd[which][0])
+	else {
+		thecmpd=0;
+		while(thecmpd<=cmpd[which][0])thecmpd=Math.floor(Math.random()*cmpd[which].length);
+	}
+}
+function buildquest(){
+	thestress<4?compd=cmpd[which][thecmpd]:compd="";
+	thequest=basequest+thereaction+"<br>"+compd+stresslist[thestress]+theform
+	showquest(thequest)
+}
+function getanswer(){
+	if(thestress==0 || thestress==3)anser=1;
+	if(thestress==1 || thestress==2)anser=0;
+	if(thestress==4){
+		dn<0?anser=0:anser=1;
+		if(dn==0)anser=2;
+	}
+	if(thestress==5){
+		dn>0?anser=0:anser=1;
+		if(dn==0)anser=2;
+	}
+	if(thestress==6)anser=2;
+	if(thestress==7)H<0?anser=0:anser=1;
+	if(thestress==8)H<0?anser=1:anser=0;
+	buildanswer()
+}
+function buildanswer(){
+	if(thestress<4 || thestress==6)theanswer=ansphrase[thestress]
+	if(thestress==4){
+		dn>0?theanswer=ansphrase[4][1]:theanswer=ansphrase[4][2];
+		if(dn==0)theanswer=ansphrase[4][0];
+	}
+	if(thestress==5){
+		dn<0?theanswer=ansphrase[5][2]:theanswer=ansphrase[5][1];
+		if(dn==0)theanswer=ansphrase[5][0];
+	}
+	if(thestress==7){
+	H<0?theanswer=ansphrase[7][0]+"product"+ansphrase[7][1]+"the left.":theanswer=ansphrase[7][0]+"reagent"+ansphrase[7][1]+"the right.";
+	}
+	if(thestress==8){
+	H<0?theanswer=ansphrase[8][0]+"product"+ansphrase[8][1]+"the right.":theanswer=ansphrase[8][0]+"reagent"+ansphrase[8][1]+"the left.";
+	}
+}
+function showquest(thequest){
+	if(ie4){
+		qspot.innerHTML=thequest
+		}
+	else{
+		document.qspot.document.open()
+		document.qspot.document.write(thequest)	
+		document.qspot.document.close()
+	}
+}
+function showanswer(){
+if(attempts>=2){
+	if(ie4){
+		ansspot.innerHTML=theanswer
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.write(theanswer)
+		document.ansspot.document.close()
+	}
+	}
+}	
+function answer(ans){
+	attempts++
+	if(tried==1)alert("You've done this one! Get a new problem.");
+	else{
+	if(tried==2){
+		totl++
+		document.forms[0].total.value=totl
+	}
+	if(ans==anser){
+		document.forms[0].results.value="correct"
+		corrt++
+		document.forms[0].correct.value=corrt
+		tried=1
+	}
+	else{
+		document.forms[0].results.value="incorrect"
+		tried=2
+	}
+}}
+</script>
+</head>
+<body onLoad="clear(),setrefs()">
+<h2>The LeChatelier Effect</h2>
+This page poses LeChatelier effect questions. When you press "New Question", a balanced equation and a LeChatelier scenario will be presented to the right of the table. Click on the appropriate circle and the results apppear in the table on the main screen. 
+<ul>
+<li>This page requires Netscape 4.x or IE 5 or higher.
+<li>If you miss a problem twice, pressing "Show Answer" will cause a complete solution to appear.
+</ul>
+<form>
+<input type="button" value="New Problem" onClick=startit()><br>
+<td><input type="button" value="Show Answer" onClick=showanswer()><br>
+<table border=4>
+<tr><td align=center><b>Results</td>
+<td align=center><b>Total Done</td>
+<td><b>Total Correct</td>
+</tr>
+<tr>
+<td><input type="text" name=results size=12></td>
+<td align=center><input type="text" name=total size=4 ></td>
+<td align=center><input type="text" name=correct size=4 ></td>
+</tr>
+</table>
+</form>
+<div id=qspot></div>
+<div id=ansspot></div>
+<div id=refspot></div>
+</body>
+</html>

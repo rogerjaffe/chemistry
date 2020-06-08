@@ -1,0 +1,396 @@
+<html>
+
+<head><title>Homework-Larger, smaller, the same</title>
+<script language="javascript">
+thepage="Larger, smaller, the same(50)"
+//globals
+howlng=""
+totl=0
+corrt=0
+tried=0
+which="" 
+relation=""
+tried=0 
+theanswer=""
+relation=""
+function MakeArray(n){
+	this.length=n
+	for (var i=1;i<=n;i++){
+	this[i]= 0}
+}
+function clearbig(){
+	document.forms[0].big[0].checked=0
+	document.forms[0].big[1].checked=0
+	document.forms[0].big[2].checked=0
+	document.forms[0].first.value=""
+	document.forms[0].second.value=""
+	document.forms[0].third.value=""
+}
+function clear(){
+	document.forms[0].results.value=""
+	document.forms[0].correct.value=corrt
+	document.forms[0].total.value=totl
+	document.forms[0].time.value=""
+	document.forms[0].page.value=""
+	document.forms[0].verify.value=""
+	clearbig()
+}
+
+
+function begin ()
+{
+	clearbig()
+ 	totl++
+	document.forms[0].total.value=totl
+	document.forms[0].results.value=""
+	tried=0
+	k=Math.random()
+	if (k<.25)
+                   thelength()
+	else if(k<.50)
+                   howdense() 
+        else if (k<.75)
+                    howheavy() 
+        else whatsize() 
+} 
+
+function thelength ()
+{
+	var mm=Math.round(100*(Math.pow(10,Math.random())))/100
+	t=Math.random()
+	if (t<.33) {mm=10*mm}
+	else  if(t<.67) mm=100*mm 
+	var inch=Math.round(1000*(mm/25.4))/1000
+	var feet=Math.round(10000*(inch/12))/10000
+	var yard=Math.round(10000*(feet/3))/10000
+	var cm = Math.round(1000*(mm/10))/1000
+	var m = Math.round(10000*(cm/100))/10000	
+//decide whether to display metric or English
+	var d=Math.random()
+	if (d<.50)
+        {
+//decide to display inch,feet or yards
+	var d=Math.random()
+	if (d<.33){
+		document.forms[0].first.value=inch
+		document.forms[0].second.value="inches"}
+	else {if (d<.67){
+		document.forms[0].first.value=feet
+		document.forms[0].second.value="feet"}	
+	else {
+		document.forms[0].first.value=yard
+		document.forms[0].second.value="yards"}}
+
+//decide what the unknown is to be cm,m,mm
+	var d=Math.random()
+	if (d<.33){
+		document.forms[0].third.value="centimeters"
+		theanswer=cm}
+	else {if(d<.67){
+		document.forms[0].third.value="meters"
+		theanswer=m}
+	else {
+		document.forms[0].third.value="millimeters"
+		theanswer=mm}}
+}
+else{
+//decide unknown inch,feet or yards
+	var d=Math.random()
+	if (d<.33){
+		theanswer=inch
+		document.forms[0].third.value="inches"}
+	else {if (d<.67){
+		theanswer=feet
+		document.forms[0].third.value="feet"}	
+	else {
+		theanswer=yard
+		document.forms[0].third.value="yards"}}
+
+//decide what the known is to be cm,mm,km
+	var d=Math.random()
+	if (d<.33){
+		document.forms[0].second.value="centimeters"
+		document.forms[0].first.value=cm}
+	else {if(d<.67){
+		document.forms[0].second.value="meters"
+		document.forms[0].first.value=m}
+	else {
+		document.forms[0].second.value="millimeters"
+		document.forms[0].first.value=mm}}
+	}
+if(Math.round(10000*document.forms[0].first.value)==Math.round(10000*theanswer)){
+relation=2}
+else{if (1.0*document.forms[0].first.value>1.0*theanswer){
+relation=0}
+else{relation=1}
+} }
+function howdense(){
+var gml=Math.pow(10,Math.random())
+	gml=Math.round(100*gml)/100
+	var gl=Math.round(1e6*gml)/1000
+	var kgl=gml
+	var mgl=gml + "e+6"
+	var kgml=gml + "e-3"
+	var mgml=Math.round(1e6*gml)/1000
+//Choose known
+	var d=Math.random()
+	if (d<.16){
+		a=1
+		document.forms[0].first.value=gml
+		document.forms[0].second.value="g/ml"}
+	else {if (d<.33){
+		a=2
+		document.forms[0].first.value=gl
+		document.forms[0].second.value="g/l"}
+	else {if (d<.50){
+		a=3
+		document.forms[0].first.value=kgl
+		document.forms[0].second.value="kg/l"}
+	else {if (d<.66){
+		a=4
+		document.forms[0].first.value=mgl
+		document.forms[0].second.value="mg/l"}
+	else {if (d<.83){
+		a=5
+		document.forms[0].first.value=kgml
+		document.forms[0].second.value="kg/ml"}	
+	else {
+		a=6
+		document.forms[0].first.value=mgml
+		document.forms[0].second.value="mg/ml"}}}}
+}
+//choose the unknown 
+	for (var i=1;i<10;i++){
+	var d=Math.random()
+	if (d<.16 & a!=1){
+		theanswer=gml
+		document.forms[0].third.value="g/ml"}
+	else {if (d<.33 & a!=2){
+		theanswer=gl
+		document.forms[0].third.value="g/l"}
+	else {if (d<.50 & a!=3){
+		theanswer=kgl
+		document.forms[0].third.value="kg/l"}
+	else {if (d<.66 & a!=4){
+		theanswer=mgl
+		document.forms[0].third.value="mg/l"}
+	else {if (d<.83 & a!=5){
+		theanswer=kgml
+		document.forms[0].third.value="kg/ml"}	
+	else {if (a!=6){
+		theanswer=mgml
+		document.forms[0].third.value="mg/ml"}}}}}}
+}
+if(Math.round(10000*document.forms[0].first.value)==Math.round(10000*theanswer)){
+relation=2}
+else{if (1.0*document.forms[0].first.value>1.0*theanswer){
+relation=0}
+else{relation=1}
+}}
+function howheavy(){
+	lb=Math.round(1000*Math.random())/100
+	var oz=Math.round(100*(16*lb))/100
+	var gram=Math.round(4536*lb)/10
+	var mg=1000*gram
+	var kg=Math.round(100*gram)/100000
+	var d=Math.random()
+	if (d<.50){
+	whichalue=1
+//decide to display lb or ounces
+	var d=Math.random()
+	if (d<.5){
+		document.forms[0].first.value=lb
+		document.forms[0].second.value="pounds"}
+	else {
+		document.forms[0].first.value=oz
+		document.forms[0].second.value="ounces"}
+
+//decide what the unknown is to be
+	var d=Math.random()
+	if (d<.33){
+		document.forms[0].third.value="grams"
+		theanswer=gram}
+	else {if(d<.67){
+		document.forms[0].third.value="milligrams"
+		theanswer=mg}
+	else {
+		document.forms[0].third.value="kilograms"
+		theanswer=kg}}
+}
+else{
+//decide on unknown lb or ounces
+	var d=Math.random()
+	if (d<.5){
+		theanswer=lb
+		document.forms[0].third.value="pounds"}
+	else {
+		theanswer=oz
+		document.forms[0].third.value="ounces"}
+//decide what the known is to be
+	var d=Math.random()
+	if (d<.33){
+		document.forms[0].second.value="grams"
+		document.forms[0].first.value=gram}
+	else {if(d<.67){
+		document.forms[0].second.value="milligrams"
+		document.forms[0].first.value=mg}
+	else {
+		document.forms[0].second.value="kilograms"
+		document.forms[0].first.value=kg}}
+}
+if(Math.round(10000*document.forms[0].first.value)==Math.round(10000*theanswer)){
+relation=2}
+else{if (1.0*document.forms[0].first.value>1.0*theanswer){
+relation=0}
+else{relation=1}
+}}
+function whatsize(){
+	qt=Math.round(1000*Math.random())/10000
+	var oz=Math.round(1000*(32*qt))/1000
+	var gal=Math.round(1000*(qt/4))/1000
+	var ml=Math.round(10*(946*qt))/10
+	var lit=Math.round(ml)/1000
+//decide whether to display metric or English
+	var d=Math.random()
+	if (d<.50){
+	whichalue=1
+//decide to display qts,ounces or gallons
+	var d=Math.random()
+	if (d<.33){
+		document.forms[0].first.value=qt
+		document.forms[0].second.value="quarts"}
+	else {if (d<.67){
+		document.forms[0].first.value=oz
+		document.forms[0].second.value="ounces"}
+	else {
+		document.forms[0].first.value=gal
+		document.forms[0].second.value="gallons"}}
+//decide what the unknown is to be
+	var d=Math.random()
+	if (d<.53){
+		document.forms[0].third.value="ml"
+		theanswer=ml}
+	else {
+		document.forms[0].third.value="liters"
+		theanswer=lit}
+	}
+else{
+//decide on the unknown qts,ounces or gallons
+	var d=Math.random()
+	if (d<.33){
+		theanswer=qt
+		document.forms[0].third.value="quarts"}
+	else {if (d<.67){
+		theanswer=oz
+		document.forms[0].third.value="ounces"}
+	else {
+		theanswer=gal
+		document.forms[0].third.value="gallons"}}
+//decide what the known is to be
+	var d=Math.random()
+	if (d<.50){
+		document.forms[0].second.value="ml"
+		document.forms[0].first.value=ml}
+	else {
+		document.forms[0].second.value="liters"
+		document.forms[0].first.value=lit}
+}
+if(Math.round(10000*document.forms[0].first.value)==Math.round(10000*theanswer)){
+relation=2}
+else{if (1.0*document.forms[0].first.value>1.0*theanswer){
+relation=0}
+else{relation=1}
+}}
+
+
+
+
+function answer(anser){
+if(tried==1){
+		alert("Sorry, you've already submitted this problem! Get a new one!")
+		}
+else{
+	if(tried==2){totl++;document.forms[0].total.value=totl}	
+	if (relation==anser ){	
+	document.forms[0].results.value="correct"
+		corrt++
+		document.forms[0].correct.value=corrt
+		tried=1
+}	
+else {
+		document.forms[0].results.value="incorrect"
+		tried=2}
+}}
+function timer(z){
+tt=z
+var b=Math.floor(tt/60)
+var j = (tt % 60)
+if (j<10){c="0"}
+else {c=""}
+howlng=b + ":" + c + j
+running=setTimeout("timer(tt+1)",1000)
+}
+function update(){
+	document.forms[0].total.value=totl
+	document.forms[0].correct.value=corrt
+	document.forms[0].time.value=howlng
+	document.forms[0].page.value=thepage
+	document.forms[0].verify.value=Math.round(10000*Math.random())
+}
+</script>
+</head>
+<body onLoad="clear(), timer(0)"> 
+
+<h2>Larger, smaller or the same?</h2>
+This is a drill and practice page about predicting the result of a conversion. This is
+totally noncalculational. <b>Put away the calculator</b>. When you press "New Problem",
+a quantity and a starting dimension will be shown as well as the dimension into which the
+starting quantity is to be converted. Predict whether the new numeric quantity resulting
+from the conversion will be larger, smaller or the same as the quantity given and click
+on the circle <b>in front of the appropriate term</b>. For example, "1.23feet to miles" would
+be correctly answered by "smaller". Results will appear in the second table.
+<h4>Hints</h4>
+<ul>
+<li>If you get a problem "incorrect", you should redo it and recheck your
+answer.
+</ul>
+ <form ACTION = "../cgi-bin/homework/hw_turnin.php" METHOD = "POST">
+<table border=4>
+<tr>
+<td><input type="text" name=first size=8></td>
+<td><input type="text" name=second size=8></td>
+<td align=middle><b>TO</td>
+<td><input type="text" name=third size=8></td>
+
+<td><input type="button" value="New Problem" onClick=begin()></td>
+</tr>
+<tr>
+<td><input type=radio name="big" onClick="answer(0)">
+<b>Smaller</b></td>
+<td><input type=radio name="big" onClick="answer(1)">
+<b>Larger</b></td>
+<td><input type=radio name="big" onClick="answer(2)">
+<b>Same</b></td>
+</tr>
+</table>
+<br>
+<table border=4>
+<tr>
+<td align=center><b>Results</td>
+<td align=center><b>Total Done</td>
+<td><b>Total Correct</td>
+</tr>
+<tr>
+<td><input type="text" name="results" size=12></td>
+<td align=center><input type="text" name="total" size=4 ></td>
+<td align=center><input type="text" name="correct" size=4 ></td>
+</table>
+<input type=text name="page" size=1>
+<input type=text name="verify" size=1>
+<input type=text name="time" size=1><br>
+<INPUT TYPE = "submit" VALUE = "Submit your score" onClick="update()">
+<br>
+</form>
+<a href="hwintro.html"><img src="back.gif"></a><br>
+</body>
+</html

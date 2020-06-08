@@ -1,0 +1,240 @@
+<html>
+<head>
+<title>Dalton's Law-cs</title>
+<style>
+#qspot {position:absolute;left:350;top:240}
+#ansspot {position:absolute;left:350;top:320;height:200}
+#tspot {position:absolute;left:10;top:300}
+#refspot {position:absolute;left:10;top:600;height:200}
+</style>
+<script src=numberconvert.js></script>
+<script src="reflist.js"></script>
+<script>
+refnumber=62
+totl=0
+corrt=0
+theanswer=""
+qchoice=0
+missing=0
+alldata=0
+second=first=0
+solved=0
+which=0
+missing=0
+keystring=keyindex=0
+var ie4=(document.all)?true:false;
+thedata=new Array()
+thephrase="A mixture of two gases, A and B, has the properties shown below. What is the "
+qlist=new Array(" mole fraction of A"," mole fraction of B"," partial pressure(torr) of A"," partial pressure(torr) of B"," total pressure(torr)")
+datalabels=new Array("X<SUB>A</SUB>","X<SUB>B</SUB>","P<SUB>A</SUB>","P<SUB>B</SUB>","P<SUB>T</SUB>")
+dunits=new Array("","","torr","torr","torr")
+keyseries=new Array(201,203,204,210,213,214,301,302,304,310,312,314,320,321,324,401,402,403,410,412,413,420,421,423,430,431,432)
+equations=new Array()
+equations[0]=datalabels[2]+"+"+datalabels[3]+"="+datalabels[4]//Dalton Pa+Pb=Pt
+equations[1]="1-"+datalabels[0]+"="+datalabels[1]//1-Xa=Xb
+equations[2]=datalabels[4]+"*"+datalabels[0]+"="+datalabels[2]//Pt*Xa=Pa
+equations[3]=datalabels[2]+"/"+datalabels[4]+"="+datalabels[0]//Pa/Pt=Xa
+equations[4]=datalabels[2]+"/"+datalabels[0]+"="+datalabels[4]//Pa/Xa=Pt
+equations[5]="1-"+datalabels[1]+"="+datalabels[0]//1-Xb=Xa
+equations[6]=datalabels[4]+"*"+datalabels[1]+"="+datalabels[3]//Pt*Xb=Pb
+equations[7]=datalabels[3]+"/"+datalabels[4]+"="+datalabels[1]//Pb/Pt=Xb
+equations[8]=datalabels[3]+"/"+datalabels[1]+"="+datalabels[4]//Pb/Xb=Pt
+equations[9]=""
+equations[10]=datalabels[4]+"-"+datalabels[3]+"="+datalabels[2]//Pt-Pb=Pa
+equations[11]=datalabels[4]+"-"+datalabels[2]+"="+datalabels[3]//Pt-Pa=Pb
+equations[12]=datalabels[2]+"*("+datalabels[1]+"/"+datalabels[0]+")="+datalabels[3]//Pa*(Xb/Xa)=Pb
+equations[13]=datalabels[3]+"*("+datalabels[0]+"/"+datalabels[1]+")="+datalabels[2]//Pb*(Xa/Xb)=Pa
+eqnsets=new Array()
+eqnsets[0]=new Array("1")
+eqnsets[1]=new Array(1,12)
+eqnsets[2]=new Array("4")
+eqnsets[3]=new Array("5")
+eqnsets[4]=new Array(5,12)
+eqnsets[5]=new Array(5,4)
+eqnsets[6]=new Array("1")
+eqnsets[7]=new Array(1,13)
+eqnsets[8]=new Array(1,8)
+eqnsets[9]=new Array("5")
+eqnsets[10]=new Array(5,13)
+eqnsets[11]=new Array("8")
+eqnsets[12]=new Array(0,3)
+eqnsets[13]=new Array(0,7)
+eqnsets[14]=new Array("0")
+eqnsets[15]=new Array("1")
+eqnsets[16]=new Array("2")
+eqnsets[17]=new Array(1,6)
+eqnsets[18]=new Array("5")
+eqnsets[19]=new Array(5,2)
+eqnsets[20]=new Array("6")
+eqnsets[21]=new Array("3")
+eqnsets[22]=new Array(3,1)
+eqnsets[23]=new Array("11")
+eqnsets[24]=new Array(7,5)
+eqnsets[25]=new Array("7")
+eqnsets[26]=new Array("10")
+ansphrase=new Array()
+inserts=new Array()
+function cleanse(){
+	totl=0
+	corrt=0
+	document.forms[0].correct.value=0
+	document.forms[0].total.value=0
+	clear()
+}
+function clear(){
+	attempts=0
+	clearansspot()
+	document.forms[0].results.value=""
+	tried=0
+	document.forms[0].theans.value=""
+}
+function startit(){
+	clear()
+	totl++
+	document.forms[0].total.value=totl
+	mfl1=0;
+	while(mfl1<.2 || mfl1>.8)mfl1=Math.random();
+	createdata(mfl1)
+	}
+function createdata(mfl1){
+	mfl2=1-mfl1
+	mfl1=number(mfl1,3,3)
+	mfl2=number(mfl2,3,3)
+	pt=0
+	while(pt<100)pt=number(2000*Math.random(),3,3)
+	p1=number(mfl1*pt,3,3)
+	p2=number(mfl2*pt,3,3)	
+	alldata=new Array(mfl1,mfl2,p1,p2,pt)
+	buildquest()
+}
+function buildquest(){
+	first=Math.floor(5*Math.random())
+	second=first
+	if(first<2){
+		while(second<2)second=Math.floor(5*Math.random())
+	}
+	else{
+	   while(second==first)second=Math.floor(5*Math.random())
+	}
+	(first>second)?keystring=""+first+second:keystring=""+second+first;
+	missing=first
+	while(missing==first || missing==second)missing=Math.floor(5*Math.random())
+	keystring+=missing
+	document.forms[0].results.value=keystring
+	thequest=thephrase+qlist[missing]+"?<br>"+datalabels[first]+"="+alldata[first]+dunits[first]+"<br>"+datalabels[second]+"="+alldata[second]+dunits[second]+"<br>"
+	showquest(thequest)
+	getsolutions()
+	buildanswer()
+	}
+function getsolutions(){
+	solved=new Array()
+	solved[0]=alldata[2]+"+"+alldata[3]+"="+alldata[4]//Dalton Pa+Pb=Pt
+	solved[1]="1-"+alldata[0]+"="+alldata[1]//1-Xa=Xb
+	solved[2]=alldata[4]+"*"+alldata[0]+"="+alldata[2]//Pt*Xa=Pa
+	solved[3]=alldata[2]+"/"+alldata[4]+"="+alldata[0]//Pa/Pt=Xa
+	solved[4]=alldata[2]+"/"+alldata[0]+"="+alldata[4]//Pa/Xa=Pt
+	solved[5]="1-"+alldata[1]+"="+alldata[0]//1-Xb=Xa
+	solved[6]=alldata[4]+"*"+alldata[1]+"="+alldata[3]//Pt*Xb=Pb
+	solved[7]=alldata[3]+"/"+alldata[4]+"="+alldata[1]//Pb/Pt=Xb
+	solved[8]=alldata[3]+"/"+alldata[1]+"="+alldata[4]//Pb/Xb=Pt
+	//solved[9]=alldata[7]+"+"+alldata[8]+"="+alldata[4]//Pa + Pb=Pt
+	solved[10]=alldata[4]+"-"+alldata[3]+"="+alldata[2]//Pt-Pb=Pa
+	solved[11]=alldata[4]+"-"+alldata[2]+"="+alldata[3]//Pt-Pa=Pb
+	solved[12]=alldata[2]+"*("+alldata[1]+"/"+alldata[0]+")="+alldata[3]//Pa*(Xb/Xa)=Pb
+solved[13]=alldata[3]+"*("+alldata[0]+"/"+alldata[1]+")="+alldata[2]//Pb*(Xa/Xb)=Pa
+	}
+function buildanswer(){
+	thesolution="The solution to this problem involves the following:"
+	theeqn=geteqn()
+	thesolution+="<br>"+theeqn
+	showanswer()
+}
+function getspot(){
+	for(var j=0;j<keyseries.length;j++){
+		if(keystring==keyseries[j])keyindex=j
+	}
+	return keyindex
+}
+function geteqn(which){
+	keyindex=getspot()
+	theeqn="<br>"
+	for(var j=0;j<eqnsets[keyindex].length;j++)theeqn+=equations[eqnsets[keyindex][j]]+"   <B>=></B>   "+solved[eqnsets[keyindex][j]]+"<br>";
+	return theeqn
+	}
+function showanswer(){
+//if(attempts>=3){
+	if(ie4){
+		ansspot.innerHTML=thesolution
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.write(thesolution)
+		document.ansspot.document.close()
+	}
+//	}
+}
+function clearansspot(){
+	if(ie4){
+		ansspot.innerHTML=""
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.clear()
+		document.ansspot.document.close()
+	}
+}
+function showquest(thequest){
+	if(ie4){
+		qspot.innerHTML=thequest
+		}
+	else{
+		document.qspot.document.open()
+		document.qspot.document.write(thequest)
+		document.qspot.document.close()
+	}
+}
+function answer(ans){
+if(tried==1)alert("Sorry, you've already submitted this problem! We'll get you a new one!");		
+else{	attempts++
+ 	if(tried==2){totl++;document.forms[0].total.value=totl}
+	if (ans>.95*alldata[missing]& ans<1.05*alldata[missing]){
+		document.forms[0].results.value="correct"
+		corrt++
+		document.forms[0].correct.value=corrt
+		tried=1
+		}
+	else {
+		tried=2
+		document.forms[0].results.value="incorrect"
+	}
+}}
+</script>
+</head>
+<body onLoad="cleanse(),setrefs()">	
+<h3>Dalton's Law of Partial Pressures</h3>
+This page presents problems involving mixtures two gases, labelled A and B for simplicity. When you press "New Problem", a question will appear to the right of the table. In the question,"P<sup>T</sup>" is the total pressure, "P<sub>A</sub>" the partial pressure of A and "X<sub>B</sub>" the mole fraction of B and so on. Determine the value of the answer, enter it in the cell and press "Check Answer", results appear immediately in the table. For purposes of this exercise, assume that all solutions are ideal. Some of the calculations are fairly complex, so care should be exercised. If you miss a problem three times, pressing "Show Answer" will cause a solution to appear.
+<form>
+<input type=button value="New Problem" onClick="startit()"><br>
+<input type=text size=8 name=theans><b>Enter your answer here</b><br>
+<input type=button value="Check answer" onClick="answer(this.form.theans.value)">
+<input type=button value="Show answer" onClick="showanswer()">
+<table border=4>
+<tr><td align=center><b>Results</td>
+<td align=center><b>Total Done</td>
+<td><b>Total Correct</td>
+</tr>
+<tr>
+<td><input type="text" name=results size=12></td>
+<td align=center><input type="text" name=total size=4 ></td>
+<td align=center><input type="text" name=correct size=4 ></td>
+</tr>
+<tr>
+</table>
+</form>
+<div id=qspot></div>
+<div id=ansspot></div>
+<div id=refspot></div>
+<br>
+</body>
+</html>
+

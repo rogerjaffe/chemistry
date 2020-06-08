@@ -1,0 +1,204 @@
+<html>
+<head><title>Significant Figures-Homework</title>
+<script language=javascript>
+//globals-first item must be the name and number of the page
+//Last Update 7/28/98
+thepage="Significant figures(1)"
+howlong=""
+totl=0
+corrt=0
+tried=0
+which=""
+tried=0
+theanswer=""
+//This function clears all values in both tables on loading the page
+function clear()
+{	
+	document.forms[0].elements[0].value=""
+	document.forms[0].elements[1].value=""
+    //document.forms[0].elements[2].value=""
+    //document.forms[0].elements[3].value=""
+	document.forms[0].elements[4].value=""
+	document.forms[0].elements[5].value=""
+	document.forms[0].elements[6].value=""
+	document.forms[0].results.value=""
+	document.forms[0].total.value=totl
+	document.forms[0].correct.value=corrt
+	 
+}
+//This is the function started when "New Problem" is pushed	
+//This function first clears all old values.
+//The coefficient is then generated using Math.random(). 
+function begin()
+{	totl++
+	document.forms[0].total.value=totl
+	document.forms[0].results.value=""
+	tried=0
+	document.forms[0].elements[1].value=""
+	var a=100
+	while (a>=10)
+	{	a=Math.pow(55,Math.random())    }
+	//Math.random is then used to determine the initial number of sig figures
+	var sig=0
+	while( sig<1 || sig>5)
+	{	sig=Math.round(.5+Math.pow(8,Math.random() ) )   }
+	num=Math.round(a*Math.pow(10,sig))
+	if (num%10==0){num=num+1}
+	//this number now is an integer with sig + 1 sig. figures
+	//Decision is made regarding four possible ways to display the number.
+	//again using Math.random()
+	var start=(Math.random())
+	if (start<.2){first(a,num,sig)}
+	else
+	{	if(start<.4){second(a,num,sig)}
+		else 
+		{  if(start<.6){third(a,num,sig)}
+			else{if(start<.8) {fourth(a,num,sig)}
+				else{fifth(a,num,sig)}
+}}}}
+//This function displays a in scientific notation
+function first(a,num,sig){
+	anew=Math.round(a*(Math.pow(10,sig)))/Math.pow(10,sig)
+	if (Math.random()>.5) {var sign="+"}
+		else {var sign="-"}
+	var power=Math.round(Math.pow(1.3,Math.pow(10,Math.random())))
+	g=Math.random()
+	if (g<.25){var b=""}
+		else {if (g<.5){var b="0"}
+			else {var b="00"}}
+	document.forms[0].elements[0].value=anew + b + "e" + sign + power
+	theanswer=sig + 1 + b.length
+//The following places the cursor in the empty cell for convenience
+	document.forms[0].elements[1].focus()
+	document.forms[0].elements[1].select()
+	}
+//This function displays a just as it was generated above
+function second(a,num,sig){
+	document.forms[0].elements[0].value=num
+	theanswer=sig+1
+//The following places the cursor in the empty cell for convenience
+	document.forms[0].elements[1].focus()
+	document.forms[0].elements[1].select()
+	}
+//The following displays a as a real number less than 1
+function third(a,num,sig){
+	g=Math.random()
+	if (g<.25){var b=""}
+		else {if (g<.5){var b="0"}
+			else {var b="00"}}
+	document.forms[0].elements[0].value="." + b + num
+	theanswer=sig +1
+//The following places the cursor in the empty cell for convenience
+	document.forms[0].elements[1].focus()
+//	document.forms[0].elements[1].select()
+}
+//The following displays a as a real number greater than 1
+function fourth(a,num,sig){
+	g=Math.random()
+	if (g<.25){var b=""}
+		else {if (g<.5){var b="0"}
+			else {var b="00"}}
+	document.forms[0].elements[0].value=num + "." + b
+	theanswer=sig + 1 + b.length	
+//The following places the cursor in the empty cell for convenience
+	document.forms[0].elements[1].focus()
+//	document.forms[0].elements[1].select()
+}
+//The following adds "0"s to num
+function fifth(a,num,sig){
+	g=Math.random()
+	if (g<.25){var b=""}
+		else {if (g<.5){var b="0"}
+			else {var b="00"}}
+	document.forms[0].elements[0].value=num  + b
+	theanswer=sig + 1	
+//The following places the cursor in the empty cell for convenience
+	document.forms[0].elements[1].focus()
+ 	document.forms[0].elements[1].select()
+}
+	
+// This is the "Check Answer Function
+function answer(form)
+{
+	if(tried==1)
+	{
+		alert("Sorry, you've already submitted this problem! Get a new one!")}
+	else
+	{	
+		if(tried==2){totl++;document.forms[0].total.value=totl}
+		if (form.elements[1].value==theanswer)
+		{
+		document.forms[0].results.value="correct"
+		tried=1
+		corrt++
+		document.forms[0].correct.value++
+		}
+		else 
+		{	document.forms[0].results.value="incorrect"
+			tried=2
+		}
+	}
+}
+function timer(z)
+{
+	tt=z
+	var b=Math.floor(tt/60)
+	var j = (tt % 60)
+	if (j<10){c="0"}
+	else {c=""}
+	howlong=b + ":" + c + j
+	running=setTimeout("timer(tt+1)",1000)
+}
+function update(){
+	document.forms[0].total.value=totl
+	document.forms[0].correct.value=corrt
+	document.forms[0].time.value=howlong
+	document.forms[0].page.value=thepage
+	document.forms[0].verify.value=Math.round(10000*Math.random())
+}
+</script>
+</head>
+<body onLoad=clear(),timer(0)>
+<h2>Significant Figures</h2>
+Here you can drill regarding significant figures. When you hit "New Number",
+a number will appear in the left cell. Enter the number of signifcant figures
+in the right cell and press "Check Answer". The results appear in the second table.<br>
+
+<form ACTION = "../cgi-bin/homework/hw_turnin.php" METHOD = "POST">
+<table border=4>
+<tr>
+<TD ALIGN=CENTER><b>Number</td>
+<td align=center><b>Sig Figures</td>
+<td></td>
+</tr>
+<tr>
+<td align=center><input type="text" size=12 ></td>
+<td align=center><input type="text" size=12 ></td>
+</tr>
+<tr>
+<td><input type="button" value="New Number" onClick=begin()></td>
+<td><input type="button" value="Check Answer" onClick=answer(this.form)></td>
+</tr>
+</table>
+<br>
+<table border=4>
+<tr>
+<td align=center><b>Results</td>
+<td align=center><b>Total Done</td>
+<td><b>Total Correct</td>
+</tr>
+<tr>
+<td><input type="text" name="results" size=12></td>
+<td align=center><input type="text" name="total" size=4 ></td>
+<td align=center><input type="text" name="correct" size=4 ></td>
+</tr>
+</table>
+<input type=text name="page" size=1>
+<input type=text name="verify" size=1>
+<input type=text name="time" size=1><br>
+<INPUT TYPE = "submit" VALUE = "Submit your score" onClick="update()">
+</form>
+<br>  
+<a href="hwintro.html"><img src="back.gif"></a><br>
+</body>
+</html>

@@ -1,0 +1,86 @@
+<html>
+<title>R and S</title>
+<script>
+//globals
+theanswer=""
+function clear(){
+document.forms[1].second.value=""
+document.forms[1].third.value=0
+document.forms[1].fourth.value=0
+}
+function MakeArray(n){
+	this.length=n
+	for (var i=1;i<=n;i++){
+	this[i]= 0}
+}
+function display(){
+document.forms[1].second.value=""
+choice=Math.ceil(150*Math.random())
+randy=Math.ceil(12*Math.random())
+if(randy==2 || randy==7 || randy==12){first="a"}
+if(randy==5 || randy==8 || randy==11){first="b"}
+if(randy==3 || randy==6 || randy==10){first="c"}
+if(randy==1 || randy==4 || randy==9){first="d"}
+a="form"+choice+first+".gif"
+if(choice%2==0){
+if(first=="a" || first=="c"){theanswer=1}
+else{theanswer=0}}
+else{
+if(first=="a" || first=="c"){theanswer=0}
+else{theanswer=1}}
+message="<img src='"+a+"'>"
+var newone=window.open("","newone","toolbar='yes',width=200,height=200")
+newone.document.writeln ("<html>");
+newone.document.writeln ("<head>");
+newone.document.writeln ("</head>");
+newone.document.writeln ("<body bgcolor = FFFFFF");
+newone.document.writeln ("<font size = +1>");
+newone.document.writeln (message);
+//newone.document.writeln (a);
+newone.document.writeln ("<form method='post'>");
+newone.document.writeln ("<input type=radio name='ans' size=8 onClick='opener.answr(1)'><b>R</b>");
+newone.document.writeln ("<input type=radio name='ans' size=8 onClick='opener.answr(0)'><b>S</b>");
+newone.document.writeln ("</form>");
+newone.document.writeln ("</font>");
+newone.document.writeln ("</html>");
+newone.document.close();
+newone.focus();
+}
+function answr(test){
+document.forms[1].third.value++
+if(test==theanswer){
+document.forms[1].fourth.value++
+document.forms[1].second.value="correct"}
+else{
+document.forms[1].second.value="incorrect"
+}}
+
+</script>
+</head>
+<body onLoad="clear()">
+<h3>R and S Configurations</h3>
+This page is an exercise is assigning R and S configurations. Its operation is 
+straightforward. When you click on "New Structure" a window with a Fischer projection
+will open. The first time this window opens, it may obscure something you wish to
+see. As with all such windows, it can be dragged to a new location. Once positioned, it will not move unless
+you close it. Determine the classification of the structure and click on the 
+appropriate bubble. The results immediately appear in the table on the main window.
+A running score is also kept. The projections follow the convention:<br>
+<img src="fisher.gif">
+<form><input type=button value="New Structure" onClick="display()"></form>
+<form><table border=4>
+<b>Results</b></td>
+<td><b>Total</b></td>
+<td><b>Correct</b></td>
+</tr>
+<tr>
+<td align=center><input type=text name=second size=12><br></td>
+<td align=center><input type=text name=third size=2><br></td>
+<td align=center><input type=text name=fourth size=2><br></td>
+</table>
+</form>
+<br><br>
+<a href="../../lecture_help/lechelp.html"><img src="back.gif"></a><br>
+<a href="mailto:gwiger@chemistry.csudh.edu"><img src=email1.gif></a>
+</body>
+</html>

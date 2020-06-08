@@ -1,0 +1,227 @@
+<html>
+<head><title>Converting Distance-cs</title>
+<style>
+#qspot {position:absolute;left:320;top:300}
+#ansspot {position:absolute;left:320;top:340;height:200}
+#tspot {position:absolute;left:10;top:300}
+#refspot {position:absolute;left:10;top:600;height:200}
+</style>
+<script src=reflist.js></script>
+<script language="javascript">
+//updated 11/14/00-added complete solution
+//checked w/ N4.7 and IE5
+var ie4 = (document.all) ? true : false;
+//global variables
+refnumber=32
+attempts=0
+which=0
+theanswer=0
+corrt=0
+totl=0
+function quads(name,factor,mp,mp2){
+	this.name=name
+	this.factor=factor
+	this.mp=mp
+	this.mp2=mp2
+}
+lengths=new Array()
+lengths[1]=new quads("miles",.000189,"*5280*12*2.54","*1/5280")
+lengths[2]=new quads("yards",.3333,"*36*2.54","*1/36")
+lengths[3]=new quads("feet",.08333,"*12*2.54","*1/12")
+lengths[4]=new quads("inches",1,"*2.54","")
+lengths[5]=new quads("millimeters",25.4,"*10","*1/10")
+lengths[6]=new quads("centimeters",2.54,"","")
+lengths[7]=new quads("meters",.0254,"*1/100","*100")
+lengths[8]=new quads("kilometers",.0000254,"*1/1000","*10<sup>5</sup>")
+seqence=new Array()
+link=new Array(" inches to centimeter "," centimeters to inches ")
+function cleanse(){
+	clear()
+	document.forms[0].correct.value=0
+	document.forms[0].total.value=0
+}
+function clear(){
+	tried=0
+	attempts=0
+	document.forms[0].theans.value=""
+	document.forms[0].results.value=""
+	clearansspot()
+}
+function clearansspot(){
+	if(ie4)ansspot.innerHTML="";
+	else{ 
+		document.ansspot.document.open()
+		document.ansspot.document.clear()
+		document.ansspot.document.close()
+	}
+}
+function startit(){
+	totl++
+	document.forms[0].total.value=totl
+	clear()
+	startlen=0
+	while(startlen<1)startlen=Math.round(1000*Math.random())/10;
+	first=Math.ceil(4*Math.random())
+	second=4+Math.ceil(4*Math.random())
+	if(Math.random()<.5){
+		flen=startlen*(lengths[first].factor)
+		fdim=lengths[first].name
+		slen=startlen*(lengths[second].factor)
+		sdim=lengths[second].name
+		key=1
+	}
+	else{
+		slen=startlen*(lengths[first].factor)
+		sdim=lengths[first].name
+		flen=startlen*(lengths[second].factor)
+		fdim=lengths[second].name
+		key=2
+	}
+	flen=shorten(flen)
+	slen=shorten(slen)
+	thequest="Convert "+flen+fdim+" to "+sdim
+	showquest(thequest)
+	answerpath(key)
+	buildanswer(key)
+}
+function shorten(val){
+	if(val<0.099)howlong=5;
+	else howlong=3;
+	val=val+""
+	newval=""
+	for(j=0;j<=howlong;j++){
+		newval=newval+val.charAt(j);
+	}
+	return newval
+}
+function answerpath(key){
+	if(key==1){
+		path=link[0]
+		if(first==1)path="miles to feet"+" to "+path;
+		else if(first!=4)path=lengths[first].name+" to "+path;
+		if(second==5)path=path+" to "+lengths[first].name;
+		else{
+			for(var j=7;j<=second;j++)path=path+" to "+lengths[j].name		
+		}
+	}
+	else{	
+		path=link[1]
+		if(second==6)path=path;
+		else{ if(second==5)path="millimeters to "+ path;
+			else path=lengths[second].name+" to "+path;}
+		if(first!=4)path=path+" to "+lengths[first].name
+	}		
+	path="This problem can be solved by following conversion(s):<br><br>"+path+"<br><br>"
+}
+function buildanswer(key){
+	theanswer=""
+	if(key==1){
+		theanswer=flen+lengths[first].mp
+		if(second==5)theanswer=theanswer+"*10";
+		else for(j=7;j<=second;j++)theanswer=theanswer+lengths[j].mp
+	}			
+	else{
+		theanswer=flen+lengths[second].mp2+"*1/2.54"
+		if(first<4)theanswer=theanswer+lengths[first].mp2
+		}
+	theanswer=theanswer+"="+slen	
+}
+function showquest(thequest){
+	if(ie4){
+		qspot.innerHTML=thequest
+		}
+	else{
+		document.qspot.document.open()
+		document.qspot.document.write(thequest)
+		document.qspot.document.close()
+	}
+}
+function answer(theans){
+	if(tried==1)alert("You've done this one! Get a new problem.");
+	else{
+	if(tried==2){totl++;document.forms[0].total.value=totl}
+	attempts++
+	if(theans>.95*slen & theans<1.05*slen){
+		corrt++
+		document.forms[0].results.value="Correct"
+		document.forms[0].correct.value=corrt
+		tried=1
+	}
+	else{
+		document.forms[0].results.value="Incorrect"
+		tried=2
+	}
+	}
+}
+function showanswer(){
+if(attempts>=3){
+	if(ie4){
+		ansspot.innerHTML=path+theanswer
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.write(path,theanswer)
+		document.ansspot.document.close()
+	}
+	}
+}	
+
+</script>
+</head>
+<body onLoad="setrefs()">
+<h2> Converting Distance</h2>
+This is a drill and practice page involving converting distance measures between
+the English (inches, feet and yards) and metric (mm,cm,meters,km). It is intended to
+help with both your math skill and your understanding of the metric system.The solutions presented on this page utilize a very limited set of conversion factors and a single "bridge" between the metric and English systems(1.00inch=2.54cm). Thus, the solution described is not the only one possible, by any means.
+<h4>usage</h4>
+<ul>
+<li>To begin-press "New Conversion" and a conversion will appear to the right of the button.
+<li>Put the correct value into the answer cell and press "Check Answer."
+<li>The results on the problem and a running total will appear in the second table.
+<li>If you get a problem "incorrect", you should redo it and recheck your
+answer.
+<li>If you miss a problem three times, pressing the "Show Answer" button will cause a complete solution to appear.
+</ul>
+
+<form>
+<table>
+<tr><td><input type=button value="New Conversion" onClick="startit()"><td></tr>
+<tr><td><b>Enter your answer</b></td>
+<td><input type="text" name=theans size=8></td>
+</tr>
+<tr>
+<td><input type=button value="Check answer" onClick="answer(this.form.theans.value)"></td>
+<td><input type=button value="Show answer" onClick="showanswer()"></td>
+</tr>
+</table>
+<table border=4>
+<tr><td align=center><b>Results</td>
+<td align=center><b>Total Done</td>
+<td><b>Total Correct</td>
+</tr>
+<tr>
+<td><input type="text" name=results size=12></td>
+<td align=center><input type="text" name=total size=4 ></td>
+<td align=center><input type="text" name=correct size=4 ></td>
+</tr>
+<tr>
+</table>
+</form>
+<div id=qspot></div>
+<div id=ansspot></div>
+<div id=refspot></div>
+<br>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+

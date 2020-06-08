@@ -1,0 +1,193 @@
+<html>
+<head><title>Formula Related Calculations</title>
+<style>
+#qspot {position:absolute;left:320;top:300}
+#ansspot {position:absolute;left:300;top:400;height:240}
+#tspot {position:absolute;left:10;top:300}
+#refspot {position:absolute;left:10;top:600}
+</style>
+<script src="reflist.js"></script>
+<script src="numberconvert.js"></script>
+<script language="javascript">
+var ie4 = (document.all) ? true : false;
+refnumber=146
+attempts=corrt=totl=tried=0
+thesolution=given=0
+solved=0
+alldata=0
+symbols=new Array("nothing","cmpd mass","C mass","H mass","gfw","C(formula)","H(formula)")
+equations=new Array()
+eqnset=new Array()
+eqnset[0]=new Array(1,4,6,3)
+eqnset[1]=new Array(1,4,5,2)
+eqnset[2]=new Array(2,5,4,1)
+eqnset[3]=new Array(2,5,6,3)
+eqnset[4]=new Array(3,6,4,1)
+eqnset[5]=new Array(3,6,5,2)
+ansset=new Array()
+ansset[1]=new Array(2,4)
+ansset[2]=new Array(1,5)
+ansset[3]=new Array(0,3)
+for(var j=0;j<6;j++)equations[j]=symbols[eqnset[j][0]]+"=("+symbols[eqnset[j][1]]+"/"+symbols[eqnset[j][2]]+")*"+symbols[eqnset[j][3]];
+ansphrase=new Array("All of these problems involve using the appropriate mass ratios given by the molecular formula.","To calculate the C and H, given the total mass of compound:<br>","To calculate the total mass and the hydrogen,given the mass of carbon:<br>","To calculate the total mass and the C, given the H:<br>")
+function cleanse(){
+	clear()
+	document.forms[0].results.value=""
+	document.forms[0].total.value=0
+	document.forms[0].correct.value=0
+}
+//This function clears the first table
+function clear(){
+	for( var k=0;k<4;k++)document.forms[0].elements[k].value=""
+	attempts=0
+	tried=0
+	clearansspot()
+}
+compound=new Array()
+compound[0]=new Array("CH4",1,4)
+compound[1]=new Array("C2H6",2,6)
+compound[2]=new Array("C3H8",3,8)
+compound[3]=new Array("C4H10",4,10)
+compound[4]=new Array("C5H12",5,12)
+compound[5]=new Array("C6H14",6,14)
+compound[6]=new Array("C7H16",7,16)
+compound[7]=new Array("C8H18",8,18)
+compound[8]=new Array("C9H20",9,20)
+compound[9]=new Array("C10H22",10,22)
+compound[10]=new Array("C3H4",3,4)
+compound[11]=new Array("C2H4",2,4)
+compound[12]=new Array("C3H8",3,6)
+compound[13]=new Array("C4H10",4,6)
+compound[14]=new Array("C5H8",5,8)
+compound[15]=new Array("C6H6",6,6)
+compound[16]=new Array("C7H12",7,12)
+compound[17]=new Array("C8H16",8,16)
+compound[18]=new Array("C9H14",9,14)
+compound[19]=new Array("C10H18",10,18)
+function startit(){
+	clear()
+	totl++
+	document.forms[0].total.value=totl
+	attempts=0
+	option=Math.floor(Math.random()*compound.length)
+	alldata=new Array()
+	alldata[5]=12*compound[option][1]
+	alldata[6]=compound[option][2]
+	alldata[4]=alldata[6]+alldata[5]
+	setproblem(option)
+}
+function setproblem(option){
+	alldata[0]=compound[option][0]
+	alldata[1]=0
+	while(alldata[1]<3)alldata[1]=20*Math.random()
+	alldata[2]=alldata[1]*alldata[5]/alldata[4]
+	alldata[3]=alldata[1]*alldata[6]/alldata[4]
+	for(var j=1;j<7;j++)alldata[j]=number(alldata[j],3,3)
+	given=Math.ceil(3*Math.random())
+	document.forms[0].elements[0].value=alldata[0]
+	document.forms[0].elements[given].value=alldata[given]
+	buildanswer()
+	}
+function buildanswer(){
+	getsolved()
+	thesolution=ansphrase[0]+ansphrase[given]+equations[ansset[given][0]]+"=>"+solved[ansset[given][0]]+"<br>"+equations[ansset[given][1]]+"=>"+solved[ansset[given][1]]+"<br>"
+	//showanswer()
+}
+function getsolved(){
+	solved=new Array()
+	for(var j=0;j<6;j++)solved[j]="("+alldata[eqnset[j][1]]+"/"+alldata[eqnset[j][2]]+")*"+alldata[eqnset[j][3]]+"="+alldata[eqnset[j][0]]+"<b>g</b>";
+}
+function answer(form){
+	if(tried==1)alert("You've done this one. Get a new problem!")
+	else{
+	score=0
+	if(tried==2){totl++;document.forms[0].total.value=totl}
+	attempts++
+	for(var j=1;j<4;j++){
+		if(1*form.elements[j].value>1.05*alldata[j] || 1*form.elements[j].value<.95*alldata[j])score++;
+	}
+	if (score==0){	
+		document.forms[0].results.value="correct"
+		corrt++
+		document.forms[0].correct.value=corrt
+		tried=1
+	}
+	else {
+		document.forms[0].results.value="incorrect"
+		tried=2
+		}
+	}
+}
+function showanswer(){
+if(attempts>=3){
+	if(ie4){
+		ansspot.innerHTML=thesolution
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.write(thesolution)
+		document.ansspot.document.close()
+	}
+	}
+}
+function clearansspot(){
+	if(ie4){
+		ansspot.innerHTML=""
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.clear()
+		document.ansspot.document.close()
+	}
+}
+</script>
+</head>
+<body onLoad=cleanse(),setrefs()>
+<h2>Chemical Formulas and Mass Calculations</h2>
+This page is an exercise in mass calculations based on the formula of
+a chemical compound.
+<h4>Usage</h4>
+<ul>
+<li>To begin, press "New Problem" and a formula will appear in the left cell and
+a value will appear in one of the remaining three cells. The compounds are relatively simple, containing only C and H
+<li>In the solution presentation, "H(formula)" represents the mass of H per mole of compound while "H mass" is the mass of H in the current sample.
+<li>Enter the correct masses in the remaining two cells and press "Check Answer."
+<li>The results and running totals appear in the second table.
+<li>If you miss a problem three times, pressing the "Show Answer" button will display the solution to the right of the table.
+</ul>
+<form>
+<table border=4>
+<tr>
+<td><b>Formula</td>
+<td><b>Mass Cmpd</td>
+<td><b>Mass of C</td>
+<td><b>Mass of H</td>
+</tr>
+<tr>
+<td><input type="text" name="compound" size =10></td>
+<td><input type="text" name="massco" size =10></td>
+<td><input type="text" name="massc" size =10></td>
+<td><input type="text" name="massh" size =10></td>
+</tr><tr>
+</tr>
+<tr>
+<td><input type="button" value="New Problem" onClick=startit()>
+<td><input type="button" value="Check Answer" onClick=answer(this.form)>
+<td><input type="button" value="Show Answer" onClick=showanswer()>
+</tr>
+</table>
+<table border=4>
+<tr>
+<td><b>Results</td>
+<td><b>Total</td><td><b>Correct</td></tr>
+<tr><td><input type="text" name="results" size=12></td>
+<td align=center><input type="text"  name="total" size=4 ></td>
+<td align=center><input type="text"  name="correct" size=4 ></td>
+</tr>
+</table>
+</form>
+<div id=qspot></div>
+<div id=ansspot></div>
+<div id=refspot></div>
+</body>
+</html>

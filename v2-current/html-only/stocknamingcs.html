@@ -1,0 +1,278 @@
+<html>
+<head><title>Stock Naming</title>
+<style>
+#qspot {position:absolute;left:450;top:450}
+#ansspot {position:absolute;left:450;top:480;height:200}
+#tspot {position:absolute;left:10;top:300}
+#refspot {position:absolute;left:10;top:600;height:200}
+</style>
+<script src=reflist.js></script>
+<script language="javascript">
+//updated 11/21/00-added complete solution
+//tested w/ N4.7 and IE5
+//globals
+refnumber=136
+var ie4 = (document.all) ? true : false;
+//global variables
+attempts=0
+thename=""
+tried=0
+totl=0
+corrt=0
+x=0
+firstpart=secpart=""
+thesolution=""
+newone=""
+function cleanse(){
+	clear()
+	document.forms[0].total.value=0
+	document.forms[0].correct.value=0
+	}
+function clear(){
+	clearansspot()
+	tried=0
+	attempts=0
+	document.forms[0].theans.value=""
+	document.forms[0].results.value=""
+	}
+thestock=new Array("","I","II","III","IV","V","VI","VII")
+anion=new Array();
+cation=new Array();
+cation[0]=new Array("lead","Pb",4,2)
+cation[1]=new Array("titanium","Ti",4,3)
+cation[2]=new Array("vanadium","V",5,4,3,2)
+cation[3]=new Array("chromium","Cr",6,3,2)
+cation[4]=new Array("manganese","Mn",7,6,4,3,2)
+cation[5]=new Array("iron","Fe",3,2)
+cation[6]=new Array("cobalt","Co",3,2)
+cation[7]=new Array("nickel","Ni",3,2)
+cation[8]=new Array("copper","Cu",2,1)
+cation[9]=new Array("zinc","Zn",2)
+cation[10]=new Array("zirconium","Zr",4)
+cation[11]=new Array("niobium","Nb",3,5)
+cation[12]=new Array("molybdenum","Mo",6,5,4,3,2)
+cation[13]=new Array("ruthenium","Ru",6,4,3,2)
+cation[14]=new Array("rhodium","Rh",2,3,4)
+cation[15]=new Array("palladium","Pd",4,2)
+cation[16]=new Array("silver","Ag",1)
+cation[17]=new Array("indium","In",3)
+cation[18]=new Array("tantalum","Ta",5,5)
+cation[19]=new Array("tungsten","W",6,5,4,3,2)
+cation[20]=new Array("rhenium","Re",7,6,4,2)
+cation[21]=new Array("osmium","Os",6,4,3,2)
+cation[22]=new Array("iridium","Ir",6,4,3,2)
+cation[23]=new Array("platinum","Pt",4,2)
+cation[24]=new Array("gold","Au",1,3)
+cation[25]=new Array("mercury","Hg",2,1)
+cation[26]=new Array("thallium","Tl",3,1)
+cation[27]=new Array("tin","Sn",4,2)
+cation[28]=new Array("uranium","U",6,5,4,3)
+anion[0]=new Array("phosphite","PO<sub>3</sub>",3)
+anion[1]=new Array("oxide","O",2)
+anion[2]=new Array("fluoride","F",1)
+anion[3]=new Array("sulfide","S",2)
+anion[4]=new Array("chloride","Cl",1)
+anion[5]=new Array("selenide","Se",2)
+anion[6]=new Array("bromide","Br",1)
+anion[7]=new Array("iodide","I",1)
+anion[8]=new Array("carbonate","CO<sub>3</sub>",2)
+anion[9]=new Array("hydroxide","OH",1)
+anion[10]=new Array("nitrate","NO<sub>3</sub>",1)
+anion[11]=new Array("nitrite","NO<sub>2</sub>",1)
+anion[12]=new Array("sulfate","SO<sub>4</sub>",2)
+anion[13]=new Array("sulfite","SO<sub>3</sub>",2)
+anion[14]=new Array("cyanide","CN",1)
+anion[15]=new Array("phosphate","PO<sub>4</sub>",3)
+anion[16]=new Array("bicarbonate","HCO<sub>3</sub>",1)
+anion[17]=new Array("chlorite","ClO<sub>2</sub>",1)
+anion[18]=new Array("thiosulfate","S<sub>2</sub>O<sub>3</sub>",2)
+anion[19]=new Array("hypochlorite","ClO",1)
+anion[20]=new Array("chlorate","ClO<sub>3</sub>",1)
+function startit(){
+	clear()
+	totl++
+	document.forms[0].total.value=totl
+	tried=0
+	catpre=""
+	anpre=""
+	csub=""
+	asub=""
+	catsub=""
+	ansub=""
+	cat=Math.floor(cation.length*Math.random())
+	ani=Math.floor(anion.length*Math.random())
+	x=cation[cat][2+Math.floor(Math.random()*(cation[cat].length-2))]	
+	y=anion[ani][2]
+	if(x==y){
+		csub=1
+		asub=1
+	}
+	if(x>y){
+		if(x%y==0){
+			csub=1
+			asub=Math.ceil(x/y)
+		}
+	else{
+	 	csub=y
+		asub=x
+	    }
+	}
+	if(y>x){
+		if(y%x==0){
+			csub=Math.ceil(y/x)
+			asub=1
+		}
+	else{
+	 	csub=y
+		asub=x
+	    }
+	}
+	if(csub==1){catsub=""}
+		else{catsub="<sub>"+csub+"</sub>"}
+	if(asub==1){ansub=""}
+		else{ansub="<sub>"+asub+"</sub>"}
+	//if(asub>6 || csub>6){totl--;startit()}
+if(catsub==""){catsym=cation[cat][1]}
+else{
+	if(cat==12){catsym="(" + cation[cat][1] + ")" +catsub}
+	else{catsym=cation[cat][1]+catsub}}
+if(ansub==""){ansym=anion[ani][1]}
+else{
+	if(ani>7 || ani==0){ansym="("+ anion[ani][1] + ")"+ ansub}
+	else{ansym=anion[ani][1]+ ansub}}
+theformula=catsym + ansym
+firstpart=cation[cat][0]
+secpart=anion[ani][0]
+stock=thestock[x]
+thename=firstpart+ "  (" +stock+")  "+ secpart
+showquest()
+buildanswer()
+}
+function buildanswer(){
+	thesolution="Since the charge on the "+anion[ani][0]+" is known to be "+y+"-, it can be seen that the charge on the "+cation[cat][0]+" must be "+x+"+. Therefore the compound is named as <b>"+thename+"</b>"
+	showanswer()
+}
+function showquest(){
+	if(ie4){
+		qspot.innerHTML=theformula
+		}
+	else{
+		document.qspot.document.open()
+		document.qspot.document.write(theformula)
+		document.qspot.document.close()
+	}
+}
+function showanswer(){
+if(attempts>=3){
+	if(ie4){
+		ansspot.innerHTML=thesolution
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.write(thesolution)
+		document.ansspot.document.close()
+	}
+	}
+}	
+function clearansspot(){
+	if(ie4){
+		ansspot.innerHTML=""
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.clear()
+		document.ansspot.document.close()
+	}
+}
+function splitit(test){
+	if(test!=""){
+	first=""
+	stck=""
+	second=""
+	spot=0
+	while(test.charAt(spot)!=" "){first+=test.charAt(spot);spot++};
+	while(test.charAt(spot)==" ")spot++;
+	while(test.charAt(spot)!=" "){stck+=test.charAt(spot);spot++};
+	while(test.charAt(spot)==" ")spot++;
+	while(test.charAt(spot)!=" " & spot<test.length){second+=test.charAt(spot);spot++};
+	stck=stck.toUpperCase()
+	answer(first,stck,second)
+}}
+function answer(a,s,b){
+	attempts++
+	if(tried==1){
+	alert("You've already done this one. Get a new problem")
+	}
+	else{
+		if(tried==2){totl++
+		document.forms[0].total.value=totl}
+		a=a.toLowerCase()
+		b=b.toLowerCase()
+		s=s.toUpperCase()
+		if (a==firstpart & b==secpart & s==thestock[x]){
+			document.forms[0].results.value="correct"
+			corrt++
+			document.forms[0].correct.value=corrt
+		tried=1
+		}
+		else{ 
+			if(s!=thestock[x]){document.forms[0].results.value="Stock incorrect"
+			tried=2}
+			else{
+			if(a!=firstpart & b!=secpart){
+			document.forms[0].results.value="both incorrect"
+			}
+			else{
+				if(a!=firstpart){
+				document.forms[0].results.value="first incorrect"
+			}
+				else{
+					document.forms[0].results.value="second incorrect"
+				}
+          	}
+		tried=2
+	}
+}}
+}
+</script>
+</head>
+<body onLoad="cleanse(),setrefs()">
+<h3>Nomenclature of Simple Compounds Using Stock Notation</h3>
+This is a basic exercise in naming simple compounds which contain metals. Since its effective use requires analysis of text input there are some basic rules:<br><ul>
+<li>Stock notation <B>must be used</B> on this page.
+<li>Common names such as "ferrous" are not used.
+<li>Spelling matters very much. No effort has been made to analyze input against possible spelling errors. There is a button below which can be pushed to display the spelling of all polyatomic ions used on this page.
+<li>Capitalization does not matter, the page can adjust for improper capitalization.
+</ul>
+<h4>Operation:</h4><ul>
+<li>Pressing "New Compound" displays a formula to the right of the table.
+<li>Enter the name in the cell, breaking it into three parts and omitting the parentheses around the Roman numeral.<br>
+	for example FeCl<sub>3</sub> would be iron  IV  chloride.
+<li>Press "Check Answer."<br>
+<li>Results and score 
+<li>If you miss a problem three times, pressing "Show Answer" will display the answer.
+</ul>
+<form >
+<input type=button value="New Compound" onClick="startit()"><br>
+<input name="theans" type=text size=30>
+<input type=button value="Check Answer" onClick="splitit(this.form.theans.value)"><br>
+<input type=button value="Show Answer" onClick="showanswer()">
+<table border=4>
+<tr>
+<td>Results</td>
+<td>Total</td>
+<td>Correct</td>
+</tr>
+<tr>
+<td><input type=text name=results size=16></td>
+<td align=center><input name="total" type=text size=3</td>
+<td align=center><input name="correct" type=text size=3></td>
+</tr>
+</table>
+</form>
+<div id=qspot></div>
+<div id=ansspot></div>
+<div id=refspot></div>
+</body>
+
+</html>

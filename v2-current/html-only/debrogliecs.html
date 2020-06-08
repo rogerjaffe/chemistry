@@ -1,0 +1,239 @@
+<html>
+<head>
+<title>The deBroglie Wave Equation</title>
+<style>
+#qspot {position:absolute;left:320;top:220}
+#ansspot {position:absolute;left:320;top:270;height:200}
+#tspot {position:absolute;left:10;top:300}
+#refspot {position:absolute;left:10;top:600;height:200}
+</style>
+<script src="reflist.js"></script>
+<script language="javascript">
+//updated 11/14/00-added complete solution
+var ie4 = (document.all) ? true : false;
+if(ie4)div=document.all.tags("DIV")
+//globals
+refnumber=45
+attempts=0
+totl=0
+tried=0
+corrt=0
+h="6.626e-34"
+mass=0
+speed=0
+wave=0
+velocity=0
+lightspeed=3e8
+fract=0
+percent=0
+ans=0
+function parts(p1,p2,p3,p4,p5){
+        this.p1=p1
+        this.p2=p2
+        this.p3=p3
+        this.p4=p4
+        this.p5=p5
+}
+debroglie="wl=h/m*v"
+eqns=new Array()
+eqns[1]=debroglie
+eqns[2]=debroglie
+eqns[3]="v=h/m+wl"
+eqns[4]=debroglie
+question=new Array()
+ansphrase=new Array()
+question[1]=new parts("What is the wavelength of "," traveling at a velocity of "," m/sec?")
+ansphrase[1]=new parts("This a straighforward application of the deBroglie relationship.<br> Plancks constant=6.626*10<sup>-34</sup>kg-m<sup>2</sup>/sec<br>The mass of ","kg<br>The velocity is ","m/sec<br>Substituting these into the equation yields:<br>")
+question[2]=new parts("What is the wavelength of "," traveling at a velocity which is ","% of the speed of light?")
+ansphrase[2]=new parts("Then, this a straighforward application of the deBroglie relationship.<br> Plancks constant=6.626*10<sup>-34</sup>kg-m<sup>2</sup>/sec<br>The mass of ","kg<br>The velocity is ","m/sec<br>Substituting these into the equation yields:<br>")
+question[3]=new parts("What is the velocity of "," if it has a wavelength of "," meters?")
+ansphrase[3]=new parts("This an application of the deBroglie relationship rearranged to solve for the  velocity.<br> Plancks constant=6.626*10<sup>-34</sup>kg-m<sup>2</sup>/sec<br>The mass of ","kg<br>The wavelength is ","m<br>Substituting these into the equation yields:<br>")
+question[4]=new parts("If "," has a wavelength of "," meters, what percentage of the speed of light is its velocity?")
+ansphrase[4]=new parts("This an application of the deBroglie relationship rearranged to solve for the  velocity.<br> Plancks constant=6.626*10<sup>-34</sup>kg-m<sup>2</sup>/sec<br>The mass of ","kg<br>The wavelength is ","m<br>Substituting these into the equation yields:<br>")
+sets=new Array()
+sets[1]=new parts("an electron",9.11e-31,"9.11*10<sup>-31</sup>")
+sets[2]=new parts("a proton",1.67e-27,"1.67*10<sup>-27</sup>")
+sets[3]=new parts("a neutron",1.67e-27,"1.67*10<sup>-27</sup>")
+function clear(){
+	document.forms[0].theans.value=""
+	document.forms[0].results.value=""
+	attempts=0
+	tried=0
+	clearansspot()
+	}
+function cleanse(){
+	clear()
+	document.forms[0].total.value=0
+	document.forms[0].correct.value=0
+	}
+function clearansspot(){
+	if(ie4)ansspot.innerHTML="";
+	else{ 
+		document.ansspot.document.open()
+		document.ansspot.document.clear()
+		document.ansspot.document.close()
+	}
+}
+
+function startit(){
+	clear()
+	totl++
+	document.forms[0].results.value=""
+	document.forms[0].total.value=totl
+	qtype=Math.ceil(4*Math.random())
+	ptype=Math.ceil(3*Math.random())
+	buildquest(qtype,ptype)
+}
+function buildquest(qtype,ptype){
+	fraction=0
+	while(fraction<.1 || fraction>.9) fraction=Math.round(100*Math.random())/100
+	percent=Math.round(100*fraction)
+	velocity=sigfigs(fraction*lightspeed)
+	wave=sigfigs(h/(sets[ptype].p2*velocity))
+	choice=new Array(0,scinot(velocity),percent,scinot(wave),scinot(wave))
+	aset=new Array(0,wave,wave,velocity,percent)
+	thequest=question[qtype].p1+sets[ptype].p1+question[qtype].p2+choice[qtype]+question[qtype].p3;
+	showquest(thequest)
+	ans=aset[qtype]
+	buildanswer(qtype,ptype,ans)
+}
+function buildanswer(qtype,ptype,ans){
+	theanswer=""
+	inserted=""
+	if(qtype==2)inserted="First, you determine the velocity<br>velocity=3.00*10<sup>8</sup>*"+percent+"/100="+scinot(velocity)+"<br>"
+	theeqn=buildeqn(qtype,ptype,ans)
+	theanswer="The deBrogile equation relates a particle's mass, velocity and wavelength:"+debroglie+"<br>"
+	if(qtype<3)given=scinot(velocity);
+	else given=scinot(wave);
+	theanswer=theanswer+inserted+ansphrase[qtype].p1+sets[ptype].p1+"="+sets[ptype].p3+ansphrase[qtype].p2+given+ansphrase[qtype].p3+theeqn
+	if(qtype==4)theanswer=theanswer+"<br>Converting this to a percentage:("+scinot(velocity)+"/3*10<sup>8</sup>)*100="+ans+"%"
+}
+function buildeqn(qtype,ptype,ans){
+	if(qtype<3)lastone=scinot(ans)+"meters"
+	else lastone=scinot(velocity)+"m/sec"
+	scih=scinot(h)
+	if(qtype<3)theeqn=scih+"/("+sets[ptype].p3+"*"+scinot(velocity)+")="+lastone
+	else theeqn=scih+"/("+sets[ptype].p3+"*"+scinot(wave)+")="+lastone
+	return theeqn
+}
+
+function showquest(thequest){
+	if(ie4){
+		qspot.innerHTML=thequest
+		}
+	else{
+		document.qspot.document.open()
+		document.qspot.document.write(thequest)
+		document.qspot.document.close()
+	}
+}
+function answer(theans){
+	if(tried==1)alert("You've done this one. Get a new problem.")
+	else{
+	if(tried==2){totl++;document.forms[0].total.value=totl}
+	attempts++
+	if(theans>.95*ans & theans<1.05*ans){
+		document.forms[0].results.value="Correct"
+		corrt++
+		document.forms[0].correct.value=corrt
+		tried=1
+	}
+	else{
+		document.forms[0].results.value="Incorrect"
+		tried=2
+	}
+}}
+function showanswer(){
+if(attempts>=3){
+	if(ie4){
+		ansspot.innerHTML=theanswer
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.write(theanswer)
+		document.ansspot.document.close()
+	}
+	}
+}	
+
+function sigfigs(f){
+ex=0
+if(f>1000){
+	while(f>1000){
+        ex++
+        f=f/10
+}
+f=Math.round(f)/100
+ex=ex+2
+f=""+f
+if(f.length==1){f=f+"."}
+while(f.length<4){f=f+"0"}
+f=f+"e"+ex
+return f
+}
+else{if(f<100){
+while(f<100){
+        ex++
+        f=f*10
+}
+f=Math.round(f)/100
+ex=2-ex
+f=""+f
+if(f.length==1){f=f+"."}
+while(f.length<4){f=f+"0"}
+if(ex!=0){f=f+"e"+ex}
+return f}
+else{
+f=Math.round(f)/100+"e"+2
+f=""+f
+if(f.length==1){f=f+"."}
+while(f.length<4){f=f+"0"}
+return f
+}
+}
+}
+function scinot(x){
+	split=x.indexOf("e")
+	coeff=x.substring(0,split)
+	expon=x.substring(split+1,x.length)
+	sciform=coeff+"*10<sup>"+expon+"</sup>"
+	return sciform
+}
+</script>
+</head>
+<body onLoad="cleanse(),setrefs()">
+<h3>The de Broglie Wave Equation</h3>
+The de Broglie equation relates the wavelength of a particle to its velocity and mass. It is particularly important in understanding the properties of subatomic particles. This page will present you with a variety of questions demonstrating the application of the de Broglie relationship. When you press "New Problem" a question will appear in the to the right of the button. Determine the value of the answer, enter it in the answer cell and press "Check Answer". Results will appear in the table and running totals are maintained. All wavelengths must be in meters. You will need to have available the mass of the subatomic particles (in kg) as will as the speed of light in m/sec.
+<ul>
+<li>Numbers in scientific notation must be entered using "e". Thus 2*10<sup>2</sup> is entered as 2e2.
+<li>If you miss a problem three times, pressing the "Show Answer" button will cause the correct answer to appear.
+</ul>
+<form>
+<table>
+<tr><td><input type=button value="New Problem" onClick="startit()"><td></tr>
+<tr><td><b>Enter your answer</b></td>
+<td><input type="text" name=theans size=8></td>
+</tr>
+<tr>
+<td><input type=button value="Check answer" onClick="answer(this.form.theans.value)"></td>
+<td><input type=button value="Show answer" onClick="showanswer()"></td>
+</tr>
+</table>
+<table border=4>
+<tr><td align=center><b>Results</td>
+<td align=center><b>Total Done</td>
+<td><b>Total Correct</td>
+</tr>
+<tr>
+<td><input type="text" name=results size=12></td>
+<td align=center><input type="text" name=total size=4 ></td>
+<td align=center><input type="text" name=correct size=4 ></td>
+</tr>
+<tr>
+</table>
+</form>
+<div id=qspot></div>
+<div id=ansspot></div>
+<div id=refspot></div>
+</body>
+</html>

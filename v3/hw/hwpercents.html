@@ -1,0 +1,128 @@
+<html>
+<head>
+<title>Percentage-Homeowrk</title>
+<script language=javascript>
+//globals
+thepage="Percents(49)"
+corrt=0
+tried=0
+totl=0
+theanswer=0
+which=0
+function clear(){
+	document.forms[0].results.value=""
+	document.forms[0].correct.value=corrt
+	document.forms[0].total.value=totl
+}
+function begin(){
+	totl++
+	document.forms[0].total.value=totl
+	document.forms[0].results.value=""
+	tried=0
+var allofit=Math.round(10*(Math.pow(600,Math.random())))/10
+var part=Math.round(100*(Math.pow(allofit,Math.random())))/100
+var percent=Math.round(part*1000/allofit)/10
+document.forms[0].first.value=allofit
+document.forms[0].second.value=part
+document.forms[0].third.value=percent
+var pickit=Math.random()
+if (pickit<.33){
+	document.forms[0].first.value=""
+	document.forms[0].first.focus()
+	document.forms[0].first.select()
+	which=0
+	theanswer=allofit}
+else {if (pickit<.67){
+	document.forms[0].second.value=""
+	document.forms[0].second.focus()
+	document.forms[0].second.select()
+	which=1
+	theanswer=part}
+else {
+	document.forms[0].third.value=""
+	document.forms[0].third.focus()
+	document.forms[0].third.select()
+	which=2
+	theanswer=percent}
+}}
+function answer(form){
+if(tried==1){
+		alert("Sorry, you've already submitted this problem! We'll get you a new one!")
+		start()}
+else{
+	if(tried==2){totl++;document.forms[0].total.value=totl}
+	if (form.elements[which].value>.95*theanswer & form.elements[which].value<1.05*theanswer){
+	document.forms[0].results.value="correct"
+		corrt++
+		document.forms[0].correct.value=corrt
+		tried=1
+}
+else {
+		document.forms[0].results.value="incorrect"
+		tried=2}
+}}
+function timer(z){
+tt=z
+var b=Math.floor(tt/60)
+var j = (tt % 60)
+if (j<10){c="0"}
+else {c=""}
+howlong=b + ":" + c + j
+running=setTimeout("timer(tt+1)",1000)
+}
+function update(){
+	document.forms[0].total.value=totl
+	document.forms[0].correct.value=corrt
+	document.forms[0].time.value=howlong
+	document.forms[0].page.value=thepage
+	document.forms[0].verify.value=Math.round(10000*Math.random())
+}
+
+</script>
+</head>
+<body onLoad="clear(),timer(0)">
+<h2>Percentages</h2>
+This page lets you practice your percentage calculations. The problems
+are randomly generated when you press the "New Problem" button. Enter your answer in the empty
+square and press "Check Answer". The results are displayed in the second table which will
+tell you whether you got the correct answer or not and keeps a running total of your score.
+If you get a question wrong, you can redo and recheck your answer. Getting new problems is just a mater of
+pressing the "New Problem" button at any time.<br>
+<form ACTION = "../cgi-bin/homework/hw_turnin.php" METHOD = "POST">
+<table border=4>
+<tr>
+<TD ALIGN=CENTER><b>Total</td>
+<td align=center><b>Portion</td>
+<td align=center><b>Percent</td>
+</tr>
+<tr>
+<td align=center><input type="text" name=first size=8 ></td>
+<td align=center><input type="text" name=second size=8 ></td>
+<td align=center><input type="text" name=third size=8 ></td>
+</tr>
+<tr>
+<td><input type="button" value="New Problem" onClick=begin()></td>
+<td><input type="button" value="Check Answer" onClick=answer(this.form)></td>
+</tr>
+</table>
+<table border=4>
+<tr>
+<td align=center><b>Results</td>
+<td align=center><b>Total Done</td>
+<td><b>Total Correct</td>
+</tr>
+<tr>
+<td><input type="text" name=results size=12></td>
+<td align=center><input type="text" name=total size=4 ></td>
+<td align=center><input type="text" name=correct size=4 ></td>
+</tr>
+</table>
+<input type=text name="page" size=1>
+<input type=text name="verify" size=1>
+<input type=text name="time" size=1><br>
+<INPUT TYPE = "submit" VALUE = "Submit your score" onClick="update()">
+</FORM>
+<br>
+<a href="index.html"><img src="back.gif"></a><br>
+</body>
+</html>

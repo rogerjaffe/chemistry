@@ -1,0 +1,127 @@
+<html>
+<head>
+<title>The butyls</title>
+<script language=JavaScript>
+//globals
+//Last Update 7/28/98
+thepage="Naming Org. Fragments(87)"
+theanswer=0
+tried=0
+totl=0
+corrt=0
+struct1="<input type=radio name=ans value=1 onClick='opener.answer(1)'><b><i>n</i>-butyl</b>"
+struct2="<input type=radio name=ans value=1 onClick='opener.answer(2)'><b><i>sec</i>-butyl</b>"
+struct3="<input type=radio name=ans value=1 onClick='opener.answer(3)'><b>isobutyl</b>"
+struct4="<input type=radio name=ans value=1 onClick='opener.answer(4)'><b><i>tert</i>-butyl</b>"
+struct5="<input type=radio name=ans value=1 onClick='opener.answer(5)'><b>isopentyl</b>"
+struct6="<input type=radio name=ans value=1 onClick='opener.answer(6)'><b><i>n</i>-pentyl</b>"
+struct7="<input type=radio name=ans value=1 onClick='opener.answer(7)'><b>isopropyl</b>"
+struct8="<input type=radio name=ans value=1 onClick='opener.answer(8)'><b><i>n</i>-propyl</b>"
+function MakeArray(n){
+	this.length=n
+	for (var i=1;i<=n;i++){
+	this[i]= 0}
+}
+function parts(name,ans){
+	this.name=name
+	this.ans=ans
+}
+function choose(){
+tried=0
+totl++
+document.forms[0].total.value=totl
+h=Math.ceil(8*Math.random())
+if(h==8){k="nprop";theanswer=8}
+if(h==7){k="iprop";theanswer=7}
+if(h==6){k="npent";theanswer=6}
+if(h==5){k="ipent";theanswer=5}
+if(h==4){k="ibutyl";theanswer=3}
+if(h==3){k="nbutyl";theanswer=1}
+if(h==2){k="sbutyl";theanswer=2}
+if(h==1){k="tbutyl";theanswer=4}
+if(h==7){val=Math.ceil(18*Math.random())}
+else{if(h==1){val=Math.ceil(8*Math.random())}
+else{val=Math.ceil(16*Math.random())}}
+structure=k+val+".gif"
+display(structure)
+}
+function display(structure){
+var problem=window.open("","problem","scrollbars=yes,,width=400,height=250")
+problem.document.writeln ("<html>");
+problem.document.writeln ("<head>");
+problem.document.writeln ("</head>");
+problem.document.writeln ("<body bgcolor = FFFFFF>");
+//problem.document.writeln (structure);
+problem.document.writeln ("<img src='",structure,"'>");
+problem.document.writeln ("<form>",struct1,struct2,struct3,struct4,"<br>")
+problem.document.writeln (struct5,struct6,struct7,struct8,"</form>");
+//problem.document.writeln ("<h2>list of heats</h2>");
+problem.document.writeln ("</html>");
+problem.document.close();
+problem.focus();
+}
+function answer(f){
+if(tried==1){
+		alert("Sorry, you've already submitted this problem! Get a new one!")}
+else{
+if(tried==2){
+	totl++
+	document.forms[0].total.value=totl
+}
+if(f==theanswer){document.forms[0].results.value="correct"
+	corrt++
+	tried=1
+	document.forms[0].correct.value=corrt}
+else{ tried=2
+	document.forms[0].results.value="incorrect"}
+}}
+function timer(z){
+tt=z
+var b=Math.floor(tt/60)
+var j = (tt % 60)
+if (j<10){c="0"}
+else {c=""}
+howlong=b + ":" + c + j
+running=setTimeout("timer(tt+1)",1000)
+}
+function update(){
+	document.forms[0].total.value=totl
+	document.forms[0].correct.value=corrt
+	document.forms[0].time.value=howlong
+	document.forms[0].page.value=thepage
+	document.forms[0].verify.value=Math.round(10000*Math.random())
+}
+
+</script>
+</head>
+<body onLoad="timer(0)">
+<h2>Recognizing Organic Fragments</h2>
+This is a drill and practice exercise in recognizing the basic propyl,butyl and pentyl radicals.
+When you press "New Strucure" a new window with a structure and 8 possible fragment names will 
+appear. The first time the window appears, it may obscure part of the scoring table. If so, simply drag the 
+window to an open area. It will remain in the new position for the remainder of the session. Click on the circle in front of the proper fragment. The results will appear in the table on the main page.
+If you get an incorrect answer, you should retry the same compound.<br>
+<form ACTION = "../../../cgi-bin/homework/hw_turnin.cgi" METHOD = "POST">
+<input type=button value="New Structure" onClick="this.form.results.value='',choose()">
+<table border=4>
+<tr>
+<td align=center><b>Results</td>
+<td align=center><b>Total Done</td>
+<td align=center><b>Total Correct</td>
+</tr>
+<tr>
+<td><input type="text" name=results size=12></td>
+<td align=center><input name=total type="text" size=4 ></td>
+<td align=center><input name=correct type="text" size=4 ></td>
+</tr>
+</table>
+<input type=text name="page" size=1>
+<input type=text name="verify" size=1>
+<input type=text name="time" size=1><br>
+<INPUT TYPE = "submit" VALUE = "Submit your score" onClick="update()">
+</form>
+<br><br>
+<a href="../../homework/hwintro.html"><img src="back.gif"></a><br>
+<a href="mailto:gwiger@chemistry.csudh.edu"><img src=email1.gif></a>
+</body>
+</html>

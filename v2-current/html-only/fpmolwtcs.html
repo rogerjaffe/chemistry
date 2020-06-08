@@ -1,0 +1,180 @@
+<html>
+<head><title>MolWt from FP Dep-cs</title>
+<style>
+#qspot {position:absolute;left:330;top:280}
+#ansspot {position:absolute;left:330;top:360;height:300}
+#tspot {position:absolute;left:10;top:300}
+#refspot {position:absolute;left:10;top:600}
+</style>
+<script src="reflist.js"></script>
+<script src="numberconvert.js"></script>
+<script language="javascript">
+//updated 1/10/01-added complete solution
+var ie4 = (document.all) ? true : false;
+refnumber=73
+//global variables
+alldata=0
+attempts=0
+which=0
+theanswer=0
+corrt=0
+totl=0
+option=0
+thequest=""
+thesolution=""
+tests=0
+solvent=new Array()
+solvent[0]=new Array("acetic acid",3.90,16.7)
+solvent[1]=new Array("benzene",5.12,5.5)
+solvent[2]=new Array("nitrobenzene",8.1,6)
+solvent[3]=new Array("phenol",7.27,40.1)
+solvent[4]=new Array("p-dichlorobenzene",7.10,53.5)
+solvent[5]=new Array("camphor",37.7,179.8)
+solvent[6]=new Array("cyclohexane",20,6.47)
+symbols=new Array("dT<sub>f</sub>","K<sub>f</sub>","<i>m</i>","T<sup>o</sup>","T<sub>f</sub>","grams solvent","kg solvent","mass(solute)","gfw(solute)","moles(solute)")
+qphrase=new Array("A solution is prepared by dissolving "," grams of an unknown solute in "," grams of ",". The resultant solution has a melting point of<b> ","<sup>o</sup>C</b>. What the the apparent gfw of the solute?")
+ansphrase=new Array("First, calculate the freezing point depression.<br>","<br>Then, using the known value of Kf, calculate the molality.<br>","<br>Using the kg of solvent present, the moles of solute are determined<br>","<br>Finally, the molecular weight of the solute is calculated.<br>")  
+solved=0
+equations=new Array()
+equations[0]=symbols[0]+"="+symbols[3]+"-"+symbols[4]//dTf=To-Tf
+equations[1]=symbols[2]+"="+symbols[0]+"/"+symbols[1]//m=dTf/Kf
+equations[2]=symbols[9]+"="+symbols[2]+"*"+symbols[6]//moles=m*kg
+equations[3]=symbols[8]+"="+symbols[7]+"/"+symbols[9]//gfw=g/moles
+function cleanse(){
+	clear()
+	totl=corrt=0
+	document.forms[0].total.value=0
+	document.forms[0].correct.value=0
+}
+function clear(){
+	attempts=0
+	tried=0
+	clearansspot()
+	document.forms[0].theans.value=""
+	document.forms[0].results.value=""
+}
+function startit(){
+	alldata=new Array()
+	clear()
+	totl++
+	document.forms[0].total.value=totl
+	which=Math.floor(solvent.length*Math.random())
+	formula=solvent[which][0]
+	alldata[1]=solvent[which][1]
+	alldata[3]=solvent[which][2]
+	alldata[8]=alldata[5]=alldata[7]=0
+	while(alldata[8]<60)alldata[8]=250*Math.random();
+	while(alldata[5]<10)alldata[5]=100*Math.random()
+	while(alldata[7]<1)alldata[7]=5*Math.random()
+      calculate()
+}
+function calculate(){
+	alldata[6]=alldata[5]/1000
+	alldata[9]=alldata[7]/alldata[8]
+	alldata[2]=alldata[9]/alldata[6]
+	alldata[0]=alldata[2]*alldata[1]
+	alldata[4]=alldata[3]-alldata[0]
+	for( var j=0;j<alldata.length;j++)alldata[j]=number(alldata[j],4,3);
+	buildquest()
+}
+function buildquest(){
+	thequest=qphrase[0]+alldata[7]+qphrase[1]+alldata[5]+qphrase[2]+formula+"(mp=<b>"+alldata[3]+"<sup>o</sup>C</b>,K<sub>f</sub>=<b>"+alldata[1]+"</b>)"+qphrase[3]+alldata[4]+qphrase[4]
+	showquest()
+	buildanswer()	
+}
+function buildanswer(){
+	getsolved()
+	thesolution=""
+	for(j=0;j<equations.length;j++)thesolution+=ansphrase[j]+equations[j]+"=>"+solved[j];
+	showanswer()
+}
+function getsolved(){
+	solved=new Array()
+	solved[0]=alldata[3]+"-"+alldata[4]+"=<b>"+alldata[0]+"<sup>o</sup></b>"//dTf=To-Tf
+	solved[1]=alldata[0]+"/"+alldata[1]+"=<b>"+alldata[2]+"molal</b>"//m=dTf/Kf
+	solved[2]=alldata[2]+"*"+alldata[6]+"=<b>"+alldata[9]+"moles</b>"//moles=m*kg
+	solved[3]=alldata[7]+"/"+alldata[9]+"=<b>"+alldata[8]+"g/mole</b>"//gfw=g/moles
+}
+function showanswer(){
+//if(attempts>=3){
+	if(ie4){
+		ansspot.innerHTML=thesolution
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.write(thesolution)
+		document.ansspot.document.close()
+	}
+//	}
+}
+function answer(ans){
+	attempts++
+	if(tried==1)alert("You've already done this one. Get a new problem!");
+	else{
+	if(tried==2){totl++;document.forms[0].total.value=totl}
+	if(ans>.95*alldata[8] & ans<1.05*alldata[8]){
+		document.forms[0].results.value="correct";
+		corrt++
+		document.forms[0].correct.value=corrt
+		tried=1
+	}
+	else {
+		document.forms[0].results.value="incorrect"
+		tried=2
+		}
+	}
+}
+function clearansspot(){
+	if(ie4){
+		ansspot.innerHTML=""
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.clear()
+		document.ansspot.document.close()
+	}
+}
+function showquest(){
+	if(ie4){
+		qspot.innerHTML=thequest
+		}
+	else{
+		document.qspot.document.open()
+		document.qspot.document.write(thequest,"<br>")
+		document.qspot.document.close()
+	}
+}
+
+</script>
+</head>
+<body onLoad="cleanse(),setrefs()">
+<h2>Freezing and Boiling Points of Aqueous Solutions</h2>
+This page is an exercise in colligative properties. When you press "New Problem" a solute formula appears in the first cell and values appear in the next two cells. Determine the values of the freezing and bioling points of the solution, enter them into the cells and press "Check Answer." Results appear in the second table.
+<h4>Hints</h4>
+<ul>
+<li>All solutions are treated as ideal
+<li>Since browsers are inconsistent with regards to displaying mathematical symbols the letter "d" will be used to represent the delta sign.
+<li>If you miss a problem three times, pressing the "Show Answer" button will display a complete solution to appear.
+</ul>
+<form>
+<input type="button" value="New Problem" onClick=startit()><br>
+<input type=text size=8 name=theans><b>Enter your answer</b><br>
+<input type="button" value="Check Answer" onClick=answer(this.form.theans.value)>
+<input type="button" value="Show Answer" onClick=showanswer()>
+<table border=4>
+<tr><td align=center><b>Results</td>
+<td align=center><b>Total Done</td>
+<td><b>Total Correct</td>
+</tr>
+<tr>
+<td><input type="text" name="results" size=12></td>
+<td align=center><input type="text" name="total" size=4 ></td>
+<td align=center><input type="text" name="correct" size=4 ></td>
+</tr>
+</table>
+</form>
+<div id=qspot></div>
+<div id=ansspot></div>
+<div id=refspot></div>
+</body>
+</html>

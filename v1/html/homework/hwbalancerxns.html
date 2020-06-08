@@ -1,0 +1,532 @@
+</html>
+<head><Title>Balancing Chemical Reactions</Title>
+<script>
+//Last Update 7/28/98
+//globals
+thepage="Balancing Rxns(19)"
+corrt=0
+tried=0
+totl=0
+count=0
+which=0
+function clear(){
+	document.forms[0].results.value=""
+	document.forms[0].correct.value=corrt
+	document.forms[0].total.value=totl
+}
+function MakeArray(n){
+	this.length=n
+	for (var i=1;i<=n;i++){
+	this[i]= 0}
+}
+function equation(c1,c2,c3,c4,n){
+	this.c1=c1
+	this.c2=c2
+	this.c3=c3
+	this.c4=c4
+	this.n=n
+}
+ansr=new MakeArray(8)
+rxn=new MakeArray(200);
+coeffs=new MakeArray(200)
+rxn[1]=new equation("FeS + ","HCl => ","H<sub>2</sub>S +","FeCl<sub>2</sub>",4)
+coeffs[1]=new equation(1,2,1,1,4)
+rxn[2]=new equation("KNO<sub>3</sub> => ","KNO<sub>2</sub> +","O<sub>2</sub>","",3)
+coeffs[2]=new equation(2,2,1,"",3)
+rxn[3]=new equation("Pb(NO<sub>3</sub>)<sub>2</sub> => ","PbO +","NO<sub>2</sub> + ","O<sub>2</sub>",4)
+coeffs[3]=new equation(2,2,4,1,4)
+rxn[4]=new equation("Na + ","H<sub>2</sub>O => ","NaOH +","H<sub>2</sub>",4)
+coeffs[4]=new equation(2,2,2,1,4)
+rxn[5]=new equation("Fe + ","H<sub>2</sub>O =>","Fe<sub>3</sub>O<sub>4</sub> + ","H<sub>2</sub>",4)
+coeffs[5]=new equation(3,4,1,4,4)
+rxn[6]=new equation("C<sub>2</sub>H<sub>5</sub>OH +","O<sub>2</sub> => ","CO<sub>2</sub> + ","H<sub>2</sub>O",4)
+coeffs[6]=new equation(1,3,2,3,4)
+rxn[7]=new equation("Fe<sub>3</sub>O<sub>4</sub> +","H<sub>2</sub> => ","Fe + ","H<sub>2</sub>O",4)
+coeffs[7]=new equation(1,4,3,4,4)
+rxn[8]=new equation("CO<sub>2</sub> + ","NaOH =>","NaHCO<sub>3</sub>","",3)
+coeffs[8]=new equation(1,1,1,"",3)
+rxn[9]=new equation("NaCl + ","H<sub>2</sub>SO<sub>4</sub> =>","HCl + ","NaHSO<sub>4</sub>",4)
+coeffs[9]=new equation(1,1,1,1,4)
+rxn[10]=new equation("CaC<sub>2</sub> + ","H<sub>2</sub>O =>","C<sub>2</sub>H<sub>2</sub> + ","Ca(OH)<sub>2</sub>",4)
+coeffs[10]=new equation(1,2,1,1,4)
+rxn[11]=new equation("C<sub>8</sub>H<sub>18</sub> +","O<sub>2</sub> => ","CO<sub>2</sub> + ","H<sub>2</sub>O",4)
+coeffs[11]=new equation(2,25,16,18,4)
+rxn[12]=new equation("CaCO<sub>3</sub> => ","CaO +"," CO<sub>2</sub>","",3)
+coeffs[12]=new equation(1,1,1,"",3)
+rxn[13]=new equation("NH<sub>3</sub> + ","O<sub>2</sub> =>","H<sub>2</sub>O +"," NO",4)
+coeffs[13]=new equation(4,5,6,4,4)
+rxn[14]=new equation("NO + ","O<sub>2</sub> =>","NO<sub>2</sub>","",3)
+coeffs[14]=new equation(2,1,2,"",3)
+rxn[15]=new equation("H<sub>3</sub>BO<sub>3</sub> =>","H<sub>4</sub>B<sub>6</sub>O<sub>11</sub> +","H<sub>2</sub>O","",3)
+coeffs[15]=new equation(6,1,7,"",3)
+rxn[16]=new equation("C<sub>6</sub>H<sub>12</sub>O<sub>6</sub> =>","C<sub>2</sub>H<sub>5</sub>OH + ","CO<sub>2</sub>","",3)
+coeffs[16]=new equation(1,2,2,"",3)
+rxn[17]=new equation("CaC<sub>2</sub> + ","N<sub>2</sub> =>","CaCN<sub>2</sub> + ","C",4)
+coeffs[17]=new equation(1,1,1,1,4)
+rxn[18]=new equation("CaCN<sub>2</sub> + ","H<sub>2</sub>O =>","CaCO<sub>3</sub> + ","NH<sub>3</sub>",4)
+coeffs[18]=new equation(1,3,1,2,4)
+rxn[19]=new equation("C<sub>6</sub>H<sub>6</sub> +","O<sub>2</sub> => ","CO<sub>2</sub> + ","H<sub>2</sub>O",4)
+coeffs[19]=new equation(2,15,12,6,4)
+rxn[20]=new equation("C<sub>7</sub>H<sub>16</sub> +","O<sub>2</sub> => ","CO<sub>2</sub> + ","H<sub>2</sub>O",4)
+coeffs[20]=new equation(1,11,7,8,4)
+rxn[21]=new equation("H<sub>3</sub>PO<sub>3</sub> =>","H<sub>3</sub>PO<sub>4</sub> + ","PH<sub>3</sub>","",3)
+coeffs[21]=new equation(4,3,1,"",3)
+rxn[22]=new equation("CO + ","Fe<sub>3</sub>O<sub>4</sub> =>","FeO + ","CO<sub>2</sub>",4)
+coeffs[22]=new equation(1,1,3,1,4)
+rxn[23]=new equation("ZnS + ","O<sub>2</sub> => ","ZnO +","SO<sub>2</sub>",4)
+coeffs[23]=new equation(2,3,2,2,4)
+rxn[24]=new equation("Na<sub>2</sub>O<sub>2</sub> +","H<sub>2</sub>O => ","NaOH + ","O<sub>2</sub>",4)
+coeffs[24]=new equation(2,2,4,1,4)
+rxn[25]=new equation("SiO<sub>2</sub> +","H<sub>2</sub>F<sub>2</sub> => ","SiF<sub>4</sub> +","H<sub>2</sub>O",4)
+coeffs[25]=new equation(1,2,1,2,4)
+rxn[26]=new equation("Al<sub>4</sub>C<sub>3</sub> +","H<sub>2</sub>O => ","CH<sub>4</sub> +","Al(OH)<sub>3</sub>",4)
+coeffs[26]=new equation(1,12,3,4,4)
+rxn[27]=new equation("Al + ","H<sub>2</sub>SO<sub>4</sub> =>","Al<sub>2</sub>(SO<sub>4</sub>)<sub>3</sub> +","H<sub>2</sub>",4)
+coeffs[27]=new equation(2,3,1,3,4)
+rxn[28]=new equation("C<sub>3</sub>H<sub>8</sub> +","O<sub>2</sub> => ","CO<sub>2</sub> + ","H<sub>2</sub>O",4)
+coeffs[28]=new equation(1,5,3,4,4)
+rxn[29]=new equation("NO + ","O<sub>2</sub> =>","NO<sub>2</sub>","",3)
+coeffs[29]=new equation(2,1,2,"",3)
+rxn[30]=new equation("(NH<sub>4</sub>)<sub>2</sub>Cr<sub>2</sub>O<sub>7</sub>=> ","N<sub>2</sub> + ","H<sub>2</sub>O +","Cr<sub>2</sub>O<sub>3</sub>",4)
+coeffs[30]=new equation(1,1,4,1,4)
+rxn[31]=new equation("BiCl<sub>3</sub> + ","H<sub>2</sub>S =>","Bi<sub>2</sub>S<sub>3</sub> + ","HCL",4)
+coeffs[31]=new equation(2,3,1,6,4)
+rxn[32]=new equation("NaCN + ","H<sub>2</sub>SO<sub>4</sub> =>","Na<sub>2</sub>SO<sub>4</sub> + ","HCN",4)
+coeffs[32]=new equation(2,1,1,2,4)
+rxn[33]=new equation("NH<sub>3</sub> +","H<sub>3</sub>PO<sub>4</sub> =>","(NH<sub>4</sub>)<sub>3</sub>PO<sub>4</sub>",3)
+coeffs[33]=new equation(3,1,1,"",3)
+rxn[34]=new equation("Mg + ","H<sub>2</sub>SO<sub>4</sub> =>","MgSO<sub>4</sub> + ","H<sub>2</sub>",4)
+coeffs[34]=new equation(1,1,1,1,4)
+rxn[35]=new equation("C<sub>4</sub>H<sub>10</sub> +","O<sub>2</sub> => ","CO<sub>2</sub> + ","H<sub>2</sub>O",4)
+coeffs[35]=new equation(2,13,8,10,4)
+rxn[36]=new equation("H<sub>2</sub>O + ","CO<sub>2</sub> =>","C<sub>12</sub>H<sub>22</sub>O<sub>11</sub> +","O<sub>2</sub>",4)
+coeffs[36]=new equation(11,12,1,12,4)
+rxn[37]=new equation("H<sub>2</sub>O + ","C => ","H<sub>2</sub> +","CO",4)
+coeffs[37]=new equation(1,1,1,1,4)
+rxn[38]=new equation("S + ","O<sub>2</sub> =>","SO<sub>2</sub>","",3)
+coeffs[38]=new equation(1,1,1,"",3)
+rxn[39]=new equation("SO<sub>2</sub> + ","O<sub>2</sub> =>","SO<sub>3</sub>","",3)
+coeffs[39]=new equation(2,1,2,"",3)
+rxn[40]=new equation("NaOH +","KHC<sub>8</sub>H<sub>4</sub>O<sub>4</sub> =>","NaKC<sub>8</sub>H<sub>4</sub>O<sub>4</sub> +","H<sub>2</sub>O",4)
+coeffs[40]=new equation(1,1,1,1,4)
+rxn[41]=new equation("OH<sup>-</sup> +","HC<sub>8</sub>H<sub>4</sub>O<sub>4</sub><sup>-</sup> =>","C<sub>8</sub>H<sub>4</sub>O<sub>4</sub><sup>2-</sup> +","H<sub>2</sub>O",4)
+coeffs[41]=new equation(1,1,1,1,4)
+rxn[42]=new equation("NaOH + ","H<sub>2</sub>SO<sub>4</sub> =>","Na<sub>2</sub>SO<sub>4</sub> + ","H<sub>2</sub>O",4)
+coeffs[42]=new equation(2,1,1,2,4)
+rxn[43]=new equation("OH<sup>-</sup> +"," H<sup>+</sup> =>","H<sub>2</sub>O","",3)
+coeffs[43]=new equation(1,1,1,"",3)
+rxn[44]=new equation("CO<sub>3</sub><sup>2-</sup> +","H<sup>+</sup> => ","CO<sub>2</sub> + ","H<sub>2</sub>O",4)
+coeffs[44]=new equation(1,2,1,1,4)
+rxn[45]=new equation("H<sub>3</sub>PO<sub>4</sub> +","OH<sup>-</sup> => ","HPO<sub>4</sub><sup>2-</sup> +","H<sub>2</sub>O",4)
+coeffs[45]=new equation(1,2,1,2,4)
+rxn[46]=new equation("FeS + ","HCl => ","FeCl<sub>2</sub> +","H<sub>2</sub>S",4)
+coeffs[46]=new equation(1,2,1,1,4)
+rxn[47]=new equation("CaO + ","HCl => ","CaCl<sub>2</sub> +","H<sub>2</sub>O",4)
+coeffs[47]=new equation(1,2,1,1,4)
+rxn[48]=new equation("C<sub>6</sub>H<sub>5</sub>N<sub>2</sub>Cl =>","C<sub>6</sub>H<sub>5</sub>Cl + ","N<sub>2</sub>","",3)
+coeffs[48]=new equation(1,1,1,"",3)
+rxn[49]=new equation("CH<sub>3</sub>CHO => ","CH<sub>4</sub> +","CO","",3)
+coeffs[49]=new equation(1,1,1,"",3)
+rxn[50]=new equation("CH<sub>3</sub>COF + ","H<sub>2</sub>O =>","CH<sub>3</sub>COOH + ","HF",4)
+coeffs[50]=new equation(1,1,1,1,4)
+rxn[51]=new equation("NO + ","Cl<sub>2</sub> => ","NOCl","",3)
+coeffs[51]=new equation(2,1,2,"",3)
+rxn[52]=new equation("N<sub>2</sub>O<sub>5</sub> =>","NO<sub>2</sub> + ","O<sub>2</sub>","",3)
+coeffs[52]=new equation(2,4,1,"",3)
+rxn[53]=new equation("P  +"," Br<SUB>2</SUB>  =>"," PBr<SUB>3</SUB>","",3)
+coeffs[53]=new equation(2,3,2,"",3)
+rxn[54]=new equation("CoO +"," O<SUB>2</SUB> =>","Co<SUB>2</SUB>O<SUB>3</SUB>","",3)
+coeffs[54]=new equation(4,1,2,"",3)
+rxn[55]=new equation("PCl<SUB>5</SUB>  +"," H<SUB>2</SUB>O  =>","  H<SUB>3</SUB>PO<SUB>4</SUB>  +","  HCl",4)
+coeffs[55]=new equation(1,4,1,5,4)
+rxn[56]=new equation("C<SUB>6</SUB>H<SUB>12</SUB>O<SUB>2</SUB>  +"," O<SUB>2</SUB>  =>"," CO<SUB>2</SUB>","H<SUB>2</SUB>O",4)
+coeffs[56]=new equation(1,8,6,6,4)
+rxn[57]=new equation("Fe<SUB>2</SUB>O<SUB>3</SUB>  +","  C  =>","  Fe  +","  CO<SUB>2</SUB>",4)
+coeffs[57]=new equation(2,3,4,3,4)
+rxn[58]=new equation("Ba  +"," O<SUB>2</SUB>  =>","  BaO","",3)
+coeffs[58]=new equation(2,1,2,"",3)
+rxn[59]=new equation("Al  +"," S  =>"," Al<SUB>2</SUB>S<SUB>3</SUB>","",3)
+coeffs[59]=new equation(2,3,1,"",3)
+rxn[60]=new equation("ZnS  +"," O<SUB>2</SUB>  =>"," ZnO  +"," SO<SUB>2</SUB>",4)
+coeffs[60]=new equation(1,3,2,2,4)
+rxn[61]=new equation("C<SUB>6</SUB>H<SUB>12</SUB>O<SUB>6</SUB>  =>"," C<SUB>2</SUB>H<SUB>5</SUB>OH  +"," CO<SUB>2</SUB>","",3)
+coeffs[61]=new equation(1,2,2,"",3)
+rxn[62]=new equation("C<SUB>7</SUB>H<SUB>14</SUB>  =>"," C<SUB>7</SUB>H<SUB>8</SUB> +"," H<SUB>2</SUB>","",3)
+coeffs[62]=new equation(1,1,3,"",3)
+rxn[63]=new equation("Al  +"," Cr<SUB>2</SUB>O<SUB>3</SUB>  =>","  Al<SUB>2</SUB>O<SUB>3</SUB>  +","  Cr",4)
+coeffs[63]=new equation(2,1,1,2,4)
+rxn[64]=new equation("CS<SUB>2</SUB>  +","  Cl<SUB>2</SUB>  =>","  CCl<SUB>4</SUB>  +","  S<SUB>2</SUB>Cl<SUB>2</SUB>",4)
+coeffs[64]=new equation(1,3,1,1,4)
+rxn[65]=new equation("C  +"," SO<SUB>2</SUB>  =>"," CS<SUB>2</SUB>  +"," CO",4)
+coeffs[65]=new equation(5,2,1,4,4)
+rxn[66]=new equation("Al  +","  MnO  =>"," Al<SUB>2</SUB>O<SUB>3</SUB>  +"," Mn",4)
+coeffs[66]=new equation(2,3,1,3,4)
+rxn[67]=new equation("Ca(OH)<SUB>2</SUB>  +","  H<SUB>3</SUB>PO<SUB>4</SUB>  =>","  Ca<SUB>3</SUB>(PO<SUB>4</SUB>)<SUB>2</SUB>  +"," H<sub>2</sub>O",4)
+coeffs[67]=new equation(3,2,1,6,4)
+rxn[68]=new equation("NO  +","  O<SUB>2</SUB>  =>","  NO<SUB>2</SUB>","",3)
+coeffs[68]=new equation(2,1,2,"",3)
+rxn[69]=new equation("C<SUB>4</SUB>H<SUB>8</SUB>O  +","  O<SUB>2</SUB>  =>","  CO<SUB>2</SUB>  +","  H<SUB>2</SUB>O",4)
+coeffs[69]=new equation(2,11,8,8,4)
+rxn[70]=new equation("NaNO<SUB>3</SUB> =>","  NaNO<SUB>2</SUB>  +","  O<SUB>2</SUB>","",3)
+coeffs[70]=new equation(2,2,1,"",3)
+rxn[71]=new equation("C<SUB>4</SUB>H<SUB>10</SUB>O  +","  O<SUB>2</SUB>  =>","  CO<SUB>2</SUB>  +","  H<SUB>2</SUB>O","",4)
+coeffs[71]=new equation(1,6,4,5,4)
+rxn[72]=new equation("CaH<SUB>2 </SUB> +","  H<SUB>2</SUB>O  =>"," Ca(OH)<SUB>2</SUB>  +","  H<SUB>2</SUB>",4)
+coeffs[72]=new equation(1,2,1,2,4)
+rxn[73]=new equation("N<SUB>2</SUB>H<SUB>4</SUB>  +","  H<SUB>2</SUB>O<SUB>2</SUB> =>","  N<SUB>2</SUB>  +","  H<SUB>2</SUB>O",4)
+coeffs[73]=new equation(1,2,1,4,4)
+rxn[74]=new equation("P<SUB>4</SUB>  +","  O<SUB>2</SUB> =>","  P<SUB>4</SUB>O<SUB>10</SUB>","",3)
+coeffs[74]=new equation(1,5,1,"",3)
+rxn[75]=new equation("(NH<SUB>4</SUB>)<SUB>2</SUB>Cr<SUB>2</SUB>O<SUB>7</SUB>  =>","  Cr<SUB>2</SUB>O<SUB>3</SUB>  +","  N<SUB>2</SUB>  +","  H<SUB>2</SUB>O",4)
+coeffs[75]=new equation(1,1,1,4,4)
+rxn[76]=new equation("KClO<SUB>3</SUB>  =>","  KCl  +","  O<SUB>2</SUB>","",3)
+coeffs[76]=new equation(2,2,3,"",3)
+rxn[77]=new equation("H<SUB>2</SUB>S  +","  O<SUB>2</SUB>  =>","  H<SUB>2</SUB>O  +","  SO<SUB>2</SUB>",4)
+coeffs[77]=new equation(2,3,2,2,4)
+rxn[78]=new equation("NH<SUB>3 </SUB> +","  O<SUB>2</SUB>  =>","  NO  +","  H<SUB>2</SUB>O",4)
+coeffs[78]=new equation(4,5,4,6,4)
+rxn[79]=new equation("C<SUB>2</SUB>H<SUB>4</SUB>  +","  O<SUB>2</SUB> =>","  CO<SUB>2</SUB>  +","  H<SUB>2</SUB>O",4)
+coeffs[79]=new equation(1,3,2,2,4)
+rxn[80]=new equation("PCl<SUB>3</SUB>  +","  H<SUB>2</SUB>O  =>","  H<SUB>3</SUB>PO<SUB>3</SUB>  +","  HCl",4)
+coeffs[80]=new equation(1,3,1,3,4)
+rxn[81]=new equation("Fe  +","  FeCl<SUB>3</SUB>  =>","  FeCl<SUB>2</SUB>","",3)
+coeffs[81]=new equation(1,2,3,"",3)
+rxn[82]=new equation("C<SUB>3</SUB>H<SUB>6</SUB>O  +","  O<SUB>2</SUB>  =>","  CO  +","  H<SUB>2</SUB>O",4)
+coeffs[82]=new equation(2,5,6,6,4)
+rxn[83]=new equation("C<SUB>3</SUB>H<SUB>6</SUB>  +","  O<SUB>2</SUB>  =>","  CO<SUB>2</SUB>  +","  H<SUB>2</SUB>O",4)
+coeffs[83]=new equation(2,9,6,6,4)
+rxn[84]=new equation("C<SUB>3</SUB>H<SUB>6</SUB>  +","  O<SUB>2</SUB>  =>","  CO  +"," H<SUB>2</SUB>O",4)
+coeffs[84]=new equation(1,3,3,3,4)
+rxn[85]=new equation("HCl  +","  Na<SUB>3</SUB>PO<SUB>4</SUB>  =>","  H<SUB>3</SUB>PO<SUB>4</SUB>  +","  NaCl",4)
+coeffs[85]=new equation(3,1,1,3,4)
+rxn[86]=new equation("F<SUB>2</SUB>  +","  H<SUB>2</SUB>O  =>","  HF  +","  O<SUB>2</SUB>",4)
+coeffs[86]=new equation(2,2,4,1,4)
+rxn[87]=new equation("Fe<SUB>3</SUB>O<SUB>4</SUB>  +","  H<SUB>2</SUB>  =>","  Fe  +","  H<SUB>2</SUB>O",4)
+coeffs[87]=new equation(1,4,3,4,4)
+rxn[88]=new equation("K<SUB>2</SUB>O  +","  H<SUB>2</SUB>O  =>","  KOH","",3)
+coeffs[88]=new equation(1,1,2,"",3)
+rxn[89]=new equation("NH<SUB>3</SUB>  +","  O<SUB>2</SUB>  =>","  NO  +","  H<SUB>2</SUB>O",4)
+coeffs[89]=new equation(4,5,4,6,4)
+rxn[90]=new equation("NaHCO<SUB>3</SUB> =>"," Na<SUB>2</SUB>CO<SUB>3</SUB>  +","  CO<SUB>2</SUB>  +"," H<SUB>2</SUB>O",4)
+coeffs[90]=new equation(2,1,1,1,4)
+rxn[91]=new equation("NO<SUB>2</SUB>  +","  H<SUB>2</SUB>O  =>","  HNO<SUB>3</SUB>  +","  NO",4)
+coeffs[91]=new equation(3,1,2,1,4)
+rxn[92]=new equation("H<SUB>2</SUB>O<SUB>2</SUB>  =>","  H<SUB>2</SUB>O  +","  O<SUB>2</SUB>","",3)
+coeffs[92]=new equation(2,2,1,"",3)
+rxn[93]=new equation("CH<SUB>4</SUB>  +","  Cl<SUB>2</SUB>  =>","  HCl  +","  CCl<SUB>4</SUB>",4)
+coeffs[93]=new equation(1,4,4,1,4)
+rxn[94]=new equation("Na<SUB>2</SUB>SO<SUB>4</SUB>  +","  C  =>","  Na<SUB>2</SUB>S  +","  CO<SUB>2</SUB>",4)
+coeffs[94]=new equation(1,2,1,2,4)
+rxn[95]=new equation("C<SUB>7</SUB>H<SUB>16</SUB>  +","  O<SUB>2</SUB>  =>","  CO<SUB>2</SUB>  +","  H<SUB>2</SUB>O",4)
+coeffs[95]=new equation(1,11,7,8,4)
+rxn[96]=new equation("HNO<SUB>3</SUB>  =>","  NO<SUB>2</SUB>  +","  H<SUB>2</SUB>O  +","  O<SUB>2</SUB>",4)
+coeffs[96]=new equation(4,4,2,1,4)
+rxn[97]=new equation("FeS<SUB>2</SUB> +","  O<SUB>2</SUB>  =>","  Fe<SUB>2</SUB>O<SUB>3</SUB>  +","  SO<SUB>2</SUB>",4)
+coeffs[97]=new equation(4,11,2,8,4)
+rxn[98]=new equation("Li<SUB>3</SUB>N  =>","  Li  +"," N<SUB>2</SUB>","",3) 
+coeffs[98]=new equation(2,6,1,"",3)
+rxn[99]=new equation("Ag<SUB>2</SUB>CO<SUB>3</SUB>  =>","  Ag  +","  CO<SUB>2</SUB> +"," O<SUB>2</SUB>",4)
+coeffs[99]=new equation(2,4,2,1,4)
+rxn[100]=new equation("SiO<SUB>2</SUB>  +","  C  =>","  SiC  +","  CO",4)
+coeffs[100]=new equation(1,3,1,2,4)
+rxn[101]=new equation("CO<SUB>2</SUB>  +","  H<SUB>2</SUB>O  =>"," C<SUB>3</SUB>H<SUB>8</SUB>  +","  O<SUB>2</SUB>",4)
+coeffs[101]=new equation(3,4,1,5,4)
+rxn[102]=new equation("HNO<SUB>3</SUB>  +","  NO  =>","  NO<SUB>2</SUB>  +","  H<SUB>2</SUB>O",4)
+coeffs[102]=new equation(2,1,3,1,4)
+rxn[103]=new equation("N<SUB>2</SUB>  +","  H<SUB>2</SUB>O  =>"," H<SUB>2</SUB>O<SUB>2</SUB>  +","  N<SUB>2</SUB>H<SUB>4</SUB>",4)
+coeffs[103]=new equation(1,4,2,1,4)
+rxn[104]=new equation("NaN<SUB>3</SUB>  =>","  Na +"," N<SUB>2</SUB>","",3)
+coeffs[104]=new equation(2,2,3,"",3)
+rxn[105]=new equation("KO2  +"," CO<SUB>2</SUB>  =>","  K<SUB>2</SUB>CO<SUB>3</SUB>  +","  O<SUB>2</SUB>",4)
+coeffs[105]=new equation(4,2,2,3,4)
+rxn[106]=new equation("N<SUB>2</SUB>O<SUB>5</SUB>  +","  H<SUB>2</SUB>O  =>","  HNO<SUB>3</SUB>","",3)
+coeffs[106]=new equation(1,1,2,"",3)
+rxn[107]=new equation("NH<SUB>3</SUB>  +","  CO<SUB>2</SUB>  =>","  CO(NH<SUB>2</SUB>)<SUB>2</SUB>  +","  H<SUB>2</SUB>O",4)
+coeffs[107]=new equation(2,1,1,1,4)
+rxn[108]=new equation("H<SUB>2</SUB>S  +","  SO<SUB>2</SUB>  =>","  S  +","  H<SUB>2</SUB>O",4)
+coeffs[108]=new equation(2,1,3,2,4)
+rxn[109]=new equation("CO<SUB>2</SUB>  +","  H<SUB>2</SUB>O  =>","  C<SUB>3</SUB>H<SUB>8</SUB>  +","  O<SUB>2</SUB>",4)
+coeffs[109]=new equation(3,4,1,5,4)
+rxn[110]=new equation("CO  +","  H<SUB>2</SUB>  =>","  C<SUB>3</SUB>H<SUB>8</SUB>  +","  H<SUB>2</SUB>O",4)
+coeffs[110]=new equation(3,7,1,3,4)
+rxn[111]=new equation("Al  +","  HCl  =>","  AlCl<SUB>3</SUB>  +","  H<SUB>2</SUB>",4)
+coeffs[111]=new equation(2,6,2,3,4)
+rxn[112]=new equation("H<SUB>2</SUB>S  +"," O<SUB>2</SUB>  =>","  SO<SUB>2</SUB>  +","  H<SUB>2</SUB>O",4)
+coeffs[112]=new equation(2,3,2,2,4)
+rxn[113]=new equation("CCl<SUB>4</SUB>  +","  HF  =>","  CCl<SUB>2</SUB>F<SUB>2</SUB>  +","  HCl",4)
+coeffs[113]=new equation(1,2,1,2,4)
+rxn[114]=new equation("CaCN<SUB>2</SUB>  +","  H<SUB>2</SUB>O  =>","  CaCO<SUB>3</SUB>  +","  NH<SUB>3</SUB>",4)
+coeffs[114]=new equation(1,3,1,2,4)
+rxn[115]=new equation("Fe  +","  Cl<SUB>2</SUB>  =>","  FeCl<SUB>3</SUB>","",3)
+coeffs[115]=new equation(2,3,2,"",3)
+rxn[116]=new equation("N<SUB>2</SUB>O  =>","  N<SUB>2</SUB>  +","  O<SUB>2</SUB>","",3)
+coeffs[116]=new equation(2,2,1,"",3)
+rxn[117]=new equation("CO  +"," H<SUB>2</SUB>  =>","  CH<SUB>3</SUB>OH","",3)
+coeffs[117]=new equation(1,2,1,"",3)
+rxn[118]=new equation("SO<sub>2</sub> + ","O<sub>2</sub> =>","SO<sub>3</sub>","",3)
+coeffs[118]=new equation (2,1,2,"",3)
+rxn[119]=new equation("PC1<sub>5</sub> => ","PC1<sub>3</sub> +","C1<sub>2</sub>","",3)
+coeffs[119]=new equation (1,1,1,"",3)
+rxn[120]=new equation("Na + ","O<sub>2</sub> =>","Na<sub>2</sub>O","",3)
+coeffs[120]=new equation (1,1,1,"",3)
+rxn[121]=new equation("H<sub>2</sub> + ","C1<sub>2</sub> =>","HC1","",3)
+coeffs[121]=new equation (4,1,2,"",3)
+rxn[122]=new equation("P + ","O<sub>2</sub> => ","P<sub>2</sub>O<sub>3</sub>","",3)
+coeffs[122]=new equation (2,3,2,"",3)
+rxn[124]=new equation("Cu + ","S => ","Cu<sub>2</sub>S","",3)
+coeffs[124]=new equation (2,1,1,"",3)
+rxn[125]=new equation("NaNO<sub>3</sub> => ","NaNO<sub>2</sub> +","O<sub>2</sub>","",3)
+coeffs[125]=new equation (2,1,1,"",3)
+rxn[126]=new equation("BaO<sub>2</sub> =>"," BaO +","O<sub>2</sub>","",3)
+coeffs[126]=new equation (2,2,1,"",3)
+rxn[127]=new equation("A1 + ","C1<sub>2</sub> =>","A1C1<sub>3</sub>","",3)
+coeffs[127]=new equation (2,3,2,"",3)
+rxn[128]=new equation("P<sub>4</sub> + ","O<sub>2</sub> =>","P<sub>4</sub>O<sub>10</sub>","",3)
+coeffs[128]=new equation (1,3,1,"",3)
+rxn[129]=new equation("H<sub>2</sub> + ","N<sub>2</sub> =>","NH<sub>3</sub>","",3)
+coeffs[129]=new equation (3,1,2,"",3)
+rxn[130]=new equation("A1 + ","HC1 => ","A1C1<sub>3</sub> +","H<sub>2</sub>",4)
+coeffs[130]=new equation (2,6,2,3,4)
+rxn[131]=new equation("Mg + ","N<sub>2</sub> =>","Mg<sub>3</sub>N<sub>2</sub>","",3)
+coeffs[131]=new equation (3,1,1,"",3)
+rxn[132]=new equation("C<sub>4</sub>H<sub>8</sub>O +","O<sub>2</sub> => ","CO<sub>2</sub> + ","H<sub>2</sub>O",4)
+coeffs[132]=new equation (2,11,8,8,4)
+rxn[133]=new equation("P  +"," Br<SUB>2</SUB>  =>"," PBr<SUB>3</SUB>","",3)
+coeffs[133]=new equation(2,3,2,"",3)
+rxn[134]=new equation("CoO +"," O<SUB>2</SUB> =>","Co<SUB>2</SUB>O<SUB>3</SUB>","",3)
+coeffs[134]=new equation(4,1,2,"",3)
+rxn[135]=new equation("PCl<SUB>5</SUB>  +"," H<SUB>2</SUB>O  =>","  H<SUB>3</SUB>PO<SUB>4</SUB>  +","  HCl",4)
+coeffs[135]=new equation(1,4,1,5,4)
+rxn[136]=new equation("C<SUB>6</SUB>H<SUB>12</SUB>O<SUB>2</SUB>  +"," O<SUB>2</SUB>  =>"," CO<SUB>2</SUB>","H<SUB>2</SUB>O",4)
+coeffs[136]=new equation(1,8,6,6,4)
+rxn[137]=new equation("Fe<SUB>2</SUB>O<SUB>3</SUB>  +","  C  =>","  Fe  +","  CO<SUB>2</SUB>",4)
+coeffs[137]=new equation(2,3,4,3,4)
+rxn[138]=new equation("Ba  +"," O<SUB>2</SUB>  =>","  BaO","",3)
+coeffs[138]=new equation(2,1,2,"",3)
+rxn[139]=new equation("Al  +"," S  =>"," Al<SUB>2</SUB>S<SUB>3</SUB>","",3)
+coeffs[139]=new equation(2,3,1,"",3)
+rxn[140]=new equation("ZnS  +"," O<SUB>2</SUB>  =>"," ZnO  +"," SO<SUB>2</SUB>",4)
+coeffs[140]=new equation(1,3,2,2,4)
+rxn[141]=new equation("C<SUB>6</SUB>H<SUB>12</SUB>O<SUB>6</SUB>  =>"," C<SUB>2</SUB>H<SUB>5</SUB>OH  +"," CO<SUB>2</SUB>","",3)
+coeffs[141]=new equation(1,2,2,"",3)
+rxn[142]=new equation("C<SUB>7</SUB>H<SUB>14</SUB>  =>"," C<SUB>7</SUB>H<SUB>8</SUB> +"," H<SUB>2</SUB>","",3)
+coeffs[142]=new equation(1,1,3,"",3)
+rxn[143]=new equation("Al  +"," Cr<SUB>2</SUB>O<SUB>3</SUB>  =>","  Al<SUB>2</SUB>O<SUB>3</SUB>  +","  Cr",4)
+coeffs[143]=new equation(2,1,1,2,4)
+rxn[144]=new equation("CS<SUB>2</SUB>  +","  Cl<SUB>2</SUB>  =>","  CCl<SUB>4</SUB>  +","  S<SUB>2</SUB>Cl<SUB>2</SUB>",4)
+coeffs[144]=new equation(1,3,1,1,4)
+rxn[145]=new equation("C  +"," SO<SUB>2</SUB>  =>"," CS<SUB>2</SUB>  +"," CO",4)
+coeffs[145]=new equation(5,2,1,4,4)
+rxn[146]=new equation("Al  +","  MnO  =>"," Al<SUB>2</SUB>O<SUB>3</SUB>  +"," Mn",4)
+coeffs[146]=new equation(2,3,1,3,4)
+rxn[147]=new equation("Ca(OH)<SUB>2</SUB>  +","  H<SUB>3</SUB>PO<SUB>4</SUB>  =>","  Ca<SUB>3</SUB>(PO<SUB>4</SUB>)<SUB>2</SUB>  +","  OH",4)
+coeffs[147]=new equation(3,2,1,6,4)
+rxn[148]=new equation("NO  +","  O<SUB>2</SUB>  =>","  NO<SUB>2</SUB>","",3)
+coeffs[148]=new equation(2,1,2,"",3)
+rxn[149]=new equation("C<SUB>4</SUB>H<SUB>8</SUB>O  +","  O<SUB>2</SUB>  =>","  CO<SUB>2</SUB>  +","  H<SUB>2</SUB>O",4)
+coeffs[149]=new equation(2,11,8,8,4)
+rxn[150]=new equation("NaNO<SUB>3</SUB> =>","  NaNO<SUB>2</SUB>  +","  O<SUB>2</SUB>","",3)
+coeffs[150]=new equation(2,2,1,"",3)
+rxn[151]=new equation("C<SUB>4</SUB>H<SUB>10</SUB>O  +","  O<SUB>2</SUB>  =>","  CO<SUB>2</SUB>  +","  H<SUB>2</SUB>O",4)
+coeffs[151]=new equation(1,6,4,5,4)
+rxn[152]=new equation("CaH<SUB>2 </SUB> +","  H<SUB>2</SUB>O  =>"," Ca(OH)<SUB>2</SUB>  +","  H<SUB>2</SUB>",4)
+coeffs[152]=new equation(1,2,1,2,4)
+rxn[153]=new equation("N<SUB>2</SUB>H<SUB>4</SUB>  +","  H<SUB>2</SUB>O<SUB>2</SUB> =>","  N<SUB>2</SUB>  +","  H<SUB>2</SUB>O",4)
+coeffs[153]=new equation(1,2,1,4,4)
+rxn[154]=new equation("P<SUB>4</SUB>  +","  O<SUB>2</SUB> =>","  P<SUB>4</SUB>O<SUB>10</SUB>","",3)
+coeffs[154]=new equation(1,5,1,"",3)
+rxn[155]=new equation("(NH<SUB>4</SUB>)<SUB>2</SUB>Cr<SUB>2</SUB>O<SUB>7</SUB>  =>","  Cr<SUB>2</SUB>O<SUB>3</SUB>  +","  N<SUB>2</SUB>  +","  H<SUB>2</SUB>O",4)
+coeffs[155]=new equation(1,1,1,4,4)
+rxn[156]=new equation("KClO<SUB>3</SUB>  =>","  KCl  +","  O<SUB>2</SUB>","",3)
+coeffs[156]=new equation(2,2,3,"",3)
+rxn[157]=new equation("H<SUB>2</SUB>S  +","  O<SUB>2</SUB>  =>","  H<SUB>2</SUB>O  +","  SO<SUB>2</SUB>",4)
+coeffs[157]=new equation(2,3,2,2,4)
+rxn[158]=new equation("NH<SUB>3 </SUB> +","  O<SUB>2</SUB>  =>","  NO  +","  H<SUB>2</SUB>O",4)
+coeffs[158]=new equation(4,5,4,6,4)
+rxn[159]=new equation("C<SUB>2</SUB>H<SUB>4</SUB>  +","  O<SUB>2</SUB> =>","  CO<SUB>2</SUB>  +","  H<SUB>2</SUB>O",4)
+coeffs[159]=new equation(1,3,2,2,4)
+rxn[160]=new equation("PCl<SUB>3</SUB>  +","  H<SUB>2</SUB>O  =>","  H<SUB>3</SUB>PO<SUB>3</SUB>  +","  HCl",4)
+coeffs[160]=new equation(1,3,1,3,4)
+rxn[161]=new equation("Fe  +","  FeCl<SUB>3</SUB>  =>","  FeCl<SUB>2</SUB>","",3)
+coeffs[161]=new equation(1,2,3,"",3)
+rxn[162]=new equation("C<SUB>3</SUB>H<SUB>6</SUB>O  +","  O<SUB>2</SUB>  =>","  CO  +","  H<SUB>2</SUB>O",4)
+coeffs[162]=new equation(2,5,6,6,4)
+rxn[163]=new equation("C<SUB>3</SUB>H<SUB>6</SUB>  +","  O<SUB>2</SUB>  =>","  CO<SUB>2</SUB>  +","  H<SUB>2</SUB>O",4)
+coeffs[163]=new equation(2,9,6,6,4)
+rxn[164]=new equation("C<SUB>3</SUB>H<SUB>6</SUB>  +","  O<SUB>2</SUB>  =>","  CO  +"," H<SUB>2</SUB>O",4)
+coeffs[164]=new equation(1,3,3,3,4)
+rxn[165]=new equation("HCl  +","  Na<SUB>3</SUB>PO<SUB>4</SUB>  =>","  H<SUB>3</SUB>PO<SUB>4</SUB>  +","  NaCl",4)
+coeffs[165]=new equation(3,1,1,3,4)
+rxn[166]=new equation("F<SUB>2</SUB>  +","  H<SUB>2</SUB>O  =>","  HF  +","  O<SUB>2</SUB>",4)
+coeffs[166]=new equation(2,2,4,1,4)
+rxn[167]=new equation("Fe<SUB>3</SUB>O<SUB>4</SUB>  +","  H<SUB>2</SUB>  =>","  Fe  +","  H<SUB>2</SUB>O",4)
+coeffs[167]=new equation(1,4,3,4,4)
+rxn[168]=new equation("K<SUB>2</SUB>O  +","  H<SUB>2</SUB>O  =>","  KOH","",3)
+coeffs[168]=new equation(1,1,2,"",3)
+rxn[169]=new equation("NH<SUB>3</SUB>  +","  O<SUB>2</SUB>  =>","  NO  +","  H<SUB>2</SUB>O",4)
+coeffs[169]=new equation(4,5,4,6,4)
+rxn[170]=new equation("NaHCO<SUB>3</SUB> =>"," Na<SUB>2</SUB>CO<SUB>3</SUB>  +","  CO<SUB>2</SUB>  +"," H<SUB>2</SUB>O",4)
+coeffs[170]=new equation(2,1,1,1,4)
+rxn[171]=new equation("NO<SUB>2</SUB>  +","  H<SUB>2</SUB>O  =>","  HNO<SUB>3</SUB>  +","  NO",4)
+coeffs[171]=new equation(3,1,2,1,4)
+rxn[172]=new equation("H<SUB>2</SUB>O<SUB>2</SUB>  =>","  H<SUB>2</SUB>O  +","  O<SUB>2</SUB>","",3)
+coeffs[172]=new equation(2,2,1,"",3)
+rxn[173]=new equation("CH<SUB>4</SUB>  +","  Cl<SUB>2</SUB>  =>","  HCl  +","  CCl<SUB>4</SUB>",4)
+coeffs[173]=new equation(1,4,4,1,4)
+rxn[174]=new equation("Na<SUB>2</SUB>SO<SUB>4</SUB>  +","  C  =>","  Na<SUB>2</SUB>S  +","  CO<SUB>2</SUB>",4)
+coeffs[174]=new equation(1,2,1,2,4)
+rxn[175]=new equation("C<SUB>7</SUB>H<SUB>16</SUB>  +","  O<SUB>2</SUB>  =>","  CO<SUB>2</SUB>  +","  H<SUB>2</SUB>O",4)
+coeffs[176]=new equation(1,11,7,8,4)
+rxn[177]=new equation("HNO<SUB>3</SUB>  =>","  NO<SUB>2</SUB>  +","  H<SUB>2</SUB>O  +","  O<SUB>2</SUB>",4)
+coeffs[177]=new equation(4,4,2,1,4)
+rxn[178]=new equation("FeS<SUB>2</SUB> +","  O<SUB>2</SUB>  =>","  Fe<SUB>2</SUB>O<SUB>3</SUB>  +","  SO<SUB>2</SUB>",4)
+coeffs[178]=new equation(4,11,2,8,4)
+rxn[179]=new equation("Li<SUB>3</SUB>N  =>","  Li  +"," N<SUB>2</SUB>","",3) 
+coeffs[179]=new equation(2,6,1,"",3)
+rxn[180]=new equation("Ag<SUB>2</SUB>CO<SUB>3</SUB>  =>","  Ag  +","  CO<SUB>2</SUB> +"," O<SUB>2</SUB>",4)
+coeffs[180]=new equation(2,4,2,1,4)
+rxn[181]=new equation("SiO<SUB>2</SUB>  +","  C  =>","  SiC  +","  CO",4)
+coeffs[181]=new equation(1,3,1,2,4)
+rxn[182]=new equation("CO<SUB>2</SUB>  +","  H<SUB>2</SUB>O  =>"," C<SUB>3</SUB>H<SUB>8</SUB>  +","  O<SUB>2</SUB>",4)
+coeffs[182]=new equation(3,4,1,5,4)
+rxn[183]=new equation("HNO<SUB>3</SUB>  +","  NO  =>","  NO<SUB>2</SUB>  +","  H<SUB>2</SUB>O",4)
+coeffs[183]=new equation(2,1,3,1,4)
+rxn[184]=new equation("N<SUB>2</SUB>  +","  H<SUB>2</SUB>O  =>"," H<SUB>2</SUB>O<SUB>2</SUB>  +","  N<SUB>2</SUB>H<SUB>4</SUB>",4)
+coeffs[184]=new equation(1,4,2,1,4)
+rxn[185]=new equation("NaN<SUB>3</SUB>  =>","  Na +"," N<SUB>2</SUB>","",3)
+coeffs[185]=new equation(2,2,3,"",3)
+rxn[186]=new equation("KO2  +"," CO<SUB>2</SUB>  =>","  K<SUB>2</SUB>CO<SUB>3</SUB>  +","  O<SUB>2</SUB>",4)
+coeffs[186]=new equation(4,2,2,3,4)
+rxn[187]=new equation("N<SUB>2</SUB>O<SUB>5</SUB>  +","  H<SUB>2</SUB>O  =>","  HNO<SUB>3</SUB>","",3)
+coeffs[187]=new equation(1,1,2,"",3)
+rxn[188]=new equation("NH<SUB>3</SUB>  +","  CO<SUB>2</SUB>  =>","  CO(NH<SUB>2</SUB>)<SUB>2</SUB>  +","  H<SUB>2</SUB>O",4)
+coeffs[188]=new equation(2,1,1,1,4)
+rxn[189]=new equation("H<SUB>2</SUB>S  +","  SO<SUB>2</SUB>  =>","  S  +","  H<SUB>2</SUB>O",4)
+coeffs[189]=new equation(2,1,3,2,4)
+rxn[190]=new equation("CO<SUB>2</SUB>  +","  H<SUB>2</SUB>O  =>","  C<SUB>3</SUB>H<SUB>8</SUB>  +","  O<SUB>2</SUB>",4)
+coeffs[190]=new equation(3,4,1,5,4)
+rxn[191]=new equation("CO  +","  H<SUB>2</SUB>  =>","  C<SUB>3</SUB>H<SUB>8</SUB>  +","  H<SUB>2</SUB>O",4)
+coeffs[191]=new equation(3,7,1,3,4)
+rxn[192]=new equation("Al  +","  HCl  =>","  AlCl<SUB>3</SUB>  +","  H<SUB>2</SUB>",4)
+coeffs[192]=new equation(2,6,2,3,4)
+rxn[193]=new equation("H<SUB>2</SUB>S  +"," O<SUB>2</SUB>  =>","  SO<SUB>2</SUB>  +","  H<SUB>2</SUB>O",4)
+coeffs[193]=new equation(2,3,2,2,4)
+rxn[194]=new equation("CCl<SUB>4</SUB>  +","  HF  =>","  CCl<SUB>2</SUB>F<SUB>2</SUB>  +","  HCl",4)
+coeffs[194]=new equation(1,2,1,2,4)
+rxn[195]=new equation("CaCN<SUB>2</SUB>  +","  H<SUB>2</SUB>O  =>","  CaCO<SUB>3</SUB>  +","  NH<SUB>3</SUB>",4)
+coeffs[195]=new equation(1,3,1,2,4)
+rxn[196]=new equation("Fe  +","  Cl<SUB>2</SUB>  =>","  FeCl<SUB>3</SUB>","",3)
+coeffs[196]=new equation(2,3,2,"",3)
+rxn[197]=new equation("N<SUB>2</SUB>O  =>","  N<SUB>2</SUB>  +","  O<SUB>2</SUB>","",3)
+coeffs[197]=new equation(2,2,1,"",3)
+rxn[198]=new equation("CO  +"," H<SUB>2</SUB>  =>","  CH<SUB>3</SUB>OH","",3)
+coeffs[198]=new equation(1,2,1,"",3)
+function start(){
+totl++
+document.forms[0].total.value=totl
+tried=0
+var i=Math.ceil(198*Math.random())
+which=i
+document.forms[0].results.value=""
+ansr[0]=coeffs[i]["c1"]
+ansr[1]=coeffs[i]["c2"]
+ansr[2]=coeffs[i]["c3"]
+ansr[3]=coeffs[i]["c4"]
+count=rxn[i]["n"]
+tryit(which,count)
+}
+
+function tryit(which,count)    {
+parent.frames[0].document.clear();
+parent.frames[0].document.open();
+parent.frames[0].document.writeln ("<html>");
+parent.frames[0].document.writeln ("<head>");
+parent.frames[0].document.writeln ("</head>");
+parent.frames[0].document.writeln ("<body bgcolor = FFFFFF text = 7f0000>");
+parent.frames[0].document.writeln ("<font size = +1>");
+parent.frames[0].document.writeln ("");
+parent.frames[0].document.writeln ("<form>");
+parent.frames[0].document.writeln ("<table>");
+for (var i=0;i<count;i++){
+z=i+1
+parent.frames[0].document.write ("<input type=text size=2>");
+parent.frames[0].document.write(rxn[which]['c'+z])}
+parent.frames[0].document.writeln ("</table>")
+parent.frames[0].document.writeln ("</form>")
+parent.frames[0].document.forms[0].elements[0].focus();
+parent.frames[0].document.forms[0].elements[0].select();
+parent.frames[0].document.writeln ("<br>")
+parent.frames[0].document.writeln ("</font>");
+parent.frames[0].document.close();
+}
+function answer(){
+if(tried==1){
+		alert("Sorry, you've already submitted this problem! We'll get you a new one!")
+		start()}
+else{
+if(tried==2){totl++;document.forms[0].total.value=totl}
+var tally=0
+for(var f=0;f<count;f++){
+if (parent.frames[0].document.forms[0].elements[f].value==ansr[f]){
+	tally++}}
+if (tally==count){
+	document.forms[0].results.value="correct"
+	corrt++
+	tried=1
+	document.forms[0].correct.value=corrt}
+	else{tried=2;document.forms[0].results.value="incorrect"}
+}}
+function timer(z){
+tt=z
+var b=Math.floor(tt/60)
+var j = (tt % 60)
+if (j<10){c="0"}
+else {c=""}
+howlong=b + ":" + c + j
+running=setTimeout("timer(tt+1)",1000)
+}
+function update(){
+	document.forms[0].total.value=totl
+	document.forms[0].correct.value=corrt
+	document.forms[0].time.value=howlong
+	document.forms[0].page.value=thepage
+	document.forms[0].verify.value=Math.round(10000*Math.random())
+}
+
+</script>
+</head>
+<BODY onLoad="clear(),timer(0)">
+<h3>Balancing Chemical Reactions</h3>
+This page is an exercise in balancing chemical reactions. When you press "New Reaction," a
+ reaction will appear in the top frame on this page. In front of each chemical species will be an empty cell.
+Put the proper coefficient in each cell and then press "Check Answer". The results appear in the
+table. Hints:
+<ul>
+<li>Use only the smallest set of <b>integer</b> coefficients.
+<li>Use <b>TAB</b> to move between cells.
+</ul>
+<form ACTION = "../cgi-bin/homework/hw_turnin.php" METHOD = "POST">
+<table>
+<input type=button value="New Reaction" onClick="start()">
+<input type=button value="Check Answer" onClick="answer()">
+<table border=4>
+<tr>
+<td><b>Results</b></td>
+<td><b>Total</b></td>
+<td><b>Correct</b></td></tr>
+</tr>
+<tr>
+<td><input type="text" name=results size=12></td>
+<td align=center><input type="text" name=total size=3></td>
+<td align=center><input type="text" name=correct size=3></td>
+</tr>
+</table>
+<input type=text name="page" size=1>
+<input type=text name="verify" size=1>
+<input type=text name="time" size=1><br>
+<INPUT TYPE = "submit" VALUE = "Submit your score" onClick="update()">
+</FORM>
+<br>
+<a href="hwintro.html"><img src="back.gif"></a><br>
+</body>
+</html>

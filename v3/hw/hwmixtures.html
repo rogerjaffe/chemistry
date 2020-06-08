@@ -1,0 +1,346 @@
+<html>
+<head><title>Simple Mixtures-homework</title>
+<script>
+//Last Update 7/28/98
+thepage="Simple Mixtures(56)"
+howlong=""
+totl=0
+corrt=0
+tried=0
+which=""
+theanswer=""
+function clear(){
+	document.forms[0].results.value=""
+	document.forms[0].correct.value=corrt
+	document.forms[0].total.value=totl
+}
+
+function question(pq1,pq2,pq3,pq4,pq5,pq6,pq7,pq8,pq9){
+	this.pq1=pq1
+	this.pq2=pq2
+	this.pq3=pq3
+	this.pq4=pq4
+	this.pq5=pq5
+	this.pq6=pq6
+	this.pq7=pq7
+	this.pq8=pq8
+	this.pq9=pq9
+}
+function MakeArray(n){
+	this.length=n
+	for (var i=1;i<=n;i++){
+	this[i]= 0}
+}
+function atom(name,sym,an,mass,density){
+	this.name=name
+	this.sym=sym
+	this.an=an
+	this.mass=mass
+	this.density=density
+}
+gaw=new MakeArray(10)
+su=new MakeArray(20)
+sub=new MakeArray(20)
+elem=new MakeArray(20)
+compare=new MakeArray(107)
+previous=new MakeArray(107)
+prt=new MakeArray(20)
+part=new MakeArray(20)
+atoms=new MakeArray(20)
+p=new MakeArray(20)
+a=new MakeArray(107);
+
+a[1]=new atom("lithium","Li",3,6.941,0.53)
+a[2]=new atom("beryllium","Be",4,9.012,1.85)
+a[3]=new atom("boron","B",5,10.8,2.34)
+a[4]=new atom("carbon","C",6,12.01,2.26)
+a[5]=new atom("sodium","Na",11,22.99,.97)
+a[6]=new atom("magnesium","Mg",12,24.305,1.74)
+a[7]=new atom("aluminum","Al",13,26.98,2.70)
+a[8]=new atom("silicon","Si",14,28.086,2.33)
+a[9]=new atom("phosphorous","P",15,30.97,1.82)
+a[10]=new atom("sulfur","S",16,32.066,2.07)
+a[11]=new atom("potassium","K",19,39.1,.86)
+a[12]=new atom("calcium","Ca",20,40.08,1.55)
+a[13]=new atom("scandium","Sc",21,44.96,2.99)
+a[14]=new atom("titanium","Ti",22,47.88,4.54)
+a[15]=new atom("vanadium","V",23,50.94,6.11)
+a[16]=new atom("chromium","Cr",24,51.996,7.19)
+a[17]=new atom("manganese","Mn",25,54.94,7.44)
+a[18]=new atom("iron","Fe",26,55.85,7.87)
+a[19]=new atom("cobalt","Co",27,58.93,8.90)
+a[20]=new atom("nickel","Ni",28,58.69,8.90)
+a[21]=new atom("copper","Cu",29,63.55,8.96)
+a[23]=new atom("zinc","Zn",30,65.39,7.13)
+a[24]=new atom("gallium","Ga",31,69.72,5.91)
+a[25]=new atom("germanium","Ge",32,72.61,5.32)
+a[26]=new atom("arsenic","As",33,74.92,5.78)
+a[27]=new atom("selenium","Se",34,78.98,4.79)
+a[28]=new atom("rubidium","Rb",37,85.47,1.53)
+a[29]=new atom("strontium","Sr",38,87.62,2.54)
+a[30]=new atom("yttrium","Y",39,88.91,4.47)
+a[31]=new atom("zirconium","Zr",40,91.2,6.51)
+a[32]=new atom("niobium","Nb",41,92.90,8.57)
+a[33]=new atom("molybdenum","Mo",42,95.94,10.22)
+a[34]=new atom("technetium","Tc",43,98,11.5)
+a[35]=new atom("ruthenium","Ru",44,101.07,12.37)
+a[36]=new atom("rhodium","Rh",45,102.91,12.41)
+a[37]=new atom("palladium","Pd",46,106.42,12.0)
+a[38]=new atom("silver","Ag",47,107.87,10.50)
+a[39]=new atom("cadmium","Cd",48,112.41,8.65)
+a[40]=new atom("indium","In",49,114.82,7.31)
+a[41]=new atom("tin","Sn",50,118.7,7.31)
+a[42]=new atom("antimony","Sb",51,121.7,6.69)
+a[43]=new atom("tellurium","Te",52,127.6,6.24)
+a[44]=new atom("cesium","Cs",55,132.9,1.87)
+a[45]=new atom("barium","Ba",56,137.27,3.59)
+a[46]=new atom("lanthanum","La",57,138.90,6.15)
+a[47]=new atom("cerium","Ce",58,140.1,6.77)
+a[48]=new atom("praseodymium","Pr",59,140.9,6.77)
+a[49]=new atom("neodymium","Nd",60,144.2,7.01)
+a[50]=new atom("promethium","Pm",61,145,7.22)
+a[51]=new atom("samarium","Sm",62,150.4,7.52)
+a[52]=new atom("europium","Eu",63,151.9,5.24)
+a[53]=new atom("gadolinium","Gd",64,157.25,7.90)
+a[54]=new atom("terbium","Tb",65,158.9,8.23)
+a[55]=new atom("dysprosium","Dy",66,162.50,8.55)
+a[56]=new atom("holmium","Ho",67,164.9,8.80)
+a[57]=new atom("erbium","Er",68,167.26,9.07)
+a[58]=new atom("thullum","Tm",69,168.9,9.32)
+a[59]=new atom("ytterblum","Yb",70,173,6.97)
+a[60]=new atom("lutetium","Lu",71,174.9,9.84)
+a[61]=new atom("hafnium","Hf",72,178.5,13.31)
+a[62]=new atom("tantalum","Ta",73,180.9,16.85)
+a[63]=new atom("tungsten","W",74,183.85,19.3)
+a[64]=new atom("rhenium","Re",75,186.2,21)
+a[65]=new atom("osmium","Os",76,190.2,22.6)
+a[66]=new atom("iridium","Ir",77,192.22,22.6)
+a[67]=new atom("platinum","Pt",78,195.1,21.48)
+a[68]=new atom("gold","Au",79,196.97,19.3)
+a[69]=new atom("thallium","Tl",81,204.4,11.85)
+a[70]=new atom("lead","Pb",82,207.2,11.35)
+a[71]=new atom("bismuth","Bi",83,208.9,9.75)
+a[72]=new atom("polonium","Po",84,209,9.3)
+a[73]=new atom("radium","Ra",88,226.0,5.0)
+a[74]=new atom("actinium","Ac",89,227.0,10.07)
+a[75]=new atom("thorium","Th",90,232.0,11.72)
+a[76]=new atom("protactinium","Pa",91,231.0,15.4)
+a[77]=new atom("uranium","U",92,238.0,18.95)
+a[78]=new atom("neptunium","Np",93,237.0,20.2)
+a[79]=new atom("plutonium","Pu",94,244,19.84)
+
+quest=new MakeArray(20);
+	quest[1]=new question(" of "," and "," has a total mass of "," grams. If it contains "," of "," how many "," of "," are present?")
+	quest[2]=new question(" is prepared by combining "," of "," with "," of ",". If the final volume is "," what is the density of the mixture?","","","")
+	quest[3]=new question(" is prepared by combining "," of "," with "," of ",". If the final density is "," what is the volume of the mixture in cm<sup>3</sup>?","","","")
+	quest[4]=new question("  is prepared by combining "," of "," with "," of ",". What mass% is "," of the mixture?","","","")
+function chooseatoms(){
+totl++
+	document.forms[0].total.value=totl
+	document.forms[0].results.value=""
+	tried=0
+
+v1=""
+v2=""
+v3=""
+v4=""
+v5=""
+v6=""
+v7=""
+v8=""
+v9=""
+var fatm=Math.ceil(79*Math.random())
+var satm=fatm
+while(satm==fatm){
+var satm=Math.ceil(79*Math.random())}
+elem1=a[fatm]["name"]
+elem2=a[satm]["name"]
+mass1=Math.round(10000*Math.random())/100
+moles1=Math.round(1000*mass1/a[fatm]["mass"])/1000
+vol1=Math.round(100*mass1/a[fatm]["density"])/100
+mass2=Math.round(10000*Math.random())/100
+moles2=Math.round(1000*mass2/a[satm]["mass"])/1000
+vol2=Math.round(100*mass2/a[satm]["density"])/100
+//final volume
+chge=0
+if(Math.random()>.5){
+	volf=vol1+vol2
+	changevol=0}
+else{ while(chge<5){chge=10*Math.random()}
+	if(Math.random()>.5){volchge=100+chge}
+	else{volchge=100-chge}
+	volf=Math.round(volchge*(vol1+vol2))/100
+	changevol=1}
+densityf=Math.round(100*((mass1+mass2)/volf))/100
+masst=Math.round(100*(mass1+mass2))/100
+pcent1=Math.round(1000*mass1/masst)/10
+pcent2=Math.round(1000*mass2/masst)/10
+var choice=Math.ceil(4*Math.random())
+//var choice=4
+prt1=quest[choice]["pq1"]
+prt2=quest[choice]["pq2"]
+prt3=quest[choice]["pq3"]
+prt4=quest[choice]["pq4"]
+prt5=quest[choice]["pq5"]
+prt6=quest[choice]["pq6"]
+prt7=quest[choice]["pq7"]
+prt8=quest[choice]["pq8"]
+prt9=quest[choice]["pq9"]
+//select dimension 1
+j=Math.ceil(3*Math.random())
+if(j==1){dim1="grams"}
+if(j==2){dim1="moles"}
+if(j==3){dim1="cm<sup>3</sup>"}
+//select dimension 2
+h=Math.ceil(3*Math.random())
+if(h==1){dim2="grams"}
+if(h==2){dim2="moles"}
+if(h==3){dim2="cm<sup>3</sup>"}
+if(choice==1){
+	if(Math.random()>.5){
+		v2=elem1
+		v3=elem2
+		if(j==1){v1=mass1}
+		if(j==2){v1=moles1}
+		if(j==3){v1=vol1}
+		if(h==1){answer=mass2}
+		if(h==2){answer=moles2}
+		if(h==3){answer=vol2}}
+	else{
+		v2=elem2
+		v3=elem1
+		if(j==1){v1=mass2}
+		if(j==2){v1=moles2}
+		if(j==3){v1=vol2}
+		if(h==1){answer=mass1}
+		if(h==2){answer=moles1}
+		if(h==3){answer=vol1}}
+qustn=prt1 + elem1+prt2+ elem2+ prt3 + masst + prt4 +v1+dim1 + prt5 + v2 + prt6+ dim2 + prt7 + v3  + prt8}
+if(choice==2){
+	if(j==1){v1=mass1}
+	if(j==2){v1=moles1}
+	if(j==3){v1=vol1}
+	if(h==1){v2=mass2}
+	if(h==2){v2=moles2}
+	if(h==3){v2=vol2}
+qustn=prt1+v1+dim1+prt2+elem1+prt3+v2+dim2+prt4+elem2+prt5+volf+prt6
+answer=densityf}
+if(choice==3){
+	if(j==1){v1=mass1}
+	if(j==2){v1=moles1}
+	if(j==3){v1=vol1}
+	if(h==1){v2=mass2}
+	if(h==2){v2=moles2}
+	if(h==3){v2=vol2}
+qustn=prt1+v1+dim1+prt2+elem1+prt3+v2+dim2+prt4+elem2+prt5+densityf+prt6
+answer=volf}
+if(choice==4){
+	if(j==1){v1=mass1}
+	if(j==2){v1=moles1}
+	if(j==3){v1=vol1}
+	if(h==1){v2=mass2}
+	if(h==2){v2=moles2}
+	if(h==3){v2=vol2}
+if(Math.random()>.5){v3=elem1
+answer=pcent1}
+else{v3=elem2
+answer=pcent2}
+qustn=prt1+v1+dim1+prt2+elem1+prt3+v2+dim2+prt4+elem2+prt5+v3+prt6}
+theanswer=answer
+var newone=window.open("","newone","toolbar='yes',width=600,height=120")
+newone.document.writeln ("<html>");
+newone.document.writeln ("<head>");
+newone.document.writeln ("</head>");
+newone.document.writeln ("<body bgcolor = FFFFFF");
+newone.document.writeln ("<font size = +1>");
+//newone.document.writeln (elem1,",",mass1,",",moles1,",",vol1,"<br>");
+//newone.document.writeln (elem2,",",mass2,",",moles2,",",vol2,"<br>");
+//newone.document.writeln (densityf,",",volf,"<br>");
+/*if(changevol==0){newone.document.writeln ("volume unchanged",",",densityf,"<br>")};
+else{newone.document.writeln ("final volume=",volf,",",densityf,"<br>")};
+*/
+newone.document.writeln ("A mixture ",qustn);
+newone.document.writeln ("<form method='post'>");
+newone.document.writeln ("<input type=text name='ans' size=8>");
+newone.document.writeln ("<input type='button' value='Check Answer' onClick='opener.answr(this.form.ans.value)'>");
+newone.document.writeln ("</form>");
+newone.document.writeln ("</font>");
+newone.document.writeln ("</html>");
+newone.document.close();
+newone.focus();
+}
+function answr(ans){
+if(tried==1){
+		alert("Sorry, you've already submitted this problem! We'll get you a new one!")
+		begin()}
+else{
+	if(tried==2){totl++;document.forms[0].total.value=totl}
+	if(ans>.95*theanswer & ans<1.05*theanswer ){
+	document.forms[0].results.value="correct"
+	corrt++
+	document.forms[0].correct.value=corrt
+	tried=1
+	}
+	else{
+		document.forms[0].results.value="incorrect"
+		tried=2}
+}}
+
+//obviously the timer function
+function timer(z){
+tt=z
+var b=Math.floor(tt/60)
+var j = (tt % 60)
+if (j<10){c="0"}
+else {c=""}
+howlong=b + ":" + c + j
+running=setTimeout("timer(tt+1)",1000)
+}
+
+
+function update(){
+	document.forms[0].total.value=totl
+	document.forms[0].correct.value=corrt
+	document.forms[0].time.value=howlong
+	document.forms[0].page.value=thepage
+	document.forms[0].verify.value=Math.round(10000*Math.random())
+}
+
+
+</script>
+</head>
+<body onLoad="clear(), timer(0)">
+<h3>Simple Mixtures</h3>
+This is an introductory page to dealing with simple mixtures. The problems posed will involve
+mixtures consisting of two elements which are solids. You will need a periodic table or
+a table of the elements which includes atomic weights and densities. Again, since this is
+an introductory treatment, you need not be concerned about whether the mixture is a simple
+hterogeneous one, or results in an alloy. Just focus on using the data provided to solve the
+problem. When you press "New Problem", a question will appear in a new window. Calculate the
+answer and enter it in the cell in the new window. Then press "Check Answer". The results appear
+in the table on the main window.</p>
+
+<form ACTION = "../cgi-bin/homework/hw_turnin.php" METHOD = "POST">
+
+<input type="button" value="New Problem" onClick=chooseatoms()>
+
+<table border=4>
+<tr><td align=center><b>Results</td>
+<td align=center><b>Total Done</td>
+<td><b>Total Correct</td></tr>
+<tr>
+<td><input type="text" name="results" size=12></td>
+<td><input type="text" name="total" size=6></td>
+<td><input type="text" name="correct" size=6></td>
+
+</tr>
+</table>
+<input type=text name="page" size=1>
+<input type=text name="verify" size=1>
+<input type=text name="time" size=1><br>
+<INPUT TYPE = "submit" VALUE = "Submit your score" onClick="update()">
+</FORM>
+<br>
+<a href="index.html" target="_top"><img src="back.gif"></a><br>
+</body>
+</html>

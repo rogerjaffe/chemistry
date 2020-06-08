@@ -1,0 +1,227 @@
+<html>
+<head>
+<title>Calculating Eos-Homework</title>
+<script>
+//globals
+thepage="Eos(39)"
+corrt=0
+tried=0
+totl=0
+theanswer=0
+which=0
+//the following is a generally useful clear function
+function clear(){
+	document.forms[0].results.value=""
+	document.forms[0].correct.value=corrt
+	document.forms[0].total.value=totl
+	document.forms[0].time.value=""
+	document.forms[0].page.value=""
+	document.forms[0].verify.value=""
+
+}
+function MakeArray(n){
+	this.length=n
+	for (var i=1;i<=n;i++){
+	this[i]= 0}
+}
+function redox(first,second,pot){
+	this.first=first
+	this.second=second
+	this.pot=pot
+}
+halfrxn=new MakeArray(100)
+halfrxn[1]=new redox("Li<sup>+</sup>(aq)","Li(s)",-3.04)
+halfrxn[2]=new redox("K<sup>+</sup>(aq)","K(s)",-2.92)
+halfrxn[3]=new redox("Ca<sup>2+</sup>(aq)","Ca(s)",-2.76)
+halfrxn[4]=new redox("Na<sup>+</sup>(aq)","Na(s)",-2.71)
+halfrxn[5]=new redox("Mg<sup>2+</sup>(aq)","Mg(s)",-2.38)
+halfrxn[6]=new redox("Al<sup>3+</sup>(aq)","Al(s)",-1.66)
+halfrxn[7]=new redox("2H<sub>2</sub>O(l)","H<sub>2</sub>(g)  +  2OH<SUP>-</sup>(aq)",-.83)
+halfrxn[8]=new redox("Zn<sup>2+</sup>(aq)","Zn(s)",-.76)
+halfrxn[9]=new redox("Cd<sup>2+</sup>(aq)","Cd(s)",-.40)
+halfrxn[10]=new redox("Ni<sup>2+</sup>(aq)","Ni(s)",-.23)
+halfrxn[11]=new redox("Sn<sup>2+</sup>(aq)","Sn(s)",-.14)
+halfrxn[12]=new redox("Pb<sup>2+</sup>(aq)","Pb(s)",-.13)
+halfrxn[13]=new redox("Fe<sup>3+</sup>(aq)","Fe(s)",-.04)
+halfrxn[14]=new redox("Fe<sup>2+</sup>(aq)","Fe(s)",-.44)
+halfrxn[15]=new redox("H<sup>+</sup>(aq)","H<sub>2</sub>(g)",0)
+halfrxn[16]=new redox("Sn<sup>4+</sup>(aq)","Sn<sup>2+</sup>(aq)",.15)
+halfrxn[17]=new redox("Cu<sup>2+</sup>(aq)","Cu<sup>+</sup>(aq)",.16)
+halfrxn[18]=new redox("AgCl(s)","Ag  +  Cl<sup>-</sup>(aq)",.22)
+halfrxn[19]=new redox("Cu<SUP>2+</sup>(aq)","Cu(s)",.34)
+halfrxn[20]=new redox("I<sub>2</sub>(s)","I<SUP>-</sup>(aq)",.54)
+halfrxn[21]=new redox("Cu<sup>+</sup>(aq)","Cu(s)",.52)
+halfrxn[22]=new redox("Fe<sup>3+</sup>(aq)","Fe<SUP>2+</sup>(aq)",.77)
+halfrxn[23]=new redox("Ag<sup>+</sup>(aq)","Ag(s)",.80)
+halfrxn[24]=new redox("Co<sup>3+</sup>(aq)","Co<SUP>2+</sup>(aq)",1.82)
+halfrxn[25]=new redox("Br<sub>2</sub>(l)","Br<SUP>-</sup>(aq)",1.07)
+halfrxn[26]=new redox("F<sub>2</sub>(g)","F<SUP>-</sup>(aq)",2.87)
+halfrxn[27]=new redox("Cl<sub>2</sub>(g)","Cl<SUP>-</sup>(aq)",1.36)
+halfrxn[28]=new redox("MnO<sub>4</sub><sup>-</sup>(aq)","Mn<sup>2+</sup>(aq)",1.49)
+halfrxn[29]=new redox("S<SUB>2</SUB>O<SUB>8</SUB><sup>2-</sup>(aq)","SO<SUB>4</SUB><SUP>2-</sup>(aq)",2.01)
+halfrxn[30]=new redox("O<sub>3</sub>(g)","O<SUB>2</SUB>(g)",2.07)
+halfrxn[31]=new redox("Cr<sub>2</sub>O<SUB>7</SUB><SUP>2-</sup>(aq)","Cr<SUP>3+</sup>(aq)",1.33)
+halfrxn[32]=new redox("Ce<sup>4+</sup>(aq)","Ce<SUP>3+</sup>(aq)",1.44)
+halfrxn[33]=new redox("Hg<sup>2+</sup>(aq)","Hg(l)",.85)
+halfrxn[34]=new redox("H<sub>2</sub>O<SUB>2</SUB>(aq)","H<SUB>2</SUB>O(l)",1.78)
+halfrxn[35]=new redox("ClO<SUB>2</SUB><sup>-</sup>(aq)","ClO<SUp>-</sup>(aq)",-.13)
+halfrxn[36]=new redox("ClO<SUB>4</SUB><SUP>-</sup>(aq)","Cl<SUP>-</sup>(aq)",1.37)
+halfrxn[37]=new redox("Ag<SUP>2+</sup>(aq)","Ag<SUP>+</sup>(aq)",1.98)
+halfrxn[38]=new redox("Cu<SUP>2+</sup>(aq)  +  I<SUP>-</sup>(aq)","CuI(s)",.86)
+halfrxn[39]=new redox("O<SUB>2</SUB>(g)","H<SUB>2</SUB>O(l)",1.23)
+halfrxn[40]=new redox("ClO<SUB>3</SUB><SUP>-</sup>(aq)","ClO<SUB>2</SUB>(g)",1.175)
+halfrxn[41]=new redox("MnO<SUB>4</SUB><SUP>-</sup>(aq)","MnO<SUB>4</SUB><SUP>2-</sup>(aq)",.56)
+halfrxn[42]=new redox("MnO<SUB>2</SUB>(s)","Mn<SUP>2+</sup>(aq)",1.23)
+halfrxn[43]=new redox("PbO<SUB>2</SUB>(s)","PbO(s)",.28)
+halfrxn[44]=new redox("Au<SUP>3+</sup>(aq)","Au<SUP>+</sup>(aq)",1.36)
+halfrxn[45]=new redox("MnO<SUB>4</SUB><SUP>-</sup>(aq)","MnO<SUb>2</SUb>(s)",1.70)
+halfrxn[46]=new redox("IO<SUB>3</SUB><SUP>-</sup>(aq)","I<SUB>2</SUB>",1.20)
+halfrxn[47]=new redox("H<SUB>2</SUB>SO<SUB>3</SUB>(aq)","S(s)",.450)
+halfrxn[48]=new redox("BrO<SUB>3</SUB><SUP>-</sup>(aq)","Br<SUB>2</SUB>",1.478)
+halfrxn[49]=new redox("PbO2(s)  +  SO<SUB>4</SUB><SUP>-</sup>(aq)","PbSO<SUB>4</SUB>(s)",1.69)
+halfrxn[50]=new redox("HAsO<SUB>2</SUB>(aq)","As(s)",.240)
+halfrxn[51]=new redox("Sr<SUP>2+</sup>(aq)","Sr(s)",-2.89)
+halfrxn[52]=new redox("Ti<SUP>2+</sup>(aq)","Ti(s)",-1.63)
+halfrxn[53]=new redox("V<SUP>3+</sup>(aq)","V<SUP>2+</sup>(aq)",-.255)
+halfrxn[54]=new redox("In<SUP>3+</sup>(aq)","In(s)",-.338)
+halfrxn[55]=new redox("Rb<SUP>+</sup>(aq)","Rb(s)",-2.924)
+halfrxn[56]=new redox("La<SUP>3+</sup>(aq)","La(s)",-2.38)
+halfrxn[57]=new redox("U<SUP>3+</sup>(aq)","U(s)",-1.66)
+halfrxn[58]=new redox("Cr<SUP>2+</sup>(aq)","Cr(s)",-.90)
+halfrxn[59]=new redox("S(s)","H<SUB>2</SUB>S(g)",.14)
+halfrxn[60]=new redox("AgBr(s)","Ag  +  Br<SUP>-</sup>(aq) ",.071)
+
+function choose(){
+totl++
+	document.forms[0].total.value=totl
+	document.forms[0].results.value=""
+	tried=0
+var g=Math.round(.5+60*Math.random())
+oxy1=halfrxn[g]["first"]
+red1=halfrxn[g]["second"]
+for (i=1;i<100;i++){
+	var h=Math.round(.5+35*Math.random())
+	if (h!=g){break}}
+oxy2=halfrxn[h]["second"]
+red2=halfrxn[h]["first"]
+var volt=halfrxn[g]["pot"]-halfrxn[h]["pot"]
+volt=Math.round(100*volt)/100
+theanswer=volt
+tryit(oxy1,oxy2,red1,red2)
+}
+function tryit(a,b,c,d)    {
+parent.frames[0].document.clear();
+parent.frames[0].document.open();
+parent.frames[0].document.writeln ("<html>");
+parent.frames[0].document.writeln ("<head>");
+parent.frames[0].document.writeln ("</head>");
+parent.frames[0].document.writeln ("<body bgcolor = FFFFFF ");
+parent.frames[0].document.writeln ("<pre>");
+parent.frames[0].document.writeln ("<font size=+1><b>");
+parent.frames[0].document.write (a," + ")
+parent.frames[0].document.write(b," => ")
+parent.frames[0].document.write(c," + ")
+parent.frames[0].document.writeln (d,"<br>")
+parent.frames[0].document.writeln ("</font>");
+parent.frames[0].document.close();
+}
+function display(){
+var newone=window.open("","newone","scrollbars=yes,width=350,height=400")
+newone.document.clear()
+newone.document.writeln ("<html>");
+newone.document.writeln ("<head><title>Eos</title>");
+newone.document.writeln ("</head>"); 
+newone.document.writeln ("<body bgcolor = FFFFFF");
+newone.document.writeln ("<table>");
+for(j=1;j<=60;j++){
+	newone.document.writeln ("<tr><td align=left>",halfrxn[j].first,"=></td>");
+	newone.document.writeln ("<td align=left>",halfrxn[j].second,"</td>");
+	newone.document.writeln ("<td align=left>",halfrxn[j].pot,"V</td></tr><br>");
+	}
+newone.document.writeln ("</table>");
+newone.document.writeln ("</html>");
+newone.document.close();
+newone.focus();
+}
+
+function answer(anser){
+if(tried==1){
+		alert("Sorry, you've already submitted this problem! Get a new one!")
+		}
+else{	opt=0
+	if(tried==2){totl++;document.forms[0].total.value=totl}
+	if(theanswer<0){	
+	if (anser>1.05*theanswer &  anser<.95*theanswer ){opt=1}
+	}
+	else{	
+	if (anser<1.05*theanswer  & anser>.95*theanswer ){opt=1}
+	}
+	if (opt==1){
+	document.forms[0].results.value="correct"
+		corrt++
+		document.forms[0].correct.value=corrt
+		tried=1
+}	
+else {
+		document.forms[0].results.value="incorrect"
+		tried=2}
+}}
+function timer(z){
+tt=z
+var b=Math.floor(tt/60)
+var j = (tt % 60)
+if (j<10){c="0"}
+else {c=""}
+howlong=b + ":" + c + j
+running=setTimeout("timer(tt+1)",1000)
+}
+function update(){
+	document.forms[0].total.value=totl
+	document.forms[0].correct.value=corrt
+	document.forms[0].time.value=howlong
+	document.forms[0].page.value=thepage
+	document.forms[0].verify.value=Math.round(10000*Math.random())
+}
+
+</script>
+</head>
+<body onLoad="clear(),timer(0)">
+<h2>Calculating E<sub>o</sub></h2>
+This is an exercise in calculating standard potential. When you press "New Reaction", an unbalanced
+redox process will appear in the top frame. Use a table of standard half potentials to determine the
+overall cell potential, enter it in the cell and press "Check Answer." If you wish, you may press the "Show Eos" button which will provide a table of the Eos used on this page. Results appear in the second
+table. Be careful about the sign of the potential and enter it with at least .01V precision.
+<br>
+<form ACTION = "../cgi-bin/homework/hw_turnin.php" METHOD = "POST">
+<table>
+<tr>
+<input type="button" value="Show Eos" onClick="display()">
+<input type="button" value="New Reaction" onClick="choose()">
+<input type="button" value="Check Answer" onClick="answer(this.form.ansr.value)">
+</tr>
+<tr>
+<td><b>Enter your answer here</b></td>
+<td align=center><input type="text" name="ansr" size=10></td>
+</tr>
+</table>
+<table border=4>
+<tr>
+<td><b>Results</b></td>
+<td><b>Total Done</b></td>
+<td><b>Total Correct</b></td></tr>
+</tr>
+<tr>
+<td align=center><input type="text" name="results" size=10></td>
+<td align=center><input type="text" name="total" size=3></td>
+<td align=center><input type="text" name="correct" size=3></td>
+<tr>
+</table>
+<input type=text name="page" size=1>
+<input type=text name="verify" size=1>
+<input type=text name="time" size=1><br>
+<INPUT TYPE = "submit" VALUE = "Submit your score" onClick="update()">
+</FORM>
+<br>
+<a href="hwintro.html"><img src="back.gif"></a><br>
+</body>
+</html>

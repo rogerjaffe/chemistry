@@ -1,0 +1,231 @@
+<html>
+<head><title>Freezing points of aqueous solutions-cs</title>
+<style>
+#qspot {position:absolute;left:320;top:300}
+#ansspot {position:absolute;left:320;top:380;height:300}
+#tspot {position:absolute;left:10;top:300}
+#refspot {position:absolute;left:10;top:600}
+</style>
+<script src="reflist.js"></script>
+<script src="numberconvert.js"></script>
+<script language="javascript">
+//updated 1/10/01-added complete solution
+var ie4 = (document.all) ? true : false;
+refnumber=74
+//global variables
+alldata=0
+attempts=0
+which=0
+theanswer=0
+corrt=0
+totl=0
+option=0
+thesolution=""
+tests=0
+//This function creates array elements with four properties, formula,gfw and
+//"particles" per formula unit,and the gs(g/100mL). If the material is highly
+//miscible with water, its gs is set at 25g.
+function solute(formula,gfw,parts,gs){
+	this.formula=formula
+	this.gfw=gfw
+	this.parts=parts
+	this.gs=gs
+}
+//This creates an array of solutes with 20 elements
+cmpd=new Array();
+//The following are the elements in the item array which have the properties
+//shown in solute
+cmpd[0]=new solute("CsCl",168.4,2,25);
+cmpd[1]=new solute("NaCl",58.45,2,25)
+cmpd[2]=new solute("NaNO3",85,2,25)
+cmpd[3]=new solute("KI",166,2,25)
+cmpd[4]=new solute("KOH",56,2,25)
+cmpd[5]=new solute("Ca(NO3)2",164,3,25)
+cmpd[6]=new solute("CH3OH",32,1,25)
+cmpd[7]=new solute("HCl",36.5,2,25)
+cmpd[8]=new solute("ethanol",46,1,25)
+cmpd[9]=new solute("LiBr",104.9,2,25)
+cmpd[10]=new solute("Fe(NO3)3",242,4,25)
+cmpd[11]=new solute("Mg(NO3)2",148,3,25)
+cmpd[12]=new solute("HNO3",63,2,25)
+cmpd[13]=new solute("CaI2",294,3,25)
+cmpd[14]=new solute("Co(NO3)2",183,3,25)
+cmpd[15]=new solute("Na2SO4",142.08,3,27.8)
+cmpd[16]=new solute("NaOH",40.01,2,25)
+cmpd[17]=new solute("KNO2",85.1,2,25)
+cmpd[18]=new solute("HI",128,2,25)
+//They are then passed to the calculate function
+symbols=new Array("dT<sub>b</sub>","dT<sub>f</sub>","K<sub>b</sub>","K<sub>f</sub>","<i>m</i>","T<sub>b</sub>","T<sub>f</sub>","grams(H<sub>2</sub>O)","kg(H<sub>2</sub>O)","mass(solute)","gfw(solute)","DF","moles(solute)")
+ansphrase=new Array("First, calculate the 'effective' moles of solute by calculating actual moles and then multiplying by the number of 'particles' per mole (here we use the symbol 'DF'-dissolving factor for that term).<br>","<br>Then, after determing the number of kg of solvent, calculate the molality.<br>","<br>The boiling point elevation and freezing point depression are determined by multiplying the molality by the appropriate constants.<br>","<br>Finally, the resultant boiling and freezing points for the solution are calculated using the 'normal' values.<br>")  
+solved=0
+equations=new Array()
+equations[0]=symbols[0]+"="+symbols[2]+"*"+symbols[4]//dTb=Kb*m
+equations[1]=symbols[1]+"="+symbols[3]+"*"+symbols[4]//dTb=Kb*m
+equations[2]=symbols[5]+"=100+"+symbols[0]//Tb=100+dTb
+equations[3]=symbols[6]+"=0.00-"+symbols[1]//Tf=0-dTf
+equations[4]=symbols[8]+"="+symbols[7]+"/1000"//kg=g/1000
+equations[5]=symbols[12]+"="+symbols[11]+"*"+symbols[9]+"/"+symbols[10]//effmolessolute=DF*mass/gfw
+equations[6]=symbols[4]+"="+symbols[12]+"/"+symbols[8]//m=mass/kg
+alldata=new Array()
+alldata[2]=.512
+alldata[3]=1.86
+function cleanse(){
+	clear()
+	totl=corrt=0
+	document.forms[0].total.value=0
+	document.forms[0].correct.value=0
+}
+function clear(){
+	attempts=0
+	tried=0
+	for(j=0;j<5;j++)document.forms[0].elements[j].value=""
+	clearansspot()
+	document.forms[0].results.value=""
+}
+function startit(){
+	clear()
+	totl++
+	document.forms[0].total.value=totl
+	which=Math.floor(cmpd.length*Math.random())
+	alldata[10]=cmpd[which].gfw
+	alldata[9]=0
+	while(alldata[9]<2 || alldata[9]>cmpd[which]["gs"])alldata[9]=25*Math.random();
+	alldata[7]=0
+	while(alldata[7]<200)alldata[7]=700*Math.random();
+      calculate()
+}
+function calculate(){
+	alldata[11]=cmpd[which].parts
+	alldata[12]=alldata[11]*alldata[9]/alldata[10]
+	alldata[8]=alldata[7]/1000
+	alldata[4]=alldata[12]/alldata[8]
+	alldata[0]=alldata[2]*alldata[4]
+	alldata[1]=alldata[3]*alldata[4]
+	alldata[5]=100+alldata[0]
+	alldata[6]=alldata[1]
+	for( var j=0;j<alldata.length;j++){
+		if(j!=5)alldata[j]=number(alldata[j],4,3);
+	}
+	alldata[11]=Math.round(alldata[11])
+	alldata[5]=number(alldata[5],5,3)
+	compd=cmpd[which].formula
+	if(alldata[1]<.5)startit()
+	else  buildquest()
+}
+//This function creates the problem and the answer method by filling the first three cells
+function buildquest(){
+	document.forms[0].cpd.value=compd
+	document.forms[0].solute.value=alldata[9]
+	document.forms[0].solvent.value=alldata[7]
+	buildanswer()	
+}
+function buildanswer(){
+	getsolved()
+	thesolution=ansphrase[0]+equations[5]+"=>"+solved[5]+ansphrase[1]+equations[4]+"=>"+solved[4]+"<br>"+equations[6]+"=>"+solved[6]+ansphrase[2]+equations[0]+"=>"+solved[0]+"<br>"+equations[1]+"=>"+solved[1]+ansphrase[3]+equations[2]+"=>"+solved[2]+"<br>"+equations[3]+"=>"+solved[3]
+	showanswer()
+}
+function getsolved(){
+	solved=new Array()
+	solved[0]=alldata[2]+"*"+alldata[4]+"="+alldata[0]//dTb=Kb*m
+	solved[1]=alldata[3]+"*"+alldata[4]+"="+alldata[1]//dTb=Kb*m
+	solved[2]=100+"+"+alldata[0]+"="+alldata[5]//Tb=100+dTb
+	solved[3]="0.00-"+alldata[1]+"=-"+alldata[6]//Tf=0-dTf
+	solved[4]=alldata[7]+"/1000="+alldata[8]//kg=g/1000
+	solved[5]=alldata[11]+"*"+alldata[9]+"/"+alldata[10]+"="+alldata[12]//effmolessolute=DF*mass/gfw
+	solved[6]=alldata[12]+"/"+alldata[8]+"="+alldata[4]//m=mass/kg
+}
+function showanswer(){
+if(attempts>=3){
+	if(ie4){
+		ansspot.innerHTML=thesolution
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.write(thesolution)
+		document.ansspot.document.close()
+	}
+	}
+}
+// This is the "Check Answer Function
+function answer(){
+	if(tried==1)alert("You've already done this one. Get a new problem!");
+	else{
+	attempts++
+	test=0
+	if(tried==2){totl++; document.forms[0].total.value=totl}
+	if(document.forms[0].fp.value<-.95*alldata[6] & document.forms[0].fp.value>-1.05*alldata[6])test++;
+	if(document.forms[0].bp.value>.95*alldata[5] & document.forms[0].bp.value<1.05*alldata[5])test++;
+	if(test==2){
+		document.forms[0].results.value="correct";
+		corrt++
+		document.forms[0].correct.value=corrt
+		tried=1
+	}
+	else {
+		document.forms[0].results.value="incorrect"
+		tried=2
+		}
+	}
+}
+function clearansspot(){
+	if(ie4){
+		ansspot.innerHTML=""
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.clear()
+		document.ansspot.document.close()
+	}
+}
+</script>
+</head>
+<body onLoad="cleanse(),setrefs()">
+<h2>Freezing and Boiling Points of Aqueous Solutions</h2>
+This page is an exercise in colligative properties. When you press "New Problem" a solute formula appears in the first cell and values appear in the next two cells. Determine the values of the freezing and bioling points of the solution, enter them into the cells and press "Check Answer." Results appear in the second table.
+<h4>Hints</h4>
+<ul>
+<li>Be careful about dissociating solutes
+<li>All solutions are treated as ideal
+<li>It is assumed there are not additional processes beyond the possible solute dissociation, such as weak acid/base reactions.
+<li>Since browsers are inconsistent with regards to displaying mathematical symbols the letter "d" will be used to represent the delta sign.
+<li>If you miss a problem three times, pressing the "Show Answer" button will display a complete solution to appear.
+</ul>
+<form>
+<table border=4>
+<tr>
+<TD ALIGN=CENTER><b>Solute</td>
+<td align=center><b>Solute(grams)</td>
+<td align=center><b>Water Mass(g)</td>
+<td align=center><b>FP</td>
+<td align=center><b>BP</td>
+</tr>
+<tr>
+<td align=center><input name="cpd" type="text" size=8 ></td>
+<td align=center><input type=text name="solute" size=8 ></td>
+<td align=center><input type=text name="solvent" size=8 ></td>
+<td align=center><input type="text" name=fp size=8 ></td>
+<td align=center><input type="text" name=bp size=8 ></td>
+</tr>
+<tr>
+<td><input type="button" value="New Problem" onClick=startit()></td>
+<td><input type="button" value="Check Answer" onClick=answer()></td>
+<td><input type="button" value="Show Answer" onClick=showanswer()></td>
+</tr>
+</table>
+<table border=4>
+<tr><td align=center><b>Results</td>
+<td align=center><b>Total Done</td>
+<td><b>Total Correct</td>
+</tr>
+<tr>
+<td><input type="text" name="results" size=12></td>
+<td align=center><input type="text" name="total" size=4 ></td>
+<td align=center><input type="text" name="correct" size=4 ></td>
+</tr>
+</table>
+</form>
+<div id=qspot></div>
+<div id=ansspot></div>
+<div id=refspot></div>
+</body>
+</html>

@@ -1,0 +1,255 @@
+<html>
+<head><title>Homework-Larger, smaller, the same</title>
+<style>
+#qspot {position:absolute;left:350;top:170}
+#ansspot {position:absolute;left:350;top:400}
+#refspot {position:absolute;left:10;top:600;height:200}
+</style>
+<script src="reflist.js"></script>
+<script language="javascript">
+thepage="Larger, smaller, the same(50)-cs"
+//updated and checked with NS47 and IE5
+//globals
+var ie4 = (document.all) ? true : false;
+howlng=""
+totl=0
+corrt=0
+tried=0
+which="" 
+relation=""
+tried=0 
+theanswer=""
+relation=""
+thefirst=""
+thesecond=""
+cfactor=0
+theans=0
+myans=0
+function MakeArray(n){
+	this.length=n
+	for (var i=1;i<=n;i++){
+	this[i]= 0}
+}
+mets=new Array(100)
+function pairs(name,factor){
+	this.name=name
+	this.factor=factor
+}
+mets[1]=new pairs("millimeters",25.4)
+mets[2]=new pairs("centimeters",2.54)
+mets[3]=new pairs("meters",.0254)
+mets[4]=new pairs("kilometers",.0000254)
+mets[11]=new pairs("milliliters",946)
+mets[12]=new pairs("liters",.946)
+mets[21]=new pairs("milligrams",454000)
+mets[22]=new pairs("grams",454)
+mets[23]=new pairs("kilograms",.454)
+mets[31]=new pairs("g/mL",1)
+mets[32]=new pairs("g/L",1000)
+mets[33]=new pairs("kg/L",1)
+mets[34]=new pairs("mg/mL",1000)
+mets[35]=new pairs("kg/mL",.000001)
+eng=new Array(100)
+eng[1]=new pairs("inches",1)
+eng[2]=new pairs("feet",.0833)
+eng[3]=new pairs("yards",.028)
+eng[11]=new pairs("fl. ounces",32)
+eng[12]=new pairs("quarts",1)
+eng[13]=new pairs("gallons",.25)
+eng[21]=new pairs("ounces",16)
+eng[22]=new pairs("pounds",1)
+function parts(p1,p2,p3,p4,p5,p6){
+	this.p1=p1
+	this.p2=p2
+	this.p3=p3
+	this.p4=p4
+	this.p5=p5
+	this.p6=p6
+}
+compare=new Array(5)
+compare[1]=new parts("a greater"," than ","a numeric decrease","smaller")
+compare[2]=new parts("a lesser"," than ","a numeric increase","larger")
+compare[3]=new parts(" the same "," as ","no numeric change","the same")
+ansphrase=new Array(5)
+ansphrase[1]=new parts("Since  "," is "," quantity ",", the conversion will result in a ",".Thus the correct answer is<b> ",".</b>")
+cdphrase="This is a compound dimension, so you must consider the effects of both dimensions."
+function clearbig(){
+	document.forms[0].big[0].checked=0
+	document.forms[0].big[1].checked=0
+	document.forms[0].big[2].checked=0
+	document.forms[0].first.value=""
+	document.forms[0].second.value=""
+}
+function clear(){
+	document.forms[0].results.value=""
+	tried=0
+	clearbig()
+	clearansspot()
+}
+function parts(p1,p2,p3,p4,p5,p6){
+	this.p1=p1
+	this.p2=p2
+	this.p3=p3
+	this.p4=p4
+	this.p5=p5
+	this.p6=p6
+}
+function clearansspot(){
+	if(ie4){
+		ansspot.innerHTML=""
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.clear()
+		document.ansspot.document.close()
+	}
+}
+
+function startit(){
+	tried=0
+	clear()
+ 	totl++
+	document.forms[0].total.value=totl
+	document.forms[0].results.value=""
+	option=Math.ceil(4*Math.random())
+	if(option==1){
+		val1=Math.ceil(4*Math.random())
+		val2=Math.ceil(3*Math.random())
+		}
+	if(option==2){
+		val1=10+Math.ceil(2*Math.random())
+		val2=10+Math.ceil(3*Math.random())
+		}
+	if(option==3){
+		val1=20+Math.ceil(3*Math.random())
+		val2=20+Math.ceil(2*Math.random())
+		}
+	if(option==4){
+		val1=30+Math.ceil(5*Math.random())
+		val2=val1
+		while(val2==val1)val2=30+Math.ceil(5*Math.random())
+		}
+	if(option<4)cfactor=eng[val2].factor/mets[val1].factor
+	else cfactor=mets[val2].factor/mets[val1].factor
+	if(Math.random()>.5){
+	sunit=mets[val1].name
+	document.forms[0].first.value=mets[val1].name
+	if(option<4){
+		funit=eng[val2].name;
+		document.forms[0].second.value=eng[val2].name;
+		}
+		else{
+		 document.forms[0].second.value=mets[val2].name;
+		 funit=mets[val2].name;
+		}
+	}
+	else{
+	cfactor=1/cfactor
+	funit=mets[val1].name
+	document.forms[0].second.value=mets[val1].name
+	if(option<4){
+		sunit=eng[val2].name
+		document.forms[0].first.value=eng[val2].name;
+		}
+	else {
+		document.forms[0].first.value=mets[val2].name;
+		sunit=mets[val2].name
+		}
+	}
+	makeanswer(option)
+	} 
+function makeanswer(which){
+	if(which==4)theanswer=cdphrase;
+	else theanswer="";
+	if(cfactor<1)key=1
+	if(cfactor==1)key=3
+	if(cfactor>1)key=2
+	theanswer=theanswer+ansphrase[1].p1+funit+ansphrase[1].p2+compare[key].p1+ansphrase[1].p3+compare[key].p2+sunit+ansphrase[1].p4+compare[key].p3+ansphrase[1].p5+compare[key].p4
+}
+function screen(anser){
+	myans=anser
+	if(cfactor>1)theans=1
+	if(cfactor<1)theans=0
+	if(cfactor==1)theans=2
+	answer()
+}
+function answer(anser){
+if(tried==1){
+		alert("Sorry, you've already submitted this problem! Get a new one!")
+		}
+else{	tried=1
+	if (myans==theans ){	
+	document.forms[0].results.value="correct"
+		corrt++
+		document.forms[0].correct.value=corrt
+		tried=1
+}	
+else {
+		document.forms[0].results.value="incorrect"
+		showanswer()}
+}
+tried=1
+}
+function showanswer(){
+	if(ie4){
+		ansspot.innerHTML=theanswer
+	}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.write(theanswer)
+		document.ansspot.document.close()
+	}
+}
+	
+</script>
+</head>
+<body onLoad="clear()"> 
+<h2>Larger, smaller or the same?</h2>
+This is a drill and practice page about predicting the result of a conversion. This is
+totally noncalculational. <b>Put away the calculator</b>. When you press "New Problem",
+a quantity and a starting dimension will be shown as well as the dimension into which the
+starting quantity is to be converted. Predict whether the new numeric quantity resulting
+from the conversion will be larger, smaller or the same as the quantity given and click
+on the circle <b>in front of the appropriate term</b>. For example, "1.23feet to miles" would
+be correctly answered by "smaller". Results will appear in the second table.
+<h4>Hints</h4>
+<ul>
+<li>You only get one attempt at answering a problem.
+<li>If you get a problem "incorrect", the solution will appear to the right of the table.
+answer.
+</ul>
+<form>
+<table border=4>
+<tr>
+<td><input type="text" name=first size=12></td>
+<td align=middle><b>TO</td>
+<td><input type="text" name=second size=12></td>
+<td><input type="button" value="New Problem" onClick=startit()></td>
+</tr>
+<tr>
+<td><input type=radio name="big" onClick="screen(0)">
+<b>Smaller</b></td>
+<td><input type=radio name="big" onClick="screen(1)">
+<b>Larger</b></td>
+<td><input type=radio name="big" onClick="screen(2)">
+<b>Same</b></td>
+</tr>
+</table>
+<br>
+<table border=4>
+<tr>
+<td align=center><b>Results</td>
+<td align=center><b>Total Done</td>
+<td><b>Total Correct</td>
+</tr>
+<tr>
+<td><input type="text" name="results" size=12></td>
+<td align=center><input type="text" name="total" size=4 ></td>
+<td align=center><input type="text" name="correct" size=4 ></td>
+</table>
+</form>
+<div id=qspot></div>
+<div id=ansspot></div>
+<div id=refspot></div>
+</body>
+</html>

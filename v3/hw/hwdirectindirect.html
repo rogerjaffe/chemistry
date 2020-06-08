@@ -1,0 +1,168 @@
+<html>
+<head>
+<title>Direct or Inverse</title>
+<script>
+//globals
+//Last Update 7/28/98
+thepage="Direct or Inverse(70)"
+firstletter=0
+secondletter=0
+theimage=""
+totl=0
+corrt=0
+tried=0
+howlong=""
+theanswer=0
+function clear(){
+	document.forms[0].results.value=""
+	document.forms[0].total.value=totl
+	document.forms[0].correct.value=corrt
+}
+function MakeArray(n){
+	this.length=n
+	for (var i=1;i<=n;i++){
+	this[i]= 0}
+}
+function where(p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12){
+	this.p1=p1
+	this.p2=p2
+	this.p3=p3
+	this.p4=p4
+	this.p5=p5
+	this.p6=p6
+	this.p7=p7
+	this.p8=p8
+	this.p9=p9
+	this.p10=p10
+	this.p11=p11
+	this.p12=p12
+}
+letters=new MakeArray(6)
+letters[1]="A"
+letters[2]="B"
+letters[3]="C"
+letters[4]="D"
+letters[5]="E"
+letters[6]="F"
+/*this is the position array. It provides the position in the equation of each variable. Each is two terms, with A being the first two, B the second two and so on. A 1 in the first position means the variable is on the left side, a 2 means the right side. A 1 in the second position means the variable is a numerator term a 2 means its a denominator term*/
+anset=new MakeArray(20)
+anset[1]=new where(1,1,1,1,1,2,1,2,2,1,2,1)
+anset[2]=new where(1,1,1,2,1,2,2,1,2,1,2,2)
+anset[3]=new where(1,1,1,1,1,2,2,1,2,2,2,2)
+anset[4]=new where(1,1,1,2,2,1,2,1,2,2,2,2)
+anset[5]=new where(1,1,1,1,1,1,2,1,2,1,2,2)
+anset[6]=new where(1,1,1,2,1,2,2,1,2,2,2,2)
+anset[7]=new where(1,1,1,1,1,2,1,2,2,1,2,1)
+anset[8]=new where(1,1,1,1,2,1,2,1,2,2,2,2)
+anset[9]=new where(1,1,1,1,1,1,1,2,1,2,2,1)
+anset[10]=new where(1,1,1,2,1,2,2,2,2,2,2,2)
+
+function begin(){
+document.forms[0].results.value=""
+tried=0
+totl++
+document.forms[0].total.value=totl
+firstletter=Math.ceil(6*Math.random())
+secondletter=firstletter
+while(firstletter==secondletter){
+	secondletter=Math.ceil(6*Math.random())}
+whicheqn=Math.ceil(6*Math.random())
+theimage="<img src='../structures/equations/equation"+whicheqn+".gif'</img>"
+lr1=anset[whicheqn]['p'+(2*firstletter-1)]
+tb1=anset[whicheqn]['p'+(2*firstletter)]
+lr2=anset[whicheqn]['p'+(2*secondletter-1)]
+tb2=anset[whicheqn]['p'+(2*secondletter)]
+display()
+getanswer(lr1,lr2,tb1,tb2)
+}
+
+function getanswer(lr1,lr2,tb1,tb2){
+if(lr1==lr2){
+	if(tb1==tb2){theanswer=2}
+	else{theanswer=1}
+	}
+else{
+	if(tb1!=tb2){theanswer=2}
+	else{theanswer=1}
+	}
+}
+
+function display(){
+checkit=window.open("","checkit","scrollbars=yes,width=350,height=150")
+checkit.document.clear()
+checkit.document.writeln ("<html>");
+checkit.document.writeln ("<head><title>Direct/Indirect</title>");
+checkit.document.writeln ("</head>");
+checkit.document.writeln ("<body bgcolor = FFFFFF>");
+checkit.document.writeln (theimage,"<br>",letters[firstletter]," and ",letters[secondletter]);
+checkit.document.writeln ("<form><input type=radio name=ans  onClick='opener.answer(1)'><b>Direct</b>");
+checkit.document.writeln ("<form><input type=radio name=ans  onClick='opener.answer(2)'><b>Inverse</b>");
+checkit.document.writeln ("</form></body>");
+checkit.document.writeln ("</html>");
+checkit.document.close();
+checkit.focus()
+}
+//obviously the timer function
+function timer(z){
+tt=z
+var b=Math.floor(tt/60)
+var j = (tt % 60)
+if (j<10){c="0"}
+else {c=""}
+howlong=b + ":" + c + j
+running=setTimeout("timer(tt+1)",1000)
+}
+
+function answer(ansr){
+if(tried==1){alert("You've already done this one. Get a new Problem!")}
+else{
+if(tried==2){totl++;document.forms[0].total.value=totl}
+if(theanswer==ansr){
+	document.forms[0].results.value="correct"
+	corrt++
+	document.forms[0].correct.value=corrt
+	tried=1}
+else{
+	document.forms[0].results.value="incorrect"
+	tried=2
+	}
+}
+}
+function update(){
+	document.forms[0].total.value=totl
+	document.forms[0].correct.value=corrt
+	document.forms[0].time.value=howlong
+	document.forms[0].page.value=thepage
+	document.forms[0].verify.value=Math.round(10000*Math.random())
+}
+
+</script>
+</head>
+<body onLoad=clear(),timer(0)>
+<h2>Direct or Inverse</h2>
+This is a drill and practice exercise in recognizing direct and inverse relationships between variables. When you press "New Problem", a small window containing an equation and a variable pair taken from the equation will appear. Determine whether the variables are directly or invesely related and click on the appropriate circle. Results appear in the scoring table on the main window.
+<br>
+<form ACTION = "../cgi-bin/homework/hw_turnin.php" METHOD = "POST">
+<input type=button value="New Problem" onClick=begin()>
+<table border=4>
+<tr>
+<td align=center>Results</td>
+<td>Total</td>
+<td>Correct</td>
+</tr>
+<tr>
+<td><input type=text size=12 name=results></td>
+<td align=center><input type=text size=5 name=total></td>
+<td align=center><input type=text size=5 name=correct></td>
+</tr>
+</table>
+<input type=text name="page" size=1>
+<input type=text name="verify" size=1>
+<input type=text name="time" size=1><br>
+<INPUT TYPE = "submit" VALUE = "Submit your score" onClick="update()">
+<br>
+<a href="index.html"><img src="back.gif"></a><br>
+</form>
+</body>
+</html>
+

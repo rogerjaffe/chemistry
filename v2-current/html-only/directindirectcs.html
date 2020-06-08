@@ -1,0 +1,224 @@
+<html>
+<head>
+<style>
+#qspot {position:absolute;left:350;top:170}
+#ansspot {position:absolute;left:350;top:300}
+#refspot {position:absolute;left:10;top:600;height:200}
+</style>
+<script src=reflist.js></script>
+<title>Direct or Inverse-cs</title>
+<script>
+//checked with NS47 and IE5
+//globals
+refnumber=3
+var ie4 = (document.all) ? true : false;
+firstletter=0
+secondletter=0
+theimage=""
+totl=0
+corrt=0
+tried=0
+theanswer=0
+theans=0
+myans=0
+thelast=0
+ivalue=0
+whicheqn=0
+function parts(p1,p2,p3,p4,p5,p6){
+	this.p1=p1
+	this.p2=p2
+	this.p3=p3
+	this.p4=p4
+	this.p5=p5
+	this.p6=p6
+}
+function clear(){
+	document.forms[0].results.value=""
+      document.forms[0].theans.value=""
+        	attempts=0
+	}
+function cleanse(){
+        document.forms[0].total.value=0
+        document.forms[0].correct.value=0
+       }
+function setrefs(){
+if(ie4){
+		refspot.innerHTML=booktitle+theref[10]
+		}
+	else{
+		document.refspot.document.open()
+		document.refspot.document.write(booktitle,theref[10])
+		document.refspot.document.close()
+	}
+}
+
+ansphrase=new parts("In this case the variable pair appears in the equation "," Therefore, the variables are "," related.")
+inserts=new Array(10)
+inserts[1]=" as a ratio."
+inserts[2]=" as a product."
+inserts[3]=" on opposite sides of the '=' and the 'same level'."
+inserts[4]=" on opposite sides of the '=' and on the 'opposite levels'."
+finalword=new Array(10)
+finalword[1]="directly"
+finalword[2]="inversely"
+function clear(){
+	document.forms[0].results.value=""
+	document.forms[0].total.value=totl
+	document.forms[0].correct.value=corrt
+}
+function where(p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12){
+	this.p1=p1
+	this.p2=p2
+	this.p3=p3
+	this.p4=p4
+	this.p5=p5
+	this.p6=p6
+	this.p7=p7
+	this.p8=p8
+	this.p9=p9
+	this.p10=p10
+	this.p11=p11
+	this.p12=p12
+}
+letters=new Array(6)
+letters[1]="A"
+letters[2]="B"
+letters[3]="C"
+letters[4]="D"
+letters[5]="E"
+letters[6]="F"
+/*this is the position array. It provides the position in the equation of each variable. Each is two terms, with A being the first two, B the second two and so on. A 1 in the first position means the variable is on the left side, a 2 means the right side. A 1 in the second position means the variable is a numerator term a 2 means its a denominator term*/
+anset=new Array(20)
+anset[1]=new where(1,1,1,1,1,2,1,2,2,1,2,1)
+anset[2]=new where(1,1,1,2,1,2,2,1,2,1,2,2)
+anset[3]=new where(1,1,1,1,1,2,2,1,2,2,2,2)
+anset[4]=new where(1,1,1,2,2,1,2,1,2,2,2,2)
+anset[5]=new where(1,1,1,1,1,1,2,1,2,1,2,2)
+anset[6]=new where(1,1,1,2,1,2,2,1,2,2,2,2)
+anset[7]=new where(1,1,1,1,1,2,1,2,2,1,2,1)
+anset[8]=new where(1,1,1,1,2,1,2,1,2,2,2,2)
+anset[9]=new where(1,1,1,1,1,1,1,2,1,2,2,1)
+anset[10]=new where(1,1,1,2,1,2,2,2,2,2,2,2)
+function clearansspot(){
+	if(ie4){
+		ansspot.innerHTML=""
+	}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.clear()
+		document.ansspot.document.close()
+	}
+}
+function begin(){
+	clearansspot()
+	theans=0
+	document.forms[0].results.value=""
+	tried=0
+	totl++
+	document.forms[0].total.value=totl
+	firstletter=Math.ceil(6*Math.random())
+	secondletter=firstletter
+	while(firstletter==secondletter){
+	secondletter=Math.ceil(6*Math.random())}
+	whicheqn=Math.ceil(6*Math.random())
+	theimage="<img src='equations/equation"+whicheqn+".gif'>"
+	lr1=anset[whicheqn]['p'+(2*firstletter-1)]
+	tb1=anset[whicheqn]['p'+(2*firstletter)]
+	lr2=anset[whicheqn]['p'+(2*secondletter-1)]
+	tb2=anset[whicheqn]['p'+(2*secondletter)]
+	display()
+	getanswer(lr1,lr2,tb1,tb2)
+}
+
+function getanswer(lr1,lr2,tb1,tb2){
+if(lr1==lr2){
+	if(tb1==tb2){
+		theanswer=2
+		ivalue=2
+		}
+	else{
+		theanswer=1
+		ivalue=1}
+	}
+else{
+	if(tb1!=tb2){
+		theanswer=2
+		ivalue=4}
+	else{
+		theanswer=1
+		ivalue=3}
+	}
+if(theanswer==1)thelast=1;
+else thelast=2;
+}
+function display(){
+if(ie4){
+	showstring=theimage+"<br>"+letters[firstletter]+" and "+letters[secondletter]
+	qspot.innerHTML=showstring
+	}
+else{
+	document.qspot.document.open()
+	document.qspot.document.write(theimage,"<br>",letters[firstletter]," and ",letters[secondletter]);
+	document.qspot.document.close()
+}}
+function screen(a){
+	myans=a
+	theans=theanswer
+	answer()
+}
+function answer(){
+if(tried==1){alert("You've already done this one. Get a new Problem!")}
+else{
+if(myans==theans){
+	document.forms[0].results.value="correct"
+	corrt++
+	document.forms[0].correct.value=corrt
+	tried=1}
+else{
+	document.forms[0].results.value="incorrect"
+	if(tried==2){totl++;document.forms[0].total.value=totl}
+	tried=2
+	showanswer()
+	}
+}
+}
+function showanswer(){
+	statement=ansphrase.p1+inserts[ivalue]+ansphrase.p2+finalword[thelast]+ansphrase.p3
+	if(ie4){
+		ansspot.innerHTML=statement
+	}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.write(statement)
+		document.ansspot.document.close()
+	}
+}
+
+</script>
+</head>
+<body onLoad="clear()">
+<h2>Direct or Inverse</h2>
+This is a drill and practice exercise in recognizing direct and inverse relationships between variables.  An equation and a variable pair taken from the equation will appear to the right of the table below. Determine whether the variables are directly or invesely related and click on the appropriate circle. Results appear in the scoring table on the main window.
+<form>
+<input type=button value="New Problem" onClick=begin()><br>
+<input type=radio name=choice onClick=screen(1)>Direct<input type=radio name=choice onClick=screen(2)>Inverse<br>
+<table border=4>
+<tr>
+<td align=center>Results</td>
+<td>Total</td>
+<td>Correct</td>
+</tr>
+<tr>
+<td><input type=text size=12 name=results></td>
+<td align=center><input type=text size=5 name=total></td>
+<td align=center><input type=text size=5 name=correct></td>
+</tr>
+</table>
+</form>
+<div id=qspot></div>
+<div id=ansspot></div>
+<div id=refspot></div>
+<br><br>
+</body>
+</html>
+

@@ -1,0 +1,420 @@
+<html>
+<head>
+<title>Reducing Representations-Questions</title>
+<script>
+//globals
+thepage="Reducible Representations(66)"
+howlong=""
+whichgroup=0
+totl=0
+corrt=0
+tried=0
+function clear(){
+	document.forms[0].results.value=""
+	document.forms[0].total.value=totl
+	document.forms[0].correct.value=corrt
+}
+function MakeArray(n){
+	this.length=n
+	for (var i=1;i<=n;i++){
+	this[i]= 0}
+}
+function groups(pclass,order,gorder,startind){
+	this.pclass=pclass
+	this.order=order
+	this.gorder=gorder
+	this.startind=startind
+	}
+function operates(o1,o2,o3,o4,o5,o6,o7,o8,o9,o10,o11,o12,o13,o14){
+	this.o1=o1
+	this.o2=o2
+	this.o3=o3
+	this.o4=o4
+	this.o5=o5
+	this.o6=o6
+	this.o7=o7
+	this.o8=o8
+	this.o9=o9
+	this.o10=o10
+	this.o11=o11
+	this.o12=o12
+	this.o13=o13
+	this.o14=o14
+	}
+function reps(sym,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14){
+	this.sym=sym
+	this.r1=r1
+	this.r2=r2
+	this.r3=r3
+	this.r4=r4
+	this.r5=r5
+	this.r6=r6
+	this.r7=r7
+	this.r8=r8
+	this.r9=r9
+	this.r10=r10
+	this.r11=r11
+	this.r12=r12
+	}
+factor=new MakeArray(12)
+irep=new MakeArray(12)
+charact=new MakeArray(12)
+group=new MakeArray(50)
+operation=new MakeArray(50)
+irreps=new MakeArray(100)
+oporders=new MakeArray(30)
+occur=new MakeArray(20)
+theanswer=new MakeArray(20)
+for(j=1;j<=20;j++){theanswer[j]=""}
+group[1]=new groups("C<SUB>1</SUB>",1,1,1)
+group[2]=new groups("C<SUB>s</SUB>",2,2,2)
+group[3]=new groups("C<SUB>i</SUB>",2,2,4)
+group[4]=new groups("C<SUB>2</SUB>",2,2,6)
+group[5]=new groups("D<SUB>2</SUB>",4,4,8)
+group[6]=new groups("D<SUB>3</SUB>",3,6,12)
+group[7]=new groups("D<SUB>4</SUB>",5,8,15)
+group[8]=new groups("D<SUB>6</SUB>",6,12,20)
+group[9]=new groups("C<SUB>2v</SUB>",4,4,26)
+group[10]=new groups("C<SUB>3v</SUB>",3,6,30)
+group[11]=new groups("C<SUB>4v</SUB>",5,8,33)
+group[12]=new groups("C<SUB>6v</SUB>",6,12,38)
+group[13]=new groups("C<SUB>2h</SUB>",4,4,44)
+group[14]=new groups("D<SUB>2h</SUB>",8,8,48)
+group[15]=new groups("D<SUB>3h</SUB>",6,12,56)
+group[16]=new groups("D<SUB>4h</SUB>",10,16,62)
+group[17]=new groups("D<SUB>6h</SUB>",12,24,72)
+group[18]=new groups("D<SUB>2d</SUB>",5,8,84)
+group[19]=new groups("D<SUB>3d</SUB>",6,12,89)
+group[20]=new groups("T<SUB>d</SUB>",5,24,95)
+group[21]=new groups("O<SUB>h</SUB>",10,48,100)
+group[22]=new groups()
+group[23]=new groups()
+group[24]=new groups()
+group[25]=new groups()
+group[26]=new groups()
+group[27]=new groups()
+group[28]=new groups()
+group[29]=new groups()
+group[30]=new groups()
+operation[1]=new operates("E")
+operation[2]=new operates("E","o<sub>h</sub>")
+operation[3]=new operates("E","i")
+operation[4]=new operates("E","C<sub>2</sub>")
+operation[5]=new operates("E","C<sub>2</sub>(z)","C<sub>2</sub>(y)","C<sub>2</sub>(x)")
+operation[6]=new operates("E","2C<sub>3</sub>","3C<sub>2</sub>")
+operation[7]=new operates("E","2C<sub>4</sub>","C<sub>2</sub>(=C<sub>4</sub><sup>2</sup>)","C<sub>2</sub>'","C<sub>2</sub>''")
+operation[8]=new operates("E","2C<sub>6</sub>","2C<sub>3</sub>","C<sub>2</sub>","3C<sub>2</sub>'","3C<sub>2</sub>''")
+operation[9]=new operates("E","C<sub>2</sub>","o<sub>v</sub>(xz)","o<sub>v</sub>(yz)")
+operation[10]=new operates("E","2C<sub>3</sub>","o<sub>v</sub>")
+operation[11]=new operates("E","2C<sub>4</sub>","C<sub>2</sub>","2o<sub>v</sub>","2o<sub>d</sub>")
+operation[12]=new operates("E","2C<sub>6</sub>","2C<sub>3</sub>","C<sub>2</sub>","3o<sub>v</sub>","3o<sub>d</sub>")
+operation[13]=new operates("E","C<sub>2</sub>","i","o<sub>h</sub>")
+operation[14]=new operates("E","C<sub>2</sub>(z)","C<sub>2</sub>(y)","C<sub>2</sub>(x)","i","o(xy)", "o(xz)","o(yz)")
+operation[15]=new operates("E","2C<sub>3</sub>","3C<sub>2</sub>","o<sub>h</sub>","2S<sub>3</sub>","3o<sub>v</sub>")
+operation[16]=new operates("E","2C<sub>4</sub>","C<sub>2</sub>","2C<sub>2</sub>'","2C<sub>2</sub>''","i","2S<sub>4</sub>","o<sub>h</sub>","2o<sub>v</sub>","2o<sub>d</sub>")
+operation[17]=new operates("E","2C<sub>6</sub>","2C<sub>3</sub>","C<sub>2</sub>","3C<sub>2</sub>'","3C<sub>2</sub>''", "i","2S<sub>3</sub>","2S<sub>6</sub>", "o<sub>h</sub>","3o<sub>v</sub>","3o<sub>d</sub>")
+operation[18]=new operates("E","2S<sub>4</sub>","C<sub>2</sub>","i","2C<sub>2</sub>'","2o<sub>d</sub>")
+operation[19]=new operates("E","2C<sub>3</sub>","3C<sub>2</sub>","i","S<sub>6</sub>'","3o<sub>d</sub>")
+operation[20]=new operates("E","8C<sub>3</sub>","3C<sub>2</sub>","6S<sub>4</sub>'","6o<sub>d</sub>")
+operation[21]=new operates("E","8C<sub>3</sub>","6C<sub>2</sub>","6C<sub>4</sub>", "3C<sub>2</sub>(=C<sub>4</sub><sup>2</sup>)","i","6S<sub>4</sub>","8S<sub>6</sub>","3o<sub>h</sub>","6o<sub>d</sub>")
+operation[22]=new operates()
+operation[23]=new operates()
+operation[24]=new operates()
+operation[25]=new operates()
+operation[26]=new operates()
+operation[27]=new operates()
+operation[28]=new operates()
+operation[29]=new operates()
+operation[30]=new operates()
+irreps[1]=new reps("A",1)
+irreps[2]=new reps("A'",1,1)
+irreps[3]=new reps("A''",1,-1)
+irreps[4]=new reps("A<sub>u</sub>",1,1)
+irreps[5]=new reps("A<sub>g</sub>",1,-1)
+irreps[6]=new reps("A",1,1)
+irreps[7]=new reps("B",1,-1)
+irreps[8]=new reps("A",1,1,1,1)
+irreps[9]=new reps("B<sub>1</sub>",1,1,-1,-1)
+irreps[10]=new reps("B<sub>2</sub>",1,-1,1,-1)
+irreps[11]=new reps("B<sub>3</sub>",1,-1,-1,1)
+irreps[12]=new reps("A<sub>1</sub>",1,1,1)
+irreps[13]=new reps("A<sub>2</sub>",1,1,-1)
+irreps[14]=new reps("E",2,-1,0)
+irreps[15]=new reps("A<sub>1</sub>",1,1,1,1,1)
+irreps[16]=new reps("A<sub>2</sub>",1,1,1,-1,-1)
+irreps[17]=new reps("B<sub>1</sub>",1,-1,1,1,-1)
+irreps[18]=new reps("B<sub>2</sub>",1,-1,1,-1,1)
+irreps[19]=new reps("E",2,0,-2,0,0)
+irreps[20]=new reps("A<sub>1</sub>",1,1,1,1,1,1)
+irreps[21]=new reps("A<sub>2</sub>",1,1,1,1,-1,-1)
+irreps[22]=new reps("B<sub>1</sub>",1,-1,1,-1,1,-1)
+irreps[23]=new reps("B<sub>2</sub>",1,-1,1,-1,-1,1)
+irreps[24]=new reps("E<sub>1</sub>",2,1,-1,-2,0,0)
+irreps[25]=new reps("E<sub>2</sub>",2,-1,-1,2,0,0)
+irreps[26]=new reps("A<sub>1</sub>",1,1,1,1)
+irreps[27]=new reps("A<sub>2</sub>",1,1,-1,-1)
+irreps[28]=new reps("B<sub>1</sub>",1,-1,1,-1)
+irreps[29]=new reps("B<sub>2</sub>",1,-1,-1,1)
+irreps[30]=new reps("A<sub>1</sub>",1,1,1)
+irreps[31]=new reps("A<sub>2</sub>",1,1,-1)
+irreps[32]=new reps("E",2,-1,0)
+irreps[33]=new reps("A<sub>1</sub>",1,1,1,1,1)
+irreps[34]=new reps("A<sub>2</sub>",1,1,1,-1,-1)
+irreps[35]=new reps("B<sub>1</sub>",1,-1,1,1,-1)
+irreps[36]=new reps("B<sub>2</sub>",1,-1,1,-1,1)
+irreps[37]=new reps("E",2,0,-2,0,0)
+irreps[38]=new reps("A<sub>1</sub>",1,1,1,1,1,1)
+irreps[39]=new reps("A<sub>2</sub>",1,1,1,1,-1,-1)
+irreps[40]=new reps("B<sub>1</sub>",1,-1,1,-1,1,-1)
+irreps[41]=new reps("B<sub>2</sub>",1,-1,1,-1,-1,1)
+irreps[42]=new reps("E<sub>1</sub>",2,1,-1,-2,0,0)
+irreps[43]=new reps("E<sub>2</sub>",2,-1,-1,2,0,0)
+irreps[44]=new reps("A<sub>g</sub>",1,1,1,1)
+irreps[45]=new reps("B<sub>g</sub>",1,-1,1,-1)
+irreps[46]=new reps("A<sub>u</sub>",1,1,-1,-1)
+irreps[47]=new reps("B<sub>u</sub>",1,-1,-1,1)
+irreps[48]=new reps("A<sub>g</sub>",1,1,1,1,1,1,1,1) 
+irreps[49]=new reps("B<sub>1g</sub>",1,1,-1,-1,1,1,-1,-1)
+irreps[50]=new reps("B<sub>2g</sub>",1,-1,1,-1,1,-1,1,-1)
+irreps[51]=new reps("B<sub>3g</sub>",1,-1,-1,1,1,-1,-1,1)
+irreps[52]=new reps("A<sub>u</sub>",1,1,1,1,-1,-1,-1,-1)
+irreps[53]=new reps("B<sub>1u</sub>",1,1,-1,-1,-1,-1,1,1)
+irreps[54]=new reps("B<sub>2u</sub>",1,-1,1,-1,-1,1,-1,1)
+irreps[55]=new reps("B<sub>3u</sub>",1,-1,-1,1,-1,1,1,-1)
+irreps[56]=new reps("A<sub>1</sub>'",1,1,1,1,1,1)
+irreps[57]=new reps("A<sub>2</sub>'",1,1,-1,1,1,-1)
+irreps[58]=new reps("E'",2,-1,0,2,-1,0)
+irreps[59]=new reps("A<sub>1</sub>''",1,1,1,-1,-1,-1)
+irreps[60]=new reps("A<sub>2</sub>''",1,1,-1,-1,-1,1)
+irreps[61]=new reps("E''",2,-1,0,-2,1,0)
+irreps[62]=new reps("A<sub>1g</sub>",1,1,1,1,1,1,1,1,1,1)
+irreps[63]=new reps("A<sub>2g</sub>",1,1,1,-1,-1,1,1,1,-1,-1)
+irreps[64]=new reps("B<sub>1g</sub>",1,-1,1,1,-1,1,-1,1,1,-1)
+irreps[65]=new reps("B<sub>2g</sub>",1,-1,1,-1,1,1,-1,1,-1,1)
+irreps[66]=new reps("E<sub>g</sub>",2,0,-2,0,0,2,0,-2,0,0)
+irreps[67]=new reps("A<sub>1u</sub>",1,1,1,1,1,-1,-1,-1,-1,-1)
+irreps[68]=new reps("A<sub>2u</sub>",1,1,1,-1,-1,-1,-1,-1,1,1)
+irreps[69]=new reps("B<sub>1u</sub>",1,-1,1,1,-1,-1,1,-1,-1,1)
+irreps[70]=new reps("B<sub>2u</sub>",1,-1,1,-1,1,-1,1,-1,1,-1)
+irreps[71]=new reps("E<sub>u</sub>",2,0,-2,0,0,-2,0,2,0,0)
+irreps[72]=new reps("A<sub>1g</sub>",1,1,1,1,1,1,1,1,1,1,1,1)
+irreps[73]=new reps("A<sub>2g</sub>",1,1,1,1,-1,-1,1,1,1,1,-1,-1)
+irreps[74]=new reps("B<sub>1g</sub>",1,-1,1,-1,1,-1,1,-1,1,-1,1,-1)
+irreps[75]=new reps("B<sub>2g</sub>",1,-1,1,-1,-1,1,1,-1,1,-1,-1,1)
+irreps[76]=new reps("E<sub>1g</sub>",2,1,-1,-2,0,0,2,1,-1,-2,0,0)
+irreps[77]=new reps("E<sub>2g</sub>",2,-1,-1,2,0,0,2,-1,-1,2,0,0)
+irreps[78]=new reps("A<sub>1u</sub>",1,1,1,1,1,1,-1,-1,-1,-1,-1,-1)
+irreps[79]=new reps("A<sub>2u</sub>",1,1,1,1,-1,-1,-1,-1,-1,-1,1,1)
+irreps[80]=new reps("B<sub>1u</sub>",1,-1,1,-1,1,-1,-1,1,-1,1,-1,1)
+irreps[81]=new reps("B<sub>2u</sub>",1,-1,1,-1,-1,1,-1,1,-1,1,1,-1)
+irreps[82]=new reps("E<sub>1u</sub>",2,1,-1,-2,0,0,-2,-1,1,2,0,0)
+irreps[83]=new reps("E<sub>2u</sub>",2,-1,-1,2,0,0,-2,1,1,-2,0,0)
+irreps[84]=new reps("A<sub>1</sub>",1,1,1,1,1)
+irreps[85]=new reps("A<sub>2</sub>",1,1,1,-1,-1)
+irreps[86]=new reps("B<sub>1</sub>",1,-1,1,1,-1)
+irreps[87]=new reps("B<sub>2</sub>",1,-1,1,-1,1)
+irreps[88]=new reps("E",2,0,-2,0,0)
+irreps[89]=new reps("A<sub>1g</sub>",1,1,1,1,1,1)
+irreps[90]=new reps("A<sub>1g</sub>",1,1,-1,1,1,-1)
+irreps[91]=new reps("E<sub>g</sub>",2,-1,0,2,-1,0)
+irreps[92]=new reps("A<sub>1u</sub>",1,1,1,-1,-1,-1)
+irreps[93]=new reps("A<sub>2u</sub>",1,1,-1,-1,-1,1)
+irreps[94]=new reps("E<sub>u</sub>",2,-1,0,-2,1,0)
+irreps[95]=new reps("A<sub>1</sub>",1,1,1,1,1)
+irreps[96]=new reps("A<sub>2</sub>",1,1,1,-1,-1)
+irreps[97]=new reps("E",2,-1,2,0,0)
+irreps[98]=new reps("T<sub>1</sub>",3,0,-1,1,-1)
+irreps[99]=new reps("T<sub>2</sub>",3,0,-1,-1,1)
+irreps[100]=new reps("A<sub>1g</sub>",1,1,1,1,1,1,1,1,1,1)
+irreps[101]=new reps("A<sub>2g</sub>",1,1,-1,-1,1,1,-1,1,1,-1)
+irreps[102]=new reps("E<sub>g</sub>",2,-1,0,0,2,2,0,-1,2,0)
+irreps[103]=new reps("T<sub>1g</sub>",3,0,-1,1,-1,3,1,0,-1,-1)
+irreps[104]=new reps("T<sub>2g</sub>",3,0,1,-1,-1,3,-1,0,-1,1)
+irreps[105]=new reps("A<sub>1u</sub>",1,1,1,1,1,-1,-1,-1,-1,-1)
+irreps[106]=new reps("A<sub>2u</sub>",1,1,-1,-1,1,-1,1,-1,-1,1)
+irreps[107]=new reps("E<sub>u</sub>",2,-1,0,0,2,-2,0,1,-2,0)
+irreps[108]=new reps("T<sub>1u</sub>",3,0,-1,1,-1,-3,-1,0,1,1)
+irreps[109]=new reps("T<sub>2u</sub>",3,0,1,-1,-1,-3,1,0,1,-1)
+irreps[110]=new reps()
+irreps[111]=new reps()
+irreps[112]=new reps()
+irreps[113]=new reps()
+irreps[114]=new reps()
+irreps[115]=new reps()
+irreps[116]=new reps()
+irreps[117]=new reps()
+irreps[118]=new reps()
+irreps[119]=new reps()
+irreps[120]=new reps()
+oporders[1]=new operates(1)
+oporders[2]=new operates(1,1)
+oporders[3]=new operates(1,1)
+oporders[4]=new operates(1,1)
+oporders[5]=new operates(1,1,1,1)
+oporders[6]=new operates(1,2,3)
+oporders[7]=new operates(1,2,1,2,2)
+oporders[8]=new operates(1,2,2,1,3,3)
+oporders[9]=new operates(1,1,1,1)
+oporders[10]=new operates(1,2,3)
+oporders[11]=new operates(1,2,1,2,2)
+oporders[12]=new operates(1,2,2,1,3,3)
+oporders[13]=new operates(1,1,1,1)
+oporders[14]=new operates(1,1,1,1,1,1,1,1)
+oporders[15]=new operates(1,2,3,1,2,3)
+oporders[16]=new operates(1,2,1,2,2,1,2,1,2,2)
+oporders[17]=new operates(1,2,2,1,3,3,1,2,2,1,3,3)
+oporders[18]=new operates(1,2,1,2,2)
+oporders[19]=new operates(1,2,3,1,2,3)
+oporders[20]=new operates(1,8,3,6,6)
+oporders[21]=new operates(1,8,6,6,3,1,6,8,3,6)
+oporders[22]=new operates()
+oporders[23]=new operates()
+oporders[24]=new operates()
+oporders[25]=new operates()
+oporders[26]=new operates()
+oporders[27]=new operates()
+oporders[28]=new operates()
+oporders[29]=new operates()
+oporders[30]=new operates()
+//begin program
+
+//obviously the timer function
+function timer(z){
+tt=z
+var b=Math.floor(tt/60)
+var j = (tt % 60)
+if (j<10){c="0"}
+else {c=""}
+howlong=b + ":" + c + j
+running=setTimeout("timer(tt+1)",1000)
+}
+
+function update(){
+	document.forms[0].total.value=totl
+	document.forms[0].correct.value=corrt
+	document.forms[0].time.value=howlong
+	document.forms[0].page.value=thepage
+	document.forms[0].verify.value=Math.round(10000*Math.random())
+}
+function begin(){
+
+whichgroup=Math.ceil(21*Math.random())
+if(group[whichgroup]['order']<3 || group[whichgroup]['order']>8){begin()}
+else{
+document.forms[0].results.value=""
+tried=0
+totl++
+document.forms[0].total.value=totl
+maketable(whichgroup)
+makerep(whichgroup)
+}}
+function maketable(x){
+row="<tr><td></td>"
+first=group[x]['startind']
+for(j=1;j<=group[x]['order'];j++){
+	row=row+"<td><input type=text size=2>"+irreps[first+j-1]['sym']+"</td>"}
+row=row+"</tr>"
+tryit(row)
+}
+function makerep(x){
+redrep=""
+irepset=""
+first=group[x]['startind']
+for(g=1;g<=group[x]['order'];g++){charact[g]=""}
+for(j=1;j<=group[x]['order'];j++){
+	factor[j]=Math.floor(3*Math.random())
+	if(factor[j]!=0){theanswer[j]=factor[j];irep[j]=factor[j]+irreps[first+j-1]['sym']}
+		else{irep[j]="";theanswer[j]=""}
+	for(k=1;k<=group[x]['order'];k++){
+		charact[k]=1*charact[k]+factor[j]*irreps[first+j-1]['r'+k]
+	}
+}
+for(j=1;j<=group[x]['order'];j++){
+	redrep=redrep+" "+charact[j]
+	if(irep[j]!=""){
+		if(irepset==""){irepset=irep[j]}
+		else{irepset=irepset+"+"+irep[j]}
+	}
+}
+display(redrep,irepset)
+}
+	
+function display(solution,sol2){
+var newone=window.open("","newone","scrolling=yes,width=350,height=100")
+newone.document.writeln ("<html>");
+newone.document.writeln ("<head>");
+newone.document.writeln ("</head>");
+newone.document.writeln ("<body bgcolor = FFFFFF>");
+newone.document.writeln (group[whichgroup]['pclass'],"<br>");
+newone.document.write (solution,"<br>");
+newone.document.write ();
+newone.document.writeln ();
+newone.document.writeln ("</body>");
+newone.document.writeln ("</html>");
+newone.document.close();
+newone.focus();
+}
+function tryit(row)    {
+parent.frames[0].document.clear();
+parent.frames[0].document.open();
+parent.frames[0].document.writeln ("<html>");
+parent.frames[0].document.writeln ("<head>");
+parent.frames[0].document.writeln ("</head>");
+parent.frames[0].document.writeln ("<body bgcolor = FFFFFF >");
+parent.frames[0].document.write (group[whichgroup]['pclass']);
+parent.frames[0].document.writeln ("<form><table border=2>");
+parent.frames[0].document.write (row);
+parent.frames[0].document.writeln ("</table>")
+parent.frames[0].document.writeln ("<input type=button value='Submit' onClick='parent.frames[1].answer(this.form)'>");
+parent.frames[0].document.writeln ("</form>");
+parent.frames[0].document.close();
+}
+function answer(form){
+if(tried==1){
+alert("You've already done this one. Get a new problem")
+}
+else{
+checkit=0
+for(j=1;j<=group[whichgroup]['order'];j++){
+	if(theanswer[j]!=form.elements[j-1].value){checkit++}
+	}
+if(checkit==0){document.forms[0].results.value="correct"
+		corrt++
+		document.forms[0].correct.value=corrt}
+else{if(tried==2){totl++;document.forms[0].total.value=totl}
+	document.forms[0].results.value="incorrect"
+	tried=2}
+}}
+</script>
+</head>
+<body onLoad="clear(), timer(0)">
+<h2>Reducible representations</h2>
+This page will present representations for you to reduce. When you press the button below, a form will appear in top frame with the appropriate set of irred. reps. In addition a small window showing the point group and the representation to be reduced will be displayed. Reduce the rep., enter the values in the top frame and press "Submit". If a rep. does not appear, leave the cell empty. Results appear in the main frame.
+
+<form ACTION = "../cgi-bin/homework/hw_turnin.php" METHOD = "POST">
+<br>
+
+<input type=button value="New Problem" onClick=begin()><br>
+<table border=4>
+<tr><td align=center><b>Results</td>
+<td align=center><b>Total Done</td>
+<td><b>Correct</b></td>
+</tr>
+<tr>
+<td><input type="text" size=12 name=results></td>
+<td align=center><input type="text" size=4 name=total></td>
+<td align=center><input type="text" size=4 name=correct></td>
+</tr>
+</table>
+<input type=text name="page" size=1>
+<input type=text name="verify" size=1>
+<input type=text name="time" size=1><br>
+<INPUT TYPE = "submit" VALUE = "Submit your score" onClick="update()">
+</form>
+<br>
+<a href="hwintro.html"><img src="back.gif"></a><br>
+</body>
+</html>
+
+
+

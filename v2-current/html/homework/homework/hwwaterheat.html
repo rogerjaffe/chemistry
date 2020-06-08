@@ -1,0 +1,152 @@
+<html>
+<head><title>Heat and Temperature Changes-Homework</title>
+<script language=javascript>
+//Last Update 7/28/98
+thepage="Temperature and heat changes for water(30)"
+totl=0
+corrt=0
+tried=0
+which=""
+tried=0
+theanswer=""
+which=0
+ans = new Array()
+
+function clear(){
+	document.forms[0].first.value=""
+	document.forms[0].second.value=""
+	document.forms[0].third.value=""
+	document.forms[0].fourth.value=""
+	document.forms[0].results.value=""
+	theanswer=0
+	document.forms[0].total.value=0
+	document.forms[0].correct.value=0
+	document.forms[0].time.value=""
+}
+function empty(){
+	document.forms[0].first.value=""
+	document.forms[0].second.value=""
+	document.forms[0].third.value=""
+	document.forms[0].fourth.value=""
+}
+function begin(){
+	totl++
+	document.forms[0].total.value=totl
+	empty()
+      tried=0
+	document.forms[0].results.value=""
+	first=Math.pow(100,Math.random())
+	second=Math.pow(20,Math.random())
+	r=Math.random()
+	if (r>.5){
+		var Ti=first
+		var Tf=second}
+	else{
+		var Ti=second
+		var Tf=first}
+	Ti=Math.round(10*Ti)/10
+	Tf=Math.round(10*Tf)/10
+	var mass=Math.round(10*(Math.pow(1000,Math.random())))/10
+	var q=Math.round(4.184*mass*(Tf-Ti))
+	display(mass,q,Ti,Tf)
+}
+function answer(form){
+if(tried==1){
+		alert("Sorry, you've already submitted this problem! We'll get you a new one!")
+		choose()}
+else{
+	if(tried==2){totl++;document.forms[0].total.value=totl}
+	if (Math.abs(form.elements[which].value)>Math.abs(.95*theanswer) & 
+	Math.abs(form.elements[which].value)<Math.abs(1.05*theanswer)){	
+	document.forms[0].results.value="correct"
+	corrt++
+	document.forms[0].correct.value=corrt
+	tried=1}
+	else {
+	tried=2
+	document.forms[0].results.value="incorrect"}
+}}
+function display(mass,q,Ti,Tf){
+	document.forms[0].first.value=mass
+	document.forms[0].second.value=q
+	document.forms[0].third.value=Ti
+	document.forms[0].fourth.value=Tf
+	ans[0]=mass
+	ans[1]=q
+	ans[2]=Ti
+	ans[3]=Tf
+	var g=Math.random()
+	if (g<.25){document.forms[0].first.value="";which=0;theanswer=mass}
+	else {if (g<.50){document.forms[0].second.value="";which=1;theanswer=q}
+	else {if (g<.75){document.forms[0].third.value="";which=2;theanswer=Ti}
+	else {document.forms[0].fourth.value="";which=3;theanswer=Tf}}}
+}
+function timer(z){
+tt=z
+var b=Math.floor(tt/60)
+var j = (tt % 60)
+if (j<10){c="0"}
+else {c=""}
+howlong=b + ":" + c + j
+running=setTimeout("timer(tt+1)",1000)
+}
+
+function update(){
+	document.forms[0].total.value=totl
+	document.forms[0].correct.value=corrt
+	document.forms[0].time.value=howlong
+	document.forms[0].page.value=thepage
+	document.forms[0].verify.value=Math.round(10000*Math.random())
+}
+</script>
+</head>
+<body onLoad="clear(), timer(0)">
+
+<h2>Temperature changes and heat</h2>
+This page deals with heat changes accompanying temperature changes for water. The problems
+are randomly generated when you press the "New Problem" button. When you do so, enough data to
+solve the problem will appear. Fill in the missing cell and press "Check Answer." The results are displayed in the second table which will
+tell you whether you got the correct answer or not and keeps a running total of your score.
+If you get a question wrong, you should redo and recheck your answer. Getting new problems is just a matter of 
+pressing the "New Problem" button at any time.<br>
+<form ACTION = "../cgi-bin/homework/hw_turnin.php" METHOD = "POST">
+
+<table border=4>
+<tr>
+<TD ALIGN=CENTER><b>Mass(g)</td>
+<td align=center><b>q(Joules)</sup></td>
+<td align=center><b>T<sub>i</sub></td>
+<td align=center><b>T<sub>f</sub></td>
+</tr>
+<tr>
+<td align=center><input type="text" name=first size=8 ></td>
+<td align=center><input type="text" name=second size=8 ></td>
+<td align=center><input type="text" name=third size=8 ></td>
+<td align=center><input type="text" name=fourth size=8 ></td>
+</tr>
+<tr>
+<td><input type="button" value="New Problem" onClick=begin()></td>
+<td><input type="button" value="Check Answer" onClick=answer(this.form)></td>
+</tr>
+</table>
+<br>
+<table border=4>
+<tr>
+<td align=center><b>Results</td>
+<td align=center><b>Total Done</td>
+<td><b>Total Correct</td>
+</tr>
+<tr>
+<td><input type="text" name="results" size=12></td>
+<td align=center><input type="text" name="total" size=4 ></td>
+<td align=center><input type="text" name="correct" size=4 ></td>
+</table>
+<input type=text name="page" size=1>
+<input type=text name="verify" size=1>
+<input type=text name="time" size=1><br>
+<INPUT TYPE = "submit" VALUE = "Submit your score" onClick="update()">
+</form>
+<br>
+<a href="hwintro.html"><img src="back.gif"></a><br>
+</body>
+</html>

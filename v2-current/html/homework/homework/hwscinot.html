@@ -1,0 +1,168 @@
+<html>
+<head><title>Scientific Notation</title>
+<script>
+//globals
+//Last Update 7/28/98
+thepage="Scientific Notation(64)"
+coef=0
+sign=""
+decimal=0
+exponent=0
+option=0
+theanswer=0
+theanswer2=0
+theanswer1=0
+tried=0
+totl=0
+corrt=0
+howlong=""
+instruct=0
+function empty(){
+	document.forms[0].results.value=""
+	document.forms[0].total.value=0
+	document.forms[0].correct.value=0
+}
+function clear(){
+	document.forms[0].results.value=""
+	document.forms[0].dec.value=""
+	document.forms[0].coeff.value=""
+	document.forms[0].expon.value=""
+}
+function timer(z){
+tt=z
+var b=Math.floor(tt/60)
+var j = (tt % 60)
+if (j<10){c="0"}
+else {c=""}
+howlong=b + ":" + c + j
+running=setTimeout("timer(tt+1)",1000)
+}
+
+function start(){
+tried=0
+document.forms[0].results.value=""
+totl++
+document.forms[0].total.value=totl
+clear()
+coef=Math.round(10*(10*Math.random()))/10
+coef=""+coef
+if(coef.length<3){totl--;start()}
+else{
+if(Math.random()>.66){coef=coef+Math.ceil(6*Math.random())}
+exponent=Math.ceil(8*Math.random())
+if(Math.random()<.5){sign="-"}
+	else{sign="+"}
+exponent=sign+exponent
+decimal=coef
+for(j=1;j<=Math.abs(exponent);j++){
+	if(sign=="+"){
+		decimal=decimal*10
+	}
+	else{
+		decimal=decimal/10}
+	}
+decimal=""+decimal
+}
+if(decimal.length>(3+Math.abs(exponent))){totl--;start()}
+else{
+	document.forms[0].coeff.value=coef
+	document.forms[0].expon.value=exponent
+	document.forms[0].dec.value=decimal
+	theanswer=decimal
+	theanswer1=coef
+	theanswer2=exponent
+	setproblem()
+	}
+}
+function setproblem(){
+which=Math.ceil(2*Math.random())
+if(which==1)
+	{
+	option=0
+	document.forms[0].dec.value=""
+	}
+if(which==2){
+	option=1
+	document.forms[0].coeff.value=""
+	document.forms[0].expon.value=""
+	}
+}
+function answer(){
+if(tried==1){
+alert("You've already done this one. Get a new problem")
+}
+else{
+if(tried==2){
+	totl++
+	document.forms[0].total.value=totl}
+	count=0
+if(option==0){
+	if(1*document.forms[0].dec.value==1*theanswer){
+		count=1
+	}}
+else{
+	if(1*document.forms[0].coeff.value==1*theanswer1 & 1*document.forms[0].expon.value==1*theanswer2){
+		count=1}}
+if(count==1){
+	corrt++
+	document.forms[0].results.value="correct"
+	document.forms[0].correct.value=corrt
+	tried=1}
+else{
+	document.forms[0].results.value="incorrect"
+	tried=2}
+}}
+function update(){
+	document.forms[0].total.value=totl
+	document.forms[0].correct.value=corrt
+	document.forms[0].time.value=howlong
+	document.forms[0].page.value=thepage
+	document.forms[0].verify.value=Math.round(10000*Math.random())
+}
+	
+</script>
+</head>
+<body onLoad=clear(),empty(),timer(0)>
+<h2>Scientific Notation</h2>
+This page is an exercise in scientific notation. When you press "New Problem", either the scientific notation or non-scientific notation representation of a number will be shown. Put the corresponding value(s) in the empty cell(s) and press "Check Answer". The results will appear in the second table.<br>Do not use
+a calculator on this page or you will defeat its purpose. 
+<form ACTION = "../cgi-bin/homework/hw_turnin.php" METHOD = "POST">
+<input type=button value="New Problem" onClick=start()>
+<input type=button value="Check Answer" onClick=answer()><br>
+<table border=4>
+<tr>
+<td></td>
+<td></td>
+<td>Coefficient</td>
+<td></td>
+<td align=center>Exponent</td>
+</tr>
+<tr>
+<td><input type=text size=12 name=dec></td>
+<td>=</td>
+<td><input type=text size=5 name=coeff></td>
+<td>*10</td>
+<td><input type=text size=5 name=expon></td>
+</tr>
+</table>
+<table border=4>
+<tr><td align=center><b>Results</td>
+<td align=center><b>Total Done</td>
+<td><b>Correct</b></td>
+</tr>
+<tr>
+<td><input type="text" size=12 name=results></td>
+<td align=center><input type="text" size=4 name=total></td>
+<td align=center><input type="text" size=4 name=correct></td>
+</tr>
+</table>
+<input type=text name="page" size=1>
+<input type=text name="verify" size=1>
+<input type=text name="time" size=1><br>
+<INPUT TYPE = "submit" VALUE = "Submit your score" onClick="update()">
+</form>
+<a href="hwintro.html"><img src="back.gif"></a><br>
+</body>
+</html>
+
+

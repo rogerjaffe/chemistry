@@ -1,0 +1,280 @@
+</html>
+<head><Title>Guess2-Density and Moles Word Problems-Homework</Title>
+<script language="javascript">
+thepage="Make a Guess #2(53)"
+
+howlng=""
+totl=0
+corrt=0
+tried=0
+which="" 
+relation=""
+tried=0 
+theanswer=""
+ans = new Array() 
+function clear(){
+	document.forms[0].results.value=""
+	document.forms[0].correct.value=corrt
+	document.forms[0].total.value=totl
+}
+
+function MakeArray(n){
+	this.length=n
+	for (var i=1;i<=n;i++){
+	this[i]= 0}
+}
+function question(p1,p2,p3,p4){
+	this.p1=p1
+	this.p2=p2
+	this.p3=p3
+	this.p4=p4
+}
+function atom(sym,mass,density){
+	this.sym=sym
+	this.mass=mass
+	this.density=density
+}
+quest=new MakeArray(6);
+quest[1]=new question("What is the volume in cm<sup>3</sup> of "," moles of ","?","")
+quest[2]=new question("How many moles is "," cm<sup>3</sup>  of ","?","")
+quest[3]=new question("What volume in cm<sup>3</sup> of ","  has the same mass as ","moles of ","?")
+quest[4]=new question("What mass of ","  has the same volume as ","moles of ","?")
+quest[5]=new question("How many moles of ","  has the same mass as "," moles of ","?")
+quest[6]=new question("How many moles of ","  has the same volume as "," grams of ","?")
+at=new MakeArray(94);
+at[1]=new atom("Li",6.941,.53)
+at[2]=new atom("Be",9.01218,1.85)
+at[3]=new atom("B",10.811,2.34)
+at[4]=new atom("C",12.011,2.26)
+at[5]=new atom("Na",22.98977,.97)
+at[6]=new atom("Mg",24.305,1.74)
+at[7]=new atom("Al",26.981,2.70)
+at[8]=new atom("Si",28.086,2.33)
+at[9]=new atom("P",30.974,1.82)
+at[10]=new atom("S",32.066,2.07)
+at[11]=new atom("K",39.098,.86)
+at[12]=new atom("Ca",40.08,1.55)
+at[13]=new atom("Sc",44.956,2.99)
+at[14]=new atom("Ti",47.88,4.54)
+at[15]=new atom("V",50.9415,6.11)
+at[16]=new atom("Cr",51.996,7.19)
+at[17]=new atom("Mn",54.938,7.44)
+at[18]=new atom("Fe",55.847,7.87)
+at[19]=new atom("Co",58.933,8.90)
+at[20]=new atom("Ni",58.69,8.90)
+at[21]=new atom("Cu",63.546,8.96)
+at[22]=new atom("Zn",65.39,7.13)
+at[23]=new atom("Ga",69.723,5.91)
+at[24]=new atom("Ge",72.61,5.32)
+at[25]=new atom("As",74.922,5.76)
+at[26]=new atom("Se",78.98,4.79)
+at[27]=new atom("Br",79.904,3.12)
+at[28]=new atom("Rb",85.468,1.53)
+at[29]=new atom("Sr",87.62,2.54)
+at[30]=new atom("Y",88.906,4.47)
+at[31]=new atom("Zr",91.224,6.51)
+at[32]=new atom("Nb",92.906,8.57)
+at[33]=new atom("Mo",95.94,10.22)
+at[34]=new atom("Tc",98,11.5)
+at[35]=new atom("Ru",101.07,12.37)
+at[36]=new atom("Rh",102.905,12.41)
+at[37]=new atom("Pd",106.42,12)
+at[38]=new atom("Ag",107.87,10.5)
+at[39]=new atom("Cd",112.411,8.65)
+at[40]=new atom("In",114.82,7.31)
+at[41]=new atom("Sn",118.71,7.31)
+at[42]=new atom("Sb",121.75,6.69)
+at[43]=new atom("Te",127.60,6.24)
+at[44]=new atom("I",126.905,4.93)
+at[45]=new atom("Cs",132.9054,1.87)
+at[46]=new atom("Ba",137.27,3.59)
+at[47]=new atom("La",138.905,6.15)
+at[48]=new atom("Ce",140.115,6.77)
+at[49]=new atom("Pr",140.908,6.77)
+at[50]=new atom("Nd",144.24,7.01)
+at[51]=new atom("Pm",145,7.22)
+at[52]=new atom("Sm",150.36,7.52)
+at[53]=new atom("Eu",151.985,5.24)
+at[54]=new atom("Gd",157.25,7.90)
+at[55]=new atom("Tb",158.925,8.23)
+at[56]=new atom("Dy",162.50,8.55)
+at[57]=new atom("Ho",164.930,8.80)
+at[58]=new atom("Er",167.26,9.07)
+at[59]=new atom("Tm",168.934,9.32)
+at[60]=new atom("Yb",173.04,6.97)
+at[61]=new atom("Lu",174.97,9.84)
+at[62]=new atom("Hf",178.49,13.31)
+at[63]=new atom("Ta",180.948,16.65)
+at[64]=new atom("W",183.85,19.3)
+at[65]=new atom("Re",186.207,21)
+at[66]=new atom("Os",190.2,22.6)
+at[67]=new atom("Ir",192.22,22.6)
+at[68]=new atom("Pt",195.08,21.45)
+at[69]=new atom("Au",196.966,19.3)
+at[70]=new atom("Hg",200.59,13.55)
+at[71]=new atom("Tl",204.383,11.85)
+at[72]=new atom("Pb",207.2,11.35)
+at[73]=new atom("Bi",208.980,9.75)
+at[74]=new atom("Po",209,9.3)
+at[75]=new atom("Ra",226.025,5.0)
+at[76]=new atom("Ac",227.028,10.07)
+at[77]=new atom("Th",232.038,11.72)
+at[78]=new atom("Pa",231.036,15.4)
+at[79]=new atom("U",238.029,18.95)
+at[80]=new atom("Np",237.0482,20.2)
+at[81]=new atom("Pu",244,19.84)
+
+function start(){
+totl++
+	document.forms[0].total.value=totl
+	document.forms[0].results.value=""
+	tried=0
+var q=Math.ceil(6*Math.random())
+a=quest[q]["p1"]
+b=quest[q]["p2"]
+c=quest[q]["p3"]
+d=quest[q]["p4"]
+var k=Math.ceil(81*Math.random())
+var j=k
+while(k==j){j=Math.ceil(81*Math.random())}
+symbol1=at[k]["sym"]
+f1=at[k]["mass"]
+var mass1=Math.round((1000*Math.random()))
+var moles1=mass1/f1
+var moles1=Math.round(100*moles1)/100
+//var mass1=Math.round(100*mass1)/100
+var vol1=mass1/at[k]["density"]
+vol1=Math.round(10*vol1)/10
+symbol2=at[j]["sym"]
+mass2=mass1*at[j]["density"]/at[k]["density"]
+moles2=mass1/at[j]["mass"]
+moles2a=mass2/at[j]["mass"]
+moles2b=vol1*at[j]["density"]/at[j]["mass"]
+vol2=vol1*at[k]["density"]/at[j]["density"]
+mass2=Math.round(10*mass2)/10
+moles2=Math.round(10*moles2)/10
+moles2a=Math.round(10*moles2a)/10
+vol2=Math.round(10*vol2)/10
+if (q==1){v1=moles1
+	v2=symbol1
+	v3=""
+	theanswer=vol1}
+if (q==2){v1=vol1
+	v2=symbol1
+	v3=""
+	theanswer=moles1}
+if (q==3){v1=symbol1
+	v2=moles2
+	v3=symbol2
+	theanswer=vol1}
+if (q==4){v1=symbol1
+	v2=moles2a
+	v3=symbol2
+	theanswer=mass1}
+if (q==5){v1=symbol1
+	v2=moles2
+	v3=symbol2
+	theanswer=moles1}
+if (q==6){v1=symbol1
+	v2=mass2
+	v3=symbol2
+	theanswer=moles1}
+qust=a+v1+b+v2+c+v3+d
+tryit(qust)
+document.forms[0].fanswer.focus()
+document.forms[0].fanswer.select()
+}
+function tryit(qust)    {
+parent.frames[0].document.clear();
+parent.frames[0].document.open();
+parent.frames[0].document.writeln ("<html>");
+parent.frames[0].document.writeln ("<head>");
+parent.frames[0].document.writeln ("</head>");
+parent.frames[0].document.writeln ("<body bgcolor = FFFFFF");
+parent.frames[0].document.writeln ("<font size = +1>");
+parent.frames[0].document.writeln ("");
+parent.frames[0].document.write (qust);
+parent.frames[0].document.writeln ("<br>")
+parent.frames[0].document.writeln ("</font>");
+parent.frames[0].document.close();
+}
+function answer(){
+if(tried==1){
+		alert("Sorry, you've already submitted this problem! We'll get you a new one!")
+		start()}
+else{
+	if(tried==2){totl++;document.forms[0].total.value=totl}
+//need to fix the following for string comparisons
+if (theanswer<10*document.forms[0].fanswer.value &
+	theanswer>.1*document.forms[0].fanswer.value){
+	document.forms[0].results.value="correct"
+	corrt++
+	document.forms[0].correct.value=corrt
+	tried=1}
+else{document.forms[0].results.value="incorrect"
+	tried=2}
+}}
+  function timer(z){
+tt=z
+var b=Math.floor(tt/60)
+var j = (tt % 60)
+if (j<10){c="0"}
+else {c=""}
+howlng=b + ":" + c + j
+running=setTimeout("timer(tt+1)",1000)
+}
+function update(){
+	document.forms[0].total.value=totl
+	document.forms[0].correct.value=corrt
+	document.forms[0].time.value=howlng
+	document.forms[0].page.value=thepage
+	document.forms[0].verify.value=Math.round(10000*Math.random())
+}
+</script>
+</head>
+<body onLoad="clear(), timer(0)"> 
+
+
+<h3>Make a Guess #2</h3>
+This page presents random "word" problems in the area of elements, density, mass and moles which
+you are to solve to one significant figure using only mental calculations. If you write anything down
+or use a calculator, you defeat the purpose of the exercise.
+When you press "New Question", a question will appear in the top frame. Estimate the
+answer and enter it in the cell. Then, press "Check Answer" and the results appear in the
+table. If you get a problem wrong, you should redo it until you get it correct, but you
+can press "New Question" at any time. You need a periodic table or chart of the elements which
+includes densities to do these problems.<br>
+ <form ACTION = "../cgi-bin/homework/hw_turnin.php" METHOD = "POST">
+<table>
+
+<tr><td><input type=button value="New Question" onClick="start()"><td></tr>
+<tr><td><b>Enter your answer</b></td>
+<td><input type="text" name="fanswer" size=8></td>
+</tr>
+<tr>
+<td><input type=button value="Check answer" onClick="answer()"></td>
+</tr>
+</table>
+
+<table border=4>
+<tr>
+<td align=center><b>Results</td>
+<td align=center><b>Total Done</td>
+<td><b>Total Correct</td>
+</tr>
+<tr>
+<td><input type="text" name="results" size=12></td>
+<td align=center><input type="text" name="total" size=4 ></td>
+<td align=center><input type="text" name="correct" size=4 ></td>
+</table>
+<input type=text name="page" size=1>
+<input type=text name="verify" size=1>
+<input type=text name="time" size=1><br>
+<INPUT TYPE = "submit" VALUE = "Submit your score" onClick="update()">
+
+<br>
+<a href="hwintro.html"><img src="back.gif"></a><br>
+
+</form>
+</body>
+</html

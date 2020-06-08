@@ -1,0 +1,134 @@
+<html>
+<head><title>Balancing Equations</title>
+<style>
+#qspot {position:absolute;left:320;top:300}
+#ansspot {position:absolute;left:320;top:380;height:200}
+#tspot {position:absolute;left:10;top:300}
+#refspot {position:absolute;left:10;top:600}
+</style>
+<script src=reactionsets.js></script>
+<script src="reflist.js"></script>
+<script src="numberconvert.js"></script>
+<script language="javascript">
+refnumber=172
+var ie4=(document.all)?true:false;
+cell="<input type=text size=2 value=''>"
+thetable=""
+totl=0
+corrt=0
+attempts=0
+tried=0
+function clear(){
+	document.forms[0].total.value=0
+	document.forms[0].correct.value=0
+	document.forms[0].results.value=""
+	clearansspot()
+}
+function startit(){
+	tried=0
+	attempts=0
+	clearansspot()
+	totl++
+	document.forms[0].total.value=totl
+	document.forms[0].results.value=""
+	choose()
+	buildtable()
+}
+function buildtable(){
+	thetable="<form name=grid>"+cell+formula[0]
+	for(j=1;j<formula.length;j++){
+		j==splt+1?thetable+=("=>"+cell+formula[j]):thetable+=("+"+cell+formula[j]);
+	}
+	thetable+="<br><td><input type=button value='Check answer' onClick='filterit(this.form)'></td></form>"
+	showquest(thetable)
+	showanswer()
+}	
+
+function showquest(thequest){
+	if(ie4){
+		qspot.innerHTML=thequest
+		}
+	else{
+		document.qspot.document.open()
+		document.qspot.document.write(thequest)
+		document.qspot.document.close()
+	}
+}
+function filterit(form){
+	check=0
+	for(j=0;j<coeffs[choice].length;j++){
+		if(form.elements[j].value!=coeffs[choice][j])check++;
+	}
+	answer(check)
+}
+		
+function answer(x){
+	attempts++
+	if(tried==1)alert("You've done this one. Get a new problem!");
+	else{
+	if(check==0){
+		tried=1
+		document.forms[0].results.value="Correct"
+		corrt++
+		document.forms[0].correct.value=corrt
+	}
+	else{
+		if(tried==2){totl++;document.forms[0].total.value=totl}		
+		document.forms[0].results.value="Incorrect"
+		tried=2
+	}}
+}
+function showanswer(){
+if(attempts>=3){
+	if(ie4){
+		ansspot.innerHTML=equation
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.write(equation)
+		document.ansspot.document.close()
+	}
+	}
+}	
+function clearansspot(){
+	if(ie4){
+		ansspot.innerHTML=""
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.clear()
+		document.ansspot.document.close()
+	}
+}
+
+</script>	
+</head>
+<body onLoad=setrefs(),clear()>
+<h3>Balancing Chemical Reactions</h3>
+This page provides exercises in balancing chemical reactions. When you press "New Reaction", a chemical equation with an empty cell before each compound will be displayed below. Enter the appropriate coeffcients in each cell and press "Check Answer." Results will appear immediately in the scoring table. This page will only accept the <B>smallest set of integer coefficients</B>. If you miss a problem three times. pressing "Show Answer" will result in a complete solution appearing.
+<form>
+<table>
+<tr><td><input type=button value="New Reaction" onClick="startit()"><td></tr>
+<td><input type=button value="Show answer" onClick="showanswer()"></td>
+</tr>
+</table>
+<table border=4>
+<tr><td align=center><b>Results</td>
+<td align=center><b>Total Done</td>
+<td><b>Total Correct</td>
+</tr>
+<tr>
+<td><input type="text" name=results size=12></td>
+<td align=center><input type="text" name=total size=4 ></td>
+<td align=center><input type="text" name=correct size=4 ></td>
+</tr>
+<tr>
+</table>
+</form>
+<div id=qspot></div>
+<div id=ansspot></div>
+<div id=refspot></div>
+<br>
+</body>
+</html>
+

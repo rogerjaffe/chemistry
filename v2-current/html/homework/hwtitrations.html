@@ -1,0 +1,166 @@
+<html>
+<head>
+<title>Titrations of Weak Acids-Homework</title>
+<script language=javascript>
+//globals
+thepage="Titrations(36)"
+corrt=0
+tried=0
+totl=0
+theanswer=0
+which=0
+function clear(){
+	document.forms[0].results.value=""
+	document.forms[0].correct.value=corrt
+	document.forms[0].total.value=totl
+}
+function MakeArray(n){
+	this.length=n
+	for (var i=1;i<=n;i++){
+	this[i]= 0}
+}
+function question(p1,p2,p3,p4){
+	this.p1=p1
+	this.p2=p2
+	this.p3=p3
+	this.p4=p4
+}
+quest=new MakeArray(10)
+quest[1]=new question("What volume in "," of .100M NaOH would be required to titrate a "," <br>sample  of a weak acid with an equivalent weight of "," ?")
+quest[2]=new question("The titration of a "," sample of a weak acid requires "," of .100M NaOH.<br>What is the equivalent weight of the acid?","")
+quest[3]=new question("The titration of a sample of a weak acid with an equivalent weight of "," grams requires "," of 0.100M NaOH. What is the sample mass in ","?")
+
+function begin(){
+totl++
+	document.forms[0].total.value=totl
+	document.forms[0].results.value=""
+	tried=0
+
+gmass=0
+gew=1000
+while (gmass<.2 || gmass>.8){
+	gmass=Math.round(1000*Math.random())/1000}
+mgmass=Math.round(1000*gmass)
+while (10*gmass/gew<.017){
+	gew=Math.round(1500*Math.random())/10}
+equiv=Math.round(100000*gmass/gew)/100000
+mlvol=Math.round(1e5*equiv)/10
+lvol=Math.round(1000*mlvol)/1000000
+var which=Math.round(.5+2.95*Math.random())
+var whichmass=Math.random()
+var whichvol=Math.random()
+if (whichmass>.5){
+	mass=gmass
+	massdim="gram"}
+else{mass=mgmass
+	massdim="mg"}
+if (whichvol>.5){
+	vol=lvol
+	voldim="liters"}
+else{vol=mlvol
+	voldim="mL"}
+if (which==1){
+	var1=voldim
+	var2=mass+massdim
+	var3=gew+"grams"
+	theanswer=vol}
+if (which==2){
+	var1=mass+massdim
+	var2=vol+voldim
+	var3=""
+	theanswer=gew}
+if (which==3){
+	var1=gew
+	var2=vol+voldim
+	var3=massdim
+	theanswer=mass}
+var qustion=quest[which]["p1"]+var1+quest[which]["p2"]+var2+quest[which]["p3"];
+var qustion=qustion +var3+quest[which]["p4"];
+tryit(qustion);
+}
+function tryit(qustion)    {
+parent.frames[0].document.clear();
+parent.frames[0].document.open();
+parent.frames[0].document.writeln ("<html>");
+parent.frames[0].document.writeln ("<head>");
+parent.frames[0].document.writeln ("</head>");
+parent.frames[0].document.writeln ("<body bgcolor = FFFFFF");
+parent.frames[0].document.writeln ("<pre>");
+parent.frames[0].document.write (qustion);
+//parent.frames[0].document.write ("if<b> ",mass1,"</b>");
+parent.frames[0].document.writeln ("</font>");
+parent.frames[0].document.close();
+document.forms[0].ans.focus()
+document.forms[0].ans.select()
+}
+function answer(ansr){
+if(tried==1){
+		alert("Sorry, you've already submitted this problem! We'll get you a new one!")
+		start()}
+else{
+	if(tried==2){totl++;document.forms[0].total.value=totl}	
+	if (ansr>.95*theanswer & ansr<1.05*theanswer ){	
+	document.forms[0].results.value="correct"
+		corrt++
+		document.forms[0].correct.value=corrt
+		tried=1
+}	
+else {
+		document.forms[0].results.value="incorrect"
+		tried=2}
+}}
+function timer(z){
+tt=z
+var b=Math.floor(tt/60)
+var j = (tt % 60)
+if (j<10){c="0"}
+else {c=""}
+howlong=b + ":" + c + j
+running=setTimeout("timer(tt+1)",1000)
+}
+function update(){
+	document.forms[0].total.value=totl
+	document.forms[0].correct.value=corrt
+	document.forms[0].time.value=howlong
+	document.forms[0].page.value=thepage
+	document.forms[0].verify.value=Math.round(10000*Math.random())
+}
+</script>
+</head>
+<BODY onLoad="clear(),timer(0)">
+<h3>Titrations of Weak Acids</h3>
+This page deals with titrations of weak acids using NaOH. When you press "New Problem," a
+a question dealing with a titration will appear in the top frame on this page. Determine the value of
+the correct answer, enter it in the cell and press "Check Answer". The results appear in the
+table.<br>
+<form ACTION = "../cgi-bin/homework/hw_turnin.php" METHOD = "POST">
+<table>
+<tr>
+<td><input type=button value="New Problem" onClick="begin()"></td>
+<td><input type=button value="Check Answer" onClick="answer(this.form.ans.value)"></td>
+</tr>
+<tr><td><b>Enter your answer here</b></td>
+<td><input type="text" name=ans size=10></td>
+</tr>
+</table>
+<table border=4>
+<tr>
+<td><b>Results</b></td>
+<td><b>Total Done</b></td>
+<td><b>Total Correct</b></td></tr>
+</tr>
+<tr>
+<td align=center><input type="text" name=results size=12></td>
+<td align=center><input type="text" name=total size=3></td>
+<td align=center><input type="text" name=correct size=3></td>
+<tr>
+</table>
+<input type=text name="page" size=1>
+<input type=text name="verify" size=1>
+<input type=text name="time" size=1><br>
+<INPUT TYPE = "submit" VALUE = "Submit your score" onClick="update()">
+ </FORM>
+<br>
+<a href="hwintro.html" target=welcome><img src="back.gif"></a><br>
+</body>
+</html>

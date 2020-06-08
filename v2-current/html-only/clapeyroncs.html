@@ -1,0 +1,237 @@
+<html>
+<head><title>Clausius-Claperyon-cs</title>
+<style>
+#qspot {position:absolute;left:320;top:240}
+#ansspot {position:absolute;left:320;top:360;height:400}
+#tspot {position:absolute;left:10;top:300}
+#refspot {position:absolute;left:10;top:600}
+</style>
+<script src="reflist.js"></script>
+<script src="numberconvert.js"></script>
+<script language="javascript">
+//updated 11/14/00-added complete solution
+var ie4 = (document.all) ? true : false;
+//global variables
+refnumber=61
+attempts=0
+which=0
+thesolution=0
+thequest=""
+corrt=0
+totl=0
+corrt=0
+tried=0
+option=0
+checkit=""
+eqns=new Array()
+eqns[4]="clapH.gif"
+eqns[0]="clapt1.gif"
+eqns[2]="clapt2.gif"
+eqns[1]="clapp1.gif"
+eqns[3]="clapp2.gif"
+fillin="<form><input type=text size=8 name=ans>"
+symbols=new Array("T<sub>1</sub>","P<sub>1</sub>","T<sub>2</sub>","P<sub>2</sub>","H","ln(P<SUB>2</SUB>/P<SUB>1</SUB>)","H/.008314","1/T<sub>1</sub>","1/T<sub>2</sub>","1/T<sub>1</sub>-1/T<sub>2</sub>","ln(P<SUB>2</SUB>/P<SUB>1</SUB>)*.008314/H")
+solved=0
+sterms=new Array()
+equations=new Array()
+equations[5]="ln("+symbols[3]+"/"+symbols[1]+")"//ln(p1/p2)
+equations[6]=symbols[4]+"/.008314"//H/R
+equations[7]="1/"+symbols[0]//1/T1
+equations[8]="1/"+symbols[2]//1/T2
+equations[9]=equations[7]+"-"+equations[8]
+equations[10]=equations[5]+"*(.008314/"+symbols[4]+")"//ln(p2/p1)*R/H
+nstep=new Array()
+equations[0]=symbols[7]+"="+equations[10]+"+"+symbols[8]
+equations[2]=symbols[8]+"="+symbols[7]+"-"+equations[10]
+equations[1]=symbols[3]+"/"+symbols[1]+"=e<sup>("+equations[6]+")*("+equations[9]+")</sup>"
+equations[3]=equations[1]
+equations[4]=symbols[4]+"="+equations[5]+"/("+equations[9]+")*.008314"
+sterms[0]=new Array(5,6,10,8)
+sterms[1]=new Array(6,9)
+sterms[2]=new Array(5,6,10,7)
+sterms[3]=new Array(6,9)
+sterms[4]=new Array(5,9)
+function cleanse(){
+	clear()
+	document.forms[0].total.value=0
+	document.forms[0].correct.value=0
+}
+function clear(){
+	clearansspot()
+	document.forms[0].theans.value=""
+	document.forms[0].results.value=""
+	attempts=0
+	tried=0
+}
+alldata=0
+question=new Array()
+question[0]=new Array("A compound has a heat of vaporization of ","<b>KJ/mole</b>. Calculate the value of the missing term in the table below.<br>")
+question[1]=new Array("Use the data in the table below to calculate the heat of vaporization(KJ/mole) of the compound.<br>")
+ansphrase=new Array("All of these problems involve careful solution of the appropriately arranged equation, shown above. There is little intrinsic difficulty in the questions, but the algebra and calculations are filled with potential problems. If the equation above is rearranged to solve for ","one obtains:<br><img src=","><br>Given the complexity of this equation, we will take the approach of constantly simplifying the process by solving for terms. In this case, the following terms are first evaluated:<br>","The main equation is rearranged and the values for the solved terms substituted:<br>")
+function startit(){
+	clear()
+	totl++
+	document.forms[0].total.value=totl
+	alldata=new Array()
+	alldata[0]=alldata[2]=0
+	while(alldata[0]<200)alldata[0]=Math.random()*350
+	while(alldata[2]<alldata[0] || alldata[2]>(alldata[0]+40))alldata[2]=Math.random()*400
+	alldata[4]=0
+	while(alldata[4]<10 | alldata[4]>40)alldata[4]=Math.random()*100;
+	alldata[1]=0
+	while(alldata[1]<10)alldata[1]=100*Math.random()
+	alldata[3]=getp(alldata)
+	alldata[5]=Math.log(alldata[3]/alldata[1])
+	alldata[6]=alldata[4]/.008314
+	alldata[7]=1/alldata[0]
+	alldata[8]=1/alldata[2]
+	alldata[9]=alldata[7]-alldata[8]
+	alldata[10]=alldata[5]/alldata[6]
+	for(var j=0;j<alldata.length;j++)alldata[j]=number(alldata[j],4,3)
+	buildquestion()
+}
+function buildquestion(){
+	//seq for option0=T1,1=P1,2=T2,3=P2,4=H
+	which=Math.floor(2*Math.random())
+	which==0?option=Math.floor(4*Math.random()):option=4
+	thetable=gettable()
+	which==0?thequest=question[0][0]+alldata[4]+question[0][1]+thetable:thequest=question[1][0]+thetable;
+	showquest()
+	buildanswer()
+}
+function getp(alldata){
+	lterm=(alldata[4]/.008314)*(1/alldata[0]-1/alldata[2])
+	//alldata[10]=Math.pow(2.718,lterm)
+	//p=alldata[10]*alldata[1]
+	p=Math.pow(2.718,lterm)*alldata[1]
+	return p
+}
+function gettable(){
+	thetable="<table border=2><tr><th align=center>T(K)</th><th>P(torr)</th></tr>"
+	for(var j=0;j<4;j++){
+		j==option?thecell="?":thecell=alldata[j];
+		(j==0 || j==2)?thetable+="<tr><td>"+thecell+"</td>":thetable+="<td>"+thecell+"</td></tr>";
+	}
+	thetable+="</table>"
+	return thetable
+}
+function answer(f){
+attempts++
+if(tried==1){alert("You've already done this one. Get a new Problem!")}
+else{
+if(f>.95*theanswer & f<1.05*theanswer){
+	document.forms[0].results.value="correct"
+	corrt++
+	document.forms[0].correct.value=corrt
+	tried=1}
+else{
+	document.forms[0].results.value="incorrect"
+	if(tried==2){totl++;document.forms[0].total.value=totl}
+	tried=2
+	}
+}
+}
+function showquest(){
+	if(ie4){
+		qspot.innerHTML=thequest
+		}
+	else{
+		document.qspot.document.open()
+		document.qspot.document.write(thequest)
+		document.qspot.document.close()
+	}
+}
+function buildanswer(){
+	getsolved()
+	thesolution=ansphrase[0]+symbols[option]+ansphrase[1]+eqns[option]+ansphrase[2]
+	for(j=0;j<sterms[option].length;j++)thesolution+=equations[sterms[option][j]]+"=>"+solved[sterms[option][j]]+"=>"+alldata[sterms[option][j]]+"<br>";
+	thesolution+=ansphrase[3]+equations[option]+"=>"+solved[option]
+	showanswer()
+}
+function getsolved(){
+	solved=new Array()
+	solved[5]="ln("+alldata[3]+"/"+alldata[1]+")"//ln(p1/p2)	
+	solved[6]=alldata[4]+"/.008314"//H/R
+	solved[7]="1/"+alldata[0]//1/T1
+	solved[8]="1/"+alldata[2]//1/T2
+	solved[9]=solved[7]+"-"+solved[8]
+	solved[10]=solved[5]+"*(.008314/"+alldata[4]+")"//ln(p2/p1)*R/H
+	solved[0]=alldata[10]+"+"+alldata[8]+"="+alldata[7]+"<br>T<sub>1</sub>="+alldata[0]+"<b>K</b>"
+	solved[2]=alldata[7]+"-"+alldata[10]+"="+alldata[8]+"<br>T<sub>2</sub>="+alldata[2]+"<b>K</b>"
+	pratio=number(alldata[3]/alldata[1],4,3)
+	solved[1]="e<sup>("+alldata[6]+")*("+alldata[9]+")</sup>"+"="+pratio+"<br>P<sub>1</sub>="+alldata[3]+"/"+pratio+"="+alldata[1]+"<b>torr</b>"
+	solved[3]="e<sup>("+alldata[6]+")*("+alldata[9]+")</sup>"+"="+pratio+"<br>P<sub>2</sub>="+alldata[1]+"*"+pratio+"="+alldata[3]+"<b>torr</b>"
+	solved[4]=alldata[5]+"/("+alldata[9]+")*.008314"+"="+alldata[4]+"<b>KJ/mole</b>"
+}
+function showanswer(){
+//	if(attempts>=3){
+	if(ie4){
+		ansspot.innerHTML=thesolution
+		}
+	else{
+		document.ansspot.document.open()
+		//for(j=0;j<alldata.length;j++)document.ansspot.document.write(alldata[j],"<br>")
+		document.ansspot.document.write(thesolution)
+		document.ansspot.document.close()
+	}
+//	}
+}
+
+function answer(ans){
+	if(tried==1)alert("You've done this one! Get a new problem?")
+	else{
+	if(tried==2){totl++;document.forms[0].total.value=totl}
+	attempts++
+	if(ans>.95*alldata[option] & ans<1.05*alldata[option]){
+		document.forms[0].results.value="correct"
+		corrt++
+		tried=1
+		document.forms[0].correct.value=corrt
+	}
+	else{
+		document.forms[0].results.value="incorrect"
+		tried=2
+	}
+}}
+function clearansspot(){
+	if(ie4){
+		ansspot.innerHTML=""
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.clear()
+		document.ansspot.document.close()
+	}
+}
+</script>
+</head>
+<body onLoad=clear()>
+<h2>The Clausius-Clapeyron Equation</h2>
+This page provides basic exercises in the use of the Clausius-Clapeyron equation:<center>
+<IMG SRC="claperyon.gif" WIDTH=154 HEIGHT=47 BORDER=0></center> When you press "New Problem", a question and a data table will be shown to the right of the table. Determine the value of the answer, enter it in the answer cell and press "Check Answer." Results appear in the scoring table.
+<ul>
+<li>Pay attention to dimensions. Heats are in KJ/mole, temperatures in K and pressures in torr.
+<li>If you miss a problem three times, pressing the "Show Answer" button will display a complete solution.
+</ul> 
+<form>
+<input type=button value="New Problem" onClick=startit()><br>
+<input type=text size=8 name=theans><input type=button value="Check Answer" onClick=answer(this.form.theans.value)><br>
+<input type=button value="Show Answer" onClick=showanswer()>
+<table border=4>
+<tr>
+<td align=center>Results</td>
+<td>Total</td>
+<td>Correct</td>
+</tr>
+<tr>
+<td><input type=text size=12 name=results></td>
+<td align=center><input type=text size=5 name=total></td>
+<td align=center><input type=text size=5 name=correct></td>
+</tr>
+</table>
+</form>
+<div id=qspot></div>
+<div id=ansspot></div>
+<div id=refspot></div>
+</body>
+</html>

@@ -1,0 +1,239 @@
+<html>
+<head>
+<title>Hybridization</title>
+<script language="javascript">
+thepage="Hybridization(68)"
+
+//globals
+structure=""
+theanswer=0
+totl=0
+corrt=0
+tried=0
+firsttry=0
+function clear(){
+	document.forms[0].results.value=""
+	document.forms[0].total.value=totl
+	document.forms[0].correct.value=corrt
+	document.forms[0].time.value=""
+	document.forms[0].page.value=""
+	
+	
+}
+function MakeArray(n){
+	this.length=n
+	for (var i=1;i<=n;i++){
+	this[i]= 0}
+}
+function dataset(cmpd,type){
+	this.cmpd=cmpd
+	this.type=type
+}
+compound=new MakeArray(100)
+compound[1]=new dataset("<U>C</U>H<sub>4</sub>",3)
+compound[2]=new dataset("<U><b>C</b></U>F<sub>4</sub>",3)
+compound[3]=new dataset("<U><b>C</b></U>O<sub>2</sub>",1)
+compound[4]=new dataset("<U><b>C</b></U>Cl<sub>4</sub>",3)
+compound[5]=new dataset("H<sub>2</sub><U><b>O</b></U>",3)
+compound[6]=new dataset("H<sub>2</sub><U><b>C</b></U>=O",2)
+compound[7]=new dataset("<U><B>C</B></U>O",1)
+compound[8]=new dataset("H<sub>2</sub><U><b>C</b></U>=CH<sub>2</sub>",2)
+compound[9]=new dataset("<B><U>B</U></B>F<SUB>3</SUB>",2)
+compound[10]=new dataset("<B><U>B</U></B>Cl<SUB>3</SUB>",2)
+compound[11]=new dataset("H<B><U>C</U></B>N:",1)
+compound[12]=new dataset(":<B><U>N</U></B>H<SUB>3</SUB>",3)
+compound[13]=new dataset("H<U><B>C</B></U>CH",1)
+compound[14]=new dataset("H<sub>2</sub><B><U>S</U></B>",5)
+compound[15]=new dataset("<img src='struct1.gif'></img>",1)
+compound[16]=new dataset("<img src='struct2.gif'></img>",2)
+compound[17]=new dataset("<img src='struct3.gif'></img>",3)
+compound[18]=new dataset("<img src='struct4.gif'></img>",4)
+compound[19]=new dataset("<img src='struct5.gif'></img>",5)
+compound[20]=new dataset("<img src='struct6.gif'></img>",2)
+compound[21]=new dataset("<img src='struct7.gif'></img>",2)
+compound[22]=new dataset("<img src='struct8.gif'></img>",3)
+compound[23]=new dataset("<img src='struct9.gif'></img>",3)
+compound[24]=new dataset("<img src='struct10.gif'></img>",3)
+compound[25]=new dataset("<img src='struct11.gif'></img>",2)
+compound[26]=new dataset("<img src='struct12.gif'></img>",2)
+compound[27]=new dataset("<img src='struct13.gif'></img>",5)
+compound[28]=new dataset("<img src='struct14.gif'></img>",4)
+compound[29]=new dataset("<img src='struct15.gif'></img>",2)
+compound[30]=new dataset("<img src='struct16.gif'></img>",2)
+compound[31]=new dataset("<img src='struct17.gif'></img>",2)
+compound[32]=new dataset("<img src='struct18.gif'></img>",3)
+compound[33]=new dataset("<img src='struct19.gif'></img>",3)
+compound[34]=new dataset("<img src='struct20.gif'></img>",3)
+compound[35]=new dataset("<img src='struct21.gif'></img>",4)
+compound[36]=new dataset("<img src='struct22.gif'></img>",2)
+compound[37]=new dataset("<img src='struct23.gif'></img>",3)
+compound[38]=new dataset("<img src='struct24.gif'></img>",2)
+compound[39]=new dataset("<img src='struct25.gif'></img>",2)
+compound[40]=new dataset("<img src='struct26.gif'></img>",1)
+compound[41]=new dataset("<img src='struct27.gif'></img>",1)
+compound[42]=new dataset("<img src='struct28.gif'></img>",2)
+compound[43]=new dataset("<img src='struct29.gif'></img>",5)
+compound[44]=new dataset("<img src='struct30.gif'></img>",3)
+compound[45]=new dataset("<img src='struct31.gif'></img>",4)
+compound[46]=new dataset("<img src='struct32.gif'></img>",2)
+compound[47]=new dataset("<img src='struct33.gif'></img>",5)
+compound[48]=new dataset("<img src='struct34.gif'></img>",3)
+compound[49]=new dataset("<img src='struct35.gif'></img>",2)
+compound[50]=new dataset("<img src='struct36.gif'></img>",4)
+compound[51]=new dataset("<img src='struct37.gif'></img>",1)
+compound[52]=new dataset("<img src='struct38.gif'></img>",1)
+compound[53]=new dataset("<img src='struct39.gif'></img>",2)
+compound[54]=new dataset("<img src='struct40.gif'></img>",1)
+compound[55]=new dataset("<img src='struct41.gif'></img>",1)
+compound[56]=new dataset("<img src='struct42.gif'></img>",3)
+compound[57]=new dataset("<img src='struct43.gif'></img>",2)
+compound[58]=new dataset("<img src='struct44.gif'></img>",1)
+compound[59]=new dataset("<img src='struct45.gif'></img>",5)
+compound[60]=new dataset("<img src='struct46.gif'></img>",1)
+compound[61]=new dataset("<img src='struct47.gif'></img>",1)
+compound[62]=new dataset("<img src='struct48.gif'></img>",1)
+compound[63]=new dataset("<img src='struct49.gif'></img>",1)
+compound[64]=new dataset("<img src='struct50.gif'></img>",3)
+compound[65]=new dataset("<img src='struct51.gif'></img>",3)
+compound[66]=new dataset("<img src='struct52.gif'></img>",3)
+compound[67]=new dataset("<img src='struct53.gif'></img>",1)
+compound[68]=new dataset("<img src='struct54.gif'></img>",1)
+compound[69]=new dataset("<img src='struct55.gif'></img>",5)
+compound[70]=new dataset("<img src='struct56.gif'></img>",2)
+compound[71]=new dataset("<img src='struct57.gif'></img>",3)
+compound[72]=new dataset("<img src='struct58.gif'></img>",4)
+compound[73]=new dataset("<img src='struct59.gif'></img>",5)
+compound[74]=new dataset("<img src='struct60.gif'></img>",3)
+compound[75]=new dataset("<img src='struct61.gif'></img>",3)
+compound[76]=new dataset("<img src='struct62.gif'></img>",5)
+compound[77]=new dataset("<img src='struct63.gif'></img>",4)
+compound[78]=new dataset("<img src='struct64.gif'></img>",2)
+compound[79]=new dataset("<img src='struct65.gif'></img>",2)
+compound[80]=new dataset("<img src='struct66.gif'></img>",5)
+compound[81]=new dataset("<img src='struct67.gif'></img>",3)
+compound[82]=new dataset("<img src='struct68.gif'></img>",2)
+compound[83]=new dataset("<b>N</b>H<sub>4</sub><sup>+</sup>",3)
+compound[84]=new dataset("<img src='struct69.gif'></img>",5)
+compound[85]=new dataset("<img src='struct70.gif'></img>",1)
+compound[86]=new dataset("<img src='struct71.gif'></img>",1)
+compound[87]=new dataset("<img src='struct72.gif'></img>",2)
+compound[88]=new dataset("<img src='struct73.gif'></img>",4)
+compound[89]=new dataset("<img src='struct74.gif'></img>",5)
+compound[90]=new dataset("<img src='struct75.gif'></img>",2)
+compound[91]=new dataset("<img src='struct76.gif'></img>",2)
+compound[92]=new dataset("<img src='struct77.gif'></img>",4)
+compound[93]=new dataset("<img src='struct78.gif'></img>",3)
+compound[94]=new dataset("<img src='struct79.gif'></img>",3)
+compound[95]=new dataset("<img src='struct80.gif'></img>",3)
+compound[96]=new dataset("<img src='struct81.gif'></img>",2)
+compound[97]=new dataset("<img src='struct82.gif'></img>",5)
+compound[98]=new dataset("<img src='struct83.gif'></img>",2)
+compound[99]=new dataset("<img src='struct84.gif'></img>",2)
+compound[100]=new dataset("<img src='struct85.gif'></img>",3)
+//begin programs
+
+
+function begin(){
+firsttry=0
+totl++
+tried=0
+document.forms[0].total.value=totl
+document.forms[0].results.value=""
+which=Math.ceil(83*Math.random())
+structure=compound[which]['cmpd']
+theanswer=compound[which]['type']
+display()
+}
+function display(){
+var newone=window.open("","newone","scrolling=yes,width=400,height=300")
+newone.document.writeln ("<html>");
+newone.document.writeln ("<head>");
+newone.document.writeln ("</head>");
+newone.document.writeln ("<body bgcolor = FFFFFF>");
+newone.document.writeln (structure);
+newone.document.write ("<form><input type=radio name=ans onClick=opener.answer(1)>sp");
+newone.document.write ("<input type=radio name=ans onClick=opener.answer(2)>sp<sup>2</sup>");
+newone.document.write ("<input type=radio name=ans onClick=opener.answer(3)>sp<sup>3</sup>");
+/*newone.document.write ("<input type=radio name=ans onClick=opener.answer(4)>sp<sup>2</sup>d<br>");
+newone.document.write ("<input type=radio name=ans onClick=opener.answer(5)>sp<sup>3</sup>d");*/
+newone.document.write ("<input type=radio name=ans onClick=opener.answer(4)>none");
+newone.document.write ("<input type=radio name=ans onClick=opener.answer(5)>can't be determined");
+newone.document.writeln ("</form>");
+newone.document.writeln ("</body>");
+newone.document.writeln ("</html>");
+newone.document.close();
+newone.focus();
+}
+function answer(f){
+if(firsttry ==1)
+	totl++
+if(tried==1){
+	alert("Get a new problem. You already answered this one!")}
+else{
+	if(f==theanswer)
+	{
+	document.forms[0].results.value="correct"
+	corrt++
+	document.forms[0].correct.value=corrt
+	tried=1
+	}
+	else{document.forms[0].results.value="incorrect"
+	
+    }
+	
+
+
+ }
+
+document.forms[0].total.value=totl
+firsttry=1
+}
+ function timer(z){
+tt=z
+var b=Math.floor(tt/60)
+var j = (tt % 60)
+if (j<10){c="0"}
+else {c=""}
+howlng=b + ":" + c + j
+running=setTimeout("timer(tt+1)",1000)
+}
+function update(){
+	document.forms[0].total.value=totl
+	document.forms[0].correct.value=corrt
+	document.forms[0].time.value=howlng
+	document.forms[0].page.value=thepage
+	document.forms[0].verify.value=Math.round(10000*Math.random())
+}
+</script>
+</head>
+<body onLoad="clear(), timer(0)"> 
+
+<h2>Hybridization</h2>
+This page presents exercises in determining the hybridizations of atoms. When you press "New Problem", a window will appear with a structure/formula. The atom in question will either be in <b>bold</b> or will have an arrow pointing at it. Determine the hybridization and click on the circle in front of the appropriate answer. Results appear in the table and the main window. When the small window first appears, you may have to drag it out of the way.
+ Before beginning, enter your name, select your
+instructor and then press the "Submit' button.<br><br>
+<form ACTION = "../../cgi-bin/homework/hw_turnin.php" METHOD = "POST">
+<hr>
+<input type=button value="New Problem" onClick=begin()><br>
+<table border=4>
+<tr>
+<td align=center>Results</td>
+<td>Total</td>
+<td>Correct</td>
+</tr>
+<tr>
+<td><input type="text" name="results" size=12></td>
+<td align=center><input type="text" name="total" size=4 ></td>
+<td align=center><input type="text" name="correct" size=4 ></td>
+</table>
+<input type=text name="page" size=1>
+<input type=text name="verify" size=1>
+<input type=text name="time" size=1><br>
+<INPUT TYPE = "submit" VALUE = "Submit your score" onClick="update()">
+
+<br>
+<a href="../../homework/hwintro.html"><img src="back.gif"></a><br>
+<a href="mailto:gwiger@chemistry.csudh.edu"><img src=email1.gif></a>
+</form>
+</body>
+</html>

@@ -1,0 +1,208 @@
+<html>
+<head><title>Converting Volumes-cs</title>
+<style>
+#qspot {position:absolute;left:320;top:260}
+#ansspot {position:absolute;left:320;top:300;height:200}
+#tspot {position:absolute;left:10;top:300}
+#refspot {position:absolute;left:10;top:600;height:200}
+</style>
+<script src=reflist.js></script>
+<script language="javascript">
+//updated 11/14/00-added complete solution
+var ie4 = (document.all) ? true : false;
+//global variables
+refnumber=31
+attempts=0
+theanswer=""
+which=0
+svol=0
+path=""
+second=0
+first=0
+totl=0
+corrt=0
+function pairs(name,factor,mp){
+	this.name=name
+	this.factor=factor
+}
+volume=new Array()
+volume[1]=new pairs("gallons",.25)
+volume[2]=new pairs("quarts",1)
+volume[3]=new pairs("ounces",32)
+volume[4]=new pairs("milliliters",946)
+volume[5]=new pairs("liters",.946)
+sequence=new Array(0,4,0,32,1000)
+link=new Array()
+link[1]=" quarts to milliliters "
+link[2]=" milliliters to quarts "
+function cleanse(){
+	clear()
+	document.forms[0].correct.value=0
+	document.forms[0].total.value=0
+}
+function clear(){
+	tried=0
+	attempts=0
+	document.forms[0].theans.value=""
+	document.forms[0].results.value=""
+	clearansspot()
+}
+function clearansspot(){
+	if(ie4)ansspot.innerHTML="";
+	else{ 
+		document.ansspot.document.open()
+		document.ansspot.document.clear()
+		document.ansspot.document.close()
+	}
+}
+function startit(){
+	clear()
+	totl++
+	document.forms[0].total.value=totl
+	startvol=0
+	while(startvol<1)startvol=Math.round(100*Math.random())/10;
+	first=Math.ceil(3*Math.random())
+	second=3+Math.ceil(2*Math.random())
+	if(Math.random()>.5){
+		fvol=startvol*(volume[first].factor)
+		fdim=volume[first].name
+		svol=startvol*(volume[second].factor)
+		sdim=volume[second].name
+		key=1
+	}
+	else{
+		svol=startvol*(volume[first].factor)
+		sdim=volume[first].name
+		fvol=startvol*(volume[second].factor)
+		fdim=volume[second].name
+		key=2
+	}
+	fvol=Math.round(100*fvol)/100
+	svol=Math.round(100*svol)/100
+	thequest="Convert "+fvol+fdim+" to "+sdim
+	showquest(thequest)
+	answerpath(key)
+	buildanswer(key)
+}
+function answerpath(key){
+	if(key==1){
+		path=link[1]
+		if(first!=2)path=volume[first].name+" to "+path
+		if(second!=4)path=path+" to "+volume[second].name
+	}	
+	else{	
+		path=link[2]
+		if(second!=4)path=volume[second].name+" to "+path
+		if(first!=2)path=path+" to "+volume[first].name
+	}
+	path="This problem can be solved by following conversion(s):<br><br>"+path+"<br><br>"
+}
+function buildanswer(key){
+	if(key==1){
+		if(first==2)theanswer=fvol+"*946";
+		else theanswer=fvol+"*"+sequence[first]+"*946";
+		if(second==5)theanswer=theanswer+"*1/1000";
+	}		
+	else{
+		if(second==4)theanswer=fvol+"*1/946";
+		else theanswer=fvol+"*1/946*1000";
+		if(first!=2)theanswer=theanswer+"*1/"+sequence[first];
+	}
+	theanswer=theanswer+"="+svol	
+}
+function showquest(thequest){
+	if(ie4){
+		qspot.innerHTML=thequest
+		}
+	else{
+		document.qspot.document.open()
+		document.qspot.document.write(thequest)
+		document.qspot.document.close()
+	}
+}
+function answer(theans){
+	if(tried==1)alert("You've done this one! Get a new problem.");
+	else{
+	if(tried==2){totl++;document.forms[0].total.value=totl}
+	attempts++
+	if(theans>.95*svol & theans<1.05*svol){
+		corrt++
+		document.forms[0].results.value="Correct"
+		document.forms[0].correct.value=corrt
+		tried=1
+	}
+	else{
+		document.forms[0].results.value="Incorrect"
+		tried=2
+	}
+	}
+}
+function showanswer(){
+if(attempts>=3){
+	if(ie4){
+		ansspot.innerHTML=path+theanswer
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.write(path,theanswer)
+		document.ansspot.document.close()
+	}
+	}
+}	
+</script>
+</head>
+<body onLoad="cleanse(),setrefs()">
+<h2>Converting Volumes</h2>
+Here you can practice converting volumes between the English and metric systems
+to help develop your math skills and you understanding of both systems. The solutions presented on this page utilize a very limited set of conversion factors: 1qt=32oz;1gal=4qts;1.00qt=946mL; 1L=1000mL.
+<h4>usage</h4>
+<ul>
+<li>To begin-press "New Conversion" and a conversion will appear to the right of the button.
+<li>Put the correct value into the answer cell and press "Check Answer."
+<li>The results on the problem and a running total will appear in the second table.
+<li>If you get a problem "incorrect", you should redo it and recheck your
+answer.
+<li>If you miss a problem three times, pressing the "Show Answer" button will cause a complete solution to appear.
+</ul>
+
+<form>
+<table>
+<tr><td><input type=button value="New Conversion" onClick="startit()"><td></tr>
+<tr><td><b>Enter your answer</b></td>
+<td><input type="text" name=theans size=8></td>
+</tr>
+<tr>
+<td><input type=button value="Check answer" onClick="answer(this.form.theans.value)"></td>
+<td><input type=button value="Show answer" onClick="showanswer()"></td>
+</tr>
+</table>
+<table border=4>
+<tr><td align=center><b>Results</td>
+<td align=center><b>Total Done</td>
+<td><b>Total Correct</td>
+</tr>
+<tr>
+<td><input type="text" name=results size=12></td>
+<td align=center><input type="text" name=total size=4 ></td>
+<td align=center><input type="text" name=correct size=4 ></td>
+</tr>
+<tr>
+</table>
+</form>
+<div id=qspot></div>
+<div id=ansspot></div>
+<div id=refspot></div>
+<br>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+

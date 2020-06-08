@@ -1,0 +1,183 @@
+<html>
+<head><title>Basic Stoichiometry</title>
+<style>
+#qspot {position:absolute;left:320;top:240}
+#ansspot {position:absolute;left:320;top:340;height:200}
+#tspot {position:absolute;left:10;top:300}
+#refspot {position:absolute;left:10;top:600;height:100}
+</style>
+<script src=reactionsets.js></script>
+<script src="reflist.js"></script>
+<script src="numberconvert.js"></script>
+<script language="javascript">
+var ie4=(document.all)?true:false;
+refnumber=173
+attempts=0
+totl=0
+corrt=0
+first=0
+second=0
+theanswer=0
+therows=""
+thesolution=""
+qphrase=new Array()
+seq=new Array()
+theunits=new Array("moles","grams")
+introphrase="For the balanced equation shown below, how many "
+insert=new Array(" will react with "," will be produced by "," reacted, if "," will be produced, if ")
+finish=new Array("?","?"," are produced?"," are produced?")
+ansphrase=new Array("To answer this question, you use the following ratio from the balanced equation:<br><br>","<br>Setting the ratio from the balanced equation equal to the ratio described in the problem yields<br>","<br>Rearranging the equation and solving for "," yields:<br> ")
+function cleanse(){
+	clear()
+	document.forms[0].total.value=0
+	document.forms[0].correct.value=0
+}
+function clear(){
+	document.forms[0].results.value=""
+	document.forms[0].theans.value=""
+	clearansspot()
+	tried=0
+	attempts=0
+}
+//clears values and selects an equation using the choose function(part of reactionsets.js)
+function startit(){
+	clear()
+	totl++
+	document.forms[0].total.value=totl
+	document.forms[0].results.value=""
+	choose()
+	buildarray()
+	buildquestion()
+}
+//thefollowing builds an array of the formulas, stoichiometric coeffs and masses in balanced equation
+//each array row consists of the formula, the coeff and the reaction mass
+//there is one row per compound
+function buildarray(){
+	therows=new Array()
+	for(j=0;j<coeffs[choice].length;j++){
+		therows[j]=new Array()
+		therows[j][0]=getformula(j+2)
+		therows[j][1]=coeffs[choice][j]
+		therows[j][2]=getmass(j+2)
+	}
+	//showquest(therows)
+}
+
+//choice is the index of the selected reaction
+function buildquestion(){
+	first=Math.floor(coeffs[choice].length*Math.random())
+	second=first
+	while(second==first)second=Math.floor(coeffs[choice].length*Math.random())
+	//determines if they're both reagents, both products or one of each.
+	if(first<=splt)second<=splt?option=0:option=1;
+	else second<=splt?option=2:option=3;
+	//this creates a random factor that will generate the values for the question
+	factor=0
+	while(factor<.05)factor=Math.random();
+	if(Math.random()>.5)factor=1/factor
+	factor=number(factor,3,3)
+	thedata=new Array()
+	thedata[0]=factor*therows[first][1]
+	thedata[2]=factor*therows[second][1]
+	thedata[1]=factor*therows[first][2]
+	thedata[3]=factor*therows[second][2]
+	for(var j=0;j<4;j++)thedata[j]=number(thedata[j],3,3)
+	Math.random()>.5?findex=0:findex=1;
+	Math.random()>.5?sindex=0:sindex=1;
+	sindex==0?theanswer=thedata[2]:theanswer=thedata[3];
+	thequest=introphrase+theunits[sindex]+" of "+therows[second][0]+insert[option]+thedata[findex]+theunits[findex]+ " of "+therows[first][0]+finish[option]+"<br>"+equation+"<br>"
+	buildanswer(first,second,findex,sindex)
+	showquest(thequest)
+}
+function buildanswer(first,second,findex,sindex){
+	eqn1="("+theunits[sindex]+" of "+therows[second][0]+")/("+theunits[findex]+" of "+therows[first][0]+")<br>"
+	eqn2=therows[second][sindex+1]+"/"+therows[first][findex+1]+"=(<b>"+theunits[sindex]+" of "+therows[second][0]+"</b>)/"+thedata[findex]+"<br>"
+	eqn3=therows[second][sindex+1]+"/"+therows[first][findex+1]+"*"+thedata[findex]+"="+thedata[sindex+2]
+	thesolution=ansphrase[0]+eqn1+ansphrase[1]+"<br>"+eqn2+"<br>"+ansphrase[2]+"<b>"+theunits[sindex]+" of "+therows[second][0]+"</b><br>"+eqn3
+}	
+function showquest(thequest){
+	if(ie4){
+		qspot.innerHTML=thequest
+		}
+	else{
+		document.qspot.document.open()
+		document.qspot.document.write(thequest);
+		document.qspot.document.close()
+	}
+}
+
+function answer(ans){
+	if(tried==1)alert("You've done this one. Get a new problem!")
+	else{
+	attempts++
+	if(tried==2){totl++;document.forms[0].total.value=totl}
+	if(ans>.95*theanswer & ans<1.05*theanswer){
+		document.forms[0].results.value="Correct"
+		corrt++
+		document.forms[0].correct.value=corrt
+		tried=1
+	}
+	else{
+		document.forms[0].results.value="Incorrect"
+		tried=2
+	}}
+}
+function showanswer(){
+if(attempts>=3){
+	if(ie4){
+		ansspot.innerHTML=thesolution
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.write(thesolution)
+		document.ansspot.document.close()
+	}
+	}
+}	
+function clearansspot(){
+	if(ie4){
+		ansspot.innerHTML=""
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.clear()
+		document.ansspot.document.close()
+	}
+}
+
+</script>	
+</head>
+<body onLoad=cleanse(),setrefs()>
+<h3>Using Balanced Chemical Equations</h3>
+This page provides exercises in relating two substances in a balanced chemical equation . When you press "New Problem", a balanced chemical equation with a question will be displayed. Determine the correct value of the answer, enter it in the cell and press "Check Answer." Results will appear immediately in the scoring table. If you miss a problem three times, pressing "Show Answer" will cause a complete solution to appear.
+<form>
+<table>
+<tr><td><input type=button value="New Problem" onClick="startit()"><td></tr>
+<tr><td><b>Enter your answer</b></td>
+<td><input type="text" name=theans size=8></td>
+</tr>
+<tr>
+<td><input type=button value="Check answer" onClick="answer(this.form.theans.value)"></td>
+<td><input type=button value="Show answer" onClick="showanswer()"></td>
+</tr>
+</table>
+<table border=4>
+<tr><td align=center><b>Results</td>
+<td align=center><b>Total Done</td>
+<td><b>Total Correct</td>
+</tr>
+<tr>
+<td><input type="text" name=results size=12></td>
+<td align=center><input type="text" name=total size=4 ></td>
+<td align=center><input type="text" name=correct size=4 ></td>
+</tr>
+<tr>
+</table>
+</form>
+<div id=qspot></div>
+<div id=ansspot></div>
+<div id=refspot></div>
+<br>
+</body>
+</html>
+

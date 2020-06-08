@@ -1,0 +1,201 @@
+<html>
+<head><title>Boyle's Law-cs</title>
+<style>
+#qspot {position:absolute;left:320;top:300}
+#ansspot {position:absolute;left:320;top:370;height:500}
+#tspot {position:absolute;left:10;top:300}
+#refspot {position:absolute;left:10;top:600}
+</style>
+<script src="reflist.js"></script>
+<script src="numberconvert.js"></script>
+<script language="javascript">
+//updated 11/14/00-added complete solution
+var ie4 = (document.all) ? true : false;
+//global variables
+refnumber=53
+attempts=0
+tried=0
+which=0
+theanswer=0
+corrt=0
+totl=0
+missing=""
+function parts(p1,p2,p3,p4,p5,p6,p7,p8,p9,p10){
+	this.p1=p1
+	this.p2=p2
+	this.p3=p3
+	this.p4=p4
+	this.p5=p5
+	this.p6=p6
+	this.p7=p7
+	this.p8=p8
+	this.p9=p9
+	this.p10=p10
+}
+boyles="<br>P<SUB>1</SUB>V<SUB>1</SUB>=P<SUB>2</SUB>V<SUB>2</SUB>"
+blaws=new Array("=>P<SUB>1</SUB>=P<SUB>2</SUB>V<SUB>2</SUB>/V<SUB>1</SUB>","=>V<SUB>1</SUB>=P<SUB>2</SUB>V<SUB>2</SUB>/P<SUB>1</SUB>","=>P<SUB>2</SUB>=P<SUB>1</SUB>V<SUB>1</SUB>/V<SUB>2</SUB>","=>V<SUB>2</SUB>=P<SUB>1</SUB>V<SUB>1</SUB>/P<SUB>2</SUB>")
+seq=new Array(2,3,1,2,3,0,0,1,3,0,1,2)
+labels=new Array("P<SUB>1</SUB>","V<SUB>1</SUB>","P<SUB>2</SUB>","V<SUB>2</SUB>")
+dimens=new Array("pressure","volume","pressure","volume")
+units=new Array("atm","L","atm","L","torr","mL","torr","mL")
+data=new Array()
+question=new Array()
+question[0]=new parts("A gas system has an initial "," of "," with the "," unknown. When the "," changes to "," the "," is found to be "," What was the initial "," in ","?")
+question[1]=new parts("A gas system has initial pressure and volume of "," and "," If the "," changes to ",", what will the resultant "," be in ","?")
+ansphrase=new parts("First, organize the data converting the quantities into the needed dimensions:<br>","Reaarange Boyle's Law to solve for the missing quantity<br>","<br>Substitute in the knowns and solve:<br>")
+function cleanse(){
+	clear()
+	document.forms[0].total.value=0
+	document.forms[0].correct.value=0
+}
+function clear(){
+	clearansspot()
+	document.forms[0].results.value=""
+	document.forms[0].theans.value=""
+	attempts=0
+	tried=0
+}
+function clearansspot(){
+	if(ie4){
+		ansspot.innerHTML=""
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.clear()
+		document.ansspot.document.close()
+	}
+}
+function startit(){
+	clear()
+	totl++
+	document.forms[0].total.value=totl
+	//first calculate three values data[0]=P1,data[1]=V1,data[2]=P2
+	p1=number((10*Math.random()),3,3)
+	v1=number((10*Math.random()),3,3)
+	p2=number((10*Math.random()),3,3)
+	v2=number((p1*(v1/p2)),3,3)
+	//set up arrays with pressures in atm and torr and v in L and mL
+	data=new Array()
+	data[0]=new Array(p1,number((p1*760),3,3))
+	data[1]=new Array(v1,number((v1*1000),3,3))
+	data[2]=new Array(p2,number((p2*760),3,3))
+	data[3]=new Array(v2,number((v2*1000),3,3))
+	buildquest()
+}
+function buildquest(){
+	missing=new Array(Math.floor(4*Math.random()),Math.floor(2*Math.random()))
+	choose=new Array()
+	for(j=0;j<=3;j++)choose[j]=Math.floor(2*Math.random());
+	thequest=""
+	if(missing[0]==0|| missing[0]==1){
+		missing[0]==0?given=1:given=0;
+		thequest=question[0].p1+dimens[given]+question[0].p2+data[given][choose[given]]+units[given+4*choose[given]]+question[0].p3+dimens[missing[0]]+question[0].p4+dimens[given]+question[0].p5+data[given+2][choose[given+2]]+units[given+4*choose[given+2]]+question[0].p6+dimens[missing[0]]+question[0].p7+data[missing[0]+2][choose[missing[0]+2]]+units[missing[0]+4*choose[missing[0]+2]]+question[0].p8+dimens[missing[0]]+question[0].p9+units[missing[0]+4*missing[1]]+question[0].p10
+	}
+	else{
+		missing[0]==2?given=3:given=2;
+		thequest=question[1].p1+data[0][choose[0]]+units[0+4*choose[0]]+question[1].p2+data[1][choose[1]]+units[1+4*choose[1]]+question[1].p3+dimens[given]+question[1].p4+data[given][choose[given]]+units[given+4*choose[given]]+question[1].p5+dimens[missing[0]]+question[1].p6+units[missing[0]+4*missing[1]]+question[1].p7
+	}
+	showquest(thequest);
+	buildanswer(data,choose)
+}
+function buildanswer(data,choose){
+	datatable=""
+	if(missing[0]==0 || missing[0]==2){pdim=missing[1];vdim=choose[1]}
+	else {vdim=missing[1];pdim=choose[0]}
+	lines=new Array()
+	for(j=0;j<=3;j++){
+		if(j==missing[0])lines[j]=labels[j]+"=?(in "+units[missing[0]+4*missing[1]]+")<br>";
+		else{
+			if(j==0 || j==2){
+				choose[j]==pdim?lines[j]=labels[j]+"="+data[j][choose[j]]+units[j+4*choose[j]]+"<br>":lines[j]=labels[j]+"="+data[j][choose[j]]+units[j+4*choose[j]]+"=>"+data[j][pdim]+units[j+4*pdim]+"<br>";
+			}
+			if(j==1 || j==3){
+				choose[j]==vdim?lines[j]=labels[j]+"="+data[j][choose[j]]+units[j+4*choose[j]]+"<br>":lines[j]=labels[j]+"="+data[j][choose[j]]+units[j+4*choose[j]]+"=>"+data[j][vdim]+units[j+4*vdim]+"<br>";
+			}
+		}}
+	for(j=0;j<=3;j++)datatable+=lines[j];
+	finish=buildeqn()
+	theanswer=ansphrase.p1+datatable+ansphrase.p2+boyles+blaws[missing[0]]+ansphrase.p3+finish
+}
+function buildeqn(){
+	st=3*missing[0]
+	finish=data[seq[st]][pdim]+"*"+data[seq[st+1]][vdim]+"/"
+	missing[0]==1||missing[0]==3?finish+=data[seq[st+2]][vdim]:finish+=data[seq[st+2]][pdim];
+	finish+=("="+data[missing[0]][missing[1]])
+	return finish
+}
+function showquest(thequest){
+	if(ie4){
+		qspot.innerHTML=thequest
+		}
+	else{
+		document.qspot.document.open()
+		document.qspot.document.write(thequest)
+		document.qspot.document.close()
+	}
+}
+function answer(theans){
+	if(tried==1)alert("You've done this one. Get a new problem.");
+	else{
+	if(tried==2){totl++;document.forms[0].total.value=totl}
+	attempts++
+	if(theans>.95*data[missing[0]][missing[1]] & theans<1.05*data[missing[0]][missing[1]]){
+		document.forms[0].results.value="Correct"
+		corrt++
+		document.forms[0].correct.value=corrt
+		tried=1
+	}
+	else{
+		document.forms[0].results.value="Incorrect"
+		tried=2
+	}
+}}
+function showanswer(){
+if(attempts>=3){
+	if(ie4){
+		ansspot.innerHTML=theanswer
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.write(theanswer)
+		document.ansspot.document.close()
+	}
+	}
+}	
+</script>
+</head>
+<body onLoad="cleanse(),setrefs()">
+<h2>Boyle's Law</h2>
+Boyle's Law states that under conditions of constant temperature and quantity, there is
+an inverse relationship between the volume and pressure for an ideal gas. When you press
+"New Problem",a question will appear to the right of the table. Determine the value of the answer, enter it in the cell and press "Check Answer". Results appear in the table where running totals are also kept. If you get a problem wrong, you should redo it.<br>
+<ul>
+<li>If you miss a problem three times, pressing the "Show Answer" button will cause the correct answer to appear.
+</ul>
+<form>
+<input type=button value="New Problem" onClick="startit()">
+<table border=4>
+<tr>
+<td><input type="text" name=theans size=8>Enter your answer here</td>
+<td><input type="button" value="Check Answer" onClick=answer(this.form.theans.value)></td>
+<td><input type="button" value="Show Answer" onClick=showanswer()></td>
+</tr>
+</table>
+<br>
+<table border=4>
+<tr><td align=center><b>Results</td>
+<td align=center><b>Total Done</td>
+<td><b>Total Correct</td>
+</tr>
+<tr>
+<td><input type="text" name=results size=12></td>
+<td align=center><input type="text" name=total size=4 ></td>
+<td align=center><input type="text" name=correct  size=4 ></td>
+</tr>
+</table>
+</form>
+<div id=qspot></div>
+<div id=ansspot></div>
+<div id=refspot></div>
+</body>
+</html>

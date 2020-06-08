@@ -1,0 +1,187 @@
+<html>
+<head><title>The Ideal Gas Equation</title>
+<script>
+thepage="The Ideal Gas Equation(28)"
+
+howlng=""
+totl=0
+corrt=0
+tried=0
+which=""
+relation=""
+tried=0
+theanswer=""
+function clear(){
+	document.forms[0].results.value=""
+	document.forms[0].correct.value=corrt
+	document.forms[0].total.value=totl
+}
+function MakeArray(n){
+	this.length=n
+	for (var i=1;i<=n;i++){
+	this[i]= 0}
+}
+function question(p1,p2,p3,p4,p5){
+	this.p1=p1
+	this.p2=p2
+	this.p3=p3
+	this.p4=p4
+	this.p5=p5
+}
+quest=new MakeArray(10)
+quest[1]=new question("What would the volume in "," be of an ideal gas, if a "," mole<br>sample had temperature of ","  at a pressure of "," ?")
+quest[2]=new question("How many moles of an ideal gas are in a volume of ","<br>with a temperature of "," and a pressure of "," ?","")
+quest[3]=new question("What would the pressure in "," be of an ideal gas, if a "," mole<br>sample occupied a volume of ","  at a temperature of "," ?")
+quest[4]=new question("What would the temperature in "," be of an ideal gas, if a "," mole<br>sample occupied a volume of "," at a pressure of "," ?")
+
+function begin(){
+totl++
+	document.forms[0].total.value=totl
+	document.forms[0].results.value=""
+	tried=0
+//first calulate P,V,n
+var P=Math.round(100*Math.pow(10,Math.random()))/100
+var V=Math.round(100*Math.pow(10,Math.random()))/100
+var n=Math.round(1000*Math.random())/1000
+//use the ideal gas equation to calculate T
+var T=(P*V)/(n*.0821)
+T=Math.round(10*T)/10
+//now pass these variables to the display function
+display(P,V,n,T)
+}
+function display(P,V,n,T){
+if (Math.random()>.5){
+	P=Math.round(760*P)
+	dimp="torr"}
+else{dimp="atm"}
+if (Math.random()>.5){
+	V=Math.round(1e3*V)
+	dimv="mL"}
+else{dimv="liters"}
+if (Math.random()>.5){
+	T=Math.round(T-273)
+	dimt="C"}
+else{dimt="K"}
+dimn="moles"
+//now choose the question
+var h=Math.round(.5+4*Math.random())
+if(h==1){
+	v1=dimv
+	v2=n
+	v3=T+dimt
+	v4=P+dimp
+	ans=V
+}
+if(h==2){
+	v1=V+dimv
+	v2=T+dimt
+	v3=P+dimp
+	v4=""
+	ans=n
+}
+if(h==3){
+	v1=dimp
+	v2=n
+	v3=V+dimv
+	v4=T+dimt
+	ans=P
+}
+if(h==4){
+	v1="degrees "+dimt
+	v2=n
+	v3=V+dimv
+	v4=P+dimp
+	ans=T
+}
+//now compose the question
+question=quest[h]["p1"]+v1+quest[h]["p2"]+v2+quest[h]["p3"]+v3+quest[h]["p4"]+v4+quest[h]["p5"]
+//send answer to hidden cell
+theanswer=ans
+tryit(question)
+}
+function tryit(question)    {
+parent.frames[0].document.clear();
+parent.frames[0].document.open();
+parent.frames[0].document.writeln ("<html>");
+parent.frames[0].document.writeln ("<head>");
+parent.frames[0].document.writeln ("</head>");
+parent.frames[0].document.writeln ("<body bgcolor = FFFFFF >");
+parent.frames[0].document.writeln ("<pre>");
+parent.frames[0].document.write (question);
+parent.frames[0].document.writeln ("</font>");
+parent.frames[0].document.close();
+document.forms[0].fanswer.focus()
+document.forms[0].fanswer.select()
+}
+function answer(){
+if(tried==1){
+		alert("Sorry, you've already submitted this problem! Get you a new one!")}
+else{
+	if(tried==2){totl++;document.forms[0].total.value=totl}
+	if (Math.abs(document.forms[0].fanswer.value)>Math.abs(.99*theanswer) &
+	Math.abs(document.forms[0].fanswer.value)<Math.abs(1.01*theanswer) ){
+    	document.forms[0].results.value="correct"
+	corrt++
+    	document.forms[0].correct.value=corrt
+	tried=1
+	}
+    	else {document.forms[0].results.value="incorrect"
+		tried=2}
+	}
+}
+  function timer(z){
+tt=z
+var b=Math.floor(tt/60)
+var j = (tt % 60)
+if (j<10){c="0"}
+else {c=""}
+howlng=b + ":" + c + j
+running=setTimeout("timer(tt+1)",1000)
+}
+function update(){
+	document.forms[0].total.value=totl
+	document.forms[0].correct.value=corrt
+	document.forms[0].time.value=howlng
+	document.forms[0].page.value=thepage
+	document.forms[0].verify.value=Math.round(10000*Math.random())
+}
+</script>
+</head>
+<body onLoad="clear(), timer(0)">
+
+<h2>The Ideal Gas Equation</h2>
+This is an exercise in using the Ideal Gas Equation. When you press "New Question", question will appear in the top frame. Determine the value of the answer, enter it in the cell and press "Check Answer." Results appear in the second
+table. Being  careful about the dimensions, calculate the value of the answer and place it in the cell.
+Then, press "Check Answer" and the results will appear in the second table.<br>
+
+<form ACTION = "../cgi-bin/homework/hw_turnin.php" METHOD = "POST">
+<table>
+<tr>
+<input type="button" value="New Question" onClick="begin()">
+<input type="button" value="Check Answer" onClick="answer()">
+</tr>
+<tr>
+<td><b>Enter your answer here</b></td>
+<td align=center><input type="text" name="fanswer" size=10></td>
+</tr>
+</table>
+<table border=4>
+<tr>
+<td><b>Results</b></td>
+<td><b>Total Done</b></td>
+<td><b>Total Correct</b></td></tr>
+</tr>
+<tr>
+<td><input type="text" name="results" size=12></td>
+<td align=center><input type="text" name="total" size=4 ></td>
+<td align=center><input type="text" name="correct" size=4 ></td>
+</table>
+<input type=text name="page" size=1>
+<input type=text name="verify" size=1>
+<input type=text name="time" size=1><br>
+<INPUT TYPE = "submit" VALUE = "Submit your score" onClick="update()">
+<br>
+<a href="index.html"><img src="back.gif"></a><br>
+</form>
+</body>
+</html

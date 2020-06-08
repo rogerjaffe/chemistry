@@ -1,0 +1,263 @@
+<html>
+<head><title>Faradays Laws-cs</title>
+<style>
+#qspot {position:absolute;left:50;top:350;height:100}
+#ansspot {position:absolute;left:50;top:450;height:500}
+#tspot {position:absolute;left:10;top:300}
+#refspot {position:absolute;left:10;top:600}
+</style>
+<script src="reflist.js"></script>
+<script src="numberconvert.js"></script>
+<script language="javascript">
+//updated 11/14/00-added complete solution
+var ie4 = (document.all) ? true : false;
+//global variables
+refnumber=186
+attempts=0
+tried=0
+which=0
+theanswer=0
+corrt=0
+totl=0
+anskey=0
+volt=0
+faradays=0
+equivs=0
+qunit=""
+times=new Array()
+function cleanse(){
+	clear()
+	document.forms[0].total.value=0
+	document.forms[0].correct.value=0
+}
+function clear(){
+	document.forms[0].theans.value=""
+	document.forms[0].results.value=""
+	tried=0
+	attempts=0	
+	clearansspot()
+}	
+function redox(first,second,pot,num,m1,m2){
+	this.first=first
+	this.second=second
+	this.pot=pot
+	this.num=num
+	this.m1=m1
+	this.m2=m2
+}
+function parts(p1,p2,p3,p4,p5,p6,p7,p8){
+	this.p1=p1
+	this.p2=p2
+	this.p3=p3
+	this.p4=p4
+	this.p5=p5
+	this.p6=p6
+	this.p7=p7
+	this.p8=p8
+}
+
+quest=new parts("If the process below is driven electrolytically, how many "," of material will be produced at the "," by a current of "," amps flowing for " )
+ansphrase=new parts("Since the potential for the reaction as written is ","volts, the reaction will be driven "," and the product at the "," will be ",". First, calculate the number of coulombs (current*t(sec)):<br>","<br>Then, the number of Faradays(coulombs/96500):","<br>Divide that result by the number of electrons per mole:","<br> and finally multiply by the gaw or gfw, as appropriate:")
+halfrxn=new Array(100)
+halfrxn[1]=new redox("Li<sup>+</sup>(aq)","Li(s)",-3.04,1,6.94,6.94)
+halfrxn[2]=new redox("K<sup>+</sup>(aq)","K(s)",-2.92,1,39.1,39.1)
+halfrxn[3]=new redox("Ca<sup>2+</sup>(aq)","Ca(s)",-2.76,2,40.1,40.1)
+halfrxn[4]=new redox("Na<sup>+</sup>(aq)","Na(s)",-2.71,1,23,23)
+halfrxn[5]=new redox("Mg<sup>2+</sup>(aq)","Mg(s)",-2.38,2,24.3,24.3)
+halfrxn[6]=new redox("Al<sup>3+</sup>(aq)","Al(s)",-1.66,3,27,27)
+halfrxn[7]=new redox("MnO<sub>4</sub><sup>-</sup>(aq)","Mn<sup>2+</sup>(aq)",1.49,5,118.9,54.9)
+halfrxn[8]=new redox("Zn<sup>2+</sup>(aq)","Zn(s)",-.76,2,65.4,65.4)
+halfrxn[9]=new redox("Cd<sup>2+</sup>(aq)","Cd(s)",-.40,2,112.4,112.4)
+halfrxn[10]=new redox("Ni<sup>2+</sup>(aq)","Ni(s)",-.23,2,58.7,58.7)
+halfrxn[11]=new redox("Sn<sup>2+</sup>(aq)","Sn(s)",-.14,2,118.7,118.7)
+halfrxn[12]=new redox("Pb<sup>2+</sup>(aq)","Pb(s)",-.13,2,207.2,207.2)
+halfrxn[13]=new redox("Fe<sup>3+</sup>(aq)","Fe(s)",-.04,3,55.85,55.85)
+halfrxn[14]=new redox("Fe<sup>2+</sup>(aq)","Fe(s)",-.41,2,55.85,55.85)
+halfrxn[15]=new redox("AgBr(s)","Ag  +  Br<SUP>-</sup>(aq) ",.071,1,187.8,187.8)
+halfrxn[16]=new redox("Sn<sup>4+</sup>(aq)","Sn<sup>2+</sup>(aq)",.15,2,118.7,118.7)
+halfrxn[17]=new redox("Cu<sup>2+</sup>(aq)","Cu<sup>+</sup>(aq)",.16,1,63.55,63.55)
+halfrxn[18]=new redox("AgCl(s)","Ag  +  Cl<sup>-</sup>(aq)",.22,1,143.32,143.32)
+halfrxn[19]=new redox("Cu<SUP>2+</sup>(aq)","Cu(s)",.34,2,63.55,63.55)
+halfrxn[20]=new redox("S(s)","H<SUB>2</SUB>S(g)",.14,2,32,34)
+halfrxn[21]=new redox("Cu<sup>+</sup>(aq)","Cu(s)",.52,1,63.55,63.55)
+halfrxn[22]=new redox("Fe<sup>3+</sup>(aq)","Fe<SUP>2+</sup>(aq)",.77,1,55.85,55.85)
+halfrxn[23]=new redox("Ag<sup>+</sup>(aq)","Ag(s)",.80,1,107.9,107.9)
+halfrxn[24]=new redox("Co<sup>3+</sup>(aq)","Co<SUP>2+</sup>(aq)",1.82,1,58.93,58.93)
+halfrxn[25]=new redox("La<SUP>3+</sup>(aq)","La(s)",-2.38,3,138.9,138.9)
+halfrxn[26]=new redox("U<SUP>3+</sup>(aq)","U(s)",-1.66,3,238,238)
+halfrxn[27]=new redox("Cr<SUP>2+</sup>(aq)","Cr(s)",-.90,2,52,52)
+halfrxn[28]=new redox("Ce<sup>4+</sup>(aq)","Ce<SUP>3+</sup>(aq)",1.44,1,140.1,140.1)
+halfrxn[29]=new redox("Hg<sup>2+</sup>(aq)","Hg(l)",.85,2,200.6,200.6)
+halfrxn[30]=new redox("ClO<SUB>2</SUB><sup>-</sup>(aq)","ClO<SUp>-</sup>(aq)",-.13,2,67.45,51.45)
+halfrxn[31]=new redox("ClO<SUB>4</SUB><SUP>-</sup>(aq)","Cl<SUP>-</sup>(aq)",1.37,8,99.45,35.45)
+halfrxn[32]=new redox("Ag<SUP>2+</sup>(aq)","Ag<SUP>+</sup>(aq)",1.98,1,108.7,108.7)
+halfrxn[33]=new redox("Cu<SUP>2+</sup>(aq)  +  I<SUP>-</sup>(aq)","CuI(s)",.86,1,190.5,190.5)
+halfrxn[34]=new redox("ClO<SUB>3</SUB><SUP>-</sup>(aq)","ClO<SUB>2</SUB>(g)",1.175,1,83.45,67.45)
+halfrxn[35]=new redox("MnO<SUB>4</SUB><SUP>-</sup>(aq)","MnO<SUB>4</SUB><SUP>2-</sup>(aq)",.56,1,118.9,118.9)
+halfrxn[36]=new redox("MnO<SUB>2</SUB>(s)","Mn<SUP>2+</sup>(aq)",1.23,2,86.94,54.94)
+halfrxn[37]=new redox("PbO<SUB>2</SUB>(s)","PbO(s)",.28,2,239.2,223.2)
+halfrxn[38]=new redox("Au<SUP>3+</sup>(aq)","Au<SUP>+</sup>(aq)",1.36,2,197,197)
+halfrxn[39]=new redox("MnO<SUB>4</SUB><SUP>-</sup>(aq)","MnO<SUb>2</SUb>(s)",1.70,3,118.9,86.94)
+halfrxn[40]=new redox("H<SUB>2</SUB>SO<SUB>3</SUB>(aq)","S(s)",.450,4,82,32)
+halfrxn[41]=new redox("HAsO<SUB>2</SUB>(aq)","As(s)",.240,3,107.9,74.9)
+halfrxn[42]=new redox("Sr<SUP>2+</sup>(aq)","Sr(s)",-2.89,2,87.6,87.6)
+halfrxn[43]=new redox("Ti<SUP>2+</sup>(aq)","Ti(s)",-1.63,2,47.9,87.6)
+halfrxn[44]=new redox("V<SUP>3+</sup>(aq)","V<SUP>2+</sup>(aq)",-.255,1,50.94,50.94)
+halfrxn[45]=new redox("In<SUP>3+</sup>(aq)","In(s)",-.338,3,114.8,114.8)
+halfrxn[46]=new redox("Rb<SUP>+</sup>(aq)","Rb(s)",-2.924,1,85.5,85.5)
+
+function startit(){
+	clear()
+	totl++
+	document.forms[0].total.value=totl
+//first get current and time
+	times[1]=new Array(Math.round(250*Math.random())*100,"seconds")
+	times[2]=new Array(Math.round(10*times[1][0]/60)/10,"minutes")
+	times[3]=new Array(Math.round(10*times[1][0]/3600)/10,"hours")
+	var current=Math.round(100*Math.pow(100,Math.random()))/100
+	faradays=(times[1][0]*current)/9.65e4
+//then get reactions
+	elems=new Array()
+	var g=Math.ceil(46*Math.random())
+	elems[1]=halfrxn[g]["first"]
+	elems[3]=halfrxn[g]["second"]
+	h=g
+	while(h==g)h=Math.ceil(46*Math.random());
+	elems[2]=halfrxn[h]["second"]
+	elems[4]=halfrxn[h]["first"]
+//calculate moles and grams of all materials
+	moles=new Array()
+	mass=new Array()
+	moles[1]=moles[3]=faradays/halfrxn[g].num
+	mass[1]=moles[1]*halfrxn[g].m1
+	mass[3]=moles[3]*halfrxn[g].m2
+	moles[2]=moles[4]=faradays/halfrxn[h].num
+	mass[2]=moles[2]*halfrxn[h].m1
+	mass[4]=moles[4]*halfrxn[h].m2
+	dfs=new Array(0,halfrxn[g].num,halfrxn[h].num,halfrxn[g].num,halfrxn[h].num)
+	gfws=new Array(0,halfrxn[g].m1,halfrxn[h].m1,halfrxn[g].m2,halfrxn[h].m2)
+//get the voltage
+	volt=halfrxn[g].pot-halfrxn[h].pot
+	volt=Math.round(100*volt)/100
+//load the question
+//choose the time measure
+	thetime=Math.ceil(3*Math.random())
+//finish the answer
+	var m=Math.ceil(2*Math.random())
+	m==1?welect="anode":welect="cathode";
+	volt<0.0?vlt=1:vlt=2;
+	opt=""+vlt+m
+	if(opt==11)anskey=4;
+	if(opt==12)anskey=3;
+	if(opt==21)anskey=1;
+	if(opt==22)anskey=2;
+//decide on amount in moles or grams
+	Math.random()<.5?qunit="grams":qunit="moles";
+	qunit=="grams"?ans=mass[anskey]:ans=moles[anskey];
+	buildquest(elems,welect,current,qunit,thetime)
+	buildanswer(volt,elems,welect,current,qunit,thetime)
+}
+function buildquest(elems,welect,current,qunit,thetime){
+	rxn=elems[1]+"+"+elems[2]+"<=>"+elems[3]+"+"+elems[4]+"<br>"
+	thequest=quest.p1+qunit+quest.p2+welect+quest.p3+current+quest.p4+times[thetime][0]+times[thetime][1]+"?<br><br>"+rxn
+	showquest(thequest)
+}
+function buildanswer(volt,elems,welect,current,qunit,thetime){
+	volt>0.0?dir="right to left":dir="left to right";
+	theanswer=""
+	theanswer+=ansphrase.p1+volt+ansphrase.p2+dir+ansphrase.p3+welect+ansphrase.p4+elems[anskey]+ansphrase.p5
+	if(thetime==1)theequation=current+"*"+times[thetime][0]+"="+number((current*times[thetime][0]),4,3);
+	else theequation=times[thetime][0]+times[thetime][1]+"=>"+times[1][0]+"secs<br>"+current+"*"+times[1][0]+"="+number((current*times[1][0]),4,3);
+	theanswer+=(theequation+"couls"+ansphrase.p6+number(faradays,4,3)+" Faradays")
+	theanswer+=(ansphrase.p7+number(faradays,4,3)+"/"+dfs[anskey]+"="+number(moles[anskey],4,3)+"moles")
+	if(qunit=="grams")theanswer+=(ansphrase.p8+number(moles[anskey],4,3)+"*"+gfws[anskey]+"="+number(mass[anskey],4,3)+"grams");
+	//showanswer(theanswer)
+}	
+function showquest(thequest){
+	if(ie4){
+		qspot.innerHTML=thequest
+		}
+	else{
+		document.qspot.document.open()
+		document.qspot.document.write(thequest)
+		document.qspot.document.close()
+	}
+}
+function answer(theans){
+	if(tried==1)alert("You've done this one. Get a new problem!")
+	else{
+	if(tried==2){totl++;document.forms[0].total.value=totl}
+	attempts++
+	if(theans>.95*ans & theans<1.05*ans){
+		document.forms[0].results.value="Correct"
+		corrt++
+		document.forms[0].correct.value=corrt
+		tried=1
+	}
+	else{
+		document.forms[0].results.value="Incorrect"
+		tried=2
+	}
+	}
+}
+function showanswer(){
+if(attempts>=3){
+	if(ie4){
+		ansspot.innerHTML=theanswer
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.write(theanswer)
+		document.ansspot.document.close()
+	}
+	}
+}
+function clearansspot(){
+	if(ie4){
+		ansspot.innerHTML=""
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.clear()
+		document.ansspot.document.close()
+	}
+}
+	
+</script>
+</head>
+<body onLoad="cleanse(),setrefs()">
+<h2>Faraday's Laws</h2>
+This is an exercise in electrolytic processes. In all cases, the reaction is being driven in the nonspontaneous direction. When you press "New Question", an unbalanced
+redox process with a question will appear below the table. Determine the value of the answer, enter it in the cell and press "Check Answer." Results appear in the second
+table. Be careful about the dimensions, the cathode/anode and the direction of spontaneity. You need a table of standard potentials to answer the question and you can assume all molarities and pressures are at unity.
+<ul>
+<ul>
+<li>If you miss a problem three times, pressing the "Show Answer" button will cause the correct answer to appear.
+</ul>
+<form>
+<input type=button value="New Problem" onClick="startit()">
+<table border=4>
+<tr>
+<td><input type="text" name=theans size=8>Enter your answer here</td>
+<td><input type="button" value="Check Answer" onClick=answer(this.form.theans.value)></td>
+<td><input type="button" value="Show Answer" onClick=showanswer()></td>
+</tr>
+</table>
+<br>
+<table border=4>
+<tr><td align=center><b>Results</td>
+<td align=center><b>Total Done</td>
+<td><b>Total Correct</td>
+</tr>
+<tr>
+<td><input type="text" name=results size=12></td>
+<td align=center><input type="text" name=total size=4 ></td>
+<td align=center><input type="text" name=correct  size=4 ></td>
+</tr>
+</table>
+</form>
+<div id=qspot></div>
+<div id=ansspot></div>
+<div id=refspot></div>
+</body>
+</html>

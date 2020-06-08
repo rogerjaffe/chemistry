@@ -1,0 +1,191 @@
+<html>
+<head><title>Heat Transfer Water Only-cs</title>
+<style>
+#qspot {position:absolute;left:320;top:260}
+#ansspot {position:absolute;left:420;top:200;height:500}
+#tspot {position:absolute;left:10;top:300}
+#refspot {position:absolute;left:10;top:600}
+</style>
+<script src="reflist.js"></script>
+<script src="numberconvert.js"></script>
+<script language="javascript">
+//updated 11/14/00-added complete solution
+var ie4 = (document.all) ? true : false;
+//global variables
+refnumber=87
+attempts=0
+which=0
+theanswer=0
+corrt=0
+totl=0
+tried=0
+which=0
+alldata=0
+datalabels=new Array("mass<sub>1</sub>","Ti<sub>1</sub>","mass<sub>2</sub>","Ti<sub>2</sub>","T<sub>f</sub>","mass<sub>total</sub>","dT<sub>1</sub>","dT<sub>2</sub>")
+equation=new Array()
+equation[0]=new Array("The basic equation for mixing samples of water with diferent initial temperatures is<br>",datalabels[0]+"*("+datalabels[4]+"-"+datalabels[1]+")+"+datalabels[2]+"*("+datalabels[4]+"-"+datalabels[3]+")=0")
+equation[1]=new Array("Solving for mass<sub>1</sub> yields:<br>","-"+datalabels[2]+"*("+datalabels[4]+"-"+datalabels[3]+")/"+"("+datalabels[4]+"-"+datalabels[1]+")="+datalabels[0])
+equation[2]=new Array("Evaluate the term for the first sample:<br>",datalabels[0]+"*("+datalabels[4]+"-"+datalabels[1]+")")
+equation[3]=new Array("Evaluate the term for the second sample:<br>",datalabels[2]+"*("+datalabels[4]+"-"+datalabels[3]+")")
+equation[4]=new Array("Solving for mass<sub>2</sub> yields:<br>","-"+datalabels[0]+"*("+datalabels[4]+"-"+datalabels[1]+")/"+"("+datalabels[4]+"-"+datalabels[3]+")="+datalabels[2])
+equation[5]=new Array("Solving for Ti<sub>1</sub> yields:<br>",datalabels[2]+"*("+datalabels[4]+"-"+datalabels[3]+")/"+datalabels[0]+"+"+datalabels[4]+"="+datalabels[1])
+equation[6]=new Array("Solving for Ti<sub>2</sub> yields:<br>",datalabels[0]+"*("+datalabels[4]+"-"+datalabels[1]+")/"+datalabels[2]+"+"+datalabels[4]+"="+datalabels[3])
+equation[7]=new Array("Solving for T<sub>f</sub> yields:<br>","("+datalabels[0]+"*"+datalabels[1]+"+"+datalabels[2]+"*"+datalabels[3]+")/("+datalabels[0]+"+"+datalabels[2]+")="+datalabels[4])
+eqnsets=new Array()
+eqnsets[0]=new Array(0,1)
+eqnsets[1]=new Array(0,5)
+eqnsets[2]=new Array(0,4)
+eqnsets[3]=new Array(0,6)
+eqnsets[4]=new Array(0,7)
+function cleanse(){
+	clear()
+	document.forms[0].total.value=0
+	document.forms[0].correct.value=0
+}
+function clear(){
+	for(j=0;j<5;j++)document.forms[0].elements[j].value="";
+	clearansspot()
+	document.forms[0].results.value=""
+	attempts=0
+	tried=0
+}
+function startit(){
+	clear()
+	tried=0
+	totl++
+	document.forms[0].total.value=totl
+	ti1=100*Math.random()
+	ti2=ti1
+	while(Math.abs(ti1-ti2)<10)ti2=100*Math.random();
+	ti1=number(ti1,3,3)
+	ti2=number(ti2,3,3)
+	mass1=number(50*Math.random(),3,3)
+	mass2=number(50*Math.random(),3,3)
+	masst=number(1*mass1+1*mass2,3,3)
+	tf=(mass1*ti1+mass2*ti2)/(1*mass1 + 1*mass2)
+	dt1=number((tf-1*ti1),3,3)
+	dt2=number((tf-1*ti2),3,3)
+	tf=number(tf,3,3)
+	alldata=new Array(mass1,ti1,mass2,ti2,tf,masst,dt1,dt2)
+	buildquest()
+}
+function buildquest(){
+	which=Math.floor(5*Math.random())
+	for(var j=0;j<5;j++){
+		j==which?document.forms[0].elements[j].value="":document.forms[0].elements[j].value=alldata[j]
+	}
+	buildanswer()
+}
+function buildanswer(){
+	getsolved()
+	thesolution=""
+	for(var j=0;j<eqnsets[which].length;j++)thesolution+=(equation[eqnsets[which][j]][0]+equation[eqnsets[which][j]][1]+" =><br> "+solved[eqnsets[which][j]]+"<br>");
+}
+function getsolved(){
+	solved=new Array()
+	solved[0]=""
+	solved[99]=alldata[0]+"*("+alldata[4]+"-"+alldata[1]+")+"+alldata[2]+"*("+alldata[4]+"-"+alldata[3]+")=0"
+	solved[1]="-"+alldata[2]+"*("+alldata[4]+"-"+alldata[3]+")/"+"("+alldata[4]+"-"+alldata[1]+")="+alldata[0]
+	solved[2]=alldata[2]+"*("+alldata[4]+"-"+alldata[3]
+	solved[3]=alldata[2]+"*("+alldata[4]+"-"+alldata[3]
+	solved[4]="-"+alldata[0]+"*("+alldata[4]+"-"+alldata[1]+")/"+"("+alldata[4]+"-"+alldata[3]+")="+alldata[2]
+	solved[5]=alldata[2]+"*("+alldata[4]+"-"+alldata[3]+")/"+alldata[0]+"+"+alldata[4]+"="+alldata[1]
+	solved[6]=alldata[0]+"*("+alldata[4]+"-"+alldata[1]+")/"+alldata[2]+"+"+alldata[4]+"="+alldata[3]
+	solved[7]="("+alldata[0]+"*"+alldata[1]+"+"+alldata[2]+"*"+alldata[3]+")/("+alldata[0]+"+"+alldata[2]+")="+alldata[4]
+}
+function answer(form){
+	if(tried==1)alert("You've done this one. Get a new problem!");
+	else{
+	attempts++
+	if(tried==2){totl++;document.forms[0].total.value=totl}	
+	if(form.elements[which].value>.95*alldata[which] & form.elements[which].value<1.05*alldata[which]){
+		corrt++
+		form.results.value="correct"
+		form.correct.value=corrt
+		tried=1
+		}
+	else {
+		tried=2
+		form.results.value="incorrect"
+		}
+}}
+function showanswer(){
+if(attempts>=3){
+	if(ie4){
+		ansspot.innerHTML=thesolution
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.write(thesolution)
+		document.ansspot.document.close()
+	}
+	}
+}
+function clearansspot(){
+	if(ie4){
+		ansspot.innerHTML=""
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.clear()
+		document.ansspot.document.close()
+	}
+}	
+</script>
+</head>
+<body onLoad="cleanse(),setrefs()">
+<h2>Heat Transfer-water</h2>
+This page deals with heat transfer resulting from samples of water initially at different temperatures. The problems
+are randomly generated when you press the "New Problem" button. When you do so, data will
+will appear in four of the cells. Fill in the empty cell and press "Check Answer." The results are displayed in the second table which will
+tell you whether you got the correct answer or not and keeps a running total of your score.
+If you get a question wrong, you should redo and recheck your answer. Getting new problems is just a matter of pressing the "New Problem" button at any time.
+<ul>
+<li>If you miss a problem three times, pressing "Show Answer" will display a complete solution.
+</ul> 
+<form>
+<table border=4>
+<tr>
+<tr><td><b>First sample</td>
+<td></td>
+<td><b>Second sample</td></tr>
+<TD ALIGN=CENTER><b>Mass(g)</td>
+<td align=center><b>T<sub>i</sub></td>
+<TD ALIGN=CENTER><b>Mass(g)</td>
+<td align=center><b>T<sub>i</sub></td>
+</tr>
+<tr>
+<td align=center><input type="text" name="first" size=8 ></td>
+<td align=center><input type="text" name="second" size=8 ></td>
+<td align=center><input type="text" name="third" size=8 ></td>
+<td align=center><input type="text" name="fourth" size=8 ></td>
+</tr>
+<tr>
+<td align=center><b>T<sub>f</sub></td>
+</tr>
+<tr>
+<td align=center><input type="text" name="fifth" size=8 ></td>
+</tr>
+</table>
+<table border=4>
+<tr>
+<td><input type="button" value="New Problem" onClick=startit()></td>
+<td><input type="button" value="Check Answer" onClick=answer(this.form)></td>
+<td><input type="button" value="Show Answer" onClick=showanswer()></td>
+</tr>
+<tr><td align=center><b>Results</td>
+<td align=center><b>Total Done</td>
+<td><b>Total Correct</td>
+</tr>
+<tr>
+<td><input type="text" name="results" size=12></td>
+<td align=center><input name="total" type="text" size=4 ></td>
+<td align=center><input name="correct" type="text" size=4 ></td>
+</tr>
+</table>
+</form>
+<div id=qspot></div>
+<div id=ansspot></div>
+<div id=refspot></div>
+</body>
+</html>

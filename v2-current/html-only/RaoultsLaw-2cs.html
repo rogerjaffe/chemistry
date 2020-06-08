@@ -1,0 +1,281 @@
+<html>
+<head>
+<title>Raoult's Law-two volatile-cs</title>
+<style>
+#qspot {position:absolute;left:350;top:240}
+#ansspot {position:absolute;left:350;top:320;height:200}
+#tspot {position:absolute;left:10;top:300}
+#refspot {position:absolute;left:10;top:600;height:200}
+</style>
+<script src=numberconvert.js></script>
+<script src="reflist.js"></script>
+<script>
+refnumber=60
+totl=0
+corrt=0
+theanswer=""
+po1=po2=0
+option=0
+qchoice=0
+missing=0
+index1=index2=keyindex=0
+alldata=0
+second=first=0
+cmpd=""
+solved=0
+var ie4=(document.all)?true:false;
+thedata=new Array()
+thedata[0]=new Array("acetaldehyde",833)
+thedata[1]=new Array("acetone",227)
+thedata[2]=new Array("benzene",97)
+thedata[3]=new Array("chloroform",193)
+thedata[4]=new Array("cyclohexane",93)
+thedata[5]=new Array("cyclopentane",301)
+thedata[6]=new Array("diethylamine",234)
+thedata[7]=new Array("diethylether",528)
+thedata[8]=new Array("diethylsulfide",59)
+thedata[9]=new Array("ethanol",60.1)
+thedata[10]=new Array("ethylmercaptan",519)
+thedata[11]=new Array("heptane",45.7)
+thedata[12]=new Array("hexane",150)
+thedata[13]=new Array("methanol",127)
+thephrase=new Array("A mixture of "," and ", " both of which are volatile, has the property shown below. What is the ","?")
+qlist=new Array(" <B>liquid phase</B> mole fraction of "," pressure(torr) of "," total pressure(torr)"," <B>vapor phase</B> mole fraction of ")
+datalabels=new Array("X<SUB>a(liq)</SUB>","X<SUB>b(liq)</SUB>","P<SUB>a</SUB>","P<SUB>b</SUB>","P<SUB>t</SUB>","X<SUB>a(vap)</SUB>","X<SUB>b(vap)</SUB>","P<SUp>o</SUp><SUB>a</SUB>","P<SUp>o</SUp><SUB>b</SUB>")
+equations=new Array()
+equations[0]=datalabels[7]+"*"+datalabels[0]+"+"+datalabels[8]+"*"+datalabels[1]+"="+datalabels[4]//raoults
+equations[1]="1-"+datalabels[0]+"="+datalabels[1]//1-Xa=Xb
+equations[2]=datalabels[7]+"*"+datalabels[0]+"="+datalabels[2]//Po*Xa=Pa
+equations[3]=datalabels[2]+"/"+datalabels[7]+"="+datalabels[0]//Pa/Po=Xa
+equations[4]=datalabels[2]+"/"+datalabels[4]+"="+datalabels[5]//Pa/Pt=Xva
+equations[5]="1-"+datalabels[1]+"="+datalabels[0]//1-Xb=Xa
+equations[6]=datalabels[8]+"*"+datalabels[1]+"="+datalabels[3]//Po*Xb=Pb
+equations[7]=datalabels[3]+"/"+datalabels[8]+"="+datalabels[1]//Pb/Po=Xb
+equations[8]=datalabels[3]+"/"+datalabels[4]+"="+datalabels[6]//Pb/Pt=Xvb
+equations[9]=datalabels[7]+"+"+datalabels[8]+"="+datalabels[4]//Pa + Pb=Pt
+equations[10]="("+datalabels[5]+"*"+datalabels[8]+")/("+datalabels[7]+"-("+datalabels[5]+"*"+datalabels[7]+")+("+datalabels[5]+"*"+datalabels[8]+"))="+datalabels[0]//Xa(liq) from Xa(vap)
+equations[11]="("+datalabels[6]+"*"+datalabels[7]+")/("+datalabels[8]+"-("+datalabels[6]+"*"+datalabels[8]+")+("+datalabels[6]+"*"+datalabels[7]+"))="+datalabels[1]//Xb(liq) from Xb(vap)
+equations[12]="1-"+datalabels[5]+"="+datalabels[6]//1-Xa=Xb(vapor)
+equations[13]="1-"+datalabels[6]+"="+datalabels[5]//1-Xb=Xa(vapor)
+eqnsets=new Array()
+eqnsets[1]=new Array("1")
+eqnsets[2]=new Array("2")
+eqnsets[3]=new Array(1,6)
+eqnsets[4]=new Array(1,0)
+eqnsets[5]=new Array(1,2,6,9,4)
+eqnsets[6]=new Array(1,2,6,9,8)
+eqnsets[10]=new Array("5")
+eqnsets[12]=new Array(5,2)
+eqnsets[13]=new Array("6")
+eqnsets[14]=new Array(5,0)
+eqnsets[15]=new Array(5,2,6,9,4)
+eqnsets[16]=new Array(5,2,6,9,8)
+eqnsets[20]=new Array("3")
+eqnsets[21]=new Array(3,1)
+eqnsets[23]=new Array(3,1,6)
+eqnsets[24]=new Array(3,1,0)
+eqnsets[25]=new Array(3,1,6,9,4)
+eqnsets[26]=new Array(3,1,6,9,8)
+eqnsets[30]=new Array(7,5)
+eqnsets[31]=new Array("7")
+eqnsets[32]=new Array(7,5,2)
+eqnsets[34]=new Array(7,5,2,9)
+eqnsets[35]=new Array(7,5,2,9,4)
+eqnsets[36]=new Array(7,5,2,9,8)
+eqnsets[50]=new Array("10")
+eqnsets[51]=new Array(10,1)
+eqnsets[52]=new Array(10,2)
+eqnsets[53]=new Array(10,1,6)
+eqnsets[54]=new Array(10,1,0)
+eqnsets[56]=new Array("12")
+eqnsets[60]=new Array(11,5)
+eqnsets[61]=new Array("11")
+eqnsets[62]=new Array(11,5,2)
+eqnsets[63]=new Array(11,6)
+eqnsets[64]=new Array(11,5,0)
+eqnsets[65]=new Array("13")
+
+ansphrase=new Array()
+inserts=new Array()
+function cleanse(){
+	totl=0
+	corrt=0
+	document.forms[0].correct.value=""
+	document.forms[0].total.value=""
+	clear()
+}
+function clear(){
+	attempts=0
+	clearansspot()
+	document.forms[0].results.value=""
+	tried=0
+	document.forms[0].theans.value=""
+}
+function startit(){
+	clear()
+	totl++
+	document.forms[0].total.value=totl
+	first=Math.floor(Math.random()*thedata.length);
+	second=first
+	while(second==first)second=Math.floor(Math.random()*thedata.length);
+	mfl1=0;
+	while(mfl1<.2 || mfl1>.8)mfl1=Math.random();
+	createdata(mfl1)
+	}
+function createdata(mfl1){
+	cmpd=new Array()
+	cmpd[0]=thedata[first][0]
+	cmpd[1]=thedata[second][0]
+	mfl2=1-mfl1
+	mfl1=number(mfl1,3,3)
+	mfl2=number(mfl2,3,3)
+	getpo()
+	p1=number(mfl1*po1,3,3)
+	p2=number(mfl2*po2,3,3)
+	pt=number(1*p1+1*p2,3,3)
+	mfv1=number(p1/pt,3,3)
+	mfv2=number(p2/pt,3,3)	
+	alldata=new Array(mfl1,mfl2,p1,p2,pt,mfv1,mfv2,po1,po2)
+	buildquest()
+}
+function buildquest(){
+	firstinsert="(P<sup>o</sup>="+alldata[7]+"torr)"
+	secondinsert="(P<sup>o</sup>="+alldata[8]+"torr)"
+	given=4
+	while(given==4)given=Math.floor(7*Math.random())
+	missing=given
+	while(missing==given)missing=Math.floor(7*Math.random())
+	keyindex=1*(""+given+missing)
+	if(missing==4)finalinsert=qlist[2];
+	else{
+		if(missing>4)finalinsert=qlist[3]+cmpd[missing%5];
+		else{(missing<2)?(finalinsert=qlist[0]+cmpd[missing%2]):(finalinsert=qlist[1]+cmpd[missing%2])};
+	}
+	dlabels=new Array("X<sub>liq</sub>=","P=","X<sub>vap</sub>=")
+	toshow="<b>"+cmpd[given%2]+":</b>"
+	if(given>4)toshow+=dlabels[2]+"="+alldata[given];
+	else{
+	given<2?toshow+=(dlabels[0]+"="+alldata[given]):toshow+=(dlabels[1]+"="+alldata[given]);
+	}
+	thequest=thephrase[0]+cmpd[0]+firstinsert+thephrase[1]+cmpd[1]+secondinsert+thephrase[2]+finalinsert+thephrase[3]+"<br>"+toshow
+	showquest(thequest)
+	getsolutions()
+	buildanswer()
+	}
+function getpo(){
+	factor1=0
+	factor2=0
+	while(factor1<.8 || factor1>1.2)factor1=Math.random()*2;
+	while(factor2<.8 || factor2>1.2)factor2=Math.random()*2;
+	po1=number(factor1*thedata[first][1],3,3)
+	po2=number(factor2*thedata[second][1],3,3)
+}
+function getsolutions(){
+	solved=new Array()
+	solved[0]=alldata[7]+"*"+alldata[0]+"+"+alldata[8]+"*"+alldata[1]+"="+alldata[4]//raoults
+	solved[1]="1-"+alldata[0]+"="+alldata[1]//1-Xa=Xb
+	solved[2]=alldata[7]+"*"+alldata[0]+"="+alldata[2]//Po*Xa=Pa
+	solved[3]=alldata[2]+"/"+alldata[7]+"="+alldata[0]//Pa/Po=Xa
+	solved[4]=alldata[2]+"/"+alldata[4]+"="+alldata[5]//Pa/Pt=Xva
+	solved[5]="1-"+alldata[1]+"="+alldata[0]//1-Xb=Xa
+	solved[6]=alldata[8]+"*"+alldata[1]+"="+alldata[3]//Po*Xb=Pb
+	solved[7]=alldata[3]+"/"+alldata[8]+"="+alldata[1]//Pb/Po=Xb
+	solved[8]=alldata[3]+"/"+alldata[4]+"="+alldata[6]//Pb/Pt=Xvb
+	solved[9]=alldata[2]+"+"+alldata[3]+"="+alldata[4]//Pa + Pb=Pt
+	solved[10]="("+alldata[5]+"*"+alldata[8]+")/("+alldata[7]+"-("+alldata[5]+"*"+alldata[7]+")+("+alldata[5]+"*"+alldata[8]+"))="+alldata[0]//Xa(liq) from Xa(vap)
+solved[11]="("+alldata[6]+"*"+alldata[7]+")/("+alldata[8]+"-("+alldata[6]+"*"+alldata[8]+")+("+alldata[6]+"*"+alldata[7]+"))="+alldata[1]//Xb(liq) from Xb(vap)
+solved[12]="1-"+alldata[5]+"="+alldata[6]//1-Xa=Xb(vapor)
+solved[13]="1-"+alldata[6]+"="+alldata[5]//1-Xb=Xa(vapor)
+
+}
+function buildanswer(){
+	thesolution="The solution to this problem involves the following:"
+	theeqn=geteqn()
+	thesolution+="<br>"+theeqn
+	showanswer()
+}
+function geteqn(){
+	theeqn="<br>"
+	for(var j=0;j<eqnsets[keyindex].length;j++)theeqn+=equations[eqnsets[keyindex][j]]+"   <B>=></B>   "+solved[eqnsets[keyindex][j]]+"<br>";
+	return theeqn
+	}
+function showanswer(){
+if(attempts>=3){
+	if(ie4){
+		ansspot.innerHTML=thesolution
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.write(thesolution)
+		document.ansspot.document.close()
+	}
+	}
+}
+function clearansspot(){
+	if(ie4){
+		ansspot.innerHTML=""
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.clear()
+		document.ansspot.document.close()
+	}
+}
+function showquest(thequest){
+	if(ie4){
+		qspot.innerHTML=thequest
+		}
+	else{
+		document.qspot.document.open()
+		document.qspot.document.write(thequest)
+		document.qspot.document.close()
+	}
+}
+function answer(ans){
+if(tried==1)alert("Sorry, you've already submitted this problem! We'll get you a new one!");		
+else{	attempts++
+ 	if(tried==2){totl++;document.forms[0].total.value=totl}
+	if (ans>.95*alldata[missing]& ans<1.05*alldata[missing]){
+		document.forms[0].results.value="correct"
+		corrt++
+		document.forms[0].correct.value=corrt
+		tried=1
+		}
+	else {
+		tried=2
+		document.forms[0].results.value="incorrect"
+	}
+}}
+</script>
+</head>
+<body onLoad="cleanse(),setrefs()">	
+<h3>Raoult's Law-Two Volatile Components</h3>
+This page presents problems involving the vapor pressures of mixtures containing two volatile components. When you press "New Problem", a question will appear to the right of the table. In the question,"P<sup>o</sup>" is the vapor pressure of the pure material, "P" represents the partial pressure of a component and "X" is a mole fraction. Since there are two mole fractions (liq and vap) possible, these are differentiated by use of the subscripts "liq" and "vap". Thus, the following<Br>
+acetone<b>:</b>P=76torr<br>
+diethylether<b>:</b>X<sub>vap</sub>=0.345<br> 
+means that the partial pressure of the acetone for the solution being discussed is 76 torr and the mole fraction of the diethylether <B>in the vapor</B> is 0.345. Further, in the structuring of the presenting the answer, we use the convention that the first compound mentioned is denoted with the subscript "a" and the second with the subscript "b". Determine the value of the answer, enter it in the cell and press "Check Answer", results appear immediately in the table. For purposes of this exercise, assume that all solutions are ideal. Some of the calculations are fairly complex, so care should be exercised. If you miss a problem three times, pressing "Show Answer" will cause a solution to appear.
+<form>
+<input type=button value="New Problem" onClick="startit()"><br>
+<input type=text size=8 name=theans><b>Enter your answer here</b><br>
+<input type=button value="Check answer" onClick="answer(this.form.theans.value)">
+<input type=button value="Show answer" onClick="showanswer()">
+<table border=4>
+<tr><td align=center><b>Results</td>
+<td align=center><b>Total Done</td>
+<td><b>Total Correct</td>
+</tr>
+<tr>
+<td><input type="text" name=results size=12></td>
+<td align=center><input type="text" name=total size=4 ></td>
+<td align=center><input type="text" name=correct size=4 ></td>
+</tr>
+<tr>
+</table>
+</form>
+<div id=qspot></div>
+<div id=ansspot></div>
+<div id=refspot></div>
+<br>
+</body>
+</html>
+

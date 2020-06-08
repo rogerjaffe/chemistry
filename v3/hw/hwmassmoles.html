@@ -1,0 +1,171 @@
+<html>
+<head><title>Mass and Moles-Homework</title>
+<script language=javascript>
+//This function clears all values in both tables on loading the page
+//Last Update 7/28/98
+thepage="Mass, moles and gfws(8)"
+howlng=""
+totl=0
+corrt=0
+tried=0
+which=""
+relation=""
+tried=0
+theanswer=""
+ans = new Array()
+function clear(){
+	document.forms[0].results.value=""
+	document.forms[0].correct.value=corrt
+	document.forms[0].total.value=totl
+}
+
+
+//This is the function started when "New Problem" is pushed
+//This function first clears all old values using zeroout()
+//The three variables(mass,moles and gfw) are then determined, using Math.random() to
+//generate gfw and mass and a ratio to generate moles.
+function begin(){
+	totl++
+	document.forms[0].total.value=totl
+	document.forms[0].results.value=""
+	tried=0
+	clear()
+	for (var f=0;f<100;f++){
+	var gfw=Math.pow(500,Math.random())
+	if (gfw>24 & gfw<400){break}}
+	var mass=Math.pow(1000,Math.random())
+	var moles=mass/gfw
+//The three variables are then converted to three significant figures.
+	gfw=Math.round(100*gfw)/100
+	mass=Math.round(100*mass)/100
+	if (moles>1){moles=Math.round(100*moles)/100}
+	else {moles=Math.round(1000*moles)/1000}
+//Control is then passed to one of three other functions to display the
+//problem-again using Math.random()
+	var start=(Math.random())
+	if (start<.33){ first(gfw,mass,moles)}
+	else {if (start<.67){second(gfw,mass,moles)}
+	else {third(gfw,mass,moles)}
+}}
+//This function displays gfw and mass in the table with moles left blank
+function first(a,b,c){
+	document.forms[0].elements[0].value=a
+	document.forms[0].elements[1].value=b
+	document.forms[0].elements[2].value=""
+	theanswer=c
+	which=2
+//The following places the cursor in the empty cell for convenience
+	document.forms[0].elements[2].focus()
+	document.forms[0].elements[2].select()
+	}
+//This function displays gfw and moles in the table and leaves mass blank
+function second(a,b,c){
+	document.forms[0].elements[0].value=a
+	document.forms[0].elements[1].value=""
+	document.forms[0].elements[2].value=c
+	theanswer=b
+	which=1
+//The following places the cursor in the empty cell for convenience
+	document.forms[0].elements[1].focus()
+	document.forms[0].elements[1].select()
+	}
+//This function displays mass and moles and leaves gfw blank
+function third(a,b,c){
+	document.forms[0].elements[0].value=""
+	document.forms[0].elements[1].value=b
+	document.forms[0].elements[2].value=c
+	theanswer=a
+	which=0
+//The following places the cursor in the empty cell for convenience
+	document.forms[0].elements[0].focus()
+	document.forms[0].elements[0].select()
+	}
+// This is the "Check Answer Function
+//This function checks for correctness by simply seeing if a/b is within 1%
+//of c. The results are then posted to the second table. If you change the
+//relationship between a and b, above, make sure you change this also.
+function answer(form){
+if(tried==1){
+		alert("Sorry, you've already submitted this problem! We'll get you a new one!")
+		begin()}
+else{
+
+	if(tried==2){totl++;document.forms[0].total.value=totl}
+	if(form.elements[which].value>.95*theanswer & form.elements[which].value<1.05*theanswer)
+	{
+	document.forms[0].results.value="correct"
+	corrt++
+	document.forms[0].correct.value=corrt
+	tried=1}
+	else {
+	tried=2
+	document.forms[0].results.value="incorrect"}
+}}
+  function timer(z){
+tt=z
+var b=Math.floor(tt/60)
+var j = (tt % 60)
+if (j<10){c="0"}
+else {c=""}
+howlng=b + ":" + c + j
+running=setTimeout("timer(tt+1)",1000)
+}
+function update(){
+	document.forms[0].total.value=totl
+	document.forms[0].correct.value=corrt
+	document.forms[0].time.value=howlng
+	document.forms[0].page.value=thepage
+	document.forms[0].verify.value=Math.round(10000*Math.random())
+}
+</script>
+</head>
+<body onLoad="clear(), timer(0)">
+
+<h2>Mass, Moles and GFW</h2>
+This page provides basic problems dealing with the relationships between mass, moles and the GFW.
+When you press "New Problem", values will appear in two of the windows. Enter the
+missing value and press "Check Answer". The results will appear in the second
+table.
+<h3>Hints</h3>
+<ul>
+<li>Redo any problems you get incorrect and resubmit the new results.
+<li>You may press "New Problem" rather than answer the one displayed.
+</ul>
+ <form ACTION = "../cgi-bin/homework/hw_turnin.php" METHOD = "POST">
+<table border=4>
+<tr>
+<TD ALIGN=CENTER><b>GFW</td>
+<td align=center><b>Mass</td>
+<td align=center><b>Moles</td>
+</tr>
+<tr>
+<td align=center><input type="text" size=8 ></td>
+<td align=center><input type="text" size=8 ></td>
+<td align=center><input type="text" size=8 ></td>
+</tr>
+<tr>
+<td><input type="button" value="New Problem" onClick=begin()></td>
+<td><input type="button" value="Check Answer" onClick=answer(this.form)></td>
+</tr>
+</table>
+<br>
+<table border=4>
+<tr>
+<td align=center><b>Results</td>
+<td align=center><b>Total Done</td>
+<td><b>Total Correct</td>
+</tr>
+<tr>
+<td><input type="text" name="results" size=12></td>
+<td align=center><input type="text" name="total" size=4 ></td>
+<td align=center><input type="text" name="correct" size=4 ></td>
+</table>
+<input type=text name="page" size=1>
+<input type=text name="verify" size=1>
+<input type=text name="time" size=1><br>
+<INPUT TYPE = "submit" VALUE = "Submit your score" onClick="update()">
+</form>
+<br>
+<a href="index.html"><img src="back.gif"></a><br>
+</body>
+</html>

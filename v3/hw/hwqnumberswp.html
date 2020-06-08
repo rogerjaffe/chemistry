@@ -1,0 +1,198 @@
+<html>
+<head><title>Quantum Numbers</title>
+<script>
+//globals
+thepage="Quantum Numbers(12)"
+corrt=0
+tried=0
+totl=0
+theanswer=0
+which=0
+function clear(){
+	document.forms[0].results.value=""
+	document.forms[0].correct.value=corrt
+	document.forms[0].total.value=totl
+	document.forms[0].ans.value=""
+}
+
+function MakeArray(n){
+	this.length=n
+	for (var i=1;i<=n;i++){
+	this[i]= 0}
+}
+function question(p1,p2,p3,p4,p5){
+	this.p1=p1
+	this.p2=p2
+	this.p3=p3
+	this.p4=p4
+	this.p5=p5
+}
+quest=new MakeArray(10)
+quest[1]=new question("For a principle quantum number,n, equal to "," ,what is largest<br>allowed value of l?","")
+quest[2]=new question("For a principle quantum number,n, equal to "," ,is it possible<br>for l to be equal to ","(Y or N)?","")
+quest[3]=new question("For a principle quantum number,n, equal to "," ,what is the total<br>number of orbitals permitted?","")
+quest[4]=new question("For a principle quantum number,n, equal to "," ,what is the total<br>electron capacity of that level?","")
+quest[5]=new question("For the quantum number,l, equal to "," is an m<sub>l</sub> value of "," permitted(Y or N)?")
+quest[6]=new question("For the quantum number,l, equal to "," ,how many orbitals of that type<br>are permitted?","")
+quest[7]=new question("Is the<b> ","</b> orbital permitted(Y or N)?","")
+quest[8]=new question("What is the m<sub>l</sub> quantum number for an <b>","</b> orbital?","")
+
+
+function begin(){
+totl++
+	document.forms[0].total.value=totl
+	document.forms[0].results.value=""
+	document.forms[0].ans.value=""
+	tried=0
+//first select a value for n,l and ml
+var l=Math.round(8*Math.random())
+var ml=Math.round(8*Math.random())
+if(Math.random()>.5){ml=-ml}
+var n=Math.round(.5+8*Math.random())
+//now pass these variables to the display function
+display(n,l,ml)
+}
+function display(n,l,ml){
+//select the question
+if(l==0){sym="s"}
+if(l==1){sym="p"}
+if(l==2){sym="d"}
+if(l==3){sym="f"}
+if(l==4){sym="g"}
+if(l==5){sym="h"}
+if(l==6){sym="i"}
+if(l==7){sym="j"}
+if(l==8){sym="k"}
+var h=Math.round(.5+8*Math.random())
+if(h==1){
+	v1=n
+	v2=""
+	theanswer=n-1
+}
+if(h==2){
+	v1=n
+	v2=l
+if(l<=n-1){theanswer="Y"}
+else{theanswer="N"}
+}
+if(h==3){
+	v1=n
+	v2=""
+	theanswer=n*n
+}
+if(h==4){
+	v1=n
+	v2=""
+	theanswer=2*n*n
+}
+if(h==5){
+	v1=l
+	v2=ml
+if(Math.abs(ml)<=l){theanswer="Y"}
+else{theanswer="N"}
+}
+if(h==6){
+	v1=l
+	v2=""
+	theanswer=2*l + 1
+}
+if(h==7){
+	v1=n+sym
+	v2=""
+if(l<=n-1){theanswer="Y"}
+else{theanswer="N"}
+}
+if(h==8){
+	v1=sym
+	v2=""
+	theanswer=l
+}
+//now compose the question
+question=quest[h]["p1"]+v1+quest[h]["p2"]+v2+quest[h]["p3"]
+tryit(question)
+}
+function tryit(question)    {
+parent.frames[0].document.clear();
+parent.frames[0].document.open();
+parent.frames[0].document.writeln ("<html>");
+parent.frames[0].document.writeln ("<head>");
+parent.frames[0].document.writeln ("</head>");
+parent.frames[0].document.writeln ("<body bgcolor = FFFFFF >");
+parent.frames[0].document.writeln ("<pre>");
+parent.frames[0].document.write (question);
+parent.frames[0].document.writeln ("</font>");
+parent.frames[0].document.close();
+document.forms[0].ans.focus()
+document.forms[0].ans.select()
+}
+function answer(a){
+if(tried==1){
+		alert("Sorry, you've already submitted this problem! We'll get you a new one!")
+		start()}
+else{
+a=a.toUpperCase()
+if(tried==2){totl++;document.forms[0].total.value=totl}
+	if (theanswer==a ){
+	document.forms[0].results.value="correct"
+		corrt++
+		document.forms[0].correct.value=corrt
+		tried=1
+}
+else {
+		document.forms[0].results.value="incorrect"
+		tried=2}
+}}
+function timer(z){
+tt=z
+var b=Math.floor(tt/60)
+var j = (tt % 60)
+if (j<10){c="0"}
+else {c=""}
+howlong=b + ":" + c + j
+running=setTimeout("timer(tt+1)",1000)
+}
+function update(){
+	document.forms[0].total.value=totl
+	document.forms[0].correct.value=corrt
+	document.forms[0].time.value=howlong
+	document.forms[0].page.value=thepage
+	document.forms[0].verify.value=Math.round(10000*Math.random())
+}
+</script>
+</head>
+<body onLoad="clear(),timer(0)">
+<h2>Quantum Numbers</h2>
+This is an exercise in using and understanding the quantum numbers. When you press "New Question", a question will appear in the top frame. Determine the value of the answer, enter it in the cell and press "Check Answer." Results appear in the second
+table. Based upon the nature of the question, you will answer it by entering a number or a Y or N(use uppercase) in the cell. Once you have answered the question appropriately, press "Check Answer" and the results will appear in the second table.
+<form ACTION = "../cgi-bin/homework/hw_turnin.php" METHOD = "POST">
+<table>
+<tr>
+<input type="button" value="New Question" onClick="begin()">
+<input type="button" value="Check Answer" onClick="answer(this.form.ans.value)">
+</tr>
+<tr>
+<td><b>Enter your answer here</b></td>
+<td align=center><input type="text" name=ans size=10></td>
+</tr>
+</table>
+<table border=4>
+<tr>
+<td><b>Results</b></td>
+<td><b>Total Done</b></td>
+<td><b>Total Correct</b></td></tr>
+</tr>
+<tr>
+<td align=center><input type="text" name=results size=10></td>
+<td align=center><input type="text" name=total size=3></td>
+<td align=center><input type="text" name=correct size=3></td>
+</tr>
+</table>
+<input type=text name="page" size=1>
+<input type=text name="verify" size=1>
+<input type=text name="time" size=1><br>
+<INPUT TYPE = "submit" VALUE = "Submit your score" onClick="update()">
+</FORM>
+<br>
+<a href="index.html"><img src="back.gif"></a><br>
+</body>
+</html>

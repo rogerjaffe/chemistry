@@ -1,0 +1,130 @@
+<html>
+<head>
+<title>Hybrid Orbitals</title>
+<script>
+//globals
+thepage="Hybrid Orbitals(77)"
+tried=0
+totl=0
+howlong=""
+theanswer=0
+corrt=0
+radconvert=.01745
+function clear(){
+document.forms[0].sfraction.value=""
+document.forms[0].angle.value=""
+document.forms[0].results.value=""
+document.forms[0].total.value=totl
+document.forms[0].correct.value=corrt
+}
+//obviously the timer function
+function timer(z){
+tt=z
+var b=Math.floor(tt/60)
+var j = (tt % 60)
+if (j<10){c="0"}
+else {c=""}
+document.forms[0].Time.value=b + ":" + c + j
+running=setTimeout("timer(tt+1)",1000)
+}
+function timer(z){
+tt=z
+var b=Math.floor(tt/60)
+var j = (tt % 60)
+if (j<10){c="0"}
+else {c=""}
+howlong=b + ":" + c + j
+running=setTimeout("timer(tt+1)",1000)
+}
+
+function begin(){
+document.forms[0].results.value=""
+tried=0
+totl++
+document.forms[0].total.value=totl
+g=0
+while(g<90 || g>180){
+	g=Math.random()*200}
+g=Math.round(10*g)/10
+theangle=g*radconvert
+cosvalue=Math.cos(theangle)
+spart=Math.round(100*(-cosvalue/(1-cosvalue)))/100
+if(spart<.1){totl--;begin()}
+spart=""+spart
+if(spart.length<3){spart=spart+"0"}
+document.forms[0].sfraction.value=spart
+document.forms[0].angle.value=g
+question()
+}
+function question(){
+if(Math.random()>.5){which=1;document.forms[0].angle.value="";theanswer=g
+	document.forms[0].angle.focus()
+	document.forms[0].angle.select()
+	}
+else{which=2;document.forms[0].sfraction.value="";theanswer=spart
+	document.forms[0].sfraction.focus()
+	document.forms[0].sfraction.select()
+	}
+}
+function answer(){
+if(tried==1){
+alert("You've already done this one. Get a new problem")
+}
+else{
+if(tried==2){totl++
+document.forms[0].total.value=totl}
+key=0
+if(which==1){
+	if(document.forms[0].angle.value>.98*theanswer & document.forms[0].angle.value<1.02*theanswer){key=1}}
+else{
+	if(document.forms[0].sfraction.value>.98*theanswer & document.forms[0].sfraction.value<1.02*theanswer){key=1}}
+if(key==1){
+	document.forms[0].results.value="correct"
+	corrt++
+	document.forms[0].correct.value=corrt
+	tried=1
+	}
+else{
+	document.forms[0].results.value="incorrect"
+	tried=2}
+}
+}
+function update(){
+	document.forms[0].total.value=totl
+	document.forms[0].correct.value=corrt
+	document.forms[0].time.value=howlong
+	document.forms[0].page.value=thepage
+	document.forms[0].verify.value=Math.round(10000*Math.random())
+}
+</script>
+</head>
+<body onLoad="clear(),timer(0)">
+<h2>Hybrid Orbitals</h2>
+This page is an exercise in relating the bond angle to the fractional composition of hybrid orbitals.For hybrids consisting of only s and p orbitals the composition of the hybrid is related to the bond angle by the expression:<br><IMG SRC="cosine.gif" ALIGN=middle WIDTH=134 HEIGHT=57><br>
+Where "S" represents the fractional contribution of the s orbital to the hybrid, expressed as a decimal. For example, in sp<sup>2</sup> hybridization, S=.33, since the hybrids are one-third s character. When you  press "New Problem", either the "Angle" or "S Fraction" cell will fill. The cursor will be in the empty cell. Determine the missing value, enter it in the cell and press "Check Answer". Results appear in the table.
+<form ACTION = "../cgi-bin/homework/hw_turnin.php" METHOD = "POST">
+<input type=button value="New Problem" onClick="begin()"><br>
+<input type=text name=angle size=5>Angle<br>
+<input type=text name=sfraction size=5>S Fraction<br>
+<input type=button value="Check Answer" onClick="answer()"><br>
+<table border=4>
+<tr>
+<td>Results</td>
+<td>Total</td>
+<td>Correct</td>
+</tr>
+<tr>
+<td><input type=text name=results size=10></td>
+<td align=center><input type=text name=total size=3</td>
+<td align=center><input type=text name=correct size=3></td>
+</tr>
+</table>
+<input type=text name="page" size=1>
+<input type=text name="verify" size=1>
+<input type=text name="time" size=1><br>
+<INPUT TYPE = "submit" VALUE = "Submit your score" onClick="update()">
+<br>
+<a href="hwintro.html"><img src="back.gif"></a><br>
+</form>
+</body>
+</html>

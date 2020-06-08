@@ -1,0 +1,173 @@
+<html>
+<head>
+<title>Special Quadratic</title>
+<script language=javascript>
+//globals
+thepage="Special Quadratic(57)"
+valid=0
+totl=0
+corrt=0
+howlong=""
+tried=0
+exact=0
+approx=0
+instruct=0
+function clear(){
+document.forms[0].first.value=""
+document.forms[0].second.value=""
+document.forms[0].third.value=""
+}
+function cleanse(){
+	clear()
+	document.forms[0].elements[4].value=""
+	document.forms[0].total.value=0
+	document.forms[0].incorrect.value=0
+	document.forms[0].correct.value=0
+}
+function setup(){
+totl++
+document.forms[0].total.value=totl
+tried=0
+clear()
+var c1=0
+while(c1<1 || c1>=10){
+var c1=Math.ceil(100*Math.random())/10}
+var e1=Math.ceil(6*Math.random())
+c1=c1+"e-"+e1
+var c2=Math.ceil(100*Math.random())/1000
+var equation=c1 + " = x<sup>2</sup>/(" + c2 + "-x)"
+approx=Math.pow(c1*c2,.5)
+if (approx<.05*c2){valid=1}
+else{valid=0}
+exact=(-c1 + Math.pow((Math.pow(c1,2) + 4*c1*c2),.5))/2
+displayit(equation)
+}
+function displayit(equation){
+var newone=window.open("","newone","toolbar='yes',width=400,height=200")
+newone.document.writeln ("<html>");
+newone.document.writeln ("<head>");
+newone.document.writeln ("</head>");
+newone.document.writeln ("<body bgcolor = FFFFFF");
+newone.document.writeln ("<font size = +1>");
+newone.document.writeln (equation);
+newone.document.writeln ("<form method='post'>");
+newone.document.writeln ("Enter the 'approx' value<input type=text name='app' size=8>");
+newone.document.writeln ("<input type='button' value='Check Approx' onClick='opener.answr(this.form.app.value)'><br>");
+newone.document.writeln ("Is the approximation vaild?<br>");
+newone.document.writeln ("Yes<input type='radio' value=1 name=appro onClick='opener.checkvalid(1)'>");
+newone.document.writeln ("No<input type='radio' value=0 name=appro onClick='opener.checkvalid(0)'><br>");
+newone.document.writeln ("If the approx is  invalid, enter 'exact' value<br>");
+newone.document.writeln ("Enter the 'exact' value<input type=text name='exact' size=8>");
+newone.document.writeln ("<input type='button' value='Check Exact' onClick='opener.answr2(this.form.exact.value)'><br>");
+newone.document.writeln ("</form>");
+newone.document.writeln ("</font>");
+newone.document.writeln ("</html>");
+newone.document.close();
+newone.focus();
+}
+function timer(z){
+tt=z
+var b=Math.floor(tt/60)
+var j = (tt % 60)
+if (j<10){c="0"}
+else {c=""}
+howlong=b + ":" + c + j
+running=setTimeout("timer(tt+1)",1000)
+}
+function answr(val){
+totl++
+document.forms[0].total.value=totl
+//approx=document.forms[0].elements[1].value
+if (val<1.05*approx & val>.95*approx){document.forms[0].first.value="correct"
+corrt++
+document.forms[0].correct.value=corrt}
+else{document.forms[0].first.value="incorrect"
+document.forms[0].incorrect.value++
+}
+}
+function checkvalid(trial){
+if(document.forms[0].first.value=="" || document.forms[0].first.value=="incorrect"){
+	alert("You must first enter and check the approximation value!")
+	self.blur()}
+else{
+if (trial==valid){document.forms[0].second.value="correct"
+corrt++
+document.forms[0].correct.value=corrt
+}
+else{document.forms[0].second.value="incorrect"
+document.forms[0].incorrect.value++
+}
+}}
+function answr2(val){
+if(document.forms[0].first.value=="incorrect" || document.forms[0].second.value=="incorrect" || document.forms[0].second.value=="" || document.forms[0].second.value==""){
+	alert("You must complete the first two steps correctly before you can submit an exact answer!")
+	self.blur()}
+else{
+if(valid==1){
+	alert("The approximation is valid. An exact answer is not needed!")
+	self.blur()}
+else{
+totl++
+document.forms[0].total.value=totl
+//exact=document.forms[0].elements[3].value
+if (val<1.05*exact & val>.95*exact){document.forms[0].third.value="correct"
+corrt++
+document.forms[0].correct.value=corrt
+}
+else{document.forms[0].third.value="incorrect"
+document.forms[0].incorrect.value++
+}
+}}}
+function update(){
+	document.forms[0].total.value=totl
+	document.forms[0].correct.value=corrt
+	document.forms[0].time.value=howlong
+	document.forms[0].page.value=thepage
+	document.forms[0].verify.value=Math.round(10000*Math.random())
+}
+
+</script>
+</head>
+<body onLoad="cleanse(),timer(0)">
+<h3>The Special Quadratic</h3>
+This page deals with the "special quadratic" which has been discussed in chemistry 108.
+If you're not involved with that course, you may still find this page a useful exercise, but
+you'll need to get some extra instructions. For the 108 students, this page mirrors the
+approach taken in class. When you click "New Problem", a screen will appear which has the
+quadratic expression described in class. Address the problem as it has been discussed in class.<ul>
+<li>First, calculate and submit the value of x produced by the approximation. Then press,"Check Approx".
+The results appear on the main screen. If you get it correct, proceed, otherwise, recalculate
+and resubmit.
+<li>Once the approx. value is correct, determine whether the approx is a valid answer and
+click on either "Yes" or "No" accordingly. Again, if you get it incorrect, you must resubmit before
+you can proceed.
+<li>You only do the third stage if:<ul>
+<li>You have gotten the first two parts correct and
+<li>The approximation is invalid</ul>
+If those conditions are met, then calculate the exact answer and submit it.
+</ul>
+Scoring is maintained on the main page, in a slightly different format than on other
+pages.
+<form ACTION = "../cgi-bin/homework/hw_turnin.php" METHOD = "POST">
+<input type=button value="New Problem" onClick=setup()><br>
+Approx Check<input type=text name="first" size=12><br>
+Validity Check<input type=text name="second" size=12><br>
+Exact Check<input type=text name="third" size=12><br>
+<table border=4>
+<tr>
+<td>Attempts</td>
+<td>Incorrect</td>
+<td>Correct</td></tr><tr>
+<td><input type=text name=total size=3></td>
+<td><input type=text name=incorrect size=3></td>
+<td><input type=text name=correct size=3></tr></td>
+</table>
+<input type=text name="page" size=1>
+<input type=text name="verify" size=1>
+<input type=text name="time" size=1><br>
+<INPUT TYPE = "submit" VALUE = "Submit your score" onClick="update()">
+</form>
+<br>
+<a href="index.html"><img src="back.gif"></a><br>
+</body>
+</html>

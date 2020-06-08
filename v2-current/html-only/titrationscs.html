@@ -1,0 +1,230 @@
+<html>
+<head>
+<title>Titrations of Weak Acids</title>
+<style>
+#qspot {position:absolute;left:320;top:280}
+#ansspot {position:absolute;left:320;top:340;height:200}
+#tspot {position:absolute;left:10;top:300}
+#refspot {position:absolute;left:10;top:600;height:200}
+</style>
+<script src="reflist.js"></script>
+<script src="numberconvert.js"></script>
+<script language="javascript">
+//updated 11/14/00-added complete solution
+var ie4 = (document.all) ? true : false;
+//global variables
+refnumber=122
+theanswer=""
+attempts=0
+tried=0
+anrs=0
+corrt=0
+totl=0
+theanswer=""
+vol=0
+mass=0
+gew=0
+equiv=0
+whichvol=0
+whichmass=0
+equation=new Array()
+function clear(){
+	document.forms[0].theans.value=""
+	document.forms[0].results.value=""
+	attempts=0
+	tried=0
+	clearansspot()
+	}
+function cleanse(){
+	clear()
+	document.forms[0].total.value=0
+	document.forms[0].correct.value=0
+	}
+function question(p1,p2,p3,p4){
+	this.p1=p1
+	this.p2=p2
+	this.p3=p3
+	this.p4=p4
+}
+munit=new Array("g","mg")
+vunit=new Array("L","mL")
+vol=new Array()
+mass=new Array()
+quest=new Array()
+quest[1]=new question("What volume in "," of .100M NaOH would be required to titrate a "," sample  of a weak acid with an equivalent weight of "," ?")
+quest[2]=new question("The titration of a "," sample of a weak acid requires "," of .100M NaOH. What is the equivalent weight of the acid?","")
+quest[3]=new question("The titration of a sample of a weak acid with an equivalent weight of "," grams requires "," of 0.100M NaOH. What is the sample mass in ","?")
+ansphrase=new Array()
+ansphrase[1]=new Array("First, calculate moles of acid present by dividing the mass in grams by the equivalent weight.<br>","<br>The volume of base needed is the equivalents divided by the molarity of the base.<br>")
+ansphrase[2]=new Array("First, calculate moles of base used by multiplying the concentration of base times the vol(L) used in the titration.<br>","<br>Then, divide the mass of the sample by the moles to get the equivalent weight.<br>")
+ansphrase[3]=new Array("First, calculate moles of base used by multiplying the concentration of base times the vol(L) used in the titration.<br>","<br>Then, calculate the mass by multiplying the moles times the equivalent weight.<br>")
+function startit(){
+	totl++
+	document.forms[0].total.value=totl
+	clear()
+	mass[0]=0
+	gew=1000
+	while (mass[0]<.2 || mass[0]>.8){
+		mass[0]=Math.random()
+		}
+	mass[0]=number(mass[0],3,3)
+	mass[1]=Math.round(1000*mass[0])
+	gew=0
+	while (gew<40 || gew>200)gew=Math.random()*300;
+	gew=number(gew,3,3)
+	equiv=number((mass[0]/gew),3,3)
+	vol[0]=number((equiv/.1),3,3)
+	vol[1]=number((1000*vol[0]),3,3)
+	if(vol[1]>40 || vol[1]<10){
+		totl--
+		startit()
+		}
+	else{
+	which=Math.ceil(3*Math.random())
+	which=1
+	whichmass=Math.floor(2*Math.random())
+	whichvol=Math.floor(2*Math.random())
+	massterm=mass[whichmass]+munit[whichmass]
+	volterm=vol[whichmass]+vunit[whichmass]
+	which=Math.ceil(3*Math.random())
+	if (which==1){
+		var1=vunit[whichvol]
+		var2=massterm
+		var3=gew+"grams"
+		ansr=vol[whichvol]
+		}
+	if (which==2){
+		var1=massterm
+		var2=volterm
+		var3=""
+		ansr=gew
+		}
+	if (which==3){
+		var1=gew
+		var2=volterm
+		var3=munit[whichmass]
+		ansr=mass[whichmass]
+		}
+thequest=quest[which]["p1"]+var1+quest[which]["p2"]+var2+quest[which]["p3"]+var3+quest[which]["p4"]
+buildanswer(which)	
+showquest(thequest)
+}}
+function buildanswer(which){
+	getequations(which)
+	theanswer=ansphrase[which][0]+equation[1]+ansphrase[which][1]+equation[2]
+	showanswer()
+}
+function getequations(which){
+	if(which==1){
+		equation[1]="moles=mass/equiv wt="+mass[0]+"/"+gew+"=<b>"+equiv+"moles</b>"
+		equation[2]="V=moles/M="+equiv+"/.100=<b>"+vol[0]+"L</b>"
+		if(whichvol!=0)equation[2]+="<br>Convert this volume to mL=><b>"+vol[1]+"mL</b>"
+	}
+	if(which==2){
+		equation[1]="moles=M*V(L)="+".100*"+vol[0]+"="+equiv+"moles</b>"
+		equation[2]="gew=mass/moles="+mass[0]+"/"+equiv+"=<b>"+gew+"g/mole</b>"
+	}
+	if (which==3){
+		equation[1]="moles=M*V(L)="+".100*"+vol[0]+"="+equiv+"moles</b>"
+		equation[2]="mass=moles*gew="+equiv+"*"+gew+"=<b>"+mass[0]+"grams</b>"
+		if(whichmass!=0)equation[2]+="<br>Convert this mass to mg=><b>"+mass[1]+"mg</b>"
+	}
+}
+function showquest(thequest){
+	if(ie4){
+		qspot.innerHTML=thequest
+		}
+	else{
+		document.qspot.document.open()
+		document.qspot.document.write(thequest)
+		document.qspot.document.close()
+	}
+}
+function answer(ans){
+	if(tried==1)alert("You've done this one. Get a new problem!");
+	else{
+	attempts++
+	if(ans>.95*ansr & ans<1.05*ansr){
+		document.forms[0].results.value="Correct"
+		corrt++
+		document.forms[0].correct.value=corrt
+		tried=1
+	}
+	else{
+		document.forms[0].results.value="Incorrect"
+		tried=2
+		if(tried==2){
+			totl++
+			document.forms[0].total.value=totl
+		}
+	}
+}}
+function showanswer(){
+if(attempts>=3){
+	if(ie4){
+		ansspot.innerHTML=theanswer
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.write(theanswer)
+		document.ansspot.document.close()
+	}
+	}
+}
+function clearansspot(){
+	if(ie4){
+		ansspot.innerHTML=""
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.clear()
+		document.ansspot.document.close()
+	}
+}
+
+</script>
+</head>
+<BODY onLoad="cleanse(),setrefs()">
+<h3>Titrations of Weak Acids</h3>
+This page is an exercise in titrations of weak acids using NaOH. When you press "New Problem," a
+a question dealing with a titration will appear in the top frame on this page. Determine the value of
+the correct answer, enter it in the cell and press "Check Answer". The results appear in the
+table.<br>
+<ul>
+<li>To begin-press "New Problem" and a question will appear to the right of the button. 
+<li>Put the correct value into the answer cell and press "Check Answer."
+<li>The results on the problem and a running total will appear in the second table.
+<li>If you get a problem "incorrect", you should redo it and recheck your
+answer.
+<li>If you miss a problem three times, pressing the "Show Answer" button will cause a complete solution to appear.
+</ul>
+<form>
+<table>
+<tr><td><input type=button value="New Problem" onClick="startit()"><td></tr>
+<tr><td><b>Enter your answer</b></td>
+<td><input type="text" name=theans size=8></td>
+</tr>
+<tr>
+<td><input type=button value="Check answer" onClick="answer(this.form.theans.value)"></td>
+<td><input type=button value="Show answer" onClick="showanswer()"></td>
+</tr>
+</table>
+<table border=4>
+<tr><td align=center><b>Results</td>
+<td align=center><b>Total Done</td>
+<td><b>Total Correct</td>
+</tr>
+<tr>
+<td><input type="text" name=results size=12></td>
+<td align=center><input type="text" name=total size=4 ></td>
+<td align=center><input type="text" name=correct size=4 ></td>
+</tr>
+<tr>
+</table>
+</form>
+<div id=qspot></div>
+<div id=ansspot></div>
+<div id=refspot></div>
+<br>
+</body>
+</html>

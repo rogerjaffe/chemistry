@@ -1,0 +1,191 @@
+<html>
+<head><title>Converting Density-cs</title>
+<style>
+#qspot {position:absolute;left:320;top:240}
+#ansspot {position:absolute;left:320;top:340;height:200}
+#tspot {position:absolute;left:10;top:300}
+#refspot {position:absolute;left:10;top:600;height:100}
+</style>
+<script src=reactionsets.js></script>
+<script src="reflist.js"></script>
+<script src="numberconvert.js"></script>
+<script language="javascript">
+var ie4=(document.all)?true:false;
+refnumber=33
+attempts=0
+totl=0
+corrt=0
+tried=0
+dvalues=0
+first=second=0
+theanswer=""
+given=0
+shown=0
+dunits=new Array("mg/mL","mg/L","g/mL","g/L","kg/mL","kg/L")
+massfactor=new Array(.001,1,1000)
+volfactor=new Array(1,1000)
+dfactor=new Array(1000,1e6,1,1000,1e-3,1)
+insert="Recall that for the change in the mass unit, the numeric effect will be the opposite of the dimension change. That is, going to a larger quantity(g => kg) results in a smaller number. For changes in the volume unit, the numeric change is in the same direction as the dimension change."
+function cleanse(){
+	clear()
+	document.forms[0].total.value=0
+	document.forms[0].correct.value=0
+}
+function clear(){
+	document.forms[0].results.value=""
+	document.forms[0].theans.value=""
+	clearansspot()
+	tried=0
+	attempts=0
+}
+function startit(){
+	totl++
+	document.forms[0].total.value=totl
+	clear()
+	getvalues()
+	setproblem()
+}
+function getvalues(){
+	dvalues=new Array()
+	dvalues[2]=0
+	while(dvalues[2]<.2 || dvalues[2]>5)dvalues[2]=10*Math.random();
+	dvalues[3]=dvalues[0]=1000*dvalues[2]
+	dvalues[5]=dvalues[2]
+	dvalues[1]=dvalues[2] + "e+6"
+	dvalues[4]=dvalues[2] + "e-3"
+	}
+function setproblem(){
+	mass1=Math.floor(3*Math.random())
+	vol1=Math.floor(2*Math.random())
+	mass2=Math.floor(3*Math.random())
+	vol2=Math.floor(2*Math.random())
+	first=2*mass1+vol1
+	second=2*mass2+vol2
+	if(first==second)setproblem();
+	else{
+	given=dvalues[first]
+	shown=dvalues[second]
+	if(given>.01 & given<100)given=number(given,3,3);
+	else given=number(given,3,2)
+	if(shown>.01 & shown<100)shown=number(shown,3,3);
+	else shown=number(shown,3,2)
+	thequest="Convert a density of "+given+dunits[first]+" into a density with dimensions of "+dunits[second]+"?<br>"
+	showquest(thequest)
+	buildanswer(mass1,mass2,vol1,vol2)
+}}
+function buildanswer(mass1,mass2,vol1,vol2){
+	if(mass1==mass2)mchange=" unchanged ";
+	if(mass1<mass2)mchange=" increased ";
+	if(mass1>mass2)mchange=" decreased ";
+	if(vol1==vol2)vchange=" unchanged. ";
+	if(vol1<vol2)vchange=" increased. ";
+	if(vol1>vol2)vchange=" decreased. ";
+	if(mass1==mass2)mfactor=1;
+	else mfactor=massfactor[mass1]/massfactor[mass2];
+	if(vol1==vol2)vfactor=1;
+	else vfactor=volfactor[vol2]/volfactor[vol1]
+	theeqn=given+"*"+mfactor+"*"+vfactor+"="+shown
+	theanswer=insert+"<br>In this case, the mass dimension is "+mchange+" and the volume dimension  is "+vchange+"<br>The actual calculation is as follows, with the first multiplier representing the mass change and the second the volume change:<br>"+theeqn
+	}
+function showquest(thequest){
+	if(ie4){
+		qspot.innerHTML=thequest
+		}
+	else{
+		document.qspot.document.open()
+		document.qspot.document.write(thequest);
+		document.qspot.document.close()
+	}
+}
+
+function answer(ans){
+	if(tried==1)alert("You've done this one. Get a new problem!")
+	else{
+	attempts++
+	if(tried==2){totl++;document.forms[0].total.value=totl}
+	if(ans>.95*dvalues[second] & ans<1.05*dvalues[second]){
+		document.forms[0].results.value="Correct"
+		corrt++
+		document.forms[0].correct.value=corrt
+		tried=1
+	}
+	else{
+		document.forms[0].results.value="Incorrect"
+		tried=2
+	}}
+}
+function showanswer(){
+if(attempts>=3){
+	if(ie4){
+		ansspot.innerHTML=theanswer
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.write(theanswer)
+		document.ansspot.document.close()
+	}
+	}
+}	
+function clearansspot(){
+	if(ie4){
+		ansspot.innerHTML=""
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.clear()
+		document.ansspot.document.close()
+	}
+}
+
+</script>	
+</head>
+<body onLoad=cleanse(),setrefs()>
+<h2>Converting Densities</h2>
+This page is an exercise in converting densities expressed in the metric system.
+It is not really an exercise in density, but rather drill and practice so that
+you can become familiar with using the metric system. To practice:
+<br>
+<ul>
+<li>Press New Problem-a density conversion will appear
+<li>In the answer cell, enter the value which the density would have when expressed in the desired units
+ and press "Check Answer."
+<li>Results are shown in the table.
+<li>If your answer is incorrect, you should redo it and recheck your new answer.
+<li> Scientific notation is represented using the "e" notation. Thus,
+2.3*10<sup>3</sup> will be shown by 2.3e3. You may use this in submitting your
+answers.
+<li>If you miss a problem three times, pressing the "Show Answer" button will cause a complete solution to appear.
+</ul>
+<form>
+<input type=button value="New Problem" onClick=startit()><br>
+Enter your answer here<input type=text name=theans size=8><BR>
+<input type=button value="Check Answer" onClick=answer(this.form.theans.value)>
+<input type=button value="Show Answer" onClick=showanswer()>
+<table border=4>
+<tr><td align=center><b>Results</td>
+<td align=center><b>Total Done</td>
+<td><b>Total Correct</td>
+</tr>
+<tr>
+<td><input type="text" name="results" size=12></td>
+<td align=center><input type="text" name="total" size=4 ></td>
+<td align=center><input type="text" name="correct" size=4 ></td>
+</tr>
+</table>
+</form>
+<div id=qspot></div>
+<div id=ansspot></div>
+<div id=refspot></div>
+<br>
+</html>
+
+
+
+
+
+
+
+
+
+
+

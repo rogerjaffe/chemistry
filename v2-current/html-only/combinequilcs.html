@@ -1,0 +1,252 @@
+<html>
+<head><title>Combining Equilibria-cs</title>
+<style>
+#qspot {position:absolute;left:320;top:260}
+#ansspot {position:absolute;left:10;top:430;height:300}
+#tspot {position:absolute;left:10;top:300}
+#refspot {position:absolute;left:10;top:600}
+</style>
+<script src="reflist.js"></script>
+<script src="numberconvert.js"></script>
+<script language=javascript>
+//updated 3/12/01 added complete solution
+var ie4 = (document.all) ? true : false;
+refnumber=199
+totl=0
+corrt=0
+tried=0
+attempts=0
+which=0
+threaction=0
+conc=0
+econc=0
+line=""
+count=0
+reaction=new Array()
+dataset=new Array()
+theK=new Array()
+rxns=0
+direction=new Array()
+qty=new Array()
+theanswer=""
+theK=new Array()
+set=new Array()
+factor=new Array()
+set[0]=new Array("C<SUB>3</SUB>H<SUB>8</SUB>(g) + 5O<SUB>2</SUB>(g)","3CO<SUB>2</SUB> + 4 H<SUB>2</SUB>O(l)","C(graphite) + O<SUB>2</SUB>","CO<SUB>2</SUB>","H<SUB>2</SUB>(g)  + 1/2O<SUB>2</SUB>(g)","H<SUB>2</SUB>O(l)","3 C(graphite) + 4H<SUB>2</SUB>(g)","C<SUB>3</SUB>H<SUB>8</SUB>(g)")
+factor[0]=new Array(1,3,4,-1)
+set[1]=new Array("Fe<SUB>2</SUB>O<SUB>3</SUB>(s) + 3CO(g)","2Fe(s) +  3CO<SUB>2</SUB>(g)","3Fe<SUB>2</SUB>O<SUB>3</SUB>(s)  +  CO(g)","2Fe<SUB>3</SUB>O<SUB>4</SUB>(s) +  CO<SUB>2</SUB>(g)","Fe<SUB>3</SUB>O<SUB>4</SUB>  +  CO(g)","3FeO(s) +  CO<SUB>2</SUB>(g)","FeO(s)  +  CO(g)","Fe(s)  +  CO<SUB>2</SUB>(g)")
+factor[1]=new Array(1,.333,.667,2)
+set[2]=new Array("N<SUB>2</SUB>(g)  +  2O<SUB>2</SUB>(g)","2NO<SUB>2</SUB>(g)","N<SUB>2</SUB>(g)  +  2O<SUB>2</SUB>(g)","N<SUB>2</SUB>O<SUB>4</SUB>(g)","N<SUB>2</SUB>O<SUB>4</SUB>(g)","2NO<SUB>2</SUB>(g)")
+factor[2]=new Array(1,1,1)
+set[3]=new Array("cis-C<SUB>4</SUB>H<SUB>8</SUB>(g)  +  6O<SUB>2</SUB>(g)","4CO<SUB>2</SUB>(g) + 4H<SUB>2</SUB>O(g)","trans-C<SUB>4</SUB>H<SUB>8</SUB>(g)  +  6O<SUB>2</SUB>(g)","4CO<SUB>2</SUB>(g) + 4H<SUB>2</SUB>O(g)","cis-C<SUB>4</SUB>H<SUB>8</SUB>(g) ","trans-C<SUB>4</SUB>H<SUB>8</SUB>(g)" )
+factor[3]=new Array(1,1,1)
+set[4]=new Array("C(s) +  O<SUB>2</SUB>(g)","CO<SUB>2</SUB>(g)","H<SUB>2</SUB>(g)  +  1/2O<SUB>2</SUB>(g)","H<SUB>2</SUB>O(l)","CH<SUB>4</SUB>(g) + 2O<SUB>2</SUB>(g)","CO<SUB>2</SUB>(g) +  2H<SUB>2</SUB>O(l)","C(s) +  2H<SUB>2</SUB>(g)","CH<SUB>4</SUB>(g)")
+factor[4]=new Array(1,-2,1,1)
+set[5]=new Array("C(s) +  O<SUB>2</SUB>(g)","CO<SUB>2</SUB>(g)","H<SUB>2</SUB>(g)  +  1/2O<SUB>2</SUB>(g)","H<SUB>2</SUB>O(l)","2C(s) +  3H<SUB>2</SUB>(g)","C<SUB>2</SUB>H<SUB>6</SUB>(g)","C<SUB>2</SUB>H<SUB>6</SUB>(g) + 7/2O<SUB>2</SUB>(g)","2CO<SUB>2</SUB>(g) +  3H<SUB>2</SUB>O(l)")
+factor[5]=new Array(1,-1.5,.5,.5)
+set[6]=new Array("4PCl<SUB>3</SUB>(g)","P<SUB>4</SUB>(s)  +  6Cl<SUB>2</SUB>(g)","P<SUB>4</SUB>(s)  +  10Cl<SUB>2</SUB>(g)","4PCl<SUB>5</SUB>(g)","PCl<SUB>3</SUB>(g)  +  Cl<SUB>2</SUB>(g)","PCl<SUB>5</SUB>(g)")
+factor[6]=new Array(1,-1,4)
+set[7]=new Array("2CO<SUB>2</SUB>(g) +  2H<SUB>2</SUB>O(l)","CH<SUB>3</SUB>COOH(l)  +  2O<SUB>2</SUB>(g)","C(graphite) +  O<SUB>2</SUB>(g)","CO<SUB>2</SUB>(g)","2H<SUB>2</SUB>(g) +  O<SUB>2</SUB>(g)","2H<SUB>2</SUB>O(l)","2C(graphite)  +  2H<SUB>2</SUB>(g)  +  O<SUB>2</SUB>(g)","CH<SUB>3</SUB>COOH(l)")
+factor[7]=new Array(1,-2,-1,1)
+set[8]=new Array("2Fe<SUB>3</SUB>O<SUB>4</SUB>(s)  +  1/2O<SUB>2</SUB>(g)","3Fe<SUB>2</SUB>O<SUB>3</SUB>(s)","6Fe(s) +  9/2O<SUB>2</SUB>(g)","3Fe<SUB>2</SUB>O<SUB>3</SUB>(s)","6Fe(s)  +  4O<SUB>2</SUB>(g)","2Fe<SUB>3</SUB>O<SUB>4</SUB>(s)")
+factor[8]=new Array(1,1,-1)
+set[9]=new Array("2N<SUB>2</SUB>H<SUB>4</SUB>(l)","2N<SUB>2</SUB>(g)  +  4H<SUB>2</SUB>(g)","2NH<SUB>3</SUB>(g) +  3N<SUB>2</SUB>O(g)","4N<SUB>2</SUB>(g) + 3H<SUB>2</SUB>O(g)","H<SUB>2</SUB>O(l) + N<SUB>2</SUB>H<SUB>4</SUB>(l)","2NH<SUB>3</SUB>(g) +  1/2O<SUB>2</SUB>(g)","N<SUB>2</SUB>O(g)  +  3H<SUB>2</SUB>(g)","N<SUB>2</SUB>H<SUB>4</SUB>(l)  +  H<SUB>2</SUB>O(l)","H<SUB>2</SUB>(g)  +  1/2O<SUB>2</SUB>(g)","H<SUB>2</SUB>O(l)")
+factor[9]=new Array(1,.5,.5,-1.5,.5)
+set[10]=new Array("2C<SUB>2</SUB>H<SUB>6</SUB>O(l) +  O<SUB>2</SUB>(g)","2C<SUB>2</SUB>H<SUB>4</SUB>O(l) + 2H<SUB>2</SUB>O(l)","C<SUB>2</SUB>H<SUB>6</SUB>O(l)  +  3O<SUb>2</SUb>(g)","2CO<SUB>2</SUB>(g)  +  3H<SUB>2</SUB>O(l)","C<SUB>2</SUB>H<SUB>4</SUB>O(l)  +  5/2O<SUB>2</SUB>(g)","2CO<SUB>2</SUB>(g)  +  2H<SUB>2</SUB>O(g)")
+factor[10]=new Array(1,2,-2)
+set[11]=new Array("C<SUB>2</SUB>H<SUB>6</SUB>(g)","C<SUB>2</SUB>H<SUB>2</SUB>(g) + 2H<SUB>2</SUB>(g)","C<SUB>2</SUB>H<SUB>2</SUB>(g) +  5/2O<SUB>2</SUB>(g)","2CO<SUB>2</SUB>(g)  +  H<SUB>2</SUB>O(g)","H<SUB>2</SUB>(g) + 1/2O<SUB>2</SUB>(g)","H<SUB>2</SUB>O(g)","C<SUB>2</SUB>H<SUB>6</SUB>(g) +  7/2O<SUB>2</SUB>(g)","2CO<SUB>2</SUB>(g)  +  3H<SUB>2</SUB>O(g)")
+factor[11]=new Array(1,-1,-2,1)
+set[12]=new Array("N<SUB>2</SUB>H<SUB>4</SUB>(l)  +  CH<SUB>4</SUB>O(l)","CH<SUB>2</SUB>O(g)  +  N<SUB>2</SUB>(g)  +  3H<SUB>2</SUB>(g)","2NH<SUB>3</SUB>(g)","N<SUB>2</SUB>H<SUB>4</SUB>(l)  +  H<SUB>2</SUB>(g)","N<SUB>2</SUB>(g)  +  3H<SUB>2</SUB>(g)","2NH<SUB>3</SUB>(g)","CH<SUB>4</SUB>O(l)","CH<SUB>2</SUB>O(g) +  H<SUB>2</SUB>(g)")
+factor[12]=new Array(1,-1,-1,1)
+set[13]=new Array("N<SUB>2</SUB>(g)  + 3H<SUB>2</SUB>(g)", "2NH<SUB>3</SUB>(g)", "NO<SUB>2</SUB>(g)  +  7/2H<SUB>2</SUB>(g)","2H<SUB>2</SUB>O(l)  +  NH<SUB>3</SUB>(g)","1/2N<SUB>2</SUB>(g) + 2H<SUB>2</SUB>O(l)","NO<SUB>2</SUB>(g)  +  2H<SUB>2</SUB>(g)")
+factor[13]=new Array(1,2,2)
+set[14]=new Array("N<SUB>2</SUB>(g)  +  3H<SUB>2</SUB>(g)","2NH<SUB>3</SUB>(g)","2NH<SUB>3</SUB>(g)  +  4H<SUB>2</SUB>O(l)","2NO<SUB>2</SUB>(g)  +  7H<SUB>2</SUB>(g)","2NO<SUB>2</SUB>(g)","N<SUB>2</SUB>(g) +  2O<SUB>2</SUB>(g)","H<SUB>2</SUB>O(l)","H<SUB>2</SUB>(g)  +  1/2O<SUB>2</SUB>(g)")
+factor[14]=new Array(1,-1,-1,4)
+set[15]=new Array("H<SUB>2</SUB>S(g)  +  3/2O<SUB>2</SUB>(g)","H<SUB>2</SUB>SO<SUB>3</SUB>(l)","H<SUB>2</SUB>SO<SUB>3</SUB>(l)","H<SUB>2</SUB>O(l)  +SO<SUB>2</SUB>(g)","SO<SUB>2</SUB>(g)","S(s)  +  O<SUB>2</SUB>(g)","H<SUB>2</SUB>S(g) +  1/2O<SUB>2</SUB>(g)","S(s)  +   H<SUB>2</SUB>O(l)")
+factor[15]=new Array(1,-1,-1,1)
+set[16]=new Array("CH<SUB>2</SUB>Cl<SUB>2</SUB>(l)  +  O<SUB>2</SUB>(g)","COCl<SUB>2</SUB>(g)  +  H<SUB>2</SUB>O(l)","1/2H<SUB>2</SUB>(g)  +  1/2Cl<SUB>2</SUB>(g)","HCl(g)","2HCl(g)  +  1/2O<SUB>2</SUB>(g)","H<SUB>2</SUB>O(g)  +  Cl<SUB>2</SUB>(g)","CH<SUB>2</SUB>Cl<SUB>2</SUB>(l) +  H<SUB>2</SUB>(g)  +  3/2O<SUB>2</SUB>(g)","COCl<SUB>2</SUB>(g)  +  2H<SUb>2</SUb>O(l)")
+factor[16]=new Array(1,-2,-1,1)
+set[17]=new Array("H<SUB>2</SUB>S(g)  +  2O<SUB>2</SUB>(g)","H<SUB>2</SUB>SO<SUB>4</SUB>(l)","H<SUB>2</SUB>SO<SUB>4</SUB>(l)","SO<SUB>3</SUB>(g)  +  H<SUB>2</SUB>O(g)","H<SUB>2</SUB>S(g)  +  2O<SUB>2</SUB>(g)","SO<SUB>3</SUB>(g)  +  H<SUB>2</SUB>O(l)","H<SUB>2</SUB>O(l)","H<SUB>2</SUB>O(g)")
+factor[17]=new Array(1,-1,1,1)
+set[18]=new Array("H<SUB>2</SUB>CO<SUB>3</SUB>","H<SUB>2</SUB>O  +  CO<SUB>2</SUB>","H<SUB>2</SUB>CO +  O<SUB>2</SUB>","H<SUB>2</SUB>CO<SUB>3</SUB>","H<SUB>2</SUB>CO  +  O<SUB>2</SUB>","H<SUB>2</SUB>O  +  CO<SUB>2</SUB>")
+factor[18]=new Array(1,-1,1)
+set[19]=new Array("ZnO  +  CO<SUB>2</SUB>","ZnCO<SUB>3</SUB>","H<SUB>2</SUB>CO<SUB>3</SUB>","H<SUB>2</SUB>O  +  CO<SUB>2</SUB>","Zn(OH)<SUB>2</SUB>","ZnO  +  H<SUB>2</SUB>O","Zn(OH)<SUB>2</SUB>  +  H<SUB>2</SUB>CO<SUB>3</SUB>","2H<SUB>2</SUB>O  +  ZnCO<SUB>3</SUB>")
+factor[19]=new Array(1,-1,-1,1)
+basequest="Use the set of reactions and equilibrium constants provided to determine the value of K for the reaction:<br>"
+ansphrase=new Array("To get the desired overall reaction, the contributing equations are combined as follows with the equilibrium constants recalculated as needed:<br>","K for the reaction is then calculated by taking the product of the contributing Ks<br>")
+//begin programs
+function cleanse(){
+	clear()
+	document.forms[0].total.value=0
+	document.forms[0].correct.value=0
+}
+function clear(){
+	document.forms[0].results.value=""
+	document.forms[0].theans.value=""
+	attempts=0
+	tried=0
+	if(ie4)ansspot.innerHTML="";
+	else {
+		document.ansspot.document.open()
+		document.ansspot.document.clear()
+		document.ansspot.document.close()
+	}
+}
+function startit(){
+	clear()
+	totl++
+	document.forms[0].total.value=totl
+	which=Math.floor(20*Math.random())
+	rxns=factor[which].length
+	for(j=0;j<rxns;j++){
+		factor[which][j]<0?direction[j]=-1:direction[j]=1;
+		qty[j]=Math.abs(factor[which][j]);
+		}
+	getKs()
+	reversethem()
+}
+function getKs(){
+	theK=new Array()
+	thereaction=new Array()
+	theK[0]=1
+	for(var j=0;j<rxns;j++){
+		thereaction[j]=set[which][2*j]+"<=>"+set[which][2*j+1]
+	}
+	for(var j=1;j<rxns;j++){
+		theK[j]=number(10*Math.random(),3,3)
+		theK[0]=theK[0]*Math.pow(theK[j],factor[which][j])
+	}
+	theK[0]=number(theK[0],3,3)
+}
+function reversethem(){
+	for(var j=0;j<rxns;j++){
+		if(Math.random()>.5){
+			if(j==0)for(b=1;b<rxns;b++)direction[b]=-direction[b];
+			direction[j]=-direction[j]
+			thereaction[j]=set[which][2*j+1]+"<=>"+set[which][2*j]
+			theK[j]=number(1/theK[j],3,3)
+		}
+	}
+	showquest()
+	buildanswer()
+}
+function buildanswer(){
+	getlines()
+	theanswer=ansphrase[0]
+	for(j=1;j<rxns;j++)theanswer+=(line[j]+"<br>");
+	theanswer+=(ansphrase[1]+"K="+theK[0])
+	showanswer()
+}
+function getlines(){
+	line=new Array()
+	for(j=1;j<rxns;j++){
+		line[j]="Reaction"+j+":"
+		if(direction[j]==1){
+			qty[j]==1?line[j]+=("Use as written"):line[j]+=("Direction as written, multiply by "+qty[j]);
+		}
+		else{ 
+			qty[j]==1?line[j]+=("Reverse, quantity  is correct"):line[j]+=("Reverse, multiply by "+qty[j]);
+		}
+	}
+	for(var j=1;j<rxns;j++){
+		thepower=new Array()
+		thepower[j]=direction[j]*qty[j]
+		newK=Math.pow(theK[j],thepower[j])
+		newK=number(newK,3,3)	
+		line[j]+=(";K then becomes:"+newK);
+	}
+}
+
+function showanswer(){
+//if(attempts>=3){
+	if(ie4){
+		ansspot.innerHTML=theanswer
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.write(theanswer)
+		document.ansspot.document.close()
+	}
+//	}
+}	
+function showquest(){
+	//getmissing()
+	if(ie4){
+		thequest=""
+		thequest+=(basequest+thereaction[0]+"<table>");
+		for(j=1;j<rxns;j++){
+			thequest+=("<tr><td>"+thereaction[j]+"</td><td>K= "+theK[j]+"</td></tr>");		
+		}
+		thequest+="</table>";	
+		qspot.innerHTML=thequest
+		}
+	else{
+		document.qspot.document.open()
+		document.qspot.document.write(basequest,thereaction[0])
+		document.qspot.document.write("<table>")
+		for(j=1;j<rxns;j++){
+			document.qspot.document.write("<tr><td>",thereaction[j],"</td><td>K= ",theK[j],"</td></tr>")		
+		}
+		document.qspot.document.write("</table>")	
+		document.qspot.document.close()
+	}
+}
+function getmissing(){
+	leaveout=Math.floor(Math.random()*rxns)
+	theK[leaveout]="?"
+}
+	
+function answer(ans){
+	attempts++
+	if(tried==1)alert("You've done this one! Get a new problem.");
+	else{
+	if(tried==2){
+		totl++
+		document.forms[0].total.value=totl
+	}
+	if(ans>.95*theK[0] & ans<1.05*theK[0]){
+		document.forms[0].results.value="correct"
+		corrt++
+		document.forms[0].correct.value=corrt
+		tried=1
+	}
+	else{
+		document.forms[0].results.value="incorrect"
+		tried=2
+	}
+}}
+
+
+</script>
+</head>
+<body onLoad="cleanse(),setrefs()">
+<h2>Combining Equilibria</h2>
+This page is an exercise in combining equilibria. When you press "New Problem" a set of equations with Ks and a question will appear to the right of the table. Calculate the needed equilibrium constant, enter it in the cell and press the "Check Answer"
+button. The results will appear in the table on the main page. This page is complex, but it's not intended to be tricky. Thus, no attempt has been made to mislead you. In order to facilitate the math, the Ks have been made numbers which should be easy to manipulate. There should be a straightforward combination of the contributing reactions which yields the desired reaction.
+<ul>
+<li>This page requires Netscape 4.x or IE 5 or higher.
+<li>If you miss a problem three times, pressing "Show Answer" will cause a complete solution to appear.
+</ul>
+<form>
+<input type="button" value="New Problem" onClick=startit()><br>
+<input type="text" name=theans size=12>
+<input type="button" value="Check Answer" onClick=answer(this.form.theans.value)><br>
+<td><input type="button" value="Show Answer" onClick=showanswer()><br>
+<table border=4>
+<tr><td align=center><b>Results</td>
+<td align=center><b>Total Done</td>
+<td><b>Total Correct</td>
+</tr>
+<tr>
+<td><input type="text" name=results size=12></td>
+<td align=center><input type="text" name=total size=4 ></td>
+<td align=center><input type="text" name=correct size=4 ></td>
+</tr>
+</table>
+</form>
+<div id=qspot></div>
+<div id=ansspot></div>
+<div id=refspot></div>
+</body>
+</html>
+ 

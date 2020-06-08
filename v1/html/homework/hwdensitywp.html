@@ -1,0 +1,201 @@
+</html>
+<head><Title>Density Word Problems</Title>
+<script>
+//Last Update 7/28/98
+//globals
+thepage="Density Word Problems(7)"
+corrt=0
+tried=0
+totl=0
+theanswer=0
+which=0
+function clear(){
+	document.forms[0].results.value=""
+	document.forms[0].correct.value=corrt
+	document.forms[0].total.value=totl
+	document.forms[0].ans.value=""
+	}
+function MakeArray(n){
+	this.length=n
+	for (var i=1;i<=n;i++){
+	this[i]= 0}
+}
+function question(p1,p2,p3,p4){
+	this.p1=p1
+	this.p2=p2
+	this.p3=p3
+	this.p4=p4
+}
+quest=new MakeArray(3);
+quest[1]=new question("What is the density of a substance in ",", if a sample with a volume of "," has a mass of ","?")
+quest[2]=new question("What volume in "," would be occupied by "," of a material with a density of ","?")
+quest[3]=new question("What is the mass in "," of a "," sample, if it has a density of "," ?")
+
+function start1(){
+	document.forms[0].ans.value=""
+	totl++
+	document.forms[0].total.value=totl
+	document.forms[0].results.value=""
+	tried=0
+var i=Math.round(.5+3*Math.random())
+if (i<1){i=1}
+a=quest[i]["p1"]
+b=quest[i]["p2"]
+c=quest[i]["p3"]
+d=quest[i]["p4"]
+var densgml=Math.round(1000*(Math.pow(10,Math.random())))/1000
+var massg=Math.pow(1000,Math.random())
+var volcc=massg/densgml
+var volcc=Math.round(1000*volcc)/1000
+var massg=Math.round(1000*massg)/1000
+//choose mass unit
+masspick=Math.random()
+if(masspick<.33){
+mass=massg
+massunit="grams"}
+else{if(masspick<.67){
+mass=Math.round(1000*massg)/1000000
+massunit="kg"}
+else{
+mass=Math.round(massg*1000)
+massunit="mg"}}
+massfunit="unit"+massunit
+//choose volume unit
+volpick=Math.random()
+if(volpick<.33){
+vol=volcc 
+volunit="cm<sup>3</sup>"}
+else{if(volpick<.67){
+vol=volcc
+volunit="mL"}
+else{
+vol=Math.round(1000*volcc)/1000000
+volunit="liters"}}
+//calculate new density
+denspick=Math.random()
+g=Math.random()
+if(denspick<.25){
+density=densgml
+if(g<.5){densityunit="g/mL"}
+else{densityunit="kg/L"}}
+else{if(denspick<.5){
+density=1000*densgml
+if(g<.5){densityunit="g/L"}
+else{densityunit="mg/mL"}}
+else{if(denspick<.75){
+density=Math.round(1000*densgml)/1000000
+densityunit="kg/mL"}
+else{density=1e6*densgml
+densityunit="mg/L"}
+}}
+if(Math.random()>.33 & volunit=="liters"){
+vol=Math.round(1000000*vol)/1000
+mass=Math.round(1000000*mass)/1000}
+volf=vol+volunit
+massf=mass+massunit
+densityf=density+densityunit
+if (i==1){tryit(a,b,c,d,densityunit,volf,massf)
+	theanswer=density}
+if (i==2){tryit(a,b,c,d,volunit,massf,densityf)
+	theanswer=vol}
+if (i==3){tryit(a,b,c,d,massunit,volf,densityf)
+	theanswer=mass}
+document.forms[0].ans.focus()
+document.forms[0].ans.select()
+}
+function tryit(a,b,c,d,e,f,g)    {
+parent.frames[0].document.clear();
+parent.frames[0].document.open();
+parent.frames[0].document.writeln ("<html>");
+parent.frames[0].document.writeln ("<head>");
+parent.frames[0].document.writeln ("</head>");
+parent.frames[0].document.writeln ("<body bgcolor = FFFFFF");
+parent.frames[0].document.writeln ("<font size = +1>");
+parent.frames[0].document.writeln ("");
+parent.frames[0].document.write (a);
+parent.frames[0].document.write ("<b>",e,"</b>");
+parent.frames[0].document.write (b);
+parent.frames[0].document.write ("<b>",f,"</b>");
+parent.frames[0].document.write (c);
+parent.frames[0].document.write ("<b>",g,"</b>");
+parent.frames[0].document.write (d);
+parent.frames[0].document.writeln ("<br>")
+parent.frames[0].document.writeln ("</font>");
+parent.frames[0].document.close();
+}
+function answer(){
+if(tried==1){
+		alert("Sorry, you've already submitted this problem! We'll get you a new one!")
+		start1()}
+else{
+	if(tried==2){totl++;document.forms[0].total.value=totl}	
+	if (document.forms[0].ans.value>.95*theanswer & document.forms[0].ans.value<1.05*theanswer){	
+	document.forms[0].results.value="correct"
+	corrt++
+	document.forms[0].correct.value=corrt
+	tried=1
+}	
+else {
+		document.forms[0].results.value="incorrect"
+		tried=2}
+}}
+function timer(z){
+tt=z
+var b=Math.floor(tt/60)
+var j = (tt % 60)
+if (j<10){c="0"}
+else {c=""}
+howlong=b + ":" + c + j
+running=setTimeout("timer(tt+1)",1000)
+}
+function update(){
+	document.forms[0].total.value=totl
+	document.forms[0].correct.value=corrt
+	document.forms[0].time.value=howlong
+	document.forms[0].page.value=thepage
+	document.forms[0].verify.value=Math.round(10000*Math.random())
+}
+
+</script>
+</head>
+<BODY onLoad=clear(),timer(0)>
+<h3>Mass, Density and Volume</h3>
+This page presents random "word" problems in the areas of mass, density and volume.
+When you press "New Question", a question will appear in the top frame. Calculate the
+answer and enter it in the cell. Then, press "Check Answer" and the results appear in the
+table. If you get a problem wrong, you should redo it until you get it correct, but you
+can press "New Question" at any time.<br>
+<form ACTION = "../cgi-bin/homework/hw_turnin.php" METHOD = "POST">
+<table>
+<tr><td><input type=button value="New Question" onClick="start1()"><td></tr>
+<tr><td><b>Enter your answer</b></td>
+<td><input type="text" name=ans size=8></td>
+</tr>
+<tr>
+<td><input type=button value="Check answer" onClick="answer()"></td>
+</tr>
+</table>
+<table border=4>
+<tr><td align=center><b>Results</td>
+<td align=center><b>Total</td>
+<td><b>Total Correct</td>
+</tr>
+<tr>
+<td><input type="text" name=results size=12></td>
+<td align=center><input name=total type="text" size=4 ></td>
+<td align=center><input name=correct type="text" size=4 ></td>
+</tr>
+<tr>
+</tr>
+<tr>
+</tr>
+</table>
+<input type=text name="page" size=1>
+<input type=text name="verify" size=1>
+<input type=text name="time" size=1><br>
+<INPUT TYPE = "submit" VALUE = "Submit your score" onClick="update()">
+ </FORM>
+<br>
+<a href="hwintro.html"><img src="back.gif"></a><br>
+</body>
+</html>

@@ -1,0 +1,311 @@
+<html>
+<head>
+<title>Compare</title>
+<style>
+#qspot {position:absolute;left:10;top:350}
+#ansspot {position:absolute;left:10;top:450;height:200}
+#tspot {position:absolute;left:10;top:300}
+#refspot {position:absolute;left:10;top:600;height:200}
+</style>
+<script src=reflist.js></script>
+<script>
+//updated 10/31/00 added comp solution
+//checked w/ N4.7 and IE5
+var ie4 = (document.all) ? true : false;
+refnumber=12
+//globals
+qtype=0
+ctype=0
+first=0
+second=0
+look=0
+totl=0
+corrt=0
+tried=0
+choice=0
+moles=new Array(5)
+mass=new Array(5)
+volume=new Array(5)
+firstelement=""
+secondelement=""
+qstring="";fstring="";sstring=""
+fsolstring="";ssolstring="";
+firstdot="<form><input type=radio name=which onClick=parent.frames[1].getresults(1)>Correct"
+seconddot="<input type=radio name=which onClick=parent.frames[1].getresults(2)>Incorrect</form>"
+samething=new Array(5)
+compare=new Array(5)
+compare[1]="greater "
+compare[2]="lesser "
+lookfor=new Array(3)
+lookfor[1]="number of moles"
+lookfor[2]="mass"
+lookfor[3]="volume"
+finish=new Array(5)
+finish[1]="Correct"
+finish[2]="Incorrect"
+function atom(name,sym,mass,density,mv){
+	this.name=name
+	this.sym=sym
+	this.mass=mass
+	this.density=density
+	this.mv=1
+}
+function ask(p1,p2,p3,p4,p5,p6){
+	this.p1=p1
+	this.p2=p2
+	this.p3=p3
+	this.p4=p4
+	this.p5=p5
+	this.p6=p6
+}
+question=new ask("A ", " sample of "," will have a "," than a "," sample of ",".")
+a=new Array(100)
+a[1]=new atom("lithium","Li",6.941,.53)
+a[2]=new atom("beryllium","Be",9.01218,1.85)
+a[3]=new atom("boron","B",10.811,2.34)
+a[4]=new atom("carbon","C",12.011,2.26)
+a[5]=new atom("bismuth","Bi",208.9804,9.75)
+a[6]=new atom("polonium","Po",209,9.3)
+a[7]=new atom("gold","Au",196.9665,19.3)
+a[8]=new atom("platinum","Pt",195.08,21.45)
+a[9]=new atom("sodium","Na",22.98977,.97,24)
+a[10]=new atom("magnesium","Mg",24.305,1.74)
+a[11]=new atom("aluminum","Al",26.98154,2.70)
+a[12]=new atom("silicon","Si",28.086,2.33)
+a[13]=new atom("phosphorous","P",30.97376,1.82)
+a[14]=new atom("sulfur","S",16,32.066,2.07)
+a[15]=new atom("thallium","Tl",204.383,11.85)
+a[16]=new atom("lead","Pb",207.2,11.35)
+a[17]=new atom("potassium","K",39.098,.86)
+a[18]=new atom("calcium","Ca",40.08,1.55)
+a[19]=new atom("scandium","Sc",44.9559,2.99)
+a[20]=new atom("titanium","Ti",47.88,4.54)
+a[21]=new atom("vanadium","V",50.9415,6.11)
+a[22]=new atom("chromium","Cr",51.996,7.19)
+a[23]=new atom("manganese","Mn",54.9380,7.44)
+a[24]=new atom("iron","Fe",55.847,7.87)
+a[25]=new atom("cobalt","Co",58.9332,8.90)
+a[26]=new atom("nickel","Ni",58.69,8.90)
+a[27]=new atom("copper","Cu",63.546,8.96)
+a[28]=new atom("zinc","Zn",65.39,7.13)
+a[29]=new atom("gallium","Ga",69.723,5.91)
+a[30]=new atom("germanium","Ge",72.61,5.32)
+a[31]=new atom("arsenic","As",74.9216,5.76)
+a[32]=new atom("selenium","Se",78.98,4.79)
+a[33]=new atom("bromine","Br",79.904,3.12)
+a[34]=new atom("osmium","Os",190.2,22.6)
+a[35]=new atom("rubidium","Rb",85.4678,1.53)
+a[36]=new atom("strontium","Sr",87.62,2.54)
+a[37]=new atom("yttrium","Y",88.9059,4.47)
+a[38]=new atom("zirconium","Zr",91.224,6.51)
+a[39]=new atom("niobium","Nb",92.9064,8.57)
+a[40]=new atom("molybdenum","Mo",95.94,10.22)
+a[41]=new atom("iridium","Ir",192.22,22.6)
+a[42]=new atom("ruthenium","Ru",101.07,12.37)
+a[43]=new atom("rhodium","Rh",102.9055,12.41)
+a[44]=new atom("palladium","Pd",106.42,12.0)
+a[45]=new atom("silver","Ag",107.868,10.50)
+a[46]=new atom("cadmium","Cd",112.411,8.65)
+a[47]=new atom("indium","In",114.82,7.31)
+a[48]=new atom("tin","Sn",118.710,7.31)
+a[49]=new atom("antimony","Sb",121.75,6.69)
+a[50]=new atom("tellurium","Te",127.60,6.24)
+a[51]=new atom("iodine","I",126.9045,4.93)
+a[52]=new atom("mercury","Hg",200.59,13.55)
+a[53]=new atom("cesium","Cs",132.9054,1.87)
+a[54]=new atom("barium","Ba",137.27,3.59)
+a[55]=new atom("lanthanum","La",138.9055,6.15)
+a[56]=new atom("cerium","Ce",140.115,6.77)
+a[57]=new atom("praseodymium","Pr",140.9077,6.77)
+a[58]=new atom("neodymium","Nd",144.24,7.01)
+a[59]=new atom("promethium","Pm",145,7.22)
+a[60]=new atom("samarium","Sm",150.36,7.52)
+a[61]=new atom("europium","Eu",151.985,5.24)
+a[62]=new atom("gadolinium","Gd",157.25,7.90)
+a[63]=new atom("terbium","Tb",158.925,8.23)
+a[64]=new atom("dysprosium","Dy",162.50,8.55)
+a[65]=new atom("holmium","Ho",164.930,8.80)
+a[66]=new atom("erbium","Er",167.26,9.07)
+a[67]=new atom("thullum","Tm",168.9342,9.32)
+a[68]=new atom("ytterbium","Yb",173.04,6.97)
+a[69]=new atom("lutetium","Lu",174.97,9.84)
+a[70]=new atom("hafnium","Hf",178.49,13.31)
+a[71]=new atom("tantalum","Ta",180.9479,16.65)
+a[72]=new atom("tungsten","W",183.85,19.3)
+a[73]=new atom("rhenium","Re",186.207,21)
+function cleanse(){
+		clear()
+		document.forms[0].total.value=0
+		document.forms[0].correct.value=0
+}
+function clear(){
+	tried=0
+	clearansspot()
+	document.forms[0].results.value=""
+}
+function startit(){
+	totl++
+	clear()
+	document.forms[0].total.value=totl
+	first=Math.ceil(73*Math.random())
+	second=first
+	while(second==first){second=Math.ceil(73*Math.random())}
+	if(Math.random()>.5)firstelement=a[first].name;
+		else firstelement=a[first].sym;
+	if(Math.random()>.5)secondelement=a[second].sym;
+		else secondelement=a[second].name;
+	properties(1,first)
+	properties(2,second)
+	setvalues()
+	qtype=Math.ceil(3*Math.random())
+	ctype=Math.ceil(2*Math.random())
+	qstring=""+ctype+qtype
+	buildquest()
+	getsetup()	
+}
+function properties(order,which){
+	moles[order]=Math.ceil(100*Math.random())/10
+	mass[order]=Math.ceil(100*moles[order]*a[which].mass)/100
+	volume[order]=Math.ceil(100*mass[order]/a[which].density)/100
+}
+function setvalues(){
+	forfirst=Math.ceil(3*Math.random())
+	forsecond=forfirst
+	while(forsecond==forfirst)forsecond=Math.ceil(3*Math.random())
+	if(forfirst==1)fstring=moles[1] + " mole"
+	if(forfirst==2)fstring=mass[1] + "gram"
+	if(forfirst==3)fstring=volume[1] + "cm<sup>3</sup>"
+	if(forsecond==1)sstring=moles[2] + " mole"
+	if(forsecond==2)sstring=mass[2] + "gram"
+	if(forsecond==3)sstring=volume[2] + "cm<sup>3</sup>"
+	
+}
+function getsetup(){
+	choice=0
+	qstring=1*qstring
+	if(qstring==11){
+		if(moles[1]>moles[2])choice=1;
+		else choice=2;
+	}
+	if(qstring==12){
+		if(mass[1]>mass[2])choice=1;
+		else choice=2;
+	}
+	if(qstring==13){
+		if(volume[1]>volume[2])choice=1;
+		else choice=2;
+	}
+	if(qstring==21){
+		if(moles[1]<moles[2])choice=1;
+		else choice=2;
+	}
+	if(qstring==22){
+		if(mass[1]<mass[2])choice=1;
+		else choice=2;
+	}
+	if(qstring==23){
+		if(volume[1]<volume[2])choice=1;
+		else choice=2;
+	}
+	buildanswer(choice)
+}
+ansphrase=new ask("First, convert both samples into the comparison dimension. You should try approximating that first and only do the exact calculation if the approx values don't give a clear result.<br>"," Since the question says that the "," than the ",", you should be able to see that the proper response is ",".")
+
+function buildquest(){
+thequest=question.p1+fstring+question.p2+firstelement+question.p3+compare[ctype]+lookfor[qtype]+question.p4+sstring+question.p5+secondelement+question.p6
+showquest(thequest)
+}
+function buildanswer(choice){
+if(qtype==1){
+		fsolstring="=>"+moles[1]+"moles"
+		ssolstring="=>"+moles[2]+"moles"
+	}
+	if(qtype==2){
+		fsolstring="=>"+mass[1]+"grams"
+		ssolstring="=>"+mass[2]+"grams"
+	}
+	if(qtype==3){
+		fsolstring="=>"+volume[1]+"cm<sup>3</sup>"
+		ssolstring="=>"+volume[2]+"cm<sup>3</sup>"
+	}
+thesolution=ansphrase.p1+firstelement+":"+fstring+fsolstring+"<br>"+secondelement+":"+sstring+ssolstring+"<br>"+ansphrase.p2+firstelement+question.p3+compare[ctype]+lookfor[qtype]+ansphrase.p3+secondelement+ansphrase.p4+finish[choice]+ansphrase.p5
+}
+function answer(submitted){
+	if(tried==1){
+		alert("You've already done this one! Get a new problem.")
+	}
+	else{
+	if(choice==submitted){
+		corrt++
+		document.forms[0].correct.value=corrt
+		document.forms[0].results.value="correct"
+		tried=1
+	}
+	else {
+		document.forms[0].elements[1].value="incorrect"
+	}}
+	showanswer()
+}
+function showquest(thequest){
+	if(ie4){
+		qspot.innerHTML=thequest
+		}
+	else{
+		document.qspot.document.open()
+		document.qspot.document.write(thequest)
+		document.qspot.document.close()
+	}
+}
+function clearansspot(){
+	if(ie4){
+		ansspot.innerHTML=""
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.clear()
+		document.ansspot.document.close()
+	}
+}
+	
+function showanswer(){
+	if(ie4){
+		ansspot.innerHTML=thesolution
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.write(thesolution)
+		document.ansspot.document.close()
+	}
+}
+
+</script>
+</head>
+<body onLoad=setrefs()>
+<h3>Further Exercises In Comparison</h3>
+This page will present statements comparing samples of two elements. You are to determine if the statement is correct or incorrect. For example,<br><br>
+<center>"A 3.4g sample of Fe has a larger volume than a .45mole sample of Cr"</center><br>
+Using only your periodic table and reasoning, determine the correct response and click on the appropriate circle. You should avoid using a calculator, though that may not always be possible. The questions will appear below the tables when you press the "New Question" button.Use the "Correct" and "Incorrect" dots below the table to input your selection. Results and running totals will appear in the table, immediately. Since there are only two possible choices, the answer is displayed immediately after your response and you only get a single attempt at any question.<br>
+<br>
+<form>
+<input type=button value="New Question" onClick="startit()"><br>
+<table border=4>
+<tr><td align=center><b>Results</td>
+<td align=center><b>Total Done</td>
+<td><b>Total Correct</td>
+</tr>
+<tr>
+<td><input type="text" name=results size=12></td>
+<td align=center><input type="text" name=total size=4 ></td>
+<td align=center><input type="text" name=correct  size=4 ></td>
+</tr>
+</table>
+<input type=radio name=which onClick=answer(1)>Correct
+<input type=radio name=which onClick=answer(2)>Incorrect
+</form>
+<br>
+</form>
+<div id=qspot></div>
+<div id=ansspot></div>
+<div id=refspot></div>
+</body>
+</html>

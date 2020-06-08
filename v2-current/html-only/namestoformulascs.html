@@ -1,0 +1,280 @@
+<head>
+<title>Formulas to names</title>
+<style>
+#qspot {position:absolute;left:450;top:350}
+#area {position:absolute;left:450;top:370}
+#ansspot {position:absolute;left:450;top:400;height:200}
+#tspot {position:absolute;left:10;top:300}
+#refspot {position:absolute;left:10;top:640;height:200}
+</style>
+<script src="reflist.js"></script>
+<script language="javascript">
+//updated 11/14/00-added complete solution
+var ie4 = (document.all) ? true : false;
+refnumber=136
+attempts=0
+tried=0
+totl=0
+corrt=0
+anpre=""
+catpre=""
+theformula=""
+thesolution=""
+newone=""
+function cleanse(){
+	clear()
+	document.forms[0].total.value=0
+	document.forms[0].correct.value=0
+	}
+function clear(){
+	attempts=0
+	tried=0
+	clearansspot()
+	document.forms[0].theans.value=""
+	document.forms[0].results.value=""
+	}
+ansphrase=new Array()
+anion=new Array();
+cation=new Array();
+cation[0]=new Array("lithium","Li",1)
+cation[1]=new Array("beryllium","Be",2)
+cation[2]=new Array("potassium","K",1)
+cation[3]=new Array("calcium","Ca",2)
+cation[4]=new Array("sodium","Na",1)
+cation[5]=new Array("magnesium","Mg",2)
+cation[6]=new Array("cesium","Cs",1)
+cation[7]=new Array("barium","Ba",2)
+cation[8]=new Array("rubidium","Rb",1)
+cation[9]=new Array("strontium","Sr",2)
+cation[10]=new Array("aluminum","Al",3)
+cation[11]=new Array("ammonium","NH4",1)
+cation[12]=new Array("carbon","C",4)
+cation[13]=new Array("silicon","Si",4)
+cation[14]=new Array("phosphorus","P",3)
+cation[15]=new Array("phosphorus","P",5)
+cation[16]=new Array("boron","B",3)
+cation[17]=new Array("sulfur","S",4)
+cation[18]=new Array("sulfur","S",6)
+cation[19]=new Array("nitrogen","N",3)
+cation[20]=new Array("titanium","Ti",4,3)
+cation[21]=new Array("vanadium","V",5,4,3,2)
+cation[21]=new Array("chromium","Cr",6,3,2)
+cation[22]=new Array("manganese","Mn",6,4,3,2)
+cation[23]=new Array("iron","Fe",3,2)
+cation[24]=new Array("cobalt","Co",3,2)
+cation[25]=new Array("nickel","Ni",2,3)
+cation[26]=new Array("copper","Cu",2,1)
+cation[27]=new Array("niobium","Nb",5,3)
+cation[28]=new Array("molybdenum","Mo",6,5,4,3,2)
+cation[29]=new Array("ruthenium","Ru",6,4,3,2)
+cation[30]=new Array("rhodium","Rh",2,3,4)
+cation[31]=new Array("palldium","Pd",4,2)
+cation[32]=new Array("tin","Sn",4,2)
+cation[33]=new Array("tungsten","W",6,5,4,3,2)
+cation[34]=new Array("rhenium","Re",6,4,2)
+cation[35]=new Array("osmium","Os",6,4,3,2)
+cation[36]=new Array("iridium","Ir",6,4,3,2)
+cation[37]=new Array("platinum","Pt",4,2)
+cation[38]=new Array("gold","Au",3,1)
+cation[39]=new Array("mercury","Hg",2,1)
+cation[40]=new Array("thallium","Tl",3,1)
+cation[41]=new Array("lead","Pb",4,2)
+anion[0]=new Array("oxide","O",2)
+anion[1]=new Array("fluoride","F",1)
+anion[2]=new Array("sulfide","S",2)
+anion[3]=new Array("chloride","Cl",1)
+anion[4]=new Array("selenide","Se",2)
+anion[5]=new Array("bromide","Br",1)
+anion[6]=new Array("iodide","I",1)
+anion[7]=new Array("carbonate","CO3",2)
+anion[8]=new Array("hydroxide","OH",1)
+anion[9]=new Array("nitrate","NO3",1)
+anion[10]=new Array("nitrite","NO2",1)
+anion[11]=new Array("sulfate","SO4",2)
+anion[12]=new Array("sulfite","SO3",2)
+anion[13]=new Array("cyanide","CN",1)
+anion[14]=new Array("permanganate","MnO4",1)
+anion[15]=new Array("dichromate","Cr2O7",2)
+anion[16]=new Array("phosphate","PO4",3)
+anion[17]=new Array("perchlorate","ClO4",1)
+anion[18]=new Array("bicarbonate","HCO3",1)
+anion[19]=new Array("chlorite","ClO2",1)
+anion[20]=new Array("thiosulfate","S2O3",2)
+anion[21]=new Array("hypochlorite","ClO",1)
+anion[22]=new Array("chlorate","ClO3",1)
+anion[23]=new Array("phosphite","PO3",3)
+anion[24]=new Array("chromate","CrO4",2)
+thestock=new Array("","(I) ","(II) ","(III) ","(IV) ","(V) ","(VI) ","(VI) ","(VII) ")
+thepres=new Array("","mono","di","tri","tetra","penta","hexa","hepta","octa","nona")
+numstring="0123456789"
+function process(formula){
+	newformula=""
+	for(j=0;j<formula.length;j++){
+		numstring.indexOf(formula.charAt(j))>0?newformula+="<sub>"+formula.charAt(j)+"</sub>":newformula+=formula.charAt(j)};
+	return newformula
+}
+function startit(){
+	clear()
+	totl++
+	document.forms[0].total.value=totl
+	cat=Math.floor(cation.length*Math.random())
+	if(cat>11) ani=Math.ceil(6*Math.random());
+	else ani=Math.floor(anion.length*Math.random());
+	if((cat==17 || cat==18)& ani==2){totl--;startit()}
+	else{
+	cat<19?x=cation[cat][2]:x=cation[cat][2+Math.floor(Math.random()*(cation[cat].length-2))];
+	y=anion[ani][2]
+	if(x==y){
+		csub=1
+		asub=1
+	}
+	if(x>y){
+	if(x%y==0){
+		csub=1
+		asub=Math.ceil(x/y)
+	}
+	else{
+	 	csub=y
+		asub=x
+		}
+	}
+	else{
+	if(y%x==0){
+		csub=Math.ceil(y/x)
+		asub=1	
+	}
+	else{
+	 	csub=y
+		asub=x
+	    }
+	}
+	formula=""
+	if(cat!=11)csub==1?formula+=cation[cat][1]:formula+=cation[cat][1]+csub;
+	else csub==1?formula+=cation[cat][1]:formula+="("+cation[cat][1]+")"+csub;
+	if(asub==1)formula+=anion[ani][1];
+	else ani<7?formula+=anion[ani][1]+asub:formula+="("+anion[ani][1]+")"+asub;
+	anpre=catpre=""
+	if(asub==1 & ani==0)anpre="mon";
+	else if(asub>1 & cat>11)anpre=thepres[asub];
+	if(cat>11 & csub>1)catpre=thepres[csub];
+	thename=catpre+cation[cat][0]+ "  " + anpre + anion[ani][0]
+	firstpart=catpre + cation[cat][0]
+	secpart=anpre + anion[ani][0]
+	if(cat>19)thename=getstock(cat,ani,x)
+	showquest()
+	buildanswer()
+}}
+function getstock(cat,ani,x){
+	thename=cation[cat][0]+thestock[x]+anion[ani][0]
+	return thename
+}
+function buildanswer(){
+	if(cat>19)thesolution="Since the cation "+cation[cat][1]+" has a charge of "+x+"+ and the "+anion[ani][0]+" has a charge of "+anion[ani][2]+"- , they will combine in a "+csub+":"+asub+" ratio and the formula is :"+process(formula);
+	else{
+		if(cat<12)thesolution= "Since the "+cation[cat][1]+" can only have a charge of "+cation[cat][2]+"+ and the "+anion[ani][0]+" has a charge of "+anion[ani][2]+"- , they will combine in a "+csub+":"+asub+" ratio and the formula is :"+process(formula);
+		else thesolution="The prefixes give a ratio of "+cation[cat][0]+" to "+anion[ani][0]+" of "+csub+":"+asub+" and a formula of :"+process(formula);	
+	}
+	//showanswer()
+} 
+function showquest(){
+	if(ie4){
+		qspot.innerHTML=thename
+		}
+	else{
+		document.qspot.document.open()
+		document.qspot.document.write(thename,"<br>",theformula)
+		document.qspot.document.close()
+	}
+}
+function showanswer(){
+if(attempts>=3){
+	if(ie4){
+		ansspot.innerHTML=thesolution
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.write(thesolution)
+		document.ansspot.document.close()
+	}
+	}
+}
+function previewit(test){
+	if(ie4){
+		area.innerHTML=process(test)
+		}
+	else{
+	document.area.document.open()
+	document.area.document.write(process(test))
+	document.area.document.close()
+}}	
+function clearansspot(){
+	if(ie4){
+		ansspot.innerHTML=""
+		area.innerHTML=""
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.clear()
+		document.ansspot.document.close()
+		document.area.document.open()
+		document.area.document.clear()
+		document.area.document.close()
+	}
+}
+function answer(ans){
+	if(tried==1)alert("You've already done this one. Get a new problem");
+	else{
+		attempts++
+		if(tried==2){totl++;document.forms[0].total.value=totl}
+		if (ans=formula){
+			document.forms[0].results.value="correct"
+			corrt++
+			document.forms[0].correct.value=corrt
+			tried=1
+		}
+		else{
+			document.forms[0].results.value="incorrect"
+			tried=2
+		}
+	}
+}
+
+</script>
+</head>
+<body onLoad="cleanse()">
+<h3>Nomenclature of Simple Compounds-Names to Formulas</h3>
+This is a basic exercise in nomenclature. 
+<li>The user should refer to periodic tables or other sources for proper atomic symbols and formulas/charges of ions.
+<li>Capitalization must be done properly. 'fe' is incorrect.
+<li>Pressing "New Compound" will display a name to the right of the table.<br>
+<li>Enter the formula of the compound in the  answer cell. Do not worry about subscripting numbers (water would be H2O).
+<li>You can check that your formula is correct by pressing the "Preview" button. That will cause your proposed formula to be displayed below the name.
+<li>If you are satisfied with your formula,press "Check Answer".
+<li>Results and score appear in the table.
+<li>If you miss a problem three times, pressing "Show Answer" will display the correct name.
+</ul>
+<form>
+<input type=button value="New Problem" onClick="startit()"><br>
+<input name="theans" type=text size=30>
+<input type=button value="Preview" onClick="previewit(this.form.theans.value)">
+<input type=button value="Check Answer" onClick="answer(this.form.theans.value)"><br>
+<input type=button value="Show Answer" onClick="showanswer()">
+<table border=4>
+<tr>
+<td>Results</td>
+<td>Total</td>
+<td>Correct</td>
+</tr>
+<tr>
+<td><input type=text name=results size=16></td>
+<td align=center><input name="total" type=text size=3</td>
+<td align=center><input name="correct" type=text size=3></td>
+</tr>
+</table>
+</form>
+<div id=qspot></div>
+<div id=ansspot></div>
+<div id=refspot></div>
+<div id=area></div>
+</body>
+</html>

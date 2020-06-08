@@ -1,0 +1,205 @@
+<html>
+<head>
+<title>Solutions:Mass, Volume and Molarity-Homework</title>
+<script language=javascript>
+//globals
+//Last Update 7/28/98
+thepage="Mass, volume, molarity(14)"
+corrt=0
+tried=0
+totl=0
+theanswer=0
+which=0
+//the following ia a generally useful clear function
+function clear(){
+	document.forms[0].results.value=""
+	document.forms[0].correct.value=corrt
+	document.forms[0].total.value=totl
+	document.forms[0].time.value=""
+	document.forms[0].page.value=""
+	document.forms[0].verify.value=""
+
+}
+function MakeArray(n){
+	this.length=n
+	for (var i=1;i<=n;i++){
+	this[i]= 0}
+}
+function question(p1,p2,p3,p4){
+	this.p1=p1
+	this.p2=p2
+	this.p3=p3
+	this.p4=p4
+}
+function item(name,form,gfw){
+	this.name=name
+	this.form=form
+	this.gfw=gfw
+}
+compound=new MakeArray(20)
+compound[1]=new item("sodium chloride","NaCl",58.5)
+compound[2]=new item("sodium nitrate","NaNO<sub>3</sub>",85)
+compound[3]=new item("ammonium chloride","NH<sub>4</sub>Cl",53.5)
+compound[4]=new item("calcium nitrate","Ca(NO<sub>3</sub>)<sub>2</sub>",164)
+compound[5]=new item("methanol","CH<sub>4</sub>O",32)
+compound[6]=new item("ethanol","C<SUB>2</SUB>H<sub>6</sub>O",46)
+compound[7]=new item("acetone","C<SUB>3</SUB>H<sub>6</sub>O",58)
+compound[8]=new item("barium nitrate","Ba(NO<sub>3</sub>)<sub>2</sub>",261.4)
+compound[9]=new item("sodium iodide ","NaI",150)
+compound[10]=new item("sodium bromide","NaBr",103)
+compound[11]=new item("ferric chloride","FeCl<SUB>3</SUB>",162)
+compound[12]=new item("cobalt(II) chloride","CoCl<SUB>2</SUB>",130)
+compound[13]=new item("sucrose","C<sub>12</sub>H<sub>22</sub>O<sub>11</sub>",342.3)
+compound[14]=new item("lithium iodide","LiI",133.8)
+compound[15]=new item("potassium fluoride","KF",58.1)
+compound[16]=new item("potassium chloride","KCl",74.5)
+compound[17]=new item("calcium chloride","CaCl<SUB>2</SUB>",111)
+compound[18]=new item("barium iodide","BaI<SUB>2</SUB>",391)
+compound[19]=new item("ammonium nitrate","NH<sub>4</sub>NO<sub>3</sub>",80)
+compound[20]=new item("ammonium bromide","NH<sub>4</sub>Br",98)
+
+
+quest=new MakeArray(10)
+quest[1]=new question("What volume in "," of "," would be required if you wanted ","  of solute?")
+quest[2]=new question("How many grams of "," are in  "," of a <b>","</b> solution?")
+quest[3]=new question("What is the molarity of a solution which contains "," of "," in a total volume of ","?")
+
+function begin(){
+totl++
+	document.forms[0].total.value=totl
+	document.forms[0].results.value=""
+	tried=0
+molarity=0
+lvol=Math.round(100*(.5+3*Math.random()))/100
+mlvol=Math.round(1e3*lvol)
+var cmpd=Math.round(.5+19.95*Math.random())
+while (molarity<.05){
+	molarity=Math.round(100*Math.random())/100}
+moles=molarity*lvol
+gmass=moles*compound[cmpd]["gfw"]
+gmass=Math.round(100*gmass)/100
+mgmass=Math.round(1000*gmass)
+var which=Math.round(.5+2.95*Math.random())
+var whichmass=Math.random()
+var whichvol=Math.random()
+var whichitem=Math.random()
+if (whichmass>.5){
+	mass=gmass
+	massdim="gram"}
+else{mass=mgmass
+	massdim="mg"}
+if (whichvol>.5){
+	vol=lvol
+	voldim="liters"}
+else{vol=mlvol
+	voldim="mL"}
+if (whichitem>.5){
+	cpd=compound[cmpd]["name"]}
+else {cpd=compound[cmpd]["form"]}
+if (which==1){
+	var1=voldim
+	var2=molarity +"<b>M</b> " +cpd
+	var3=mass+massdim
+	theanswer=vol}
+if (which==2){
+	var1=cpd
+	var2=vol+voldim
+	var3=molarity+"<b>M</b>"
+	theanswer=gmass}
+if (which==3){
+	var1=mass+massdim
+	var2=cpd
+	var3=vol+voldim
+	theanswer=molarity}
+var qustion=quest[which]["p1"]+var1+quest[which]["p2"]+var2+quest[which]["p3"]+var3+quest[which]["p4"]
+tryit(qustion)
+}
+
+
+function tryit(qustion)    {
+parent.frames[0].document.clear();
+parent.frames[0].document.open();
+parent.frames[0].document.writeln ("<html>");
+parent.frames[0].document.writeln ("<head>");
+parent.frames[0].document.writeln ("</head>");
+parent.frames[0].document.writeln ("<body bgcolor = FFFFFF");
+parent.frames[0].document.writeln ("<pre>");
+parent.frames[0].document.write (qustion);
+//parent.frames[0].document.write ("if<b> ",mass1,"</b>");
+parent.frames[0].document.writeln ("</font>");
+parent.frames[0].document.close();
+document.forms[0].ansr.focus()
+document.forms[0].ansr.select()
+}
+function answer(anser){
+if(tried==1){
+		alert("Sorry, you've already submitted this problem! We'll get you a new one!")
+		start()}
+else{
+	if(tried==2){totl++;document.forms[0].total.value=totl}
+	if (anser>.99*theanswer & anser<1.01*theanswer ){
+	document.forms[0].results.value="correct"
+		corrt++
+		document.forms[0].correct.value=corrt
+		tried=1
+}
+else {
+		document.forms[0].results.value="incorrect"
+		tried=2}
+}}
+function timer(z){
+tt=z
+var b=Math.floor(tt/60)
+var j = (tt % 60)
+if (j<10){c="0"}
+else {c=""}
+howlong=b + ":" + c + j
+running=setTimeout("timer(tt+1)",1000)
+}
+function update(){
+	document.forms[0].total.value=totl
+	document.forms[0].correct.value=corrt
+	document.forms[0].time.value=howlong
+	document.forms[0].page.value=thepage
+	document.forms[0].verify.value=Math.round(10000*Math.random())
+}
+
+</script>
+</head>
+<BODY onLoad="clear(),timer(0)">
+<h3>Molarity, mass and volume</h3>
+This page provides problems relating molarity, mass and volume. When you press "New Problem," a
+a question will appear in the top frame on this page. Determine the value of
+the correct answer, enter it in the cell and press "Check Answer". You will need a periodic table and
+possibly your textbook to answer some of the questions. The results appear in the
+table.<br>
+<form ACTION = "../cgi-bin/homework/hw_turnin.php" METHOD = "POST">
+<table>
+<td><input type=button value="New Problem" onClick="begin()"></td>
+<td><input type=button value="Check Answer" onClick="answer(this.form.ansr.value)"></td>
+</tr>
+<tr><td><b>Enter your answer here</b></td>
+<td><input type="text" name="ansr" size=10></td>
+</tr>
+</table>
+<table border=4>
+<tr>
+<td><b>Results</b></td>
+<td><b>Total Done</b></td>
+<td><b>Total Correct</b></td></tr>
+</tr>
+<tr>
+<td align=center><input type="text" name="results" size=12></td>
+<td align=center><input type="text" name="total" size=3></td>
+<td align=center><input type="text" name="correct" size=3></td>
+<tr>
+</table>
+<input type=text name="page" size=1>
+<input type=text name="verify" size=1>
+<input type=text name="time" size=1><br>
+<INPUT TYPE = "submit" VALUE = "Submit your score" onClick="update()">
+ </FORM>
+<br>
+<a href="index.html" target=welcome><img src="back.gif"></a><br>
+</body>
+</html>

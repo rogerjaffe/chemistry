@@ -1,0 +1,273 @@
+<html>
+<head><title>Wavelength,frequency and energy</title>
+<style>
+#qspot {position:absolute;left:350;top:170}
+#ansspot {position:absolute;left:410;top:190}
+#refspot {position:absolute;left:10;top:600;height:200}
+</style>
+<script src="reflist.js"></script>
+<script language=javascript>
+//updated 10/30/00 added complete solution
+//checked with NS47 and IE5
+//globals
+refnumber=9
+var ie4 = (document.all) ? true : false;
+attempts=0
+answered=0
+theanswer1=""
+theanswer2=""
+whichone=""
+valE=0
+valfreq=0
+valwave=0
+sol=3.00+"*10<sup>10</sup>cm/sec"
+pc=6.626+"*10<sup>-34</sup>J-sec"
+function parts(p1,p2,p3,p4,p5,p6,p7,p8){
+	this.p1=p1
+	this.p2=p2
+	this.p3=p3
+	this.p4=p4
+	this.p5=p5
+	this.p6=p6
+	this.p7=p7
+	this.p8=p8
+}
+showit=new Array(5)
+themass=0
+thevolume=0
+thedensity=0
+whichphrase=0
+thesolution=""
+needed=new Array(5)
+needed[1]="wavelength"
+needed[2]="frequency"
+needed[3]="energy"
+missing=new Array(5)
+formula=new Array(5)
+formula[1]="freq=c/wavelength<br>E=h*freq"
+missing[1]="frequency and energy"
+formula[2]="wavelength=c/freq<br>E=h*freq"
+missing[2]="wavelength and energy"
+formula[3]="freq=E/h<br>wavelength=c/freq"
+missing[3]="frequency and wavelength"
+known=new Array(5)
+ansphrase=new parts("This problem deals with the following relations:<br>freq=c/wavelength;E=h*freq<br>Organize your data, identifying the given and the unknowns:<br>wavelength=","<br>frequency=","<br>energy=","<br>Since you need to calculate ","</b>, arrange the above equations, as appropriate:<br> ","<br>Substitute in the values and perform the calculation:")
+function setrefs(){
+if(ie4){
+		refspot.innerHTML=booktitle+theref[10]
+		}
+	else{
+		document.refspot.document.open()
+		document.refspot.document.write(booktitle,theref[10])
+		document.refspot.document.close()
+	}
+}
+
+//This function clears all values in both tables on loading the page
+function fresh(){
+	for (var i=0;i<3;i++){
+		document.forms[0].elements[i].value=""}
+		document.forms[0].results.value=""
+	document.forms[0].correct.value=0
+	document.forms[0].total.value=0
+}
+//This function clears the first table
+function zeroout(){
+	document.forms[0].first.value=""
+	document.forms[0].second.value=""
+	document.forms[0].third.value=""
+	attempts=0
+}
+//This is the function started when "New Problem" is pushed	
+//This function first clears all old values using zeroout()
+//The three variables(wave,freq,E) are then determined, using Math.random() to 
+//generate wave and the known relationship to generate freq and E.
+function begin(){
+	answered=0
+	zeroout()
+	h=Math.random()
+	if (h<.33){wave=1e-3*Math.random()}
+	else{if(h<.67){wave=Math.random()}
+	else{wave=1e3*Math.random()}}
+	freq=3e10/wave
+	E=6.626e-34*freq
+	valwave=number(wave,1)
+	valfreq=number(freq,2)
+	valE=number(E,3)
+	problem()
+	document.forms[0].total.value++
+}
+function number(a,b){
+	if (a>=1 & a<10){
+	sign=""
+	display(a,sign,0)}
+	else{if(a>10){
+		sign="+"
+		for (var i=1;i<100;i++){
+		a=a/10
+		if (a<10){
+		break}}}
+	else {
+		sign="-"
+		for (var i=1;i<100;i++){
+		a=a*10
+		if (a>1){
+		break}}}
+}
+a=Math.round(100*a)/100
+	if (sign==""){
+	a= a}
+	else{
+		known[b]=a+"*10<sup>"+sign+i+"</sup>"
+		a=a + "e" + sign +i
+	}
+return a}
+//This adjusts the coefficient to three sig figures
+//and then displays the result.
+function display(a,n,sign,i){
+	a=Math.round(100*a)/100
+	if (sign==""){
+	a= a}
+	else{
+	a=a + "e" + sign +i}
+}
+//This function creates the problem and the answer method by displaying only
+//two of the three variables while passing all three to hidden cells in a hidden
+//table
+function problem(){
+//the following places a value in one of the cells in the first table
+//creating the problem
+	whichone=Math.ceil(3*Math.random())
+	if (whichone==1){
+		theanswer1=valfreq
+		theanswer2=valE
+		document.forms[0].first.value=valwave
+		document.forms[0].second.focus()
+		document.forms[0].second.select()
+		showit[1]=known[1]+"cm"
+		showit[2]="?"
+		showit[3]="?"
+	}
+	if (whichone==2){	
+		theanswer1=valwave
+		theanswer2=valE
+		document.forms[0].second.value=valfreq
+		document.forms[0].first.focus()
+		document.forms[0].first.select()
+		showit[1]="?"
+		showit[2]=known[2]+"sec<sup>-1</sup>"
+		showit[3]="?"
+	}
+	if(whichone==3){
+		theanswer1=valwave
+		theanswer2=valfreq
+		document.forms[0].third.value=valE
+		document.forms[0].first.focus()
+		document.forms[0].first.select()
+		showit[1]="?"
+		showit[2]="?"
+		showit[3]=known[3]+"J"
+	}
+	buildanswer()
+}
+function buildanswer(){
+	if(whichone==1)thefinal=sol+"/"+known[1]+"cm="+known[2]+"sec<sup>-1</sup><br>"+pc+"*"+known[2]+"sec<sup>-1</sup>="+known[3]+"J"
+	if(whichone==2)thefinal=sol+"/"+known[2]+"sec<sup>-1</sup>="+known[1]+"cm<br>"+pc+"*"+known[2]+"sec<sup>-1</sup>="+known[3]+"J"
+	if(whichone==3)thefinal=known[3]+"J/"+pc+"="+known[2]+"sec<sup>-1</sup><br>"+sol+"/"+known[2]+"sec<sup>-1</sup>="+known[1]+"cm"
+	thesolution=ansphrase.p1+showit[1]+ansphrase.p2+showit[2]+ansphrase.p3+showit[3]+ansphrase.p4+missing[whichone]+ansphrase.p5+formula[whichone]+ansphrase.p6+"<br>"+thefinal
+}
+
+function screen(){
+	if(whichone==1){response1=document.forms[0].second.value
+	response2=document.forms[0].third.value}
+	if(whichone==2){response1=document.forms[0].first.value
+	response2=document.forms[0].third.value}
+	if(whichone==3){response1=document.forms[0].first.value
+	response2=document.forms[0].second.value}
+	answer()
+}
+function answer(){
+	attempts++
+	answered++
+	if(answered>1)
+	{	document.forms[0].total.value++}
+	if(response1>.95*theanswer1 & response1<1.05*theanswer1 &
+	response2>.95*theanswer2 & response2<1.05*theanswer2){
+	document.forms[0].results.value="correct"
+	document.forms[0].correct.value++}
+	else {
+	document.forms[0].results.value="incorrect"}
+}
+function clearanswer(){
+if(attempts>=3){
+	if(ie4){
+		ansspot.innerHTML=""
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.clear()
+		document.ansspot.document.close()
+	}
+	}
+}
+function showanswer(){
+if(attempts>=3){
+	if(ie4){
+		ansspot.innerHTML=thesolution
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.write(thesolution)
+		document.ansspot.document.close()
+	}
+	}
+}
+</script>
+</head>
+<body onLoad="fresh(),setrefs()">
+<h2>Wavelength, frequency and energy</h2>
+This is simple drill and practice involving electromagnetic radiation. On loading,
+and when you press "New Problem", one of the cells in the first table will be filled.
+Enter the two missing values and press "Check Answer" Results appear in the second
+table. Pay close attention to the dimensions. You should continue with a problem
+until you get it correct, but you can generate a new problem at any time.Use "e"
+notation for sci notation. Thus, 2.3e-4 equals 2.3*10<sup>-4</sup>
+<ul>
+<li>If you miss a problem three times, pressing "Show Answer" will cause the correct answer to appear.
+</ul>
+<form>
+<table border=4>
+<tr>
+<TD ALIGN=CENTER><b>Wavelength(cm)</td>
+<td align=center><b>Frequency(Hz)</td>
+<td align=center><b>Energy(J)</td>
+</tr>
+<tr>
+<td align=center><input type="text" name=first size=8 ></td>
+<td align=center><input type="text" name=second size=8 ></td>
+<td align=center><input type="text" name=third size=8 ></td>
+</tr>
+<tr>
+<td align=center><input type="button" value="New Problem" onClick=begin()></td>
+<td><input type="button" value="Check Answer" onClick=screen(this.form)></td>
+<td><input type="button" value="Show Answer" onClick=showanswer()></td>
+</tr>
+</table>
+<br>
+<table border=4>
+<tr><td align=center><b>Results</td>
+<td align=center><b>Total Done</td>
+<td><b>Total Correct</td>
+</tr>
+<tr>
+<td><input type="text" name=results size=12></td>
+<td align=center><input name=total type="text" size=4 ></td>
+<td align=center><input name=correct type="text" size=4 ></td>
+</tr>
+</table>
+</form>
+<div id=qspot></div>
+<div id=ansspot></div>
+<div id=refspot></div>
+</body>
+</html>

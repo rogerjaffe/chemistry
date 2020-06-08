@@ -1,0 +1,449 @@
+<html>
+<head><title>Using rate laws-cs</title>
+<style>
+#qspot {position:absolute;left:320;top:260}
+#ansspot {position:absolute;left:10;top:450;height:300}
+#tspot {position:absolute;left:10;top:300}
+#refspot {position:absolute;left:10;top:600}
+</style>
+<script src="reflist.js"></script>
+<script src="numberconvert.js"></script>
+<script language="javascript">
+//updated 11/14/00-added complete solution
+var ie4 = (document.all) ? true : false;
+//global variables
+refnumber=159
+attempts=0
+which=0
+theanswer=""
+corrt=0
+totl=0
+attempts=0
+order=0
+theanswer=0
+option=0
+tried=0
+order=""
+conc=""
+constant=0
+rate=""
+leaveout=0
+seq=""
+anser=0
+function cleanse(){
+	clear()
+	document.forms[0].total.value=0
+	document.forms[0].correct.value=0
+	}
+function question(p1,p2,p3,p4){
+	this.p1=p1
+	this.p2=p2
+	this.p3=p3
+	this.p4=p4
+}
+therate=new Array(5)
+therate[1]=0
+therate[2]=0
+therate[3]=0
+therate[4]=0
+therate[5]=0
+cmpd=new Array()
+coef=new Array()
+cmpd[1]=new Array(2,"CH<sub>3</sub>COF ","H<sub>2</sub>O ","CH<sub>3</sub>COOH ","HF")
+coef[1]=new Array(-1,-1,1,1)
+cmpd[2]=new Array(2,"C<sub>2</sub>H<sub>5</sub>OH","O<sub>2</sub>","CO<sub>2</sub>","H<sub>2</sub>O")
+coef[2]=new Array(-2,-6,4,6)
+cmpd[3]=new Array(2,"NH<sub>3</sub> ","O<sub>2</sub> ","H<sub>2</sub>O "," NO")
+coef[3]=new Array(-4,-5,6,4)
+cmpd[4]=new Array(2,"C<sub>6</sub>H<sub>6</sub> ","O<sub>2</sub> ","CO<sub>2</sub> ","H<sub>2</sub>O")
+coef[4]=new Array(-2,-15,12,6)
+cmpd[5]=new Array(2,"C<sub>7</sub>H<sub>16</sub> ","O<sub>2</sub> ","CO<sub>2</sub> ","H<sub>2</sub>O")
+coef[5]=new Array(-1,-11,7,8)
+cmpd[6]=new Array(2,"C<sub>3</sub>H<sub>8</sub> ","O<sub>2</sub> ","CO<sub>2</sub> ","H<sub>2</sub>O")
+coef[6]=new Array(-1,-5,3,4) 
+cmpd[7]=new Array(2,"CN<sup>-</sup> ","H<sub>2</sub>SO<sub>4</sub> ","SO<sub>4</sub><sup>2-</sup> ","HCN")
+coef[7]=new Array(-2,-1,1,2)
+cmpd[8]=new Array(2,"C<sub>4</sub>H<sub>10</sub> ","O<sub>2</sub> ","CO<sub>2</sub> ","H<sub>2</sub>O")
+coef[8]=new Array(-2,-13,8,10)
+cmpd[9]=new Array(2,"C<SUB>6</SUB>H<SUB>12</SUB>O<SUB>2</SUB>","O<SUB>2</SUB>","CO<SUB>2</SUB>","H<SUB>2</SUB>O")
+coef[9]=new Array(-1,-8,6,6)
+cmpd[10]=new Array(2,"CS<SUB>2</SUB>","Cl<SUB>2</SUB>","CCl<SUB>4</SUB>","S<SUB>2</SUB>Cl<SUB>2</SUB>")
+coef[10]=new Array(-1,-3,1,1)
+cmpd[11]=new Array(2,"C<SUB>4</SUB>H<SUB>10</SUB>O","O<SUB>2</SUB>","CO<SUB>2</SUB>","H<SUB>2</SUB>O")
+coef[11]=new Array(-1,-6,4,5)
+cmpd[12]=new Array(2,"N<SUB>2</SUB>H<SUB>4</SUB>","H<SUB>2</SUB>O<SUB>2</SUB>","N<SUB>2</SUB>","H<SUB>2</SUB>O")
+coef[12]=new Array(-1,-2,1,4)
+cmpd[13]=new Array(2,"H<SUB>2</SUB>S","O<SUB>2</SUB>","H<SUB>2</SUB>O","SO<SUB>2</SUB>")
+coef[13]=new Array(-2,-3,2,2)
+cmpd[14]=new Array(2,"NH<SUB>3 </SUB>","O<SUB>2</SUB>","NO","H<SUB>2</SUB>O")
+coef[14]=new Array(-4,-5,4,6)
+cmpd[15]=new Array(2,"C<SUB>2</SUB>H<SUB>4</SUB>","O<SUB>2</SUB>","CO<SUB>2</SUB>","H<SUB>2</SUB>O")
+coef[15]=new Array(-1,-3,2,2)
+cmpd[16]=new Array(2,"PCl<SUB>3</SUB>","H<SUB>2</SUB>O","H<SUB>3</SUB>PO<SUB>3</SUB>","HCl")
+coef[16]=new Array(-1,-3,1,3)
+cmpd[17]=new Array(2,"C<SUB>3</SUB>H<SUB>6</SUB>","O<SUB>2</SUB>","CO<SUB>2</SUB>","H<SUB>2</SUB>O")
+coef[17]=new Array(-2,-9,6,6)
+cmpd[18]=new Array(2,"C<SUB>3</SUB>H<SUB>6</SUB>","O<SUB>2</SUB>","CO","H<SUB>2</SUB>O")
+coef[18]=new Array(-1,-3,3,3)
+cmpd[19]=new Array(2,"F<SUB>2</SUB>","H<SUB>2</SUB>O","HF","O<SUB>2</SUB>")
+coef[19]=new Array(-2,-2,4,1)
+cmpd[20]=new Array(2,"NH<SUB>3</SUB>","O<SUB>2</SUB>","NO","H<SUB>2</SUB>O")
+coef[20]=new Array(-4,-5,4,6)
+cmpd[21]=new Array(2,"C<SUB>3</SUB>H<SUB>6</SUB>O","O<SUB>2</SUB>","CO","H<SUB>2</SUB>O")
+coef[21]=new Array(-2,-5,6,6)
+cmpd[22]=new Array(2,"NO<SUB>2</SUB>","H<SUB>2</SUB>O","HNO<SUB>3</SUB>","NO")
+coef[22]=new Array(-3,-1,2,1)
+cmpd[23]=new Array(2,"CH<SUB>4</SUB>","Cl<SUB>2</SUB>","HCl","CCl<SUB>4</SUB>")
+coef[23]=new Array(-1,-4,4,1)
+cmpd[24]=new Array(2,"CCl<SUB>4</SUB>","HF","CCl<SUB>2</SUB>F<SUB>2</SUB>","HCl")
+coef[24]=new Array(-1,-2,1,2)
+cmpd[25]=new Array(2,"H<SUB>2</SUB>S","O<SUB>2</SUB>","SO<SUB>2</SUB>","H<SUB>2</SUB>O")
+coef[25]=new Array(-2,-3,2,2)
+cmpd[26]=new Array(2,"CO<SUB>2</SUB>","H<SUB>2</SUB>O","C<SUB>3</SUB>H<SUB>8</SUB>","O<SUB>2</SUB>")
+coef[26]=new Array(-3,-4,1,5)
+cmpd[27]=new Array(2,"HNO<SUB>3</SUB>","NO","NO<SUB>2</SUB>","H<SUB>2</SUB>O")
+coef[27]=new Array(-2,-1,3,1)
+cmpd[28]=new Array(2,"N<SUB>2</SUB>","H<SUB>2</SUB>O","H<SUB>2</SUB>O<SUB>2</SUB>","N<SUB>2</SUB>H<SUB>4</SUB>")
+coef[28]=new Array(-1,-4,2,1)
+cmpd[29]=new Array(2,"NH<SUB>3</SUB>","CO<SUB>2</SUB>","CO(NH<SUB>2</SUB>)<SUB>2</SUB>","H<SUB>2</SUB>O")
+coef[29]=new Array(-2,-1,1,1)
+cmpd[30]=new Array(2,"H<SUB>2</SUB>","O<SUB>2</SUB>","H<SUB>2</SUB>O")
+coef[30]=new Array(2,1,2)
+cmpd[31]=new Array(2,"N<SUB>2</SUB>","H<SUB>2</SUB>","NH<SUB>3</SUB>") 
+coef[31]=new Array(-1,-3,2)
+cmpd[32]=new Array(1,"CH<SUB>3</SUB>OH","CO","H<SUB>2</SUB>")
+coef[32]=new Array(-1,1,2)
+cmpd[33]=new Array(2,"CO","H<SUB>2</SUB>","CH<SUB>3</SUB>OH")
+coef[33]=new Array(-1,-2,1)
+cmpd[34]=new Array(2,"NO","O<SUB>2</SUB>","NO<SUB>3</SUB>")
+coef[34]=new Array(-1,-1,1)
+cmpd[35]=new Array(1,"NO<SUB>3</SUB>","NO(g)","O<SUB>2</SUB>")
+coef[35]=new Array(-1,1,1)
+cmpd[36]=new Array(2,"NO<SUB>3</SUB>","NO","NO<SUB>2</SUB>")
+coef[36]=new Array(-1,-1,2)
+cmpd[37]=new Array(1,"NO<SUB>2</SUB>","NO<SUB>3</SUB>","NO")
+coef[37]=new Array(-2,1,1)
+cmpd[38]=new Array(2,"NO","O<SUB>2</SUB>","NO<SUB>2</SUB>")
+coef[38]=new Array(-2,-1,2)
+cmpd[39]=new Array(2,"H<SUB>2</SUB>","ICl","I<SUB>2</SUB>","HCl")
+coef[39]=new Array(-1,-2,1,2)
+cmpd[40]=new Array(2,"I<SUB>2</SUB>","HCl","H<SUB>2</SUB>","ICl")
+coef[40]=new Array(-1,-2,1,2)
+cmpd[41]=new Array(2,"CO","NO","CO<SUB>2</SUB>","N<SUB>2</SUB>")
+coef[41]=new Array(-2,-2,2,1)
+cmpd[42]=new Array(2,"CO<SUB>2</SUB>","N<SUB>2</SUB>","CO","NO")
+coef[42]=new Array(-2,-1,2,2)
+coef[43]=new Array(-2,-1,2)
+cmpd[43]=new Array(2,"SO<SUB>2</SUB>","O<SUB>2</SUB>","SO<SUB>3</SUB>")
+cmpd[44]=new Array(1,"SO<SUB>3</SUB>","SO<SUB>2</SUB>","O<SUB>2</SUB>")
+coef[44]=new Array(-2,2,1)
+cmpd[45]=new Array(1,"H<SUB>2</SUB>O","CO","H<SUB>2</SUB>")
+coef[45]=new Array(-1,1,1)
+cmpd[46]=new Array(1,"N<SUB>2</SUB>O<SUB>4</SUB>","NO<SUB>2</SUB>")
+coef[46]=new Array(-1,2)
+cmpd[47]=new Array(1,"NO<SUB>2</SUB>","N<SUB>2</SUB>O<SUB>4</SUB>")
+coef[47]=new Array(-2,1)
+cmpd[48]=new Array(1,"Fe<sup>3+</sup>","Ag<sup>+</sup>","Fe<sup>2+</sup>")
+coef[48]=new Array(-1,1,1)
+cmpd[49]=new Array(2,"CS<SUB>2</SUB>","H<SUB>2</SUB>","CH<SUB>4</SUB>","H<SUB>2</SUB>S")
+coef[49]=new Array(-1,-4,1,2)
+cmpd[50]=new Array(2,"CH<SUB>4</SUB>","H<SUB>2</SUB>S","CS<SUB>2</SUB>","H<SUB>2</SUB>")
+coef[50]=new Array(-1,-2,1,4)
+cmpd[51]=new Array(1,"Cl<SUB>2</SUB>","PCl<SUB>3</SUB>")
+coef[51]=new Array(-3,2)
+cmpd[52]=new Array(1,"PCl<SUB>3</SUB>","Cl<SUB>2</SUB>")
+coef[52]=new Array(-2,3)
+cmpd[53]=new Array(2,"Cl<SUB>2</SUB>","F<SUB>2</SUB>","ClF<SUB>3</SUB>")
+coef[53]=new Array(-1,-3,2)
+cmpd[54]=new Array(1,"ClF<SUB>3</SUB>","Cl<SUB>2</SUB>","F<SUB>2</SUB>")
+coef[54]=new Array(-2,1,3)
+cmpd[55]=new Array(1,"COF<SUB>2</SUB>","CO<SUB>2</SUB>","CF<SUB>4</SUB>")
+coef[55]=new Array(-2,1,1)
+cmpd[56]=new Array(2,"CO<SUB>2</SUB>","CF<SUB>4</SUB>","COF<SUB>2</SUB>")
+coef[56]=new Array(-1,-1,2)
+cmpd[57]=new Array(2,"CO","Cl<SUB>2</SUB>","COCl<SUB>2</SUB>")
+coef[57]=new Array(-1,-1,1)
+cmpd[58]=new Array(1,"COCl<SUB>2</SUB>","CO","Cl<SUB>2</SUB>")
+coef[58]=new Array(-1,1,1)
+cmpd[59]=new Array(1,"PCl<SUB>5</SUB>","PCl<SUB>3</SUB>","Cl<SUB>2</SUB>")
+coef[59]=new Array(-1,1,1)
+cmpd[60]=new Array(2,"PCl<SUB>3</SUB>","Cl<SUB>2</SUB>","PCl<SUB>5</SUB>")
+coef[60]=new Array(-1,-1,1)
+cmpd[61]=new Array(1,"CO","CO<SUB>2</SUB>")
+coef[61]=new Array(-2,1)
+cmpd[62]=new Array(1,"N<SUB>2</SUB>O<SUB>4</SUB>","N<SUB>2</SUB>O","O<SUB>2</SUB>")
+coef[62]=new Array(-2,2,3)
+cmpd[63]=new Array(2,"CO","H<SUB>2</SUB>O","CO<SUB>2</SUB>","H<SUB>2</SUB>")
+coef[63]=new Array(-1,-1,1,1)
+cmpd[64]=new Array(2,"CO<SUB>2</SUB>","H<SUB>2</SUB>","CO","H<SUB>2</SUB>O")
+coef[64]=new Array(-1,-1,1,1)
+cmpd[65]=new Array(1,"SO<SUB>2</SUB>Cl<SUB>2</SUB>","SO<SUB>2</SUB>","Cl<SUB>2</SUB>")
+coef[65]=new Array(-1,1,1)
+cmpd[66]=new Array(2,"SO<SUB>2</SUB>","Cl<SUB>2</SUB>","SO<SUB>2</SUB>Cl<SUB>2</SUB>")
+coef[66]=new Array(-1,-1,1)
+cmpd[67]=new Array(2,"NO","Br<SUB>2</SUB>","NOBr")
+coef[67]=new Array(-2,-1,2)
+cmpd[68]=new Array(1,"NOBr","NO","Br<SUB>2</SUB>")
+coef[68]=new Array(-2,1,2)
+cmpd[69]=new Array(2,"CH<SUB>4</SUB>","O<SUB>2</SUB>","H<SUB>2</SUB>CO","H<SUB>2</SUB>O")
+coef[69]=new Array(-1,-1,1,1)
+cmpd[70]=new Array(2,"H<SUB>2</SUB>CO","H<SUB>2</SUB>O","CH<SUB>4</SUB>","O<SUB>2</SUB>")
+coef[70]=new Array(-1,-1,1,1)
+cmpd[71]=new Array(2,"H<SUB>2</SUB>S","SO<SUB>2</SUB>","S","H<SUB>2</SUB>O")
+coef[71]=new Array(-2,-1,3,2)
+cmpd[72]=new Array(2,"CO","H<SUB>2</SUB>","C<SUB>3</SUB>H<SUB>8</SUB>","H<SUB>2</SUB>O")
+coef[72]=new Array(-3,-7,1,3)
+cmpd[73]=new Array(2,"C<sub>8</sub>H<sub>18</sub> ","O<sub>2</sub> ","CO<sub>2</sub> ","H<sub>2</sub>O")
+coef[73]=new Array(-2,-25,16,18)
+finish=new Array()
+finish[1]="<br>use the rate constant and concentration(s) provided to calculate the reaction rate.<br>"
+finish[2]="<br> use the rate and concentration(s) shown, to calculate the rate constant.<br>"
+finish[3]="<br> use the information provided to calculate the concentration of "
+finish[4]=new Array("<br>if the reaction rate for "," is ","<b>M-Sec<sup>-1</sup></b><br> what is the reaction rate for "," in <b>M-sec<sup>-1</sup></b>?")
+basequest="Given the reaction and rate law shown below,"
+ansphrase=new Array()
+ansphrase[1]="Begin with the rate law, shown above. Substitute in the rate constant and the concentrations and, then, solve for the rate, being careful with your calculations. In particular, make sure that you raise the concentrations to the orders.<br>"
+ansphrase[2]="Rearrange the rate law, above, to solve for k.  Substitute in the rate and concentrations provided. Solve for the rate, being careful with your calculations. In particular, make sure that you raise the concentrations to the orders.<br>"
+ansphrase[3]="Rearrange the rate law, above, to solve for the missing concentration.  Substitute in the rate, rate constant and any other concentrations which might be needed. Solve for the concentration. If the order of the missing compound is greater than one, be certain to take the needed root.<br>"
+ansphrase[4]="Relative reaction rates follow the reaction stoichiometry. Thus, set up the stoichiometric ratio between the involved species. Since reagent rates are negative, this can be shown by placing a '-' in front of the coefficient of any reagent. Then, rearrange the equation to solve for the missing rate. Make sure that your result makes sense. The species with the lesser coefficient should have a lesser rate. Reagent rates are negative.<br>"
+
+//start program
+function clear(){
+	document.forms[0].results.value=""
+	attempts=0
+	tried=0
+	kk=0
+	if(ie4)ansspot.innerHTML="";
+	else {
+		document.ansspot.document.open()
+		document.ansspot.document.clear()
+		document.ansspot.document.close()
+	}
+}
+function startit(){
+	option=0
+	askconc=""
+	clear()
+	totl++
+	document.forms[0].total.value=totl
+	which=Math.ceil(73*Math.random())
+	thereaction=getreaction(which)
+	if(Math.random()>.5)constant=number(Math.ceil(1000*Math.random()),3,3);
+	else constant=number(1/Math.ceil(1000*Math.random()),3,1);
+	law=ratelaw(which)
+	getconcs(order)
+	getrates(order)
+	buildquest(order)
+	}
+function getreaction(g){
+	cef=new Array()
+	thereaction=""
+	for(var b=0;b<coef[which].length;b++){
+		(Math.abs(coef[which][b])==1)?cef[b]="":cef[b]=Math.abs(coef[which][b]);
+	}
+	for(var l=1;l<=cmpd[which][0];l++){
+		l<cmpd[which][0]?thereaction+=(cef[l-1]+cmpd[which][l]+" + "):thereaction+=(cef[l-1]+cmpd[which][l]+"=>");
+	}
+	for(var l=(cmpd[which][0]+1);l<cmpd[which].length;l++){
+		l<(cmpd[which].length-1)?thereaction+=(cef[l-1]+cmpd[which][l]+" + "):thereaction+=(cef[l-1]+cmpd[which][l]);
+	}
+	return thereaction
+}
+function ratelaw(which){
+	seq=""
+	order=new Array()
+	law="Rate=k"
+	torder=0
+	while(torder==0){
+	for(var j=1;j<=cmpd[which][0];j++){
+		order[j]=Math.floor(3*Math.random());
+		if(order[j]>0){
+			seq+=("["+cmpd[which][j]+"]");
+			if(order[j]>1)seq+=("<sup>"+order[j]+"</sup>");
+		}
+	torder+=order[j]
+	}
+	}
+	law+=seq
+	return law
+}
+function getconcs(order){
+	conc=new Array()
+	j=1
+	for(var j=1;j<order.length;j++){
+		if(order[j]>0){
+			conc[j]=0
+			while(conc[j]<.01)conc[j]=number(Math.random(),3,3);
+		}
+	}
+}	
+function getrates(order){
+	rate=new Array()
+	rate[0]=constant
+	for(var j=0;j<order.length;j++){
+		if(order[j]==1)rate[0]=rate[0]*conc[j];
+		if(order[j]==2)rate[0]=rate[0]*conc[j]*conc[j];
+	}
+	rate[0]=number(rate[0],3,3)
+	for(var j=1;j<=coef[which].length;j++)rate[j]=number(rate[0]*coef[which][j-1],3,3);
+}
+function buildquest(order){
+	conclist="<br>"
+	count=0
+	used=new Array()
+	for(j=1;j<=order.length;j++){
+			if(order[j]>0){
+			used[used.length]=j
+			conclist+=(cmpd[which][j]+"<b>:</b>"+conc[j]+"<b>M</b><br>");
+		}	
+	}
+	if(used.length==1)drop=0;
+	else drop=Math.floor(used.length*Math.random());
+	leaveout=used[drop];
+	partlist="<br>"
+	for(j=1;j<=order.length;j++){
+		if(order[j]>0){
+			if(j!=leaveout)partlist+=(cmpd[which][j]+"<b>:</b>"+conc[j]+"<b>M</b><br>");
+		}
+	}
+	given=Math.ceil(Math.random()*coef[which].length);
+	get=given
+	while(get==given)get=Math.ceil(Math.random()*coef[which].length);	
+	option=Math.ceil(4*Math.random()) 
+	if(option==1){thequest=basequest+"<br>"+thereaction+"<br>"+law+finish[option]+"k="+constant+conclist;anser=rate[0]}
+	if(option==2){thequest=basequest+"<br>"+thereaction+"<br>"+law+finish[option]+"Rate="+rate[0]+"<b>M</b>sec<sup>-1</sup>"+conclist;anser=constant}
+	if(option==3){thequest=basequest+"<br>"+thereaction+"<br>"+law+finish[option]+cmpd[which][leaveout]+"<BR>k="+constant+"<br>Rate="+rate[0]+"<b>M</b>sec<sup>-1</sup>"+partlist;anser=conc[leaveout]}
+	if(option==4){thequest=basequest+"<br>"+thereaction+"<br>"+law+finish[option][0]+cmpd[which][given]+finish[option][1]+rate[given]+finish[option][2]+cmpd[which][get]+finish[option][3];anser=rate[get]}
+	buildanswer(option)
+	showquest(thequest) 
+}
+function buildanswer(option){
+	formula=getform(option)
+	theanswer=ansphrase[option]+formula
+	showanswer(theanswer)
+}
+function getform(option){
+	formula=""
+	if(option==1){
+		formula=(law+"<br>"+constant)
+		for(var j=0;j<order.length;j++){
+			if(order[j]==1)formula+=("("+conc[j]+")");
+			if(order[j]==2) formula+=("("+conc[j]+")<sup>2</sup>");
+		}
+	}
+	if(option==2){
+		formula=("k=Rate/"+seq+"<br>"+rate[0]+"/")
+		for(var j=0;j<order.length;j++){
+			if(order[j]==1)formula+=("("+conc[j]+")");
+			if(order[j]==2) formula+=("("+conc[j]+")<sup>2</sup>");
+		}
+	}
+	if(option==3){
+		if(order[leaveout]==1) formula="["+cmpd[which][leaveout]+"]=Rate/k";
+		else formula="["+cmpd[which][leaveout]+"]<sup>2</sup>=Rate/k";
+		for(var j=0;j<order.length;j++){
+			if(j!=leaveout){
+			if(order[j]==1)formula+=("["+cmpd[which][j]+"]");
+			if(order[j]==2) formula+=("["+cmpd[which][j]+"]<sup>2</sup>");
+			}
+		}
+		formula+="<br>"
+		formula+=(rate[0]+"/"+constant)
+		for(var j=0;j<order.length;j++){
+			if(j!=leaveout){
+			if(order[j]==1)formula+=("("+conc[j]+")");
+			if(order[j]==2) formula+=("("+conc[j]+")<sup>2</sup>");
+			}
+		}
+	}
+	if(option==4){
+		formula=cmpd[which][get]+"/"+cmpd[which][given]+"="+coef[which][get-1]+"/"+coef[which][given-1]+"<br>"
+		formula+=rate[given]+"*"+coef[which][get-1]+"/"+coef[which][given-1]
+		}
+	formula+=("="+anser)
+	return formula
+}
+
+function showquest(thequest){
+	if(ie4){
+		qspot.innerHTML=thequest
+		}
+	else{
+		document.qspot.document.open()
+		document.qspot.document.write(thequest)
+		document.qspot.document.close()
+	}
+}
+
+function answer(ans){
+	attempts++
+	if(tried==2){totl++
+		document.forms[0].total.value=totl}
+	if(anser<0){
+		if(ans<.95*anser & ans>1.05*anser)kk=1;
+	}
+	else{
+		if(ans<1.05*anser & ans>.95*anser)kk=1;
+	}
+	if(kk==1){
+		document.forms[0].results.value="correct"
+		corrt++
+		document.forms[0].correct.value=corrt
+		tried=1
+	}
+	else{
+		document.forms[0].results.value="incorrect"
+		tried=2
+	}
+}
+function showanswer(){
+if(attempts>=3){
+	if(ie4){
+		ansspot.innerHTML=theanswer
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.write(theanswer)
+		document.ansspot.document.close()
+	}
+	}
+}	
+</script>
+</head>
+<body onLoad="cleanse(),setrefs()">
+<h2>Using the Rate Equation</h2>
+This page is to an exercise in using the rate equation. When you press "New Question", information about the kinetics of a reaction and a question will appear to the left of the table. Ascertain the value of the the answer, enter it in the cell and press "Check Answer". Results appear in the table on the main page. The small window can be dragged to a new position if it covers up any part of the main window you wish to see. All rates are in terms of M-sec<sup>-1</sup>and all concentrations are molarities. Remember that although the overall reaction rate is, by convention, positive, the rate in terms of an individual species can be positive or negative. Thus, on questions asking for a rate for a specified compound, the sign is important.
+<ul>
+<li>This page requires Netscape 4.x or IE 5 or higher
+<li>If you miss a problem three times, pressing "Show Answer" will cause the correct answer to appear.
+</ul>
+<form>
+<table>
+<tr><td><input type=button value="New Question" onClick="startit()"><td></tr>
+<tr><td><b>Enter your answer</b></td>
+<td><input type="text" name=theans size=8></td>
+</tr>
+<tr>
+<td><input type=button value="Check answer" onClick="answer(this.form.theans.value)"></td>
+<td><input type=button value="Show answer" onClick="showanswer()"></td>
+</tr>
+</table>
+<table border=4>
+<tr><td align=center><b>Results</td>
+<td align=center><b>Total Done</td>
+<td><b>Total Correct</td>
+</tr>
+<tr>
+<td><input type="text" name=results size=12></td>
+<td align=center><input type="text" name=total size=4 ></td>
+<td align=center><input type="text" name=correct size=4 ></td>
+</tr>
+<tr>
+</table>
+</form>
+<div id=qspot></div>
+<div id=ansspot></div>
+<div id=refspot></div>
+<br>
+</body>
+</html>

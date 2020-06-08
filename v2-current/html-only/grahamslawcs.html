@@ -1,0 +1,296 @@
+<html>
+<head>
+<title>Graham's Law</title>
+<style>
+#qspot {position:absolute;left:360;top:250}
+#ansspot {position:absolute;left:20;top:360;height:300}
+#tspot {position:absolute;left:10;top:300}
+#refspot {position:absolute;left:10;top:600;height:50}
+</style>
+<script src="reflist.js"></script>
+<script src="numberconvert.js"></script>
+<script src="ionformulas.js"></script>
+<script language="javascript">
+//updated 11/14/00-added complete solution
+var ie4 = (document.all) ? true : false;
+//global variables
+refnumber=59
+corrt=0
+tried=0
+totl=0
+theanswer=0
+thesolution=0
+which=0
+first=0
+second=0
+rate1=0
+rate2=0
+time1=0
+time2=0
+dim=""
+unit=""
+newone=""
+theratio=0
+percent=0
+choices=0
+alldata=0
+form1="<form><input type=text size=8 name=theans><input type=button value='Check Answer' onClick='answer(this.form.theans.value)'></form>"
+radio1="<input type=radio name=stuff onClick=answer("
+radio2=")>"
+text1="<br><input type=text size=10 name=ans><input type=button value='Submit' onClick=opener.answer(this.form.ans.value)>"
+cpd1=""
+cpd2=""
+which=-1
+choices=new Array()
+function compounds(formula,gmw){
+	this.formula=formula
+	this.gmw=gmw
+}
+function parts(p1,p2,p3,p4,p5){
+	this.p1=p1
+	this.p2=p2
+	this.p3=p3
+	this.p4=p4
+	this.p5=p5
+}
+grahams="(I) rate<sub>A</sub>/rate<sub>B</sub>=srgmw<sub>B</sub>/srgmw<sub>A</sub>"
+glaws=new Array("rate<sub>A</sub>=(srgmw<sub>B</sub>*rate<sub>B</sub>)/srgmw<sub>A</sub>","moles<sub>A</sub>=(srgmw<sub>B</sub>*moles<sub>B</sub>)/srgmw<sub>A</sub>","time<sub>A</sub>=(srgmw<sub>A</sub>*time<sub>B</sub>)/srgmw<sub>B</sub>","srgmw<sub>A</sub>=(srgmw<sub>B</sub>*rate<sub>B</sub>)/rate<sub>A</sub>","srgmw<sub>A</sub>=(srgmw<sub>B</sub>*time<sub>A</sub>)/time<sub>B</sub>"," srgmw<sub>A</sub>=(srgmw<sub>B</sub>*rate<sub>B</sub>)/rate<sub>A</sub>")
+ansstring=new Array(7,11,9)
+question=new Array()
+qkeys=new Array()
+akeys=new Array()
+ansphrase=new Array()
+question[0]=new Array("If "," has an effusion rate of ","moles/sec. What would the effusion rate for "," be in moles/sec?")
+qkeys[0]=new Array(2,6,3,12)
+ansphrase[0]="<br>Rearranging equation one to solve for the rate yields:<br>"
+akeys[0]=new Array(14,6,15,7)
+question[1]=new Array("In a given period of time, ","moles of "," effuses. How many moles of "," would effuse in to the same period of time?")
+qkeys[1]=new Array(10,2,3,12)
+ansphrase[1]="<br>Since rate =amount/time and the time is constant , we can modify equation(I) to solve for moles of compound:<br>"
+akeys[1]=new Array(14,10,15,11)
+question[2]=new Array("If "," moles of "," effuses in  ","seconds, how many seconds would it take for the same number of moles of "," to effuse?")
+qkeys[2]=new Array(10,2,8,3,12)
+ansphrase[2]="<br>Rate=amount/time and in this case, time is constant. Thus, we can modify equation(I) to solve for time:<br>" 
+akeys[2]=new Array(15,8,14,9)
+question[3]=new Array(""," has an effusion rate of ","mol/sec. Which of the gases below would have an effusion rate of ","mol/sec?")
+qkeys[3]=new Array(2,6,7,12)
+ansphrase[3]="<br>First, rarrange equation (I) to solve for the srgmw of the unknown gas:<br>"
+akeys[3]=new Array(14,6,7,15)
+question[4]=new Array("If it took ","seconds for a sample of "," to effuse, for which of the following would it require ","seconds for the same number of moles to effuse?")
+qkeys[4]=new Array(8,2,9,12)
+ansphrase[4]="Since quantity is constant, equation (I) can be rewritten to solve for the srgmw of the unknown gas:<br>"
+akeys[4]=new Array(14,9,8,15)
+question[5]=new Array("Which of the following would effuse at a rate equal to ","% of the rate of ","?")
+qkeys[5]=new Array(13,2,12)
+ansphrase[5]="<br>Equation (I) is first rearranged to solve of srgmw of the unknown gas<br>"
+akeys[5]=new Array(14,6,7,15)
+cmpd=new Array()
+cmpd[1]=new compounds("H<sub>2</sub>",2.00)
+cmpd[2]=new compounds("He",4.00)
+cmpd[3]=new compounds("CH<SUB>4</sub>",16.0)
+cmpd[4]=new compounds("NH<SUB>3</SUB>",17.0)
+cmpd[5]=new compounds("Ne",20.18)
+cmpd[6]=new compounds("H<SUB>2</SUB>S",34.1)
+cmpd[7]=new compounds("Ar",39.95)
+cmpd[8]=new compounds("Xe",131.3)
+cmpd[9]=new compounds("CO",28.00)
+cmpd[10]=new compounds("CO<SUB>2</SUB>",44.00)
+cmpd[11]=new compounds("CH<SUB>3</SUB>Cl",50.45)
+cmpd[12]=new compounds("COCl<SUB>2</SUB>",98.9)
+cmpd[13]=new compounds("HCN",27)
+cmpd[14]=new compounds("C<SUB>2</SUB>H<SUB>2</SUB>",26)
+cmpd[15]=new compounds("B<SUB>2</SUB>H<SUB>6</SUB>",27.6)
+//begin programs
+function clear(){
+	document.forms[0].results.value=""
+	attempts=0
+	tried=0
+	clearansspot()
+	}
+function cleanse(){
+	clear()
+	document.forms[0].total.value=0
+	document.forms[0].correct.value=0
+	}
+
+function startit(){
+	clear()
+	totl++
+	document.forms[0].total.value=totl
+	first=Math.ceil(15*Math.random())
+	second=first
+	while(second==first){second=Math.ceil(15*Math.random())}
+	cpd1=cmpd[first]['formula']	
+	cpd2=cmpd[second]['formula']
+	mass1=cmpd[first]['gmw']
+	mass2=cmpd[second]['gmw']
+	srgmw1=number(Math.pow(mass1,.5),3,3)
+	srgmw2=number(Math.pow(mass2,.5),3,3)
+	theratio=Math.sqrt(cmpd[first]['gmw'])/Math.sqrt(cmpd[second]['gmw'])
+	getrates()
+	gettimes()
+	moles()
+	alldata=new Array(first,second,cpd1,cpd2,mass1,mass2,rate1,rate2,time1,time2,moles1,moles2,"",percent,srgmw1,srgmw2)
+	which=Math.floor(6*Math.random())
+	if(which>2){makemultiple(first,second)}
+	makequestion(which)
+}
+function getrates(){
+	rate1=number(1/(1000*Math.random()),3,3)
+	rate2=rate1*theratio
+	rate2=number(rate2,3,3)
+	percent=(rate2/rate1)*100
+	percent=number(percent,3,3)
+	dim="effusion rate"
+	unit="mol/sec"
+}
+function gettimes(){
+	time1=number(1000*Math.random(),3,3)
+	time2=time1/theratio
+	time2=number(time2,3,3)
+	dim="time"
+	unit="seconds"
+}
+function moles(){	
+	moles1=number(Math.random(),3,3)
+	moles2=moles1*theratio
+	moles2=number(moles2,3,3)
+}
+
+function makemultiple(){
+	theanswer=first
+	choices[1]=second
+	for(j=2;j<=5;j++){
+	choices[j]=Math.ceil(15*Math.random())
+	hh=0
+	for(k=1;k<j;k++){
+		if (choices[k]==choices[j]){
+			hh=1
+		}
+	}
+	if(choices[j]==first || hh==1){j--}
+	}
+	scramble()
+}
+function scramble(){
+	theanswer=1
+	changeit=Math.ceil(5*Math.random())
+	storeit=choices[1]
+	if(changeit!=1){
+	choices[1]=choices[changeit]
+	choices[changeit]=storeit
+	theanswer=changeit
+	}
+}
+function makequestion(f){
+	thequest=""
+	for(j=0;j<question[f].length;j++)thequest+=question[f][j]+alldata[qkeys[f][j]];
+	showquest(thequest)
+	buildanswer()
+	if(f<3)theanswer=alldata[ansstring[f]]
+}
+function buildanswer(){
+	theeqn="("+alldata[akeys[which][0]]+"*"+alldata[akeys[which][1]]+")/"+alldata[akeys[which][2]]+"="+alldata[akeys[which][3]]
+	thesolution="Graham's law state that the rate of effusion of a gas is inversely proportional to the square root<br> of its gram molecular weight(<B>srgmw</B> represents that quantity)<br>"+grahams+ansphrase[which]+glaws[which]
+	thesolution+=("<br>Substituting the appropriate values and solving yields:<br>"+theeqn)
+	which>2?finish=getfinish():finish="";
+	thesolution+=finish
+	}
+function getfinish(){
+	finish="<br>Squaring this quantity gives a gmw="+alldata[5]+"<br>which corresponds to "+alldata[3]
+	return finish
+}
+function showquest(thequest){
+	if(ie4){
+		thequest+="<form>"
+		if(which<=2)thequest+=form1;
+		else{
+		for(j=1;j<=5;j++){thequest+=(radio1+j+radio2+cmpd[choices[j]]['formula'])};
+		}
+		thequest+="</form>"
+		qspot.innerHTML=thequest
+		}
+	else{
+		document.qspot.document.open()
+		document.qspot.document.write(thequest,"<form>")
+		if(which<=2)document.qspot.document.write(form1);
+		else	{
+			for(j=1;j<=5;j++){document.qspot.document.write(radio1,j,radio2,cmpd[choices[j]]['formula'])};
+			}
+		document.qspot.document.write("</form>")
+		document.qspot.document.close()
+	}
+}
+function showanswer(){
+if(attempts>=3){
+	if(ie4){
+		ansspot.innerHTML=thesolution
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.write(thesolution)
+		document.ansspot.document.close()
+	}
+	}
+}
+function clearansspot(){
+	if(ie4){
+		ansspot.innerHTML=""
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.clear()
+		document.ansspot.document.close()
+	}
+}
+function answer(ans){
+	attempts++
+	if(tried==1){alert("You've already done this one. Get a new Problem!")}
+	else{
+		if(tried==2){totl++;document.forms[0].total.value=totl}
+		if(ans>.95*theanswer & ans<1.05*theanswer){
+			document.forms[0].results.value="correct"
+			corrt++
+			document.forms[0].correct.value=corrt
+			tried=1}
+		else{
+			document.forms[0].results.value="incorrect"
+			tried=2
+		}
+	}
+}
+</script>
+</head>
+<body onLoad=clear()>
+<h2>Graham's Law</h2>
+This page provides work in the use of Graham's Law of Effusion. Its operation is very straightforward. When you press "New Problem", a question will be displayed to the right of the table. The question may require that you do a calculation and enter a numeric value or it may be multiple choice. Determine the correct response and submit your answer. Resulting and scoring are kept on the main window.
+<ul>
+<li>If you miss a problem three times, pressing the "Show Answer" button will cause the correct answer to appear.
+</ul>
+<form>
+<table>
+<tr><td><input type=button value="New Problem" onClick="startit()"><td></tr>
+</tr>
+<tr>
+<td><input type=button value="Show answer" onClick="showanswer()"></td>
+</tr>
+</table>
+<table border=4>
+<tr><td align=center><b>Results</td>
+<td align=center><b>Total Done</td>
+<td><b>Total Correct</td>
+</tr>
+<tr>
+<td><input type="text" name=results size=12></td>
+<td align=center><input type="text" name=total size=4 ></td>
+<td align=center><input type="text" name=correct size=4 ></td>
+</tr>
+<tr>
+</table>
+</form>
+<div id=qspot></div>
+<div id=ansspot></div>
+<div id=refspot></div>
+<br>
+</body>
+</html>

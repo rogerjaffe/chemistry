@@ -1,0 +1,209 @@
+<html>
+<head>
+<title>The deBroglie Wave Equation</title>
+<script language=JavaScript>
+//globals
+thepage="deBroglie Equation(83)"
+totl=0
+tried=0
+corrt=0
+howlong=""
+h=6.626e-34
+emass=9.11e-31
+pmass=1.67e-27
+nmass=1.67e-27
+mass=0
+speed=0
+ewave=0
+pwave=0
+nwave=0
+velocity=0
+lightspeed=3e8
+fract=0
+percent=0
+function parts(p1,p2,p3,p4,p5){
+	this.p1=p1
+	this.p2=p2
+	this.p3=p3
+	this.p4=p4
+	this.p5=p5
+}
+function MakeArray(n){
+	this.length=n
+	for (var i=1;i<=n;i++){
+	this[i]= 0}
+}
+question=new MakeArray(15)
+question[1]=new parts("What is the wavelength of an electron traveling at a velocity of "," m/sec?")
+question[2]=new parts("What is the wavelength of a proton traveling at a velocity of "," m/sec?")
+question[3]=new parts("What is the wavelength of a neutron traveling at a velocity of "," m/sec?")
+question[4]=new parts("What is the wavelength of an electron traveling at a velocity which is ","% of the speed of light?")
+question[5]=new parts("What is the wavelength of a proton traveling at a velocity which is ","% of the speed of light?")
+question[6]=new parts("What is the wavelength of a neutron traveling at a velocity which is ","% of the speed of light?")
+question[7]=new parts("What is the velocity of an electron if it has a wavelength of "," meters?")
+question[8]=new parts("What is the velocity of a proton if it has a wavelength of "," meters?")
+question[9]=new parts("What is the velocity of a neutron if it has a wavelength of "," meters?")
+question[10]=new parts("If an electron has a wavelength of "," meters, what percentage of the speed of light is its velocity?")
+question[11]=new parts("If a proton has a wavelength of "," meters, what percentage of the speed of light is its velocity?")
+question[12]=new parts("If a neutron has a wavelength of "," meters, what percentage of the speed of light is its velocity?")
+function clear(){
+document.forms[0].first.value=""
+document.forms[0].total.value=totl
+document.forms[0].correct.value=corrt
+}
+
+function begin(){
+tried=0
+totl++
+document.forms[0].first.value=""
+document.forms[0].total.value=totl
+fract=Math.random()
+if(fract<.1){fract=Math.round(1000*fract)/1000}
+else{fract=Math.round(100*fract)/100}
+percent=Math.round(1000*fract)/10
+speed=sigfigs(fract*lightspeed)
+ewave=h/(emass*speed)
+pwave=h/(pmass*speed)
+nwave=h/(nmass*speed)
+ewave=sigfigs(ewave)
+pwave=sigfigs(pwave)
+nwave=sigfigs(nwave)
+ask=getquest()
+display(ask)
+}
+function getquest(){
+which=Math.ceil(12*Math.random())
+what=pieces(which)
+ask=question[which]['p1']+what+question[which]['p2']
+return ask
+}
+function pieces(which){
+if(which<=3){
+	what=speed
+	if(which==1){theanswer=ewave}
+	else{theanswer=pwave}
+}
+if(which>3 & which<=6){
+	what=percent
+	if(which==4){theanswer=ewave}
+	else{theanswer=pwave}
+}
+if(which>6 & which<=9){
+	if(which==7){what=ewave}
+	else{what=pwave}
+	theanswer=speed
+}
+if(which>9){theanswer=percent}
+if(which==10){what=ewave}
+if(which>10){what=pwave}
+return what
+}
+
+//obviously the timer function
+function timer(z){
+tt=z
+var b=Math.floor(tt/60)
+var j = (tt % 60)
+if (j<10){c="0"}
+else {c=""}
+howlong=b + ":" + c + j
+running=setTimeout("timer(tt+1)",1000)
+}
+	
+function display(ask){
+parent.frames[0].document.clear();
+parent.frames[0].document.writeln ("<html>");
+parent.frames[0].document.writeln ("<head>");
+parent.frames[0].document.writeln ("</head>");
+parent.frames[0].document.writeln ("<body bgcolor = FFFFFF>");
+parent.frames[0].document.writeln (ask);
+parent.frames[0].document.writeln("<form><input type=text size=12 name='sendit'><input type=button value='Check Answer' onClick='parent.frames[1].answer(this.form.sendit.value)' </form>");
+parent.frames[0].document.writeln("<html>");
+parent.frames[0].document.close();
+}
+
+function sigfigs(f){
+ex=0
+if(f>1000){
+while(f>1000){
+	ex++
+	f=f/10
+}
+f=Math.round(f)/100
+ex=ex+2
+f=""+f
+if(f.length==1){f=f+"."}
+while(f.length<4){f=f+"0"}
+f=f+"e"+ex
+return f
+}
+else{if(f<100){
+while(f<100){
+	ex++
+	f=f*10
+}
+f=Math.round(f)/100
+ex=2-ex
+f=""+f
+if(f.length==1){f=f+"."}
+while(f.length<4){f=f+"0"}
+if(ex!=0){f=f+"e"+ex}
+return f}
+else{
+f=Math.round(f)/100+"e"+2
+f=""+f
+if(f.length==1){f=f+"."}
+while(f.length<4){f=f+"0"}
+return f
+}
+}
+}
+function answer(ans){
+if(tried==1){
+alert("You've already done this one, get a new problem")
+}
+else{
+if(tried==2){totl++
+document.forms[0].total.value=totl}
+if(ans<1.05*theanswer & ans>.95*theanswer){document.forms[0].first.value="correct"
+corrt++
+document.forms[0].correct.value=corrt
+tried=1}
+else{document.forms[0].first.value="incorrect"
+tried=2}
+}}
+function update(){
+	document.forms[0].total.value=totl
+	document.forms[0].correct.value=corrt
+	document.forms[0].time.value=howlong
+	document.forms[0].page.value=thepage
+	document.forms[0].verify.value=Math.round(10000*Math.random())
+}
+</script>
+</head>
+<body onLoad="clear(),timer(0)">
+<h3>The de Broglie Wave Equation</h3>
+The de Broglie equation relates the wavelength of a particle to its velocity and mass. It is particularly important in understanding the properties of subatomic particles. This page will present you with a variety of questions demonstrating the application of the de Broglie relationship. When you press "New Problem" a question will appear in the top frame. Determine the value of the answer, enter it in the cell and press "Check Answer". Results will appear in the main frame. All wavelengths must be in meters. You will need to have available the mass of the subatomic particles (in kg) as will as the speed of light in m/sec.
+<form ACTION = "../cgi-bin/homework/hw_turnin.php" METHOD = "POST">
+<input type=button value="New Problem" onClick="begin()">
+<table border=4>
+<tr>
+<td>Results</td>
+<td>Total</td>
+<td>Correct</td>
+</tr>
+<tr>
+<td><input type=text name=first size=10></td>
+<td align=center><input type=text name=total size=3</td>
+<td align=center><input type=text name=correct size=3></td>
+</tr>
+</table>
+<input type=text name="page" size=1>
+<input type=text name="verify" size=1>
+<input type=text name="time" size=1><br>
+<INPUT TYPE = "submit" VALUE = "Submit your score" onClick="update()">
+</form>
+<br>
+<a href="hwintro.html"><img src="back.gif"></a><br>
+</body>
+</html>

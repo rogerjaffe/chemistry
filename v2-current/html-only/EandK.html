@@ -1,0 +1,251 @@
+<html>
+<head>
+<title>E,G AND k</title>
+<style>
+#qspot {position:absolute;left:360;top:250}
+#ansspot {position:absolute;left:20;top:420;height:300}
+#tspot {position:absolute;left:10;top:300}
+#refspot {position:absolute;left:10;top:600;height:50}
+</style>
+<script src="reflist.js"></script>
+<script src="numberconvert.js"></script>
+<script src="ionformulas.js"></script>
+<script language="javascript">
+//updated 11/14/00-added complete solution
+var ie4 = (document.all) ? true : false;
+//global variables
+refnumber=188
+corrt=0
+tried=0
+totl=0
+theanswer=0
+which=0
+thecmpds=""
+hrxn=""
+attempts=0
+first=3
+second=0
+thedata=""
+thecell="<input type=text size=8 value=''>"
+thebutton="<input type=button value='Check Answer' onClick='answer(this.form)'></form>"
+halfrxn=new Array()
+halfrxn[0]=new Array("Fe+3","Fe+2",1,.771)
+halfrxn[1]=new Array("F2","F-",2,3.06)
+halfrxn[2]=new Array("O3","O2",2,2.07)
+halfrxn[3]=new Array("PbO2","Pb+2",2,1.455)
+halfrxn[4]=new Array("Cl2","Cl-",2,1.36)
+halfrxn[5]=new Array("Mg+2","Mg",2,-2.37)
+halfrxn[6]=new Array("Al+3","Al",3,-1.66)
+halfrxn[7]=new Array("Cr+2","Cr",2,-.91)
+halfrxn[8]=new Array("MnO4-","Mn+2",5,1.69)
+halfrxn[9]=new Array("Cr2O7-2","Cr+3",6,1.33)
+halfrxn[10]=new Array("ClO2-","ClO-",2,1.64)
+halfrxn[11]=new Array("ClO4-","ClO3-",2,1.19)
+halfrxn[12]=new Array("PbO2","PbO",2,.28)
+halfrxn[13]=new Array("Au+3","Au+",2,1.41)
+halfrxn[14]=new Array("MnO4-","MnO2",3,.588)
+halfrxn[15]=new Array("IO3-","I2",10,1.20)
+halfrxn[16]=new Array("ClO-","Cl-",2,.89)
+halfrxn[17]=new Array("Fe2O3","Fe",6,0)
+halfrxn[18]=new Array("Br2","Br-",2,1.087)
+halfrxn[19]=new Array("Ag+","Ag",1,.7995)
+halfrxn[20]=new Array("S2O8-2","SO4-2",2,2.01)
+halfrxn[21]=new Array("SO4-2","SO2",2,.17)
+halfrxn[22]=new Array("MnO2","Mn+2",2,1.23)
+halfrxn[23]=new Array("NO3-","NO",3,.96)
+halfrxn[24]=new Array("I2","I-",2,.628)
+halfrxn[25]=new Array("Sn+4","Sn+2",2,.154)
+halfrxn[26]=new Array("Sn+2","Sn",2,.01)
+halfrxn[27]=new Array("BrO3-","Br2",10,1.52)
+halfrxn[28]=new Array("VO2+","VO+2",1,1.00)
+halfrxn[29]=new Array("NO2-","NO",1,1.00)
+halfrxn[30]=new Array("Hg+2","Hg2+2",2,.92)
+halfrxn[31]=new Array("Sb2O5","SbO+",4,.559)
+halfrxn[32]=new Array("I3-","I-",2,.545)
+halfrxn[33]=new Array("VO+2","V+3",1,.337)
+halfrxn[34]=new Array("UO2+2","U+4",2,.334)
+halfrxn[35]=new Array("BiO+","Bi",3,.32)
+halfrxn[36]=new Array("SbO+","Sb",3,.212)
+halfrxn[37]=new Array("SO3-2","S2O3-2",4,-.58)
+halfrxn[38]=new Array("TiO+3","Ti+3",1,.10)
+halfrxn[39]=new Array("Mo+3","Mo",3,.20)
+halfrxn[40]=new Array("H3PO3","H3PO2",2,-.50)
+halfrxn[41]=new Array("Th+4","Th",4,-1.90)
+halfrxn[42]=new Array("Sb2O3","Sb",6,.152)
+halfrxn[43]=new Array("H3BO3","B",3,-.87)
+halfrxn[44]=new Array("AsO2-","As",3,.68)
+halfrxn[45]=new Array("Be2O3-2","Be",4,-2.62)
+halfrxn[46]=new Array("ClO2","ClO2-",1,.954)
+halfrxn[47]=new Array("F2O","F-",4,2.1)
+halfrxn[48]=new Array("GeO2","GeO",2,-.118)
+halfrxn[49]=new Array("HgO","Hg",2,.926)
+halfrxn[50]=new Array("NO3-","NO2",1,1.80)
+theeqns=new Array("lnK=(n*E<sup>o</sup>)/.0257=","G=-nFE<sup>o</sup>=")
+ansphrase=new Array("Given the half reactions below:<br>","It can be seen that for this reaction the number of electrons transferred in the balanced process would be ","<br>Calculating K and G is straighforward.<br>")
+function clear(){
+	document.forms[0].results.value=""
+	attempts=0
+	tried=0
+	clearansspot()
+	}
+function cleanse(){
+	clear()
+	document.forms[0].total.value=0
+	document.forms[0].correct.value=0
+	}
+function startit(){
+	clear()
+	thedata=new Array()
+	totl++
+	document.forms[0].total.value=totl
+	document.forms[0].results.value=""
+	first=Math.floor(Math.random()*halfrxn.length)
+	second=first
+	while(second==first)second=Math.floor(Math.random()*halfrxn.length)
+	getcmpds(first,second)
+	ne=getn(first,second)
+	thedata[0]=ne
+	thedata[1]=halfrxn[first][3]-halfrxn[second][3]
+	if(ne*thedata[1]>20 || ne*thedata[1]<-20){totl--;startit()}
+	else{
+	thedata[2]=Math.pow(2.718,(thedata[1]*ne/.0257))
+	thedata[3]=-1*ne*96500*thedata[1]/1000
+	showE=number(thedata[1],3,3)
+	showK=number(thedata[2],3,2)
+	showG=number(thedata[3],3,3)
+	reaction=""
+	reaction=thecmpds[1]+" + "+thecmpds[2]+" => "+thecmpds[3]+" + "+thecmpds[4]+"   E<sup>o</sup>="+showE+"Volt<br><form>K="+thecell+"<br>G="+thecell+"KJ<br>"+thebutton
+	showquest(reaction)
+	buildanswer()
+}}
+function getcmpds(first,second){
+	hrxn=new Array()
+	thecmpds=new Array()
+	thecmpds[1]=completeformula(halfrxn[first][0])
+	thecmpds[2]=completeformula(halfrxn[second][1])
+	thecmpds[3]=completeformula(halfrxn[first][1])	
+	thecmpds[4]=completeformula(halfrxn[second][0])
+	hrxn[1]=thecmpds[1]+"+"+halfrxn[first][2]+"e<sup>-</sup> =>"+thecmpds[3]+"<br>"
+	hrxn[2]=thecmpds[2]+" => "+thecmpds[4]+"+"+halfrxn[second][2]+"e<sup>-</sup><br>"
+}
+function getn(second,second){
+	gain=halfrxn[first][2]
+	lost=halfrxn[second][2]
+	if(gain==lost)return gain;
+	else if(gain%lost==0)return gain;		
+	else if(lost%gain==0)return lost;
+	else {
+		while(gain%2==0 & lost%2==0){gain=gain/2;lost=lost/2}
+		while(gain%3==0 & lost%3==0){gain=gain/3;lost=lost/3}
+		ne=gain*halfrxn[second][2]
+		return ne
+		}
+}
+function buildanswer(){
+	theanswer=ansphrase[0]+hrxn[1]+hrxn[2]+ansphrase[1]+ne+ansphrase[2]+theeqns[0]+"("+ne+"*"+showE+")/.0257="+number((thedata[1]*ne/.0257),4,3)+"<br>"
+	theanswer+="K=e<sup>"+number((thedata[1]*ne/.0257),4,3)+"</sup>="+showK+"<br>"
+	theanswer+=theeqns[1]+"-"+ne+"*96500"+"*"+showE+"="+showG*1000+"Joules<br>Converting to KJ yields "+showG
+}
+function showquest(thequest){
+	if(ie4){
+		qspot.innerHTML=thequest
+		}
+	else{
+		document.qspot.document.open()
+		document.qspot.document.write(thequest,"<br>")
+		document.qspot.document.close()
+	}
+}
+function showanswer(){
+if(attempts>=3){
+	if(ie4){
+		finish=""
+		for(k=0;k<7;k++)finish+=(choice[k]+"="+neat[k]+"<br>");
+		theanswer+=finish
+		ansspot.innerHTML=theanswer
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.write(theanswer,"<br>")
+		document.ansspot.document.close()
+	}
+	}
+}
+function clearansspot(){
+	if(ie4){
+		ansspot.innerHTML=""
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.clear()
+		document.ansspot.document.close()
+	}
+}
+function answer(form){
+	if(tried==1)alert("You've done this one. Get a new problem.");
+	else{
+	if(tried==2){totl++;document.forms[0].total.value=totl}
+	right=0
+	attempts++
+	if(form.elements[0].value<.95*thedata[2] || form.elements[0].value>1.05*thedata[2]){
+		right++ 
+    			}
+	if(thedata[3]<0){
+		if(form.elements[1].value>.95*thedata[3] || form.elements[1].value<1.05*thedata[3]){
+		right++ 
+    			}
+	}
+	else{
+		if(form.elements[1].value<.95*thedata[3] || form.elements[1].value>1.05*thedata[3]){
+		right++ 
+    			}
+	}
+	if(right==0){
+		tried=1
+		corrt++
+		document.forms[0].results.value="correct"
+		document.forms[0].correct.value=corrt
+	}
+	else{
+		tried=2
+		document.forms[0].results.value="incorrect"
+	}
+}}
+</script>
+</head>
+<body onLoad="cleanse(),setrefs()">
+<h3>Relating E<sup>o</sup>,G and K</h3>
+This page provides basic exercises for relating standard potentials,standard free energies and equilibrium constants. When you press "New Problem", an unbalanced redox reaction with its E<sup>o</sup> will appear. Calculate the  missing values, enter them in the cells and press "Check Answer." Results will appear in the main table. The questions will provide a redox reaction. You do not have to balance it completely, but you do need to determine the number of electrons transferred in the balanced equation.
+<ul>
+<li>If you use scientific notation enter the number is the form 2.3e5. Be carefull about the sign and dimensions of the G(KJ)
+<li>If you get a problem "incorrect", you should redo it and recheck your answer.
+<li>If you miss a problem three times, pressing the "Show Answer" button will cause a complete solution to appear.
+</ul>
+<form>
+<table>
+<tr><td><input type=button value="New Problem" onClick="startit()"><td></tr>
+<tr><td><b>Enter your answer</b></td>
+</tr>
+<tr>
+<td><input type=button value="Show answer" onClick="showanswer()"></td>
+</tr>
+</table>
+<table border=4>
+<tr><td align=center><b>Results</td>
+<td align=center><b>Total Done</td>
+<td><b>Total Correct</td>
+</tr>
+<tr>
+<td><input type="text" name=results size=12></td>
+<td align=center><input type="text" name=total size=4 ></td>
+<td align=center><input type="text" name=correct size=4 ></td>
+</tr>
+<tr>
+</table>
+</form>
+<div id=qspot></div>
+<div id=ansspot></div>
+<div id=refspot></div>
+<br>
+</body>
+</html>

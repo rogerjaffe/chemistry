@@ -1,0 +1,165 @@
+<html>
+<head>
+<title>Identifying Acids and Bases</title>
+<style>
+#qspot {position:absolute;left:320;top:250}
+#ansspot {position:absolute;left:320;top:420;height:300}
+#tspot {position:absolute;left:10;top:300}
+#refspot {position:absolute;left:10;top:600}
+</style>
+<script src="reflist.js"></script>
+<script src="numberconvert.js"></script>
+<script src=acidlist.js></script>
+<script language="javascript">
+//updated 11/14/00-added complete solution
+var ie4 = (document.all) ? true : false;
+//global variables
+refnumber=114
+theanswer=""
+attempts=0
+tried=0
+anrs=0
+corrt=0
+totl=0
+showkey=""
+theform="<form><input type=radio name=whattype onClick=answer(0)>Strong Acid<input type=radio name=whattype onClick=answer(1)>Strong Base<input type=radio name=whattype onClick=answer(2)>Neutral<input type=radio name=whattype onClick=answer(3)>Weak Acid<input type=radio name=whattype onClick=answer(4)>Weak Base</form>"
+theform2="<form><input type=text size=6 name=theK><input type=button value='Check the K' onClick='answer2(this.form.theK.value)'></form>"
+ansstring=new Array("00",21,"02",33,44,34,43)
+ansphrase=new Array()
+ansphrase[0]="The species shown is a strong acid."
+ansphrase[1]="The species shown is a strong base."
+ansphrase[2]="The species shown is the conjugate base of a monoprotic strong acid. Therefore, it is neutral."
+ansphrase[3]="The species shown is a weak acid. Its Ka should be given in your table."
+ansphrase[4]="The species shown is a weak base. Its Kb should be given in your table."
+ansphrase[5]="The species shown is the conjugate base of a weak acid. Therefore, it is a weak base. Use K<SUB>b</SUB>=K<SUB>w</SUB>/K<SUB>a</SUB> to determine the value of its K<SUB>b</SUB>."
+ansphrase[6]="The species shown is the conjugate acid of a weak base. Therefore, it is a weak acid. Use K<SUB>a</SUB>=K<SUB>w</SUB>/K<SUB>b</SUB> to determine the value of its K<SUB>b</SUB>."
+cmpd=new Array()
+thereaction=""
+ansset=new Array()
+neat=new Array()
+showK=new Array()
+function clear(){
+	document.forms[0].results.value=""
+	attempts=0
+	tried=0
+	clearansspot()
+	}
+function cleanse(){
+	clear()
+	document.forms[0].total.value=0
+	document.forms[0].correct.value=0
+	}
+function startit(){
+	totl++
+	document.forms[0].total.value=totl
+	clear()
+	x=Math.floor(Math.random()*thelist.length)
+	theformula=makeformula(x)
+	thequest=theformula+theform
+	showquest(thequest)
+	setanswer()
+	document.forms[0].results.value=anskey
+}
+function setanswer(){
+	for(j=0;j<ansstring.length;j++){
+		if(ansstring[j]==anskey)showkey=j
+	}
+}
+function showquest(thequest){
+	if(ie4){
+		qspot.innerHTML=thequest
+		}
+	else{
+		document.qspot.document.open()
+		document.qspot.document.write(thequest,"<br>")
+		document.qspot.document.close()
+	}
+}
+
+function showanswer(){
+	if(ie4){
+		ansspot.innerHTML=ansphrase[showkey]
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.write(ansphrase[showkey])
+		document.ansspot.document.close()
+	}
+}
+function clearansspot(){
+	if(ie4){
+		ansspot.innerHTML=""
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.clear()
+		document.ansspot.document.close()
+	}
+}
+function answer(ans){
+	if(tried==1)alert("You've done this one. Get a new problem.");
+	else{
+	if(ans==key ){ 
+    		document.forms[0].results.value="correct"
+    		corrt++
+		document.forms[0].correct.value=corrt
+		tried=1
+		if(key>2)newpart()
+	}
+	else {
+		document.forms[0].results.value="incorrect"
+		tried=1
+		showanswer()
+	}
+}}
+function answer2(ans){
+	if(tried==2){totl++
+		document.forms[0].total.value=totl
+		}
+	if(ans>.95*coef & ans<1.05*coef){ 
+    		document.forms[0].results.value="correct"
+		document.forms[0].correct.value=corrt
+	}
+	else {document.forms[0].results.value="incorrect"
+	tried=2}
+}
+function newpart(){
+	document.forms[0].results.value=""
+	key==3?ctype="acid":ctype="base";
+	thequest="You've properly identified "+theformula+" as a weak "+ctype+". To ensure that you have found the proper species, enter the coefficient of the K in the cell and press 'Check the K.'"+theform2
+	showquest(thequest)
+}
+</script>
+</head>
+<body onLoad="cleanse(),setrefs()">
+<h2>Identifying acid-base species</h2>
+Being able to readily identify a species with regards to a acid/base behavior is a very useful skill. This page provides basic drill and practice in this area. Though most of the species should be easily recognized, feel free to use whatever reference materials you wish. Ultimately the goal is to be able to run through the drills without the need of such aids.
+<ul>
+<li>When you press "New Species", a formula will appear to the right of the table.
+<li>Click on the appropriate bubble.
+<li>If the species is weak, to verify that you have properly identified it and are not merely guessing, you will be asked to input the coefficient of the K. Just enter the coefficient. That is, if the K=3.4*10<SUP>-6</SUP>, just enter the 3.4. You can skip this step and just ask for a new species, if you wish. 
+<li>Since the goal of this page is accuracy, you only get one attempt. If you misidentify the species, the answer will appear.
+</ul>
+<form>
+<table>
+<tr><td><input type=button value="New Species" onClick="startit()"><td></tr>
+</table>
+<table border=4>
+<tr><td align=center><b>Results</td>
+<td align=center><b>Total Done</td>
+<td><b>Total Correct</td>
+</tr>
+<tr>
+<td><input type="text" name=results size=12></td>
+<td align=center><input type="text" name=total size=4 ></td>
+<td align=center><input type="text" name=correct size=4 ></td>
+</tr>
+<tr>
+</table>
+</form>
+<div id=qspot></div>
+<div id=ansspot></div>
+<div id=refspot></div>
+<br>
+</body>
+</html>

@@ -1,0 +1,186 @@
+<html>
+<head><title>Formula Related Calculations</title>
+<script language=javascript>
+//Last Update 7/28/98
+thepage="Basic Calculations from Chemical Formulas(17)"
+howlong=""
+totl=0
+corrt=0
+tried=0
+which=""
+tried=0
+theanswer=""
+ans = new Array()
+function clear(){
+	document.forms[0].first.value=""
+	document.forms[0].second.value=""
+	document.forms[0].third.value=""
+	document.forms[0].fourth.value=""
+	document.forms[0].results.value=""
+	theanswer=0
+	document.forms[0].total.value=0
+	document.forms[0].correct.value=0
+	document.forms[0].time.value=""
+}
+function empty(){
+	document.forms[0].first.value=""
+	document.forms[0].second.value=""
+	document.forms[0].third.value=""
+	document.forms[0].fourth.value=""
+}
+
+
+function compound(formula,C,H){
+	this.formula=formula;
+	this.C=C;
+	this.H=H;
+}
+methane=new compound("CH4",1,4)
+ethane=new compound("C2H6",2,6)
+propane=new compound("C3H8",3,8)
+butane=new compound("C4H10",4,10)
+pentane=new compound("C5H12",5,12)
+hexane=new compound("C6H14",6,14)
+heptane=new compound("C7H16",7,16)
+octane=new compound("C8H18",8,18)
+nonane=new compound("C9H20",9,20)
+decane=new compound("C10H22",10,22)
+function choose(){
+	tried=0
+	totl++
+	document.forms[0].results.value=""
+	document.forms[0].total.value=totl
+	empty()
+	g=Math.random()
+	if (g<.1){var cmpd=methane}
+	else {if(g<.2){cmpd=ethane}
+	else {if(g<.3){cmpd=propane}
+	else {if(g<.4){cmpd=butane}
+	else {if(g<.5){cmpd=pentane}
+	else {if(g<.6){cmpd=hexane}
+	else {if(g<.7){cmpd=heptane}
+	else {if(g<.8){cmpd=octane}
+	else {if(g<.9){cmpd=nonane}
+	else {cmpd=decane}}}}}}}}}
+	calc(cmpd)
+}
+function calc(cmpd){
+	gfw=12*cmpd["C"] + 1.0*cmpd["H"]
+	gC=12*cmpd["C"]
+	gH=1.0*cmpd["H"]
+	mt=Math.round(1000*(Math.pow(10,Math.random())))/1000
+	mC=Math.round(1000*mt*(gC/gfw))/1000
+	mH=Math.round(1000*mt*(gH/gfw))/1000
+	document.forms[0].elements[0].value=cmpd["formula"]
+	document.forms[0].elements[1].value=mt
+	document.forms[0].elements[2].value=mC
+	document.forms[0].elements[3].value=mH
+	ans[1]=mt
+	ans[2]=mC
+	ans[3]=mH
+	g=Math.random()
+	if (g<.33){
+	document.forms[0].elements[1].value=""
+	document.forms[0].elements[2].value=""}
+	else{ if(g<.67){
+	document.forms[0].elements[1].value=""
+	document.forms[0].elements[3].value=""}
+	else{
+	document.forms[0].elements[3].value=""
+	document.forms[0].elements[2].value=""}}
+}
+function answer(){
+if(tried==1){
+		alert("Sorry, you've already submitted this problem! We'll get you a new one!")
+		begin()}
+else{
+	if(tried==2){totl++;document.forms[0].total.value=totl}
+	var a=(1.0*ans[1])
+	var b=(1.0*ans[2])
+	var c=(1.0*ans[3])
+	if (document.forms[0].elements[1].value>.99*a &
+		document.forms[0].elements[1].value<1.01*a &
+		document.forms[0].elements[2].value>.99*b &
+		document.forms[0].elements[2].value<1.01*b &
+		document.forms[0].elements[3].value>.99*c &
+		document.forms[0].elements[3].value<1.01*c){
+	document.forms[0].results.value="correct"
+	corrt++
+	document.forms[0].correct.value=corrt
+	tried=1
+	}
+	else{
+	tried=2
+	document.forms[0].results.value="incorrect"
+}}}
+
+function timer(z){
+tt=z
+var b=Math.floor(tt/60)
+var j = (tt % 60)
+if (j<10){c="0"}
+else {c=""}
+howlong=b + ":" + c + j
+running=setTimeout("timer(tt+1)",1000)
+}
+function update(){
+	document.forms[0].total.value=totl
+	document.forms[0].correct.value=corrt
+	document.forms[0].time.value=howlong
+	document.forms[0].page.value=thepage
+	document.forms[0].verify.value=Math.round(10000*Math.random())
+}
+</script>
+</head>
+<body onLoad="clear(), timer(0)">
+<h2>Chemical Formulas and Mass Calculations-Homework</h2>
+This page is a test of the mass relationships in simple chemical compounds.
+<h4>Usage</h4>
+<ul>
+<li>First, select and submit the instructor's name.
+<li>To begin, press "New Problem" and a formula will appear in the left cell. Also,
+a value will appear in one of the remaining three cells, corresponding to the mass
+of that particular item in the sample.
+<li>Enter the correct masses in the remaining two cells and press "Check Answer."
+<li>The results and running totals appear in the second table.
+<li>If your answer is incorrect, you should redo it and resubmit the new answer.
+</ul>
+<form ACTION = "../cgi-bin/homework/hw_turnin.php" METHOD = "POST">
+<table border=4>
+<tr>
+<td><b>Formula</td>
+<td><b>Mass Cmpd</td>
+<td><b>Mass of C</td>
+<td><b>Mass of H</td>
+</tr>
+<tr>
+<td><input type="text" name=first size =10></td>
+<td><input type="text" name=second size =10></td>
+<td><input type="text" name=third size =10></td>
+<td><input type="text" name=fourth size =10></td>
+</tr><tr>
+<td><input type="button" value="New Problem" onClick=choose()>
+<td><input type="button" value="Check Answer" onClick=answer()>
+</tr>
+</table>
+<table border=4>
+<tr><td><b>Results</td>
+<td>Total</td>
+<td>Correct</td>
+</tr>
+<tr>
+<td><input type="text" name="results" size=12></td>
+<td align=center><input type="text" name="total" size=4 ></td>
+<td align=center><input type="text" name="correct" size=4 ></td>
+</table>
+<input type=text name="page" size=1>
+<input type=text name="verify" size=1>
+<input type=text name="time" size=1><br>
+<INPUT TYPE = "submit" VALUE = "Submit your score" onClick="update()">
+<br>
+<a href="index.html"><img src="back.gif"></a><br>
+
+</form>
+</body><h
+</html>
+

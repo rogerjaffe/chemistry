@@ -1,0 +1,268 @@
+</html>
+<head><Title>Density Word Problems-cs</Title>
+<style>
+#qspot {position:absolute;left:320;top:200}
+#ansspot {position:absolute;left:320;top:240;height:200}
+#tspot {position:absolute;left:10;top:300}
+#refspot {position:absolute;left:10;top:600;height:200}
+</style>
+<script src=reflist.js></script>
+<script>
+//updated 10/31/00 added comp solution
+var ie4 = (document.all) ? true : false;
+refnumber=7
+attempts=0
+tried=0
+thequest=""
+theanswer=""
+first=""
+second=""
+third=""
+wq=0
+densgml=0
+massg=0
+volcc=0
+totl=0
+convertv=new Array()
+function clear(){
+	document.forms[0].results.value=""
+      document.forms[0].theans.value=""
+      attempts=0
+	tried=0
+	clearansspot()
+	}
+function cleanse(){
+	clear()
+      document.forms[0].total.value=0
+      document.forms[0].correct.value=0
+}
+needed=new Array()
+needed[3]="mass"
+needed[2]="volume"
+needed[1]="density"
+function parts(p1,p2,p3,p4,p5,p6,p7){
+      this.p1=p1
+      this.p2=p2
+      this.p3=p3
+      this.p4=p4
+	this.p5=p5
+	this.p6=p6
+	this.p7=p7
+}
+quest=new Array();
+quest[1]=new parts("What is the density of a substance in ",", if a sample with a volume of "," has a mass of ","?")
+quest[2]=new parts("What volume in "," would be occupied by "," of a material with a density of ","?")
+quest[3]=new parts("What is the mass in "," of a "," sample, if it has a density of "," ?")
+formula=new Array(5)
+formula[1]="d=m/V"
+formula[2]="V=m/d"
+formula[3]="m=d*V"
+ansphrase=new parts("(I)d=m/V<br>Organize your data, identifying the givens and the unknown, converting the values, if necessary:<br><b>mass</b>=","<br><b>volume</b>=","<br><b>density</b>=","<br>Since you need to calculate<b> ","</b>, arrange equation(I):<br> ","<br>Substitute in the values and perform the calculation:")
+function startit(){
+	for(j=1;j<=3;j++)convertv[j]=0
+	answered=0
+	clear()
+	totl++
+	document.forms[0].total.value=totl
+//set up initial values in g,ml,g/ml
+	wq=Math.ceil(3*Math.random())
+	densgml=Math.round(1000*(Math.pow(10,Math.random())))/1000
+	massg=Math.pow(1000,Math.random())
+	volcc=massg/densgml
+	volcc=Math.round(100*volcc)/100
+	massg=Math.round(1000*massg)/1000
+//choose mass unit
+	masspick=Math.random()
+	if(masspick<.33){
+	mass=massg
+	massunit="grams"}
+else{
+	if(masspick<.67){
+	convertv[1]=1
+	mass=Math.round(100*massg)/100000
+	massunit="kg"}
+	else{convertv[1]=2
+		mass=Math.round(massg*1000)
+		massunit="mg"}}
+massfunit="unit"+massunit
+//choose volume unit
+	volpick=Math.random()
+	if(volpick<.33){
+	vol=volcc 
+	volunit="cm<sup>3</sup>"}
+	else{convertv[2]=1
+		if(volpick<.67){
+		vol=volcc
+		volunit="mL"}
+		else{
+			vol=Math.round(100*volcc)/100000
+			volunit="liters"}}
+//calculate new density
+denspick=Math.random()
+g=Math.random()
+if(denspick<.25){
+	density=densgml
+	if(g<.5){
+		densityunit="g/mL"}
+		else{
+			convertv[3]=1
+			densityunit="kg/L"
+	}}
+else{
+	if(denspick<.5){
+	density=1000*densgml
+	if(g<.5){
+		convertv[3]=2
+		densityunit="g/L"}
+		else{
+			densityunit="mg/mL"
+			convertv[3]=3}}
+else{if(denspick<.75){
+	density=Math.round(100*densgml)/100000
+		convertv[3]=4
+		densityunit="kg/mL"}
+		else{convertv[3]=5
+		density=1e6*densgml
+		densityunit="mg/L"}
+}}
+if(Math.random()>.33 & volunit=="liters"){
+	vol=Math.round(100000*vol)/100
+	mass=Math.round(100000*mass)/100
+	gmass=Math.round(1000*gmass)
+	volcc=Math.round(1000*volcc)
+	}
+	volf=vol+volunit
+	massf=mass+massunit
+	densityf=density+densityunit
+if (wq==1){first=densityunit
+		second=volf
+		third=massf
+        theanswer=density}
+if (wq==2){first=volunit
+		second=massf,
+		third=densityf
+        theanswer=vol}
+if (wq==3){first=massunit
+		second=volf
+		third=densityf
+        theanswer=mass}
+buildquest()
+buildanswer()
+}
+function buildquest(){
+thequest=quest[wq].p1+first+quest[wq].p2+second+quest[wq].p3+third+quest[wq].p4
+showquest()
+}
+function buildanswer(){
+	choices=new Array(5)
+	if(convertv[1]==0)choices[1]=massg+"grams";
+	else choices[1]=massf+"=>"+massg+"grams"
+	if(convertv[2]==0)choices[2]=volcc +"cm<sup>3</sup>";
+	else choices[2]=volf+"=>"+volcc +"cm<sup>3</sup>";
+	if(convertv[3]==0)choices[3]=densgml+"g/cm<sup>3</sup>";
+	else choices[3]=densityf+"=>"+densgml+"g/cm<sup>3</sup>";
+	if(wq==1){
+		thefinal=massg+"g/"+volcc+"cm<sup>3</sup>="+densgml+"g/cm<sup>3</sup>";
+		choices[3]="?"
+		}
+	if(wq==2){
+		thefinal=massg+"g/"+densgml+"g/cm<sup>3</sup>="+volcc+"cm<sup>3</sup>";
+		choices[2]="?"
+		}
+	if(wq==3){
+		thefinal=densgml+"g/cm<sup>3</sup>*"+volcc+"cm<sup>3</sup>="+massg+"g"
+		choices[1]="?"
+		}
+	thesolution=ansphrase.p1+choices[1]+ansphrase.p2+choices[2]+ansphrase.p3+choices[3]+ansphrase.p4+needed[wq]+ansphrase.p5+formula[wq]+ansphrase.p6+thefinal
+}
+function showquest(){
+	if(ie4){
+		qspot.innerHTML=thequest
+		}
+	else{
+		document.qspot.document.open()
+		document.qspot.document.write(thequest)
+		document.qspot.document.close()
+	}
+}
+function clearansspot(){
+	if(ie4){
+		ansspot.innerHTML=""
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.clear()
+		document.ansspot.document.close()
+	}
+}
+	
+function showanswer(){
+if(attempts>=3){
+	if(ie4){
+		ansspot.innerHTML=thesolution
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.write(thesolution)
+		document.ansspot.document.close()
+	}
+	}
+}
+
+function answer(){
+	if(tried==1)alert("You've done this one! Get a new problem.");
+	else{
+	attempts++
+	if(tried==2){totl++;document.forms[0].total.value=totl}
+	if (theanswer<1.01*document.forms[0].elements[1].value &
+        theanswer>.99*document.forms[0].elements[1].value){
+        	document.forms[0].results.value="correct"
+		corrt++
+        	document.forms[0].correct.value=corrt
+		tried=1	
+        }
+	else{document.forms[0].results.value="incorrect"
+		tried=2}
+	}
+}
+
+</script>
+</head>
+<BODY onLoad="cleanse(),setrefs()">
+<h3>Mass, Density and Volume-Word Problems</h3>
+This page presents random "word" problems in the areas of mass, density and volume.
+When you press "New Question", a question will appear to the right of the tables. Calculate the
+answer, enter it in the  answer cell and press "Check Answer". The results appear in the
+table. If you get a problem wrong, you should redo it until you get it correct, but you
+can press "New Question" at any time. <ul>
+<li>If you miss a problem three times, pressing the "Show Answer" button will cause a complete solution to appear.
+</ul>
+<form>
+<table>
+<tr><td><input type=button value="New Question" onClick="startit()"><td></tr>
+<tr><td><b>Enter your answer</b></td>
+<td><input type="text" name=theans size=8></td>
+</tr>
+<tr>
+<td><input type=button value="Check answer" onClick="answer()"></td>
+<td><input type=button value="Show answer" onClick="showanswer()"></td>
+</tr>
+</table>
+<table border=4>
+<tr><td align=center><b>Results</td>
+<td align=center><b>Total Done</td>
+<td><b>Total Correct</td>
+</tr>
+<tr>
+<td><input type="text" name=results size=12></td>
+<td align=center><input type="text" name=total size=4 ></td>
+<td align=center><input type="text" name=correct size=4 ></td>
+</tr>
+<tr>
+</table>
+</form>
+<div id=qspot></div>
+<div id=ansspot></div>
+<div id=refspot></div>
+</body>
+</html>

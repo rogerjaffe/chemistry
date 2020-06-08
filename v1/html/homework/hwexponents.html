@@ -1,0 +1,129 @@
+<html>
+<head> 
+<title>Exponents</title>
+<script language="JavaScript">
+//global variables
+thepage="Exponents(58)"
+tried=0
+totl=0
+corrt=0
+howlong=""
+instruct=0
+function clear(){
+document.forms[0].elements[5].value=""
+document.forms[0].results.value=""
+document.forms[0].total.value=totl
+document.forms[0].correct.value=corrt
+}
+function makenums(){
+totl++
+document.forms[0].total.value=totl
+tried=0
+c1=0
+c2=0
+while(c1<1){c1=Math.ceil(600*Math.random())/100}
+while(c2<1){c2=Math.ceil(600*Math.random())/100}
+e1=Math.ceil(20*Math.random())
+if(Math.random()>.5){e1=-e1}
+e2=Math.ceil(30*Math.random())
+if(Math.random()>.5){e2=-e2}
+term1=c1+"*10<sup>"+e1+"</sup>"
+term2=c2+"*10<sup>"+e2+"</sup>"
+if(Math.random()<.5){
+    operator="<b>/</b>"
+    key=0
+}
+else{
+    operator="x"
+    key=1
+}
+expression=term1+operator+term2
+getvalue(c1,c2,e1,e2,key)
+var problem=window.open("","problem","menubar=no,scrollbars=yes,,width=200,height=150")
+problem.document.writeln ("<html>");
+problem.document.writeln ("<head>");
+problem.document.writeln ("</head>");
+problem.document.writeln ("<body bgcolor = FFFFFF>");
+problem.document.writeln (expression,"</font><br>");
+problem.document.writeln("<form><input type=text size=4 name='sendit'>");
+problem.document.writeln("<input type=button value='Check Answer' onClick='opener.answer(this.form.sendit.value)' ")
+problem.document.writeln("</form>");
+problem.document.writeln("<html>");
+problem.document.close();
+problem.focus();
+problem.document.forms[0].elements[1].focus();
+problem.document.forms[0].elements[1].select();
+}
+function getvalue(c1,c2,e1,e2,key){
+if(key==1){
+    if(c1*c2>=10){theanswer=e1+e2+1}
+    else{theanswer=e1+e2}
+}
+else{
+    if(c1>c2){theanswer=e1-e2}
+    else{theanswer=e1-e2-1}
+}
+}
+//obviously the timer function
+function timer(z){
+tt=z
+var b=Math.floor(tt/60)
+var j = (tt % 60)
+if (j<10){c="0"}
+else {c=""}
+howlong=b + ":" + c + j
+running=setTimeout("timer(tt+1)",1000)
+}
+function answer(ans){
+if(tried==1){
+alert("You've already done this one. Get a new problem")
+}
+else{
+if(tried==2){totl++
+	document.forms[0].total.value=totl}
+if(ans==theanswer){document.forms[0].results.value="correct"
+	corrt++
+	document.forms[0].correct.value=corrt
+	tried=1}
+else{document.forms[0].results.value="incorrect"
+	tried=2} 
+}}
+function update(){
+	document.forms[0].total.value=totl
+	document.forms[0].correct.value=corrt
+	document.forms[0].time.value=howlong
+	document.forms[0].page.value=thepage
+	document.forms[0].verify.value=Math.round(10000*Math.random())
+}
+</script>
+</head>
+<body onLoad="clear(),timer(0)">
+<h2>Predicting Exponents</h2>
+This page allows you to practice predicting exponents for basic operations involving
+numbers in scientific notation. When you press "New Problem" a window will appear with either a
+multiplication or division problem. In the cell, enter the value of the exponent that results if the
+operation is carried out and the result expressed in proper scientific notation. Then, press
+"Check Answer." Results appear on the main page. When the small window appears for the first time, you may have to drag it to an empty space. From then on, it will remain out of the way. Do not use a calculator on this page or you will defeat its purpose. 
+<form ACTION = "../cgi-bin/homework/hw_turnin.php" METHOD = "POST">
+<input type=button value="New Problem" onClick="makenums()">
+<table border=4>
+<tr>
+<td>Results</td>
+<td>Total</td>
+<td>Correct</td>
+</tr>
+<tr>
+<td><input type=text name="results" size=10></td>
+<td align=center><input name="total" type=text size=3</td>
+<td align=center><input name="correct" type=text size=3></td>
+</tr>
+</table>
+<input type=text name="page" size=1>
+<input type=text name="verify" size=1>
+<input type=text name="time" size=1><br>
+<INPUT TYPE = "submit" VALUE = "Submit your score" onClick="update()">
+<br>
+<a href="hwintro.html"><img src="back.gif"></a><br>
+</form>
+</body>
+</html>

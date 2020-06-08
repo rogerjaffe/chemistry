@@ -1,0 +1,458 @@
+<html>
+<head>
+<title> Hess's Law</title>
+<style>
+#qspot {position:absolute;left:320;top:200}
+#ansspot {position:absolute;left:320;top:360;height:300}
+#tspot {position:absolute;left:10;top:300}
+#refspot {position:absolute;left:10;top:600}
+</style>
+<script src="reflist.js"></script>
+<script src="numberconvert.js"></script>
+<script language="javascript">
+var ie4 = (document.all) ? true : false;
+choice=-1
+refnumber=100
+attempts=0
+preamble="Use the thermochemical equations shown below to determine<br>the enthalpy for the final reaction:<br>"
+spaceit="       ";
+//global variables
+reactset=""
+tried=0
+totl=0
+corrt=0
+thesolution=0
+problem=""
+adjust=theheat=0
+theat=0
+missing=0
+function cleanse(){
+	clear()
+	document.forms[0].total.value=0
+	document.forms[0].correct.value=0
+}
+function clear(){
+	tried=0
+	attempts=0
+	document.forms[0].results.value=""
+	document.forms[0].theans.value=""
+}
+function reaction(reagents,products,heat,factor){
+	this.reagents=reagents
+	this.products=products
+	this.heat=heat
+	this.factor=factor
+}
+thefactor=new Array(.6,.8,1,1.2,1.4)
+set=new Array()
+couples=new Array()
+linkset=new Array()
+linkset[0]=new Array()
+linkset[0][0]=new Array(-1,-1,1)
+linkset[0][1]=new Array(-1,-1,1)
+linkset[0][2]=new Array(-1,-1,1)
+linkset[0][3]=new Array(1,1,1)
+linkset[1]=new Array()
+linkset[1][0]=new Array(-1,1)
+linkset[1][1]=new Array(-1,1)
+linkset[1][2]=new Array(1,1)
+linklist=new Array(0,0,0,1,0)
+set[0]=new Array()
+set[0][0]=new reaction("3CO<SUB>2</SUB> + 4 H<SUB>2</SUB>O(l)","C<SUB>3</SUB>H<SUB>8</SUB>(g) + 5O<SUB>2</SUB>{g}",2220,1)
+set[0][1]=new reaction("C(graphite) + O<SUB>2</SUB>","CO<SUB>2</SUB>",-394,3)
+set[0][2]=new reaction("H<SUB>2</SUB>(g)  + 1/2O<SUB>2</SUB>(g)","H<SUB>2</SUB>O(l)",-285,4)
+set[0][3]=new reaction("3 C(graphite) + 4H<SUB>2</SUB>(g)","C<SUB>3</SUB>H<SUB>8</SUB>(g)",-104,1)
+couples[0]=new Array()
+couples[0][0]=new Array(-1,-1,1)
+couples[0][1]=new Array(-1,-1,1)
+couples[0][2]=new Array(-1,-1,1)
+couples[0][3]=new Array(1,1,1)
+//
+set[1]=new Array()
+set[1][0]=new reaction("Fe<SUB>2</SUB>O<SUB>3</SUB>(s) + 3CO(g)","2Fe(s) +  3CO<SUB>2</SUB>(g)",-23,.5)
+set[1][1]=new reaction("2Fe<SUB>3</SUB>O<SUB>4</SUB>(s) +  CO<SUB>2</SUB>(g)","3Fe<SUB>2</SUB>O<SUB>3</SUB>(s)  +  CO(g)",39,.167)
+set[1][2]=new reaction("3FeO(s) +  CO<SUB>2</SUB>(g)","Fe<SUB>3</SUB>O<SUB>4</SUB>  +  CO(g)",18,.33)
+set[1][3]=new reaction("FeO(s)  +  CO(g)","Fe(s)  +  CO<SUB>2</SUB>(g)",1,1)
+couples[1]=new Array()
+couples[1][0]=new Array(-1,-1,1)
+couples[1][1]=new Array(-1,-1,1)
+couples[1][2]=new Array(-1,-1,1)
+couples[1][3]=new Array(1,1,1)
+//
+set[2]=new Array()
+set[2][0]=new reaction("N<SUB>2</SUB>(g)  +  2O<SUB>2</SUB>(g)","2NO<SUB>2</SUB>(g)",67.8,1)
+set[2][1]=new reaction("N<SUB>2</SUB>O<SUB>4</SUB>(g)","N<SUB>2</SUB>(g)  +  2O<SUB>2</SUB>(g)",-9.6,1)
+set[2][2]=new reaction("N<SUB>2</SUB>O<SUB>4</SUB>(g)","2NO<SUB>2</SUB>(g)",58.2,1)
+couples[2]=new Array()
+couples[2][0]=new Array(-1,1)
+couples[2][1]=new Array(-1,1)
+couples[2][2]=new Array(1,1)
+//
+set[3]=new Array()
+set[3][0]=new reaction("cis-C<SUB>4</SUB>H<SUB>8</SUB>(g)  +  6O<SUB>2</SUB>(g)","4CO<SUB>2</SUB>(g) + 4H<SUB>2</SUB>O(g)",-2711,1)
+set[3][1]=new reaction("4CO<SUB>2</SUB>(g) + 4H<SUB>2</SUB>O(g)","trans-C<SUB>4</SUB>H<SUB>8</SUB>(g)  +  6O<SUB>2</SUB>(g)",2707,1)
+set[3][2]=new reaction("cis-C<SUB>4</SUB>H<SUB>8</SUB>(g) ","trans-C<SUB>4</SUB>H<SUB>8</SUB>(g)",-4 ,1)
+couples[3]=new Array()
+couples[3][0]=new Array(-1,1)
+couples[3][1]=new Array(-1,1)
+couples[3][2]=new Array(1,1)
+//
+set[4]=new Array()
+set[4][0]=new reaction("C(s) +  O<SUB>2</SUB>(g)","CO<SUB>2</SUB>(g)",-393.5,1)
+set[4][1]=new reaction("H<SUB>2</SUB>(g)  +  1/2O<SUB>2</SUB>(g)","H<SUB>2</SUB>O(l)",-285.8,2)
+set[4][2]=new reaction("CO<SUB>2</SUB>(g) +  2H<SUB>2</SUB>O(l)","CH<SUB>4</SUB>(g) + 2O<SUB>2</SUB>(g)",890.5,1)
+set[4][3]=new reaction("C(s) +  2H<SUB>2</SUB>(g)","CH<SUB>4</SUB>(g)",-74.8,1)
+couples[4]=new Array()
+couples[4][0]=new Array(-1,-1,1)
+couples[4][1]=new Array(-1,-1,1)
+couples[4][2]=new Array(-1,-1,1)
+couples[4][3]=new Array(1,1,1)
+//
+set[5]=new Array()
+set[5][0]=new reaction("C(s) +  O<SUB>2</SUB>(g)","CO<SUB>2</SUB>(g)",-393.5,2)
+set[5][1]=new reaction("H<SUB>2</SUB>(g)  +  1/2O<SUB>2</SUB>(g)","H<SUB>2</SUB>O(l)",-285.8,3)
+set[5][2]=new reaction("C<SUB>2</SUB>H<SUB>6</SUB>(g)","2C(s) +  3H<SUB>2</SUB>(g)",84.7,1)
+set[5][3]=new reaction("C<SUB>2</SUB>H<SUB>6</SUB>(g) + 7/2O<SUB>2</SUB>(g)","2CO<SUB>2</SUB>(g) +  3H<SUB>2</SUB>O(l)",-1560.5,1)
+couples[5]=new Array()
+couples[5][0]=new Array(-1,-1,1)
+couples[5][1]=new Array(-1,-1,1)
+couples[5][2]=new Array(-1,-1,1)
+couples[5][3]=new Array(1,1,1)
+//
+set[6]=new Array()
+set[6][0]=new reaction("4PCl<SUB>3</SUB>(g)","P<SUB>4</SUB>(s)  +  6Cl<SUB>2</SUB>(g)",1084,.25)
+set[6][1]=new reaction("P<SUB>4</SUB>(s)  +  10Cl<SUB>2</SUB>(g)","4PCl<SUB>5</SUB>(g)",-1528,.25)
+set[6][2]=new reaction("PCl<SUB>3</SUB>(g)  +  Cl<SUB>2</SUB>(g)","PCl<SUB>5</SUB>(g)",-111,1)
+couples[6]=new Array()
+couples[6][0]=new Array(-1,1)
+couples[6][1]=new Array(-1,1)
+couples[6][2]=new Array(1,1)
+//
+set[7]=new Array()
+set[7][0]=new reaction("2CO<SUB>2</SUB>(g) +  2H<SUB>2</SUB>O(l)","CH<SUB>3</SUB>COOH(l)  +  2O<SUB>2</SUB>(g)",871,1)
+set[7][1]=new reaction("C(graphite) +  O<SUB>2</SUB>(g)","CO<SUB>2</SUB>(g)",-394,2)
+set[7][2]=new reaction("2H<SUB>2</SUB>(g) +  O<SUB>2</SUB>(g)","2H<SUB>2</SUB>O(l)",-572,1)
+set[7][3]=new reaction("2C(graphite)  +  2H<SUB>2</SUB>(g)  +  O<SUB>2</SUB>(g)","CH<SUB>3</SUB>COOH(l)",-489,1)
+couples[7]=new Array()
+couples[7][0]=new Array(-1,-1,1)
+couples[7][1]=new Array(-1,-1,1)
+couples[7][2]=new Array(-1,-1,1)
+couples[7][3]=new Array(1,1,1)
+//
+set[8]=new Array()
+set[8][0]=new reaction("3Fe<SUB>2</SUB>O<SUB>3</SUB>(s)","2Fe<SUB>3</SUB>O<SUB>4</SUB>(s)  +  1/2O<SUB>2</SUB>(g)",232.2,1)
+set[8][1]=new reaction("6Fe(s) +  9/2O<SUB>2</SUB>(g)","3Fe<SUB>2</SUB>O<SUB>3</SUB>(s)",-2466.5,1)
+set[8][2]=new reaction("6Fe(s)  +  4O<SUB>2</SUB>(g)","2Fe<SUB>3</SUB>O<SUB>4</SUB>(s)",-2234,1)
+couples[8]=new Array()
+couples[8][0]=new Array(-1,1)
+couples[8][1]=new Array(-1,1)
+couples[8][2]=new Array(1,1)
+//
+set[9]=new Array()
+set[9][0]=new reaction("ZnO  +  CO<SUB>2</SUB>","ZnCO<SUB>3</SUB>",-17.2,1)
+set[9][1]=new reaction("H<SUB>2</SUB>CO<SUB>3</SUB>","H<SUB>2</SUB>O  +  CO<SUB>2</SUB>",62,1)
+set[9][2]=new reaction("Zn(OH)<SUB>2</SUB>","ZnO  +  H<SUB>2</SUB>O",72,1)
+set[9][3]=new reaction("Zn(OH)<SUB>2</SUB>  +  H<SUB>2</SUB>CO<SUB>3</SUB>","2H<SUB>2</SUB>O  +  ZnCO<SUB>3</SUB>",117,1)
+couples[9]=new Array()
+couples[9][0]=new Array(-1,-1,1)
+couples[9][1]=new Array(-1,-1,1)
+couples[9][2]=new Array(-1,-1,1)
+couples[9][3]=new Array(1,1,1)
+
+//
+set[10]=new Array()
+set[10][0]=new reaction("2C<SUB>2</SUB>H<SUB>4</SUB>O(l) + 2H<SUB>2</SUB>O(l)","2C<SUB>2</SUB>H<SUB>6</SUB>O(l) +  O<SUB>2</SUB>(g)",407,.5)
+set[10][1]=new reaction("C<SUB>2</SUB>H<SUB>6</SUB>O(l)  +  3O<SUb>2</SUb>(g)","2CO<SUB>2</SUB>(g)  +  3H<SUB>2</SUB>O(l)",-1371,1)
+set[10][2]=new reaction("C<SUB>2</SUB>H<SUB>4</SUB>O(l)  +  5/2O<SUB>2</SUB>(g)","2CO<SUB>2</SUB>(g)  +  2H<SUB>2</SUB>O(g)",-1167,1)
+couples[10]=new Array()
+couples[10][0]=new Array(-1,1)
+couples[10][1]=new Array(-1,1)
+couples[10][2]=new Array(1,1)
+//
+set[11]=new Array()
+set[11][0]=new reaction("C<SUB>2</SUB>H<SUB>6</SUB>(g)","C<SUB>2</SUB>H<SUB>2</SUB>(g) + 2H<SUB>2</SUB>(g)",378,1)
+set[11][1]=new reaction("C<SUB>2</SUB>H<SUB>2</SUB>(g) +  5/2O<SUB>2</SUB>(g)","2CO<SUB>2</SUB>(g)  +  H<SUB>2</SUB>O(g)",-940,1)
+set[11][2]=new reaction("H<SUB>2</SUB>(g) + 1/2O<SUB>2</SUB>(g)","H<SUB>2</SUB>O(g)",-285,2)
+set[11][3]=new reaction("C<SUB>2</SUB>H<SUB>6</SUB>(g) +  7/2O<SUB>2</SUB>(g)","2CO<SUB>2</SUB>(g)  +  3H<SUB>2</SUB>O(g)",-1132,1)
+couples[11]=new Array()
+couples[11][0]=new Array(-1,-1,1)
+couples[11][1]=new Array(-1,-1,1)
+couples[11][2]=new Array(-1,-1,1)
+couples[11][3]=new Array(1,1,1)
+//
+set[12]=new Array()
+set[12][0]=new reaction("N<SUB>2</SUB>H<SUB>4</SUB>(l)  +  CH<SUB>4</SUB>O(l)","CH<SUB>2</SUB>O(g)  +  N<SUB>2</SUB>(g)  +  3H<SUB>2</SUB>(g)",-74,1)
+set[12][1]=new reaction("2NH<SUB>3</SUB>(g)","N<SUB>2</SUB>H<SUB>4</SUB>(l)  +  H<SUB>2</SUB>(g)",36,1)
+set[12][2]=new reaction("N<SUB>2</SUB>(g)  +  3H<SUB>2</SUB>(g)","2NH<SUB>3</SUB>(g)",-92,1)
+set[12][3]=new reaction("CH<SUB>4</SUB>O(l)","CH<SUB>2</SUB>O(g) +  H<SUB>2</SUB>(g)",-130,1)
+couples[12]=new Array()
+couples[12][0]=new Array(-1,-1,1)
+couples[12][1]=new Array(-1,-1,1)
+couples[12][2]=new Array(-1,-1,1)
+couples[12][3]=new Array(1,1,1)
+//
+set[13]=new Array()
+set[13][0]=new reaction("N<SUB>2</SUB>(g)  +  3H<SUB>2</SUB>(g)","2NH<SUB>3</SUB>(g)",-92,.5)
+set[13][1]=new reaction("2H<SUB>2</SUB>O(l)  +  NH<SUB>3</SUB>(g)","NO<SUB>2</SUB>(g)  +  7/2H<SUB>2</SUB>(g)",216,1)
+set[13][2]=new reaction("1/2N<SUB>2</SUB>(g) +  2H<SUB>2</SUB>0(l)","NO<SUB>2</SUB>(g)  +  2H<SUB>2</SUB>(g)",170,1)
+couples[13]=new Array()
+couples[13][0]=new Array(-1,1)
+couples[13][1]=new Array(-1,1)
+couples[13][2]=new Array(1,1)
+//
+set[14]=new Array()
+set[14][0]=new reaction("N<SUB>2</SUB>(g)  +  3H<SUB>2</SUB>(g)","2NH<SUB>3</SUB>(g)",-92,.25)
+set[14][1]=new reaction("2NH<SUB>3</SUB>(g)  +  4H<SUB>2</SUB>O(l)","2NO<SUB>2</SUB>(g)  +  7H<SUB>2</SUB>(g)",-114,.25)
+set[14][2]=new reaction("2NO<SUB>2</SUB>(g)","N<SUB>2</SUB>(g) +  2O<SUB>2</SUB>(g)",66,.25)
+set[14][3]=new reaction("H<SUB>2</SUB>O(l)","H<SUB>2</SUB>(g)  +  1/2O<SUB>2</SUB>(g)",-35,1)
+couples[14]=new Array()
+couples[14][0]=new Array(-1,-1,1)
+couples[14][1]=new Array(-1,-1,1)
+couples[14][2]=new Array(-1,-1,1)
+couples[14][3]=new Array(1,1,1)
+//
+set[15]=new Array()
+set[15][0]=new reaction("H<SUB>2</SUB>S(g)  +  3/2O<SUB>2</SUB>(g)","H<SUB>2</SUB>SO<SUB>3</SUB>(l)",-204,1)
+set[15][1]=new reaction("H<SUB>2</SUB>SO<SUB>3</SUB>(l)","H<SUB>2</SUB>O(l)  +SO<SUB>2</SUB>(g)",62,1)
+set[15][2]=new reaction("SO<SUB>2</SUB>(g)","S(s)  +  O<SUB>2</SUB>(g)",297,1)
+set[15][3]=new reaction("H<SUB>2</SUB>S(g) +  1/2O<SUB>2</SUB>(g)","S(s)  +   H<SUB>2</SUB>O(l)",155,1)
+couples[15]=new Array()
+couples[15][0]=new Array(-1,-1,1)
+couples[15][1]=new Array(-1,-1,1)
+couples[15][2]=new Array(-1,-1,1)
+couples[15][3]=new Array(1,1,1)
+//
+set[16]=new Array()
+set[16][0]=new reaction("CH<SUB>2</SUB>Cl<SUB>2</SUB>(l)  +  O<SUB>2</SUB>(g)","COCl<SUB>2</SUB>(g)  +  H<SUB>2</SUB>O(g)",-19,1)
+set[16][1]=new reaction("1/2H<SUB>2</SUB>(g)  +  1/2Cl<SUB>2</SUB>(g)","HCl(g)",-92,2)
+set[16][2]=new reaction("2HCl(g)  +  1/2O<SUB>2</SUB>(g)","H<SUB>2</SUB>O(g)  +  Cl<SUB>2</SUB>(g)",42,1)
+set[16][3]=new reaction("CH<SUB>2</SUB>Cl<SUB>2</SUB>(l) +  H<SUB>2</SUB>(g)  +  3/2O<SUB>2</SUB>(g)","COCl<SUB>2</SUB>(g)  +  2H<SUb>2</SUb>O(g)",-161,1)
+couples[16]=new Array()
+couples[16][0]=new Array(-1,-1,1)
+couples[16][1]=new Array(-1,-1,1)
+couples[16][2]=new Array(-1,-1,1)
+couples[16][3]=new Array(1,1,1)
+//
+set[17]=new Array()
+set[17][0]=new reaction("H<SUB>2</SUB>S(g)  +  2O<SUB>2</SUB>(g)","H<SUB>2</SUB>SO<SUB>4</SUB>(l)",-314,1)
+set[17][1]=new reaction("H<SUB>2</SUB>SO<SUB>4</SUB>(l)","SO<SUB>3</SUB>(g)  +  H<SUB>2</SUB>O(g)",82,1)
+set[17][2]=new reaction("SO<SUB>3</SUB>(g)  +  H<SUB>2</SUB>O(l)","H<SUB>2</SUB>S(g)  +  2O<SUB>2</SUB>(g)",276,1)
+set[17][3]=new reaction("H<SUB>2</SUB>O(l)","H<SUB>2</SUB>O(g)",44,1)
+couples[17]=new Array()
+couples[17][0]=new Array(-1,-1,1)
+couples[17][1]=new Array(-1,-1,1)
+couples[17][2]=new Array(-1,-1,1)
+couples[17][3]=new Array(1,1,1)
+//
+set[18]=new Array()
+set[18][0]=new reaction("H<SUB>2</SUB>CO<SUB>3</SUB>","H<SUB>2</SUB>O  +  CO<SUB>2</SUB>",62,1)
+set[18][1]=new reaction("H<SUB>2</SUB>CO +  O<SUB>2</SUB>","H<SUB>2</SUB>CO<SUB>3</SUB>",-112,1)
+set[18][2]=new reaction("H<SUB>2</SUB>CO  +  O<SUB>2</SUB>","H<SUB>2</SUB>O  +  CO<SUB>2</SUB>",-50,1)
+couples[18]=new Array()
+couples[18][0]=new Array(-1,1)
+couples[18][1]=new Array(-1,1)
+couples[18][2]=new Array(1,1)
+//
+/*
+set[9]=new Array()
+set[9][0]=new reaction("2N<SUB>2</SUB>H<SUB>4</SUB>(l)  +  2O<SUB>2</SUB>(g)","2N<SUB>2</SUB>(g)  +  4H<SUB>2</SUB>O(g)",-1245,-.25)
+set[9][1]=new reaction("2NH<SUB>3</SUB>(g) +  3N<SUB>2</SUB>O(g)","4N<SUB>2</SUB>(g) + 1/2O<SUB>2</SUB>(g)",-1011,.33)
+set[9][2]=new reaction("H<SUB>2</SUB>O(l) + N<SUB>2</SUB>H<SUB>4</SUB>(l)","2NH<SUB>3</SUB>(g) +  1/2O<SUB>2</SUB>(g)",143,.33)
+set[9][3]=new reaction("N<SUB>2</SUB>O(g)  +  3H<SUB>2</SUB>(g)","N<SUB>2</SUB>H<SUB>4</SUB>(l)  +  H<SUB>2</SUB>O(l)",-317,.33)
+set[9][4]=new reaction("H<SUB>2</SUB>(g)  +  1/2O<SUB>2</SUB>(g)","H<SUB>2</SUB>O(g)",-286,1)
+*/
+function cleanse(){
+	clear()
+	document.forms[0].total.value=0
+	document.forms[0].correct.value=0
+}
+//This function clears the first table
+function clear(){
+	document.forms[0].results.value=""
+	attempts=0
+	tried=0
+	clearansspot()
+}
+function screenit(){
+	choice++
+	thequest=""
+	document.forms[0].total.value=choice
+	reactset=new Array()
+	for(var g=0;g<set[choice].length;g++){reactset[g]=set[choice][g].reagents+"=>"+set[choice][g].products+"  q="+set[choice][g].heat+"<b>KJ</b>"
+	thequest+=reactset[g]+"<br>"
+	}
+	showquest()
+}
+function startit(){
+	clear()
+	totl++
+	document.forms[0].total.value=totl
+	//choice=Math.floor(Math.random()*set.length)
+	choice++
+	reactset=new Array()
+	theat=0
+	adjust=new Array()
+	theheat=new Array()
+	fchoice=Math.floor(5*Math.random())
+	for(var g=0;g<set[choice].length;g++){
+	adjust[g]=set[choice][g].factor
+	theheat[g]=Math.round(thefactor[fchoice]*set[choice][g].heat)
+	if(Math.random()>.5)reactset[g]=set[choice][g].reagents+"=>"+set[choice][g].products;
+	else{ reactset[g]=set[choice][g].products+"=>"+set[choice][g].reagents
+	adjust[g]=-1*adjust[g]
+	theheat[g]=-theheat[g]
+	}
+	reactset[g]+="  q="+theheat[g]+"<b>KJ</b>"
+	}
+	missing=Math.floor(reactset.length*Math.random())
+	if(adjust[missing]==set[choice][missing].factor){
+		reactset[missing]=set[choice][missing].reagents+"=>"+set[choice][missing].products+"  q=?";
+	}
+	else{
+	reactset[missing]=set[choice][missing].products+"=>"+set[choice][missing].reagents+"  q=?";
+	}	
+	buildquest()
+}
+function buildquest(){
+	thequest=preamble
+	count=1
+	for(var g=0;g<reactset.length;g++)if(g!=missing)thequest+="(<b>"+count++ +"</b>)"+reactset[g]+"<br>";
+	thequest+=reactset[missing]
+	showquest()
+	buildanswer()
+}
+function buildanswer(){
+	heatcheck=0
+	ansset=new Array()
+	g=0
+	theindex=linklist[reactset.length]
+	for(k=0;k<reactset.length;k++){
+		if(k==missing)k++;
+		if(k<reactset.length){
+		ansset[g]=new Array()
+		ansset[g][0]=g+1;
+		if(linkset[theindex][missing][g]*adjust[k]*adjust[missing]>0)ansset[g][1]="NC";
+		else ansset[g][1]="Rev";
+		ansset[g][4]=linkset[theindex][missing][g]*adjust[k]*adjust[missing]
+		ansset[g][2]="*"+adjusted(Math.abs(adjust[k]),Math.abs(adjust[missing]))
+		if(ansset[g][1]=="Rev")theheat[k]=-theheat[k];
+		ansset[g][3]=Math.round(Math.abs(adjust[k])*theheat[k]/Math.abs(adjust[missing]))
+		heatcheck+=ansset[g][3]
+		g++
+	}}
+	thetable=buildtable(ansset,heatcheck)
+	thesolution="The table below presents the solution."+thetable+"Key:<br><B>Dir</B>-Direction(<B>NC</B>-reaction as written;<B>Rev</B>:reverse the reaction)<br><B>Qty</B>:factor the reaction and q are multiplied by <br><B>Heat</B>:resultant q for each contributor and the needed q "
+	theanswer=heatcheck
+	showanswer()
+}
+function adjusted(x,y){
+	mfactor=""
+	if(x==y)mfactor="1";
+	else{
+		if(x<y)mfactor="1/"+Math.round(y/x);
+		if(x>y)mfactor=Math.round(x/y);	
+	}
+	if(x>y & x%y>.2)mfactor=x+"/"+y;
+	if(y>x & y%x>.2)mfactor=x+"/"+y;
+	//alert(x+","+y+","+mfactor)
+	return mfactor
+}			
+function buildtable(ansset,heatcheck){
+	thetable="<table border=4><tr><th>Rxn</th><th>Dir</th><th>Qty</th><th>Heat</th></tr>"
+	for(var j=0;j<ansset.length;j++){thetable+="<tr><td>"+(j+1)+"</td>"
+		for(var k=1;k<4;k++)thetable+="<td>"+ansset[j][k]+"</td>";
+		thetable+="</tr>"
+	}
+	thetable+="<tr><td></td><td></td><td>Total</td><td>"+heatcheck+"</td></tr>"
+	thetable+="</table>"
+	return thetable
+}
+	
+function answer(val){
+	attempts++
+	if(tried==1){alert("You've already done this problem. Get a new one!")}
+	else{kk=0
+	if(tried==2){totl++;document.forms[0].total.value=totl}
+	if(theanswer<0){
+		if(val>1.05*theanswer & val<.95*theanswer){
+    		kk=1}}
+	else{
+		if(val<1.05*theanswer & val>.95*theanswer){
+    	kk=1}
+	}
+	if(kk==1){
+    		document.forms[0].results.value="correct"
+    		corrt++
+    		document.forms[0].correct.value=corrt
+    		tried=1
+	}
+	else{
+    		tried=2
+    	document.forms[0].results.value="incorrect"}
+	}	
+}
+function showquest(){
+	if(ie4){
+		qspot.innerHTML=thequest
+		}
+	else{
+		document.qspot.document.open()
+		document.qspot.document.write(thequest)
+		document.qspot.document.close()
+	}
+}
+
+function showanswer(){
+if(attempts>=3){
+	if(ie4){
+		ansspot.innerHTML=thesolution
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.write(thesolution)
+		document.ansspot.document.close()
+	}
+	}
+}
+function clearansspot(){
+	if(ie4){
+		ansspot.innerHTML=""
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.clear()
+		document.ansspot.document.close()
+	}
+}
+</script>
+</head>
+<body onLoad="cleanse()">
+<h2>Hess' Law</h2>
+This page is an exercise in using Hess' Law. When you press "New Problem" a reaction set with a single missing enthalpy will be displayed. Calculate the needed enthalpy, enter it in the cell and press the "Check Answer"
+button. The results will appear in the table on the main page. This page is complex, but it's not intended to be tricky. Thus, no attempt has been made to mislead you. There should be a straightforward combination of the contributing reactions which yields the desired reaction.
+<ul>
+<li>If you miss a problem three times, pressing "Show Answer" will cause the correct answer to appear.
+</ul>
+<form>
+<input type=button value="New Problem" onClick=startit()><br>
+Enter your answer<input type=text name=theans size=8><br><input type=button value="Check Answer" onClick=answer(this.form.theans.value)>
+<input type=button value="Show Answer" onClick="showanswer()"><br>
+<table border=4>
+<tr>
+<td>Results</td>
+<td>Total</td>
+<td>Correct</td>
+</tr>
+<tr>
+<td><input type=text name=results size=10></td>
+<td><input type=text name=total size=3></td>
+<td><input type=text name=correct size=3></td>
+</tr>
+</table>
+</form>
+<div id=qspot></div>
+<div id=ansspot></div>
+<div id=refspot></div>
+</body>
+</html>
+ 

@@ -1,0 +1,334 @@
+<html>
+<head>
+<title>Solutions of Acids and Bases-Word Problems-Homework</title>
+<script>
+//globals
+thepage="Acids and Bases(35)"
+corrt=0
+tried=0
+totl=0
+theanswer=0
+which=0
+//the following ia a generally useful clear function
+function clear(){
+	document.forms[0].results.value=""
+	document.forms[0].correct.value=corrt
+	document.forms[0].total.value=totl
+	document.forms[0].time.value=""
+	document.forms[0].page.value=""
+	document.forms[0].verify.value=""
+
+}
+function MakeArray(n){
+	this.length=n
+	for (var i=1;i<=n;i++){
+	this[i]= 0}
+}
+function species(name,formula,conj,K,type){
+	this.name=name
+	this.formula=formula
+	this.conj=conj
+	this.K=K
+	this.type=type
+}
+//the following area is the data:name of species, formula,formula of conjugate
+//K value and type
+compound=new MakeArray(50)
+//strong acids-last entry is a 1
+compound[1]=new species("Hydrochloric Acid","HCl","Cl<SUP>-</SUP>",1,1)
+compound[2]=new species("Hydroiodic Acid","HI","I<SUP>-</SUP>",1,1)
+compound[3]=new species("Hydrobromic Acid","HBr","Br<SUP>-</SUP>",1,1)
+compound[4]=new species("Perchloric Acid","HClO<SUB>4 </SUB>","ClO<SUB>4</SUB><SUP>-</SUP>",1,1)
+compound[5]=new species("Nitric Acid","HNO<SUB>3</SUB>","NO<SUB>3</SUB><SUP>-</SUP>",1,1)
+//weak acids-last entry is a 2
+compound[6]=new species("Acetic Acid","CH<SUB>3</SUB>COOH","CH<SUB>3</SUB>COO<SUP>-</SUP>",1.8e-5,2)
+compound[7]=new species("Acrylic Acid ","C<SUB>3</SUB>H<SUB>4</SUB>O<SUB>2</SUB>","C<SUB>3</SUB>H<SUB>3</SUB>O<SUB>2</SUB><SUP>-</SUP>",5.5e-5,2)
+compound[8]=new species("Benzoic Acid","C<SUB>7</SUB>H<SUB>6</SUB>O<SUB>2</SUB>","C<SUB>7</SUB>H<SUB>5</SUB>O<SUB>2</SUB><SUP>-</SUP>",6.3e-5,2)
+compound[9]=new species("Chloroacetic Acid","C<SUB>2</SUB>H<SUB>3</SUB>ClO<SUB>2</SUB>","C<SUB>2</SUB>H<SUB>2</SUB>ClO<SUB>2</SUB><SUP>-</SUP>",1.4e-3,2)
+compound[10]=new species("Chlorous Acid","HClO<SUB>2</SUB>","ClO<SUB>2</SUB><SUP>-</SUP>",1.1e-2,2)
+compound[11]=new species("Cyanic Acid","HOCN","OCN<SUP>-</SUP>",3.5e-4,2)
+compound[12]=new species("Formic Acid","HCO<SUB>2</SUB>H","HCO<SUB>2</SUB><SUP>-</SUP>",1.8e-4,2)
+compound[13]=new species("Hydrofluoric Acid","HF","F<SUP>-</SUP>",6.6e-4,2)
+compound[14]=new species("Nitrous Acid","HNO<SUB>2</SUB>","NO<SUB>2</SUB><SUP>-</SUP>",7.2e-4,2)
+compound[15]=new species("Hydrazoic Acid","HN<SUB>3</SUB>","N<SUB>3</SUB><SUP>-</SUP>",1.9e-5,2)
+compound[16]=new species("Propionic Acid","C<SUB>3</SUB>H<SUB>6</SUB>O<SUB>2</SUB>","C<SUB>3</SUB>H<SUB>5</SUB>O<SUB>2</SUB><SUP>-</SUP>",1.3e-5,2)
+compound[17]=new species("Hypochlorous Acid","HOCl","OCl<SUP>-</SUP>",2.9e-8,2)
+compound[18]=new species("Dichloroacetic Acid","C<SUB>2</SUB>H<SUB>2</SUB>Cl<SUB>2</SUB>O<SUB>2</SUB>","C<SUB>2</SUB>H<SUB></SUB>Cl<SUB>2</SUB>O<SUB>2</SUB><SUP>-</SUP>",5.5e-2,2)
+compound[19]=new species("Thiophenol","C<SUB>6</SUB>H<SUB>5</SUB>SH","C<SUB>6</SUB>H<SUB>5</SUB>S<SUP>-</SUP>",3.2e-7,2)
+compound[20]=new species("Butyric Acid","C<SUB>4</SUB>H<SUB>8</SUB>O<SUB>2</SUB>","C<SUB>4</SUB>H<SUB>7</SUB>O<SUB>2</SUB><SUP>-</SUP>",1.5e-5,2)
+compound[21]=new species("Phenylacetic Acid ","C<SUB>8</SUB>H<SUB>8</SUB>O<SUB>2</SUB>","C<SUB>8</SUB>H<SUB>7</SUB>O<SUB>2</SUB><SUP>-</SUP>",4.9e-5,2)
+compound[22]=new species("Fluoroacetic Acid","C<SUB>2</SUB>H<SUB>3</SUB>FO<SUB>2</SUB>","C<SUB>2</SUB>H<SUB>2</SUB>FO<SUB>2</SUB><SUP>-</SUP>",2.6e-3,2)
+compound[23]=new species("Trichloroacetic Acid","C<SUB>2</SUB>HCl<SUB>3</SUB>O<SUB>2</SUB>","C<SUB>2</SUB>Cl<SUB>3</SUB>O<SUB>2</SUB><SUP>-</SUP>",.3,2)
+compound[24]=new species("Pyridinium Chloride","C<SUB>5</SUB>H<SUB>5</SUB>NCl","C<SUB>5</SUB>H<SUB>4</SUB>NCl<SUP>-</SUP>",6.67e-6,2)
+//weak bases-last entry is a 3
+compound[25]=new species("Ammonia","NH<SUB>3</SUB>","NH<SUB>4</SUB><sup>+</sup>",1.8e-5,3)
+compound[26]=new species("Aniline","C<SUB>6</SUB>H<SUB>5</SUB>NH<SUB>2</SUB>","C<SUB>6</SUB>H<SUB>5</SUB>NH<SUB>3</SUB><sup>+</sup>",7.4e-10,3)
+compound[27]=new species("Codeine","C<SUB>18</SUB>H<SUB>21</SUB>NO<SUB>3</SUB>","C<SUB>18</SUB>H<SUB>22</SUB>NO<SUB>3</SUB><sup>+</sup>",8.9e-7,3)
+compound[28]=new species("Ethylamine","C<SUB>2</SUB>H<SUB>5</SUB>NH<SUB>2</SUB>","C<SUB>2</SUB>H<SUB>5</SUB>NH<SUB>3</SUB><sup>+</sup>",4.3e-4,3)
+compound[29]=new species("Piperidine","C<SUB>5</SUB>H<SUB>11</SUB>N","C<SUB>5</SUB>H<SUB>12</SUB>N<sup>+</sup>",1.3e-3,3)
+compound[30]=new species("Triethylamine","(C<SUB>2</SUB>H<SUB>5</SUB>)<SUB>3</SUB>N","(C<SUB>2</SUB>H<SUB>5</SUB>)<SUB>3</SUB>NH<sup>+</sup>",5.2e-4,3)
+compound[31]=new species("Trimethylamine","(CH<SUB>3</SUB>)<SUB>3</SUB>N","(CH<SUB>3</SUB>)<SUB>3</SUB>NH<sup>+</sup>",6.3e-5,3)
+compound[32]=new species("Hydroxylamine","NH<SUB>2</SUB>OH","NH<SUB>3</SUB>OH<sup>+</sup>",9.1e-9,3)
+compound[33]=new species("Sodium Cyanide","CN<sup>-</sup>","HCN", 1.61e-5 ,3)
+compound[34]=new species("Potassium Hyprobromide  ","OBr<sup>-</sup>","HOBr",4e-6,3)
+compound[35]=new species("Methylamine","CH<SUB>3</SUB>NH<SUB>2</SUB>","CH<SUB>3</SUB>NH<SUB>3</SUB><sup>+</sup>",4.2e-4,3)
+compound[36]=new species("Morphine","C<SUB>17</SUB>H<SUB>19</SUB>NO<SUB>3</SUB>","C<SUB>17</SUB>H<SUB>20</SUB>NO<SUB>3</SUB><sup>+</sup>",7.4e-7,3)
+compound[37]=new species("Diethylamine","(C<SUB>2</SUB>H<SUB>5</SUB>)<SUB>2</SUB>NH","(C<SUB>2</SUB>H<SUB>5</SUB>)<SUB>2</SUB>NH<sub>2</sub><sup>+</sup>",6.9e-4,3)
+compound[38]=new species("Dimethylamine","(CH<SUB>3</SUB>)<SUB>2</SUB>NH  ","(CH<SUB>3</SUB>)<SUB>2</SUB>NH<sub>2</sub><sup>+</sup>",5.9e-4,3)
+compound[39]=new species("Sodium hypoioide","OI<sup>-</sup>","HOI",4.35e-4,3)
+compound[40]=new species("Triethanolamine","C<SUB>6</SUB>H<SUB>15</SUB>NO<SUB>3</SUB>","C<SUB>6</SUB>H<SUB>16</SUB>NO<SUB>3</SUB><sup>+</sup>",5.8e-7,3)
+compound[41]=new species("Pyridine","C<SUB>5</SUB>H<SUB>5</SUB>N","C<SUB>5</SUB>H<SUB>6</SUB>N<sup>+</sup>",1.5e-9,3)
+compound[42]=new species("Hydrazine","N<SUB>2</SUB>H<SUB>4</SUB>","N<SUB>2</SUB>H<SUB>5</SUB><sup>+</sup>",8.5e-7,3)
+//Strong bases-last entry is a 4
+compound[43]=new species("Potassium Hydroxide","KOH","K<sup>+</sup>",1,4)
+compound[44]=new species("Sodium hydroxide","NaOH","Na<sup>+</sup>",1,4)
+compound[45]=new species("Cesium Hydroxide","CsOH","Cs<sup>+</sup>",1,4)
+compound[46]=new species("Lithium Hydroxide","LiOH","Li<sup>+</sup>",1,4)
+//Neutral-last entry is a 5
+compound[47]=new species("Sodium Nitrate","NaNO<SUB>3</SUB>","HNO<SUB>3</SUB>",1,5)
+compound[48]=new species("Potassium Chloride","KCl", "HCl",1,5)
+compound[49]=new species("Cesium Iodide","CsI", "HI", 1,5)
+compound[50]=new species("Calcium Bromide","CaBr<SUB>2</SUB>","HBr", 1,5)
+
+function start(){
+	totl++
+	document.forms[0].total.value=totl
+	document.forms[0].results.value=""
+	tried=0
+var ci=Math.round(1000*Math.random())/10000
+if (ci>.5 || ci<.001){start()}
+else{
+var p=Math.round(.5+7*Math.random())
+var j=Math.round(.5+50*Math.random())
+if (j<=5){strongacid(j,ci,p)}
+if (j>=43 & j<=46){strongbase(j,ci,p)}
+if (j>46){neutral(j,ci,p)}
+if (j>5 & j<43){weak(j,ci,p)}
+assemble(p,j,ci)
+}}
+function assemble(p,j,ci){
+if (p==1){x="<b>pH</b>"}
+if (p==2){x="<b>pOH</b>"}
+if (p==3){x="<b>[H<sup>+</sup>]</b>"}
+if (p==4){x="<b>[OH<sup>-</sup>]</b>"}
+if (p==5){x="<b>["+compound[j]["formula"]+"]</b>"}
+if (p==6){x="<b>["+compound[j]["conj"]+"]</b>"}
+if (p==7){x="<b>% ionization</b>"}
+var question="What would the "+x+" be for a "+ci+" molar solution of "+compound[j]["name"]+" ?"
+tryit(question)
+}
+function weak(j,ci,p){
+var Ki=compound[j]["K"]
+var first=Math.log((-Ki+Math.sqrt(Ki*Ki+4*Ki*ci))/2)/2.302
+	first=Math.round(-100*first)/100
+	if (compound[j]["type"]==2){
+		pH=first
+		pOH=14-pH
+	}
+	else {
+		pOH=first
+		pH=14-pOH}
+H=Math.pow(10,-pH)
+OH=Math.pow(10,-pOH)
+ion=100*Math.pow(10,-first)/ci
+con=Math.pow(10,-first)
+init=ci-Math.pow(10,-first)
+sendanswer(pH,pOH,H,OH,init,con,ion,p)
+}
+function checkit(){
+b=compound[a]["name"]
+c=compound[a]["formula"]
+d=compound[a]["conj"]
+e=compound[a]["type"]
+tryit(b,c,d)
+}
+function neutral(j,ci,p){
+var pH=7
+var POH=7
+H=1e-7
+OH=1e-7
+init=0
+con=0
+ion=0
+sendanswer(pH,pOH,H,OH,init,con,ion,p)
+}
+function strongacid(j,ci,p){
+var pH=-Math.log(ci)/2.302
+var pOH=14-pH
+H=Math.pow(10,-pH)
+OH=1e-14/H
+init=0
+con=ci
+ion=100
+sendanswer(pH,pOH,H,OH,init,con,ion,p)
+}
+function strongbase(j,ci,p){
+var pOH=-Math.log(ci)/2.302
+var pH=14-pOH
+H=Math.pow(10,-pH)
+OH=1e-14/H
+init=0
+con=ci
+ion=100
+sendanswer(pH,pOH,H,OH,init,con,ion,p)
+}
+function sendanswer(pH,pOH,H,OH,init,con,ion,p){
+if(p==1)theanswer=pH
+if(p==2)theanswer=pOH
+if(p==3)theanswer=H
+if(p==4)theanswer=OH
+if(p==5)theanswer=init
+if(p==6)theanswer=con
+if(p==7)theanswer=ion
+}
+
+function tryit(question)    {
+parent.frames[0].document.clear();
+parent.frames[0].document.open();
+parent.frames[0].document.writeln ("<html>");
+parent.frames[0].document.writeln ("<head>");
+parent.frames[0].document.writeln ("</head>");
+parent.frames[0].document.writeln ("<body bgcolor = FFFFFF");
+parent.frames[0].document.write ("<font size = +1>");
+parent.frames[0].document.writeln (question);
+parent.frames[0].document.writeln ("<br>")
+parent.frames[0].document.writeln ("</font>");
+parent.frames[0].document.close();
+document.forms[0].ansr.focus()
+document.forms[0].ansr.select()
+}
+function answer(anser){
+if(tried==1){
+		alert("Sorry, you've already submitted this problem! We'll get you a new one!")
+		start()}
+else{
+	if(tried==2){totl++;document.forms[0].total.value=totl}	
+	if (anser>.95*theanswer & anser<1.05*theanswer ){	
+	document.forms[0].results.value="correct"
+		corrt++
+		document.forms[0].correct.value=corrt
+		tried=1
+}	
+else {
+		document.forms[0].results.value="incorrect"
+		tried=2}
+}}
+function timer(z){
+tt=z
+var b=Math.floor(tt/60)
+var j = (tt % 60)
+if (j<10){c="0"}
+else {c=""}
+howlong=b + ":" + c + j
+running=setTimeout("timer(tt+1)",1000)
+}
+function constants(){
+var cont=window.open("","cont","scrollbars=yes,width=300,height=300")
+cont.document.writeln ("<html>");
+cont.document.writeln ("<head><title>Rate cont</title>");
+cont.document.writeln ("</head>");
+cont.document.writeln ("<body bgcolor = FFFFFF><b>Acids</b><table>");
+for(j=6;j<=42;j++){
+if(j==25){cont.document.writeln ("<tr><td><b>Bases</b><br></td></tr>")};
+cont.document.writeln("<tr><td>",compound[j]['name'],"</td><td>");
+cont.document.writeln("<td>",compound[j]['formula'],"</td><td>");
+cont.document.writeln("<td>",sigfigs(compound[j]['K']),"</td></tr>")};
+cont.document.writeln("</table><form><input type=button value='Close Window' onClick='window.close()'></form>");
+cont.document.writeln("<html>");
+cont.document.close();
+cont.focus();
+}
+function sigfigs(f){
+ex=0
+if(f>=1000){
+while(f>=1000){
+	ex++
+	f=f/10
+}
+f=Math.round(f)/100
+ex=ex+2
+f=""+f
+if(f.length==1){f=f+"."}
+while(f.length<4){f=f+"0"}
+f=f+"e"+ex
+return f
+}
+else{if(f<100){
+while(f<100){
+	ex++
+	f=f*10
+}
+f=Math.round(f)/100
+ex=2-ex
+f=""+f
+if(f.length==1){f=f+"."}
+while(f.length<4){f=f+"0"}
+if(ex!=0){f=f+"e"+ex}
+return f}
+else{
+f=Math.round(f)/100
+f=""+f
+if(f.length==1){f=f+"."}
+while(f.length<4){f=f+"0"}
+f=f+"e2"
+return f
+}
+}
+}
+function update(){
+	document.forms[0].total.value=totl
+	document.forms[0].correct.value=corrt
+	document.forms[0].time.value=howlong
+	document.forms[0].page.value=thepage
+	document.forms[0].verify.value=Math.round(10000*Math.random())
+}
+
+</script>
+</head>
+<body onLoad="clear(),timer(0)">
+<h2>Solutions of acids and bases</h2>
+This page randomly generates problems involving acids and bases. In order to use the page, you need a
+table of acid/base Ks. To start,press "New Problem" and a questions will appear in the top frame. 
+If the species listed is not in your table, press "New Problem " again. Otherwise, determine the value of the
+answer, enter it in the cell and press "Check Answer". Results appear in the table. Each time you press "New Problem", 
+you are guaranteed to get a problem you have never seen before.<br>
+<h4>Hints</h4>
+<ul>
+<li>Read the problem very carefully to ensure that your answer agrees with the question.
+<li>If you get an answer wrong, you should redo it until you get it correct.
+<li>You may use sci. notation in the "e" form. Thus 1.2*10<sup>-3</sup> can be input as 1.2e-3.
+<li>If you do not have a table of Ks, you can display one by pressing the "Show Ks" button below.
+</ul>
+<form ACTION = "../cgi-bin/homework/hw_turnin.php" METHOD = "POST">
+<table>
+<tr>
+<input type="button" value="New Problem" onClick="start()">
+<input type="button" value="Check Answer" onClick="answer(this.form.ansr.value)">
+</tr>
+<tr>
+<td><b>Enter your answer here</b></td>
+<td align=center><input type="text" name="ansr" size=10></td>
+</tr>
+<td><input type=button align=center value="Show Ks" onClick="constants()"></td>
+</table>
+<table border=4>
+<tr>
+<td><b>Results</b></td>
+<td><b>Total Done</b></td>
+<td><b>Total Correct</b></td></tr>
+</tr>
+<tr>
+<td align=center><input type="text" name="results" size=10></td>
+<td align=center><input type="text" name="total" size=3></td>
+<td align=center><input type="text" name="correct" size=3></td>
+<tr>
+</table>
+<input type=text name="page" size=1>
+<input type=text name="verify" size=1>
+<input type=text name="time" size=1><br>
+<INPUT TYPE = "submit" VALUE = "Submit your score" onClick="update()">
+ </FORM>
+<br>
+<a href="hwintro.html"><img src="back.gif"></a><br>
+</body>
+</html>

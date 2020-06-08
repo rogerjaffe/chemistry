@@ -1,0 +1,469 @@
+<html>
+<head>
+<title>Empirical Formulas cs</title>
+<style>
+#qspot {position:absolute;left:330;top:250}
+#ansspot {position:absolute;left:350;top:450;height:300}
+#tspot {position:absolute;left:10;top:300}
+#refspot {position:absolute;left:10;top:600;height:200}
+</style>
+<script src="reflist.js"></script>
+<script src="numberconvert.js"></script>
+<script language="javascript">
+//updated 11/21/00-added complete solution
+//tested w/ N4.7 and IE5
+//globals
+refnumber=150
+cell="<input type=text size=2 value=''>"
+thebutton="<input type=button onClick='answer(this.form)' value='Check Answer'>"
+var ie4 = (document.all) ? true : false;
+corrt=0
+attempts=0
+tried=0
+totl=0
+carbons=0
+hydrogens=0
+oxygens=0
+nitrogens=0
+chlorines=0
+bromines=0
+metals=0
+elems=0
+fracts=0
+ratios=0
+test=0
+themass=0
+newnumbers=0
+key=0
+factor=0
+percents=0
+formula=""
+gfw=0
+catsub=""
+ansub=""
+theanswer=""
+function repelement(name,sym,an,mass,val1,val2){
+	this.name=name
+	this.sym=sym
+	this.an=an
+	this.mass=mass
+	this.val1=val1
+	this.val2=val2
+	}
+function metal(name,sym,an,mass,chg1,chg2){
+	this.name=name
+	this.sym=sym
+	this.an=an
+	this.mass=mass
+	this.chg1=chg1
+	this.chg2=chg2
+}
+function polyion(name,sym,chg){
+	this.name=name
+	this.sym=sym
+	this.chg=chg
+}
+reps=new Array()
+reps[1]=new repelement("hydrogen","H",1,1.0079,1,1)
+reps[2]=new repelement("carbon","C",6,12.011,4,4)
+reps[3]=new repelement("nitrogen","N",7,14.0067,3,3)
+reps[4]=new repelement("oxygen","O",8,15.9994,3,3)
+reps[5]=new repelement("phosphorous","P",15,30.97376,3,5)
+reps[6]=new repelement("sulfur","S",16,32.066,32,2,4)
+reps[7]=new repelement("fluorine","F",9,18.99840,1,1)
+reps[8]=new repelement("chlorine","Cl",17,35.453,1,1)
+reps[9]=new repelement("bromine","Br",35,79.904,1,1)
+reps[10]=new repelement("iodine","I",53,126.9045,1,1)
+mets=new Array()
+mets[1]=new metal("lithium","Li",3,6.941,1,1)
+mets[2]=new metal("beryllium","Be",4,9.01218,2,2)
+mets[3]=new metal("sodium","Na",11,22.98977,1,1)
+mets[4]=new metal("magnesium","Mg",12,24.305,2,2)
+mets[5]=new metal("aluminum","Al",13,26.98154,3,3)
+mets[6]=new metal("potassium","K",19,39.098,1,1)
+mets[7]=new metal("calcium","Ca",20,40.08,2,2)
+mets[8]=new metal("scandium","Sc",21,44.9559,3,3)
+mets[9]=new metal("titanium","Ti",22,47.88,4,4)
+mets[10]=new metal("vanadium","V",23,50.9415,5,4)
+mets[11]=new metal("chromium","Cr",24,51.996,6,3)
+mets[12]=new metal("manganese","Mn",25,54.9380,4,2)
+mets[13]=new metal("iron","Fe",26,55.847,2,3)
+mets[14]=new metal("cobalt","Co",27,58.9332,2,3)
+mets[15]=new metal("nickel","Ni",28,58.69,2,2)
+mets[16]=new metal("copper","Cu",29,63.546,2,1)
+mets[17]=new metal("zinc","Zn",30,65.39,2,2)
+mets[18]=new metal("rubidium","Rb",37,85.4678,1,1)
+mets[19]=new metal("strontium","Sr",38,87.62,2,2)
+mets[20]=new metal("molybdenum","Mo",42,95.94,6,4)
+mets[21]=new metal("ruthenium","Ru",44,101.07,3,4)
+mets[22]=new metal("rhodium","Rh",45,102.9055,3,4)
+mets[23]=new metal("palladium","Pd",46,106.42,2,2)
+mets[24]=new metal("silver","Ag",47,107.868,1,1)
+mets[25]=new metal("cadmium","Cd",48,112.411,2)
+mets[26]=new metal("indium","In",49,114.82,3,3)
+mets[27]=new metal("tin","Sn",50,118.710,4,2)
+mets[28]=new metal("antimony","Sb",51,121.75,3,5)
+mets[29]=new metal("cesium","Cs",55,132.9054,1,1)
+mets[30]=new metal("barium","Ba",56,137.27,2,2)
+mets[31]=new metal("tungsten","W",74,183.85,6,4)
+mets[32]=new metal("rhenium","Re",75,186.207,4,2)
+mets[33]=new metal("osmium","Os",76,190.2,3,4)
+mets[34]=new metal("iridium","Ir",77,192.22,2,3)
+mets[35]=new metal("platinum","Pt",78,195.08,2,4)
+mets[36]=new metal("gold","Au",79,196.9665,1,3)
+mets[37]=new metal("mercury","Hg",80,200.59,1,2)
+mets[38]=new metal("thallium","Tl",81,204.383,3,1)
+mets[39]=new metal("lead","Pb",82,207.2,2,2)
+anion=new Array()
+comp=new Array()
+anion[1]=new polyion("carbonate","CO<sub>3</sub>",2)
+comp[1]=new Array(2,1,4,3)
+anion[2]=new polyion("hydroxide","OH",1)
+comp[2]=new Array(4,1,1,1)
+anion[3]=new polyion("nitrate","NO<sub>3</sub>",1)
+comp[3]=new Array(3,1,4,3)
+anion[4]=new polyion("nitrite","NO<sub>2</sub>",1)
+comp[4]=new Array(3,1,4,2)
+anion[5]=new polyion("sulfate","SO<sub>4</sub>",2)
+comp[5]=new Array(6,1,4,4)
+anion[6]=new polyion("sulfite","SO<sub>3</sub>",2)
+comp[6]=new Array(6,1,4,3)
+anion[7]=new polyion("cyanide","CN",1)
+comp[7]=new Array(2,1,3,1)
+anion[8]=new polyion("phosphate","PO<sub>4</sub>",3)
+comp[8]=new Array(5,1,4,4)
+anion[9]=new polyion("bicarbonate","HCO<sub>3</sub>",1)
+comp[9]=new Array(1,1,2,1,4,3)
+anion[10]=new polyion("chlorite","ClO<sub>2</sub>",1)
+comp[10]=new Array(8,1,4,2)
+anion[11]=new polyion("thiosulfate","S<sub>2</sub>O<sub>3</sub>",2)
+comp[11]=new Array(6,2,4,3)
+anion[12]=new polyion("hypochlorite","ClO",1)
+comp[12]=new Array(8,1,4,1)
+anion[13]=new polyion("chlorate","ClO<sub>3</sub>",1)
+comp[13]=new Array(8,1,4,3)
+anion[14]=new polyion("phosphite","PO<sub>3</sub>",3)
+comp[14]=new Array(5,1,4,3)
+function cleanse(){
+	clear()
+	document.forms[0].total.value=0
+	document.forms[0].correct.value=0
+}
+function clear(){
+	document.forms[0].results.value=""
+	attempts=0
+	tried=0
+	clearansspot()
+}
+introphrase="A compound has the following mass% composition. Determine the empirical formula, enter the values for each element in the appropriate cell and press 'Check Answer.'<br>"
+ansphrase=new Array("First,assume you have a sample with a mass of 100 and convert all of the percentages directly into grams.Then, divide each of the resultant masses by the appropriate gaw:<br><br>","Divide all of the resultant values(which are moles) by the lowest to get the first set of ratios:<br><br>","Since the resultant values are all nearly integral, the empirical formula is:<br>","Since all of the values are not 'near integers', further adjustment is needed")
+function startit(){
+	totl++
+	document.forms[0].total.value=totl
+	clear()
+	if(Math.random()>.4)organic()
+	else inorganic()
+}
+function organic(){
+	elems=new Array()
+	themass=new Array()
+	percents=new Array()
+	c=2+Math.floor(5*Math.random())
+	h=2*c+2
+	h=h-removeh(h/2)
+	elems[0]=new Array(reps[2].sym,reps[2].mass,c)
+	elems[1]=new Array(reps[1].sym,reps[1].mass,h)
+	option=Math.ceil(8*Math.random())
+	if(option==1){
+		n=Math.ceil(2*Math.random())
+		elems[elems.length]=new Array(reps[3].sym,reps[3].mass,n)
+		h++
+		}
+	if(option==2 || option==7 ||option==8){
+		o=Math.ceil(2*Math.random())
+		elems[elems.length]=new Array(reps[4].sym,reps[4].mass,o)
+		}
+	if(option==3 || option==7){
+		s=Math.ceil(2*Math.random())
+		elems[elems.length]=new Array(reps[6].sym,reps[6].mass,s)
+		}
+	if(option==4){
+		p=Math.ceil(2*Math.random())
+		elems[elems.length]=new Array(reps[5].sym,reps[5].mass,p)
+		}
+	if(option>6){
+		hal=Math.ceil(2*Math.random())
+		whichhal=7+Math.floor(4*Math.random())
+		elems[elems.length]=new Array(reps[whichhal].sym,reps[whichhal].mass,hal)
+		h--
+		}
+	
+	formula="";
+	gfw=0
+	for(j=0;j<elems.length;j++){
+		themass[j]=(elems[j][1]*elems[j][2])
+		formula=formula+elems[j][0];
+		gfw+=themass[j]
+		if(elems[j][2]>1)formula=formula+("<sub>"+elems[j][2]+"</sub>")
+		}
+	gfw=number(gfw,4,3)
+	for(var j=0;j<themass.length;j++)percents[j]=number(100*themass[j]/gfw,3,3);
+	buildanswer(elems)
+	showquest(formula)
+	}	
+function removeh(x){
+	drop=Math.floor(Math.random()*x)
+	if(drop%2!=0)drop+=1
+	return drop
+}
+function inorganic(){
+	elems=new Array()
+	themass=new Array()
+	percents=new Array()
+	whichmetal=Math.ceil(39*Math.random())
+	charge=Math.ceil(2*Math.random())
+	catchg=mets[whichmetal]['chg'+charge]
+	if(Math.random()>.6){
+		counterkey=1
+		theanion=repion()
+		theanion<7?anchg=2:anchg=1;
+	}
+	else{
+		counterkey=2
+		theanion=Math.ceil(14*Math.random())
+		anchg=anion[theanion].chg
+	}
+	if(catchg==anchg)catsub=ansub=1;
+	else getsubs(catchg,anchg)
+	elems[0]=new Array(mets[whichmetal].sym,mets[whichmetal].mass,catsub)
+	formula=""
+	gfw=0
+	formula+=mets[whichmetal].sym;
+	if(catsub!=1)formula+=("<sub>"+catsub+"</sub>");
+	themass[0]=catsub*mets[whichmetal].mass
+	gfw+=themass[0]
+	if(counterkey==1){
+		elems[1]=new Array(reps[theanion].sym,reps[theanion].mass,ansub)
+		formula+=reps[theanion].sym;
+		if(ansub!=1)formula+=("<sub>"+ansub+"</sub>");
+		themass[1]=ansub*reps[theanion].mass
+		gfw+=themass[1]
+		}
+	else{
+		ansub==1?formula+=anion[theanion].sym:formula+="("+anion[theanion].sym+")<sub>"+ansub+"</sub>";
+		for(j=0;j<comp[theanion].length;j=j+2){
+			spot=comp[theanion][j]
+			elems[elems.length]=new Array(reps[spot].sym,reps[spot].mass,ansub*comp[theanion][j+1])
+			themass[themass.length]=ansub*comp[theanion][j+1]*reps[spot].mass
+			gfw+=themass[themass.length-1]
+		}
+	}
+	for(var j=0;j<themass.length;j++)percents[j]=number(100*themass[j]/gfw,3,3);
+	gfw=number(gfw,4,3)
+	buildanswer(elems)
+	showquest(formula)
+}
+function repion(){
+	theanion=5
+	while(theanion==5)theanion=4+Math.floor(7*Math.random());
+	return theanion
+	}
+function getsubs(x,y){
+if(x>y){
+	if(x%y==0){
+		catsub=1
+		ansub=Math.ceil(x/y)}
+	else{
+	 	catsub=y
+		ansub=x
+	    }
+	}
+if(y>x){
+	if(y%x==0){
+		catsub=Math.ceil(y/x)
+		ansub=1}
+	else{
+	 	catsub=y
+		ansub=x
+	    }
+	}
+}
+function showquest(formula){
+	thequest=introphrase;
+	for(j=0;j<elems.length;j++)thequest+="<b>"+elems[j][0]+":</b>"+percents[j]+"%<br>";
+	thequest+="<form>"
+	for(j=0;j<elems.length;j++)thequest+=elems[j][0]+cell;
+	thequest+=(thebutton+"</form>");
+	if(ie4){
+		qspot.innerHTML=thequest
+		}
+	else{
+		document.qspot.document.open()
+		document.qspot.document.write(thequest);
+		document.qspot.document.close()
+	}
+}
+function buildanswer(elems){
+	theanswer=ansphrase[0]
+	getfracts(elems)
+	getnumbers(elems)
+	for(k=0;k<percents.length;k++)theanswer+="<b>"+elems[k][0]+":</b>"+percents[k]+"/"+elems[k][1]+"="+fracts[k]+"<br>";
+	theanswer+=ansphrase[1]
+	for(var j=0;j<percents.length;j++)theanswer+="<b>"+elems[j][0]+":</b>"+fracts[j]+"/"+fracts[fracts.length-1]+"="+ratios[j]+"<br>";
+	if(test==0){
+		theanswer+="These values are all near integers, so they can be rounded."
+		formula=""
+		for(var j=0;j<ratios.length;j++){
+			ratios[j]=Math.round(ratios[j])
+			ratios[j]==1?formula+=elems[j][0]:formula+=elems[j][0]+"<sub>"+ratios[j]+"</sub>";
+		}
+	}
+	else{
+		theanswer+="Since the values are not all near integers, they are further adjusted yielding by multiplying all the values by "+factor;
+		formula=""
+		for(var j=0;j<ratios.length;j++){
+		ratios[j]=Math.round(factor*ratios[j])
+			ratios[j]!=1?formula+=elems[j][0]+"<sub>"+ratios[j]+"</sub>":formula+=elems[j][0];
+		}
+	}
+	theanswer+="<br>"+formula	
+}
+function getfracts(elems){
+	fracts=new Array()
+	ratios=new Array()
+	for(var j=0;j<percents.length;j++){
+		fracts[j]=number(percents[j]/elems[j][1],4,3)
+	}
+	theleast=1*fracts[0]
+	for(j=1;j<fracts.length;j++){
+		if(1*fracts[j]<theleast)theleast=fracts[j];
+		}
+	fracts[fracts.length]=theleast
+	for(var j=0;j<percents.length;j++){
+		ratios[j]=number(fracts[j]/fracts[fracts.length-1],4,3)
+	}
+	checkratios(ratios)
+}
+function checkratios(ratios){
+	test=0
+	poor=""
+	for(var j=0;j<ratios.length;j++){
+		if((1*ratios[j])%1>.2 & (1*ratios[j])%1<.8){test=1;poor=j}
+	}
+	if(test==1)fixthem(ratios,poor)
+	}
+function fixthem(ratios,poor){
+	key=(1*ratios[poor])%1
+	if(key<.22)factor=5;
+		if(key<.28)factor=4;
+	 		else if(key<.35)factor=3;
+				else if(key<.42)factor=5;
+					else if(key<.52)factor=2;
+						else if(key<.69)factor=3;
+							else if(key<.78)factor=4;
+	}	
+function getnumbers(elems){
+	thenumbers=new Array()
+	newnumbers=new Array()
+	for(var j=0;j<elems.length;j++)thenumbers[j]=elems[j][2];
+	themost=thenumbers[0]
+	for(var j=1;j<5;j++){if(thenumbers[j]>themost)themost=thenumbers[j]};
+	themost=Math.floor(themost/2)
+	tested=new Array()
+	for(k=2;k<=themost;k++){
+		allowed=0
+		for(var j=0;j<5;j++){if(thenumbers[j]%k!=0)allowed++};
+		if(allowed==0)tested[tested.length]=k;
+	}
+	for(var j=0;j<tested.length;j++){
+		if(tested[j]!=1){
+		for(var k=0;k<thenumbers.length;k++){
+			newnumbers[k]=thenumbers[k]/tested[j]
+		}}
+	}
+}
+function answer(form){
+	if(tried==1)alert("You've done this one. Get a new problem.")
+	else{
+	if(tried==2){totl++;document.forms[0].total.value=totl}
+	ok=0	
+	attempts++
+	for(j=0;j<ratios.length;j++){
+		if(form.elements[j].value!=ratios[j])ok++;
+	}
+	if(ok==0){
+		document.forms[0].results.value="correct"
+		corrt++
+		document.forms[0].correct.value=corrt
+		tried=1
+	}
+	else{
+		document.forms[0].results.value="incorrect"
+		tried=2
+	}}
+}
+	
+function showanswer(){
+if(attempts>=3){
+	if(ie4){
+		ansspot.innerHTML=theanswer
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.write(theanswer)
+		document.ansspot.document.close()
+	}
+	}
+}	
+function clearansspot(){
+	if(ie4){
+		ansspot.innerHTML=""
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.clear()
+		document.ansspot.document.close()
+	}
+}
+
+</script>
+</head>
+<body onLoad="cleanse(),setrefs()">
+<h2>Empirical Formulas from % composition</h2>
+<h4>Usage</h4>
+<ul>
+<li>To begin-press "New Question" and a question appears to the right of the table
+<li>Determine the empirical formula and follow the instructions for submitting your results.
+<li>The results on the problem and a running total will appear in the second table.
+<li>If you get a problem "incorrect", you should redo it and recheck your
+answer.
+<li>If you miss a problem three times, pressing the "Show Answer" button will cause a complete solution to appear.
+</ul>
+<form>
+<table>
+<tr><td><input type=button value="New Question" onClick="startit()"><td></tr>
+</tr>
+<tr>
+<td><input type=button value="Show answer" onClick="showanswer()"></td>
+</tr>
+</table>
+<table border=4>
+<tr><td align=center><b>Results</td>
+<td align=center><b>Total Done</td>
+<td><b>Total Correct</td>
+</tr>
+<tr>
+<td><input type="text" name=results size=12></td>
+<td align=center><input type="text" name=total size=4 ></td>
+<td align=center><input type="text" name=correct size=4 ></td>
+</tr>
+<tr>
+</table>
+</form>
+<div id=qspot></div>
+<div id=ansspot></div>
+<div id=refspot></div>
+<br>
+</body>
+</html>
+	

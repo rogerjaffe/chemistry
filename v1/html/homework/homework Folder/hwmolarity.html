@@ -1,0 +1,130 @@
+<html>
+<head><title>Molarity Calculations</title>
+<script language=javascript>
+//globals
+thepage="Molarity(13)"
+totl=0
+corrt=0
+theanswer=0
+which=0
+function clear(){
+	document.forms[0].results.value=""
+	document.forms[0].correct.value=corrt
+	document.forms[0].total.value=totl
+}
+	
+function choose(){
+totl++
+	document.forms[0].total.value=totl
+	document.forms[0].results.value=""
+	tried=0
+	moles=0
+	volume=0
+	while (moles<.01){
+	var moles=Math.round(1000*Math.random())/1000
+	}
+	while (volume<.001){
+	var volume=Math.round(1000*Math.random())/100
+		}
+	molarity=Math.round(1000*(moles/volume))/1000
+	document.forms[0].first.value=moles
+	document.forms[0].second.value=volume
+	document.forms[0].third.value=molarity
+var quest=Math.random()
+if (quest<.33){
+	document.forms[0].first.value=""
+	theanswer=moles
+	which=0}
+else{if(quest<.66){
+	document.forms[0].second.value=""
+	theanswer=volume
+	which=1}
+else {if(quest<=1){
+	document.forms[0].third.value=""
+	theanswer=molarity
+	which=2}}}
+}
+function answer(form){
+if(tried==1){
+		alert("Sorry, you've already submitted this problem! We'll get you a new one!")
+		start()}
+else{
+	if(tried==2){totl++;document.forms[0].total.value=totl}	
+	if (theanswer>.95*form.elements[which].value & theanswer<1.05*form.elements[which].value){	
+	document.forms[0].results.value="correct"
+		corrt++
+		document.forms[0].correct.value=corrt
+		tried=1
+}	
+else {
+		document.forms[0].results.value="incorrect"
+		tried=2}
+}}
+function timer(z){
+tt=z
+var b=Math.floor(tt/60)
+var j = (tt % 60)
+if (j<10){c="0"}
+else {c=""}
+howlong=b + ":" + c + j
+running=setTimeout("timer(tt+1)",1000)
+}
+function update(){
+	document.forms[0].total.value=totl
+	document.forms[0].correct.value=corrt
+	document.forms[0].time.value=howlong
+	document.forms[0].page.value=thepage
+	document.forms[0].verify.value=Math.round(10000*Math.random())
+}
+
+</script>
+</head>
+<body onLoad="clear(),timer(0)">
+<h2>Molarity</h2>
+This page lets you practice your molarity calculations. The problems
+are randomly generated when you press the "New Problem" button. Enter your answer in the empty
+square and press "Check Answer". The results are displayed in the second table which will
+tell you whether you got the correct answer or not and keeps a running total of your score.
+If you get a question wrong, you can reenter and recheck your answer. Getting new problems is just a mater of 
+pressing the "New Problem" button at any time. I'm still working on trying to ensure that
+the actual problems are physically realistic, so you may still see an occasional strange number like a very large
+molarity. If the page fails or doesn't seem to give correct feedback, please let me know. You can use the
+email link below to do that. <br>
+<form ACTION = "../cgi-bin/homework/hw_turnin.php" METHOD = "POST">
+<table border=4>
+<tr>
+<TD ALIGN=CENTER><b>Moles</td>
+<td align=center><b>Vol(L)</td>
+<td align=center><b>Molarity</td>
+</tr>
+<tr>
+<td align=center><input type="text" name=first size=8 ></td>
+<td align=center><input type="text" name=second size=8 ></td>
+<td align=center><input type="text" name=third size=8 ></td>
+</tr>
+<tr>
+<td><input type="button" value="New Problem" onClick=choose()></td>
+<td><input type="button" value="Check Answer" onClick=answer(this.form)></td>
+</tr>
+</table>
+<table border=4>
+<tr>
+<td align=center><b>Results</td>
+<td align=center><b>Total</td>
+<td><b>Correct</td>
+</tr>
+<tr>
+<td><input type="text" name=results size=12></td>
+<td align=center><input type="text" name=total size=4 ></td>
+<td align=center><input type="text" name=correct size=4 ></td>
+</tr>
+</table>
+<input type=text name="page" size=1>
+<input type=text name="verify" size=1>
+<input type=text name="time" size=1><br>
+<INPUT TYPE = "submit" VALUE = "Submit your score" onClick="update()">
+ </FORM>
+<br>
+<a href="hwintro.html"><img src="back.gif"></a><br>
+</body>
+</html>

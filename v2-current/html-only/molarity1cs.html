@@ -1,0 +1,163 @@
+<html>
+<head>
+<title>Molarity-cs</title>
+<style>
+#qspot {position:absolute;left:360;top:250}
+#ansspot {position:absolute;left:20;top:360;height:300}
+#tspot {position:absolute;left:10;top:300}
+#refspot {position:absolute;left:10;top:500;height:50}
+</style>
+<script src="reflist.js"></script>
+<script src="numberconvert.js"></script>
+<script src="ionformulas.js"></script>
+<script language="javascript">
+//updated 11/14/00-added complete solution
+var ie4 = (document.all) ? true : false;
+//global variables
+refnumber=71
+corrt=0
+tried=0
+totl=0
+theanswer=0
+thesolution=0
+alldata=0
+solved=0
+equation=new Array()
+datalabels=new Array("<u>M</u>","moles","volume(L)")
+equation[0]=datalabels[1]+"/"+datalabels[2]+"="+datalabels[0]//n/V=M
+equation[1]=datalabels[0]+"*"+datalabels[2]+"="+datalabels[1]//M*V=n
+equation[2]=datalabels[1]+"/"+datalabels[0]+"="+datalabels[2]//n/M=V
+eqnsets=new Array()
+function cleanse(){
+	clear()
+	totl=corrt=0
+	document.forms[0].total.value=0
+	document.forms[0].correct.value=0
+}
+function clear(){
+	attempts=0
+	tried=0
+	clearansspot()
+	document.forms[0].results.value=""
+}
+function startit(){
+	clear()
+	totl++
+	document.forms[0].total.value=totl
+	n=0
+	while(n<.01)n=Math.random()
+	v=0
+	while(v<.1 || v>5)v=10*Math.random()
+	M=n/v
+	n=number(n,3,3)
+	v=number(v,3,3)
+	M=number(M,3,3)
+	alldata=new Array(M,n,v)
+	getsolved()
+	setproblem()
+	}
+function getsolved(){
+	solved=new Array()
+	solved[0]=alldata[1]+"/"+alldata[2]+"="+alldata[0]//n/V=M
+	solved[1]=alldata[0]+"*"+alldata[2]+"="+alldata[1]//M*V=n
+	solved[2]=alldata[1]+"/"+alldata[0]+"="+alldata[2]//n/M=V
+}
+function setproblem(){
+	empty=Math.floor(3*Math.random())
+	for(var j=0;j<3;j++){
+		j==empty?document.forms[0].elements[j].value="":document.forms[0].elements[j].value=alldata[j];
+	}
+	buildanswer(empty)
+}
+function buildanswer(empty){
+	shown=new Array()
+	for(j=0;j<3;j++){
+		if(j!=empty)shown[shown.length]=j
+	}
+	thesolution="Given "+datalabels[shown[0]]+" and "+datalabels[shown[1]]+",  "+datalabels[empty]+" is calculated as shown below:<br><br>"+equation[empty]+"<br><br>"+solved[empty]
+}
+function answer(form){
+	if(tried==1)alert("You've already done this one. Get a new problem.")
+	else{
+		attempts++
+		if(tried==2){totl++;document.forms[0].total.value=totl};
+	if(form.elements[empty].value>.95*alldata[empty] & form.elements[empty].value<1.05*alldata[empty]){
+		form.results.value="correct"
+		corrt++
+		form.correct.value=corrt
+		tried=1
+	}
+	else{
+		form.results.value="incorrect"
+		tried=2
+	}
+	}
+}
+function showanswer(){
+if(attempts>=3){
+	if(ie4){
+		ansspot.innerHTML=thesolution
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.write(thesolution)
+		document.ansspot.document.close()
+	}
+	}
+}
+function clearansspot(){
+	if(ie4){
+		ansspot.innerHTML=""
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.clear()
+		document.ansspot.document.close()
+	}
+}
+</script>
+</head>
+<body onLoad="cleanse(),setrefs()">
+<h2>Molarity</h2>
+This page provides basic practice with molarity calculations.  When you press the "New Problem" button, two of the cells will fill. Determine the value of the missing quantity, enter it in the empty
+cell and press "Check Answer". The results are displayed in the second table, which will also
+keep a running total of your score. If you get a question wrong, you can reenter and recheck your answer. Getting new problems is just a matter of pressing the "New Problem" button at any time. 
+<ul>
+<li>If you miss a problem three times, pressing "Show Answer" will display a complete solution
+</ul>
+<form>
+<table border=4>
+<tr>
+<td align=center><b>Molarity</td>
+<TD ALIGN=CENTER><b>Moles</td>
+<td align=center><b>Vol(L)</td>
+</tr>
+<tr>
+<td align=center><input type="text" size=8 ></td>
+<td align=center><input type="text" size=8 ></td>
+<td align=center><input type="text" size=8 ></td>
+</tr>
+<tr>
+<td><input type="button" value="New Problem" onClick=startit()></td>
+<td><input type="button" value="Check Answer" onClick=answer(this.form)></td>
+<td><input type="button" value="Show Answer" onClick=showanswer()></td>
+</tr>
+</table>
+<br>
+<table border=4>
+<tr><td align=center><b>Results</td>
+<td align=center><b>Total Done</td>
+<td><b>Total Correct</td>
+</tr>
+<tr>
+<td><input type="text" name=results size=12></td>
+<td align=center><input type="text" name=total size=4 ></td>
+<td align=center><input type="text" name=correct size=4 ></td>
+</tr>
+</table>
+</form>
+<div id=qspot></div>
+<div id=ansspot></div>
+<div id=refspot></div>
+</body>
+</html>

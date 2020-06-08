@@ -1,0 +1,274 @@
+<html>
+<head>
+<title>Acid-base Reactions</title>
+<style>
+#qspot {position:absolute;left:320;top:250}
+#ansspot {position:absolute;left:20;top:420;height:300}
+#tspot {position:absolute;left:10;top:300}
+#refspot {position:absolute;left:10;top:600}
+</style>
+<script src="reflist.js"></script>
+<script src="numberconvert.js"></script>
+<script language="javascript">
+//updated 11/14/00-added complete solution
+var ie4 = (document.all) ? true : false;
+//global variables
+refnumber=121
+theanswer=""
+attempts=0
+tried=0
+anrs=0
+corrt=0
+totl=0
+ctype=0
+first=0
+second=0
+option=0
+acidk=0
+basek=0
+theanswer=""
+K=0
+cmpd=new Array()
+thereaction=""
+ansset=new Array()
+neat=new Array()
+showK=new Array()
+function clear(){
+	document.forms[0].theans.value=""
+	document.forms[0].results.value=""
+	attempts=0
+	tried=0
+	clearansspot()
+	}
+function cleanse(){
+	clear()
+	document.forms[0].total.value=0
+	document.forms[0].correct.value=0
+	}
+//the following area is the data:name of species, formula,formula of conjugate
+//K value and type
+compound=new Array()
+compound[0]=new Array("CH<SUB>3</SUB>COOH","CH<SUB>3</SUB>COO<SUP>-</SUP>",1.8e-5)
+compound[1]=new Array("C<SUB>3</SUB>H<SUB>4</SUB>O<SUB>2</SUB>","C<SUB>3</SUB>H<SUB>3</SUB>O<SUB>2</SUB><SUP>-</SUP>",5.5e-5)
+compound[2]=new Array("C<SUB>7</SUB>H<SUB>6</SUB>O<SUB>2</SUB>","C<SUB>7</SUB>H<SUB>5</SUB>O<SUB>2</SUB><SUP>-</SUP>",6.3e-5)
+compound[3]=new Array("C<SUB>2</SUB>H<SUB>3</SUB>ClO<SUB>2</SUB>","C<SUB>2</SUB>H<SUB>2</SUB>ClO<SUB>2</SUB><SUP>-</SUP>",1.4e-3)
+compound[4]=new Array("HClO<SUB>2</SUB>","ClO<SUB>2</SUB><SUP>-</SUP>",1.1e-2)
+compound[5]=new Array("HOCN","OCN<SUP>-</SUP>",3.5e-4)
+compound[6]=new Array("HCO<SUB>2</SUB>H","HCO<SUB>2</SUB><SUP>-</SUP>",1.8e-4)
+compound[7]=new Array("HF","F<SUP>-</SUP>",6.6e-4)
+compound[8]=new Array("HNO<SUB>2</SUB>","NO<SUB>2</SUB><SUP>-</SUP>",7.2e-4)
+compound[9]=new Array("HN<SUB>3</SUB>","N<SUB>3</SUB><SUP>-</SUP>",1.9e-5)
+compound[10]=new Array("C<SUB>3</SUB>H<SUB>6</SUB>O<SUB>2</SUB>","C<SUB>3</SUB>H<SUB>5</SUB>O<SUB>2</SUB><SUP>-</SUP>",1.3e-5)
+compound[11]=new Array("HOCl","OCl<SUP>-</SUP>",2.9e-8)
+compound[12]=new Array("C<SUB>2</SUB>H<SUB>2</SUB>Cl<SUB>2</SUB>O<SUB>2</SUB>","C<SUB>2</SUB>H<SUB></SUB>Cl<SUB>2</SUB>O<SUB>2</SUB><SUP>-</SUP>",5.5e-2)
+compound[13]=new Array("C<SUB>6</SUB>H<SUB>5</SUB>SH","C<SUB>6</SUB>H<SUB>5</SUB>S<SUP>-</SUP>",3.2e-7)
+compound[14]=new Array("C<SUB>4</SUB>H<SUB>8</SUB>O<SUB>2</SUB>","C<SUB>4</SUB>H<SUB>7</SUB>O<SUB>2</SUB><SUP>-</SUP>",1.5e-5)
+compound[15]=new Array("C<SUB>8</SUB>H<SUB>8</SUB>O<SUB>2</SUB>","C<SUB>8</SUB>H<SUB>7</SUB>O<SUB>2</SUB><SUP>-</SUP>",4.9e-5)
+compound[16]=new Array("C<SUB>2</SUB>H<SUB>3</SUB>FO<SUB>2</SUB>","C<SUB>2</SUB>H<SUB>2</SUB>FO<SUB>2</SUB><SUP>-</SUP>",2.6e-3)
+compound[17]=new Array("C<SUB>2</SUB>HCl<SUB>3</SUB>O<SUB>2</SUB>","C<SUB>2</SUB>Cl<SUB>3</SUB>O<SUB>2</SUB><SUP>-</SUP>",.3)
+compound[18]=new Array("C<SUB>5</SUB>H<SUB>5</SUB>NCl","C<SUB>5</SUB>H<SUB>4</SUB>NCl<SUP>-</SUP>",6.67e-6)
+//weak bases start here
+compound[19]=new Array("NH<SUB>3</SUB>","NH<SUB>4</SUB><sup>+</sup>",1.8e-5)
+compound[20]=new Array("C<SUB>6</SUB>H<SUB>5</SUB>NH<SUB>2</SUB>","C<SUB>6</SUB>H<SUB>5</SUB>NH<SUB>3</SUB><sup>+</sup>",7.4e-10)
+compound[21]=new Array("C<SUB>18</SUB>H<SUB>21</SUB>NO<SUB>3</SUB>","C<SUB>18</SUB>H<SUB>22</SUB>NO<SUB>3</SUB><sup>+</sup>",8.9e-7)
+compound[22]=new Array("C<SUB>2</SUB>H<SUB>5</SUB>NH<SUB>2</SUB>","C<SUB>2</SUB>H<SUB>5</SUB>NH<SUB>3</SUB><sup>+</sup>",4.3e-4)
+compound[23]=new Array("C<SUB>5</SUB>H<SUB>11</SUB>N","C<SUB>5</SUB>H<SUB>12</SUB>N<sup>+</sup>",1.3e-3)
+compound[24]=new Array("(C<SUB>2</SUB>H<SUB>5</SUB>)<SUB>3</SUB>N","(C<SUB>2</SUB>H<SUB>5</SUB>)<SUB>3</SUB>NH<sup>+</sup>",5.2e-4)
+compound[25]=new Array("(CH<SUB>3</SUB>)<SUB>3</SUB>N","(CH<SUB>3</SUB>)<SUB>3</SUB>NH<sup>+</sup>",6.3e-5)
+compound[26]=new Array("NH<SUB>2</SUB>OH","NH<SUB>3</SUB>OH<sup>+</sup>",9.1e-9)
+compound[27]=new Array("CN<sup>-</sup>","HCN", 1.61e-5 )
+compound[28]=new Array("OBr<sup>-</sup>","HOBr",4e-6)
+compound[29]=new Array("CH<SUB>3</SUB>NH<SUB>2</SUB>","CH<SUB>3</SUB>NH<SUB>3</SUB><sup>+</sup>",4.2e-4)
+compound[30]=new Array("C<SUB>17</SUB>H<SUB>19</SUB>NO<SUB>3</SUB>","C<SUB>17</SUB>H<SUB>20</SUB>NO<SUB>3</SUB><sup>+</sup>",7.4e-7)
+compound[31]=new Array("(C<SUB>2</SUB>H<SUB>5</SUB>)<SUB>2</SUB>NH","(C<SUB>2</SUB>H<SUB>5</SUB>)<SUB>2</SUB>NH<sub>2</sub><sup>+</sup>",6.9e-4)
+compound[32]=new Array("(CH<SUB>3</SUB>)<SUB>2</SUB>NH  ","(CH<SUB>3</SUB>)<SUB>2</SUB>NH<sub>2</sub><sup>+</sup>",5.9e-4)
+compound[33]=new Array("OI<sup>-</sup>","HOI",4.35e-4)
+compound[34]=new Array("C<SUB>6</SUB>H<SUB>15</SUB>NO<SUB>3</SUB>","C<SUB>6</SUB>H<SUB>16</SUB>NO<SUB>3</SUB><sup>+</sup>",5.8e-7)
+compound[35]=new Array("C<SUB>5</SUB>H<SUB>5</SUB>N","C<SUB>5</SUB>H<SUB>6</SUB>N<sup>+</sup>",1.5e-9)
+compound[36]=new Array("N<SUB>2</SUB>H<SUB>4</SUB>","N<SUB>2</SUB>H<SUB>5</SUB><sup>+</sup>",8.5e-7)
+function constants(){
+var cont=window.open("","cont","scrollbars=yes,width=300,height=300")
+cont.document.writeln ("<html>");
+cont.document.writeln ("<head><title>Rate cont</title>");
+cont.document.writeln ("</head>");
+cont.document.writeln ("<body bgcolor = FFFFFF><b>Acids</b><table>");
+for(j=0;j<=36;j++){
+if(j==19){cont.document.writeln ("<tr><td><b>Bases</b><br></td></tr>")};
+cont.document.writeln("<tr><td>",compound[j]['name'],"</td><td>");
+cont.document.writeln("<td>",compound[j]['formula'],"</td><td>");
+cont.document.writeln("<td>",sigfigs(compound[j]['K']),"</td></tr>")};
+cont.document.writeln("</table><form><input type=button value='Close Window' onClick='window.close()'></form>");
+cont.document.writeln("<html>");
+cont.document.close();
+cont.focus();
+}
+function startit(){
+	clear()
+	totl++
+	document.forms[0].total.value=totl
+	getspecies()
+}
+function getspecies(){
+	first=Math.floor(19*Math.random())
+	if(Math.random()>.5){
+		option=1
+		cmpd[0]=compound[first][0]
+		cmpd[2]=compound[first][1]
+		k1=compound[first][2]
+		acidk=0
+	}
+	else{
+		option=2
+		cmpd[1]=compound[first][1]
+		cmpd[3]=compound[first][0]
+		k2=1e-14/compound[first][2]
+		basek=1
+	}
+	second=first
+	while(second==first){second=Math.floor(37*Math.random())
+	if(option==1){
+		if(second<19){
+			cmpd[1]=compound[second][1]
+			cmpd[3]=compound[second][0]
+			k2=1e-14/compound[second][2]
+			basek=2
+		}
+		else{
+			cmpd[1]=compound[second][0]
+			cmpd[3]=compound[second][1]
+			k2=compound[second][2]
+			basek=0
+		}
+	}
+	else
+		if(second<19){
+			cmpd[0]=compound[second][0]
+			cmpd[2]=compound[second][1]
+			k1=compound[second][2]
+			acidk=0
+		}
+		else{
+			cmpd[0]=compound[second][1]
+			cmpd[2]=compound[second][0]
+			k1=1e-14/compound[second][2]
+			acidk=1
+		}
+	}
+	thereaction=cmpd[0]+" + "+cmpd[1]+" => "	+cmpd[2]+" + "+cmpd[3]
+	K=k1*k2/1e-14
+	showK[0]=number(k1,2,2)
+	showK[1]=number(k2,2,2)
+	showK[2]=number(K,2,2)
+	buildquestion(option,first,second)
+}	
+function buildquestion(){
+	thequest="Calculate the value of the equilibrium constant for the following proton transfer reaction:<br>"+thereaction
+	showquest(thequest)
+	buildanswer()
+}
+function buildanswer(){
+	theanswer="K<SUB>rxn</SUB>=K<SUB>a</SUB>*K<SUB>b</SUB>/K<SUB>w</SUB><br>In this case,<br>"
+	if(option==1){
+	theanswer+=("K<SUB>a</SUB> for "+cmpd[0]+"="+showK[0])
+	theanswer+="<br>"
+	basek==0?theanswer+=("K<SUB>b</SUB> for "+cmpd[1]+"="+showK[1]):theanswer+=(cmpd[1]+" is the conjugate base of " + compound[second][0]+". Its Kb=Kw/Ka=1*10<sup>-14</sup>/"+number(compound[second][2],2,2)+"="+showK[1])
+	}
+	else{
+		acidk==0?theanswer+=("K<SUB>a</SUB> for "+cmpd[0]+"="+showK[0]):theanswer+=(cmpd[0]+" is the conjugate acid of " + compound[second][0]+". Its K<SUB>a</SUB>=K<SUB>w</SUB>/K<SUB>b</SUB>=1*10<sup>-14</sup>/"+number(compound[second][2],2,2)+"="+showK[0]);
+		theanswer+="<br>"+(cmpd[1]+" is the conjugate base of " + compound[first][0]+". Its K<SUB>b</SUB>=K<SUB>w</SUB>/K<SUB>a</SUB>=1*10<sup>-14</sup>/"+number(compound[first][2],2,2)+"="+showK[1])
+	}
+	theanswer+="<br>"
+	theanswer+=(showK[0]+"*"+showK[1]+"/10<SUP>-14</SUP>="+showK[2])
+} 
+function showquest(thequest){
+	if(ie4){
+		qspot.innerHTML=thequest
+		}
+	else{
+		document.qspot.document.open()
+		document.qspot.document.write(thequest,"<br>")
+		document.qspot.document.close()
+	}
+}
+
+function showanswer(){
+if(attempts>=3){
+	if(ie4){
+		ansspot.innerHTML=theanswer
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.write(theanswer)
+		document.ansspot.document.close()
+	}
+	}
+}
+function clearansspot(){
+	if(ie4){
+		ansspot.innerHTML=""
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.clear()
+		document.ansspot.document.close()
+	}
+}
+function answer(ans){
+	if(tried==1)alert("You've done this one. Get a new problem.");
+	else{
+	attempts++
+	if(tried==2){totl++
+		document.forms[0].total.value=totl
+		}
+	if(ans>.95*K & ans<1.05*K ){ 
+    		document.forms[0].results.value="correct"
+    		corrt++
+		document.forms[0].correct.value=corrt
+		tried=1
+	}
+	else {document.forms[0].results.value="incorrect"
+	tried=2}
+}}
+
+</script>
+</head>
+<body onLoad="cleanse()">
+<h2>Ks for acid-base reactions</h2>
+This page randomly generates problems involving proton transfer equilibria where all of the species are weak. In order to use the page, you need a
+table of acid/base Ks. To start,press "New Problem" and a question will appear to the right of the button.  Determine the value of the
+equilibrium constant for the reaction shown, enter it in the cell and press "Check Answer". Results appear in the table. <ul>
+<li>If you use scientific notation enter the number is the form 2.3e5.
+<li>If you get a problem "incorrect", you should redo it and recheck your
+answer.
+<li>If you miss a problem three times, pressing the "Show Answer" button will cause a complete solution to appear.
+</ul>
+<form>
+<table>
+<tr><td><input type=button value="New Problem" onClick="startit()"><td></tr>
+<tr><td><b>Enter your answer</b></td>
+<td><input type="text" name=theans size=10></td>
+</tr>
+<tr>
+<td><input type=button value="Check answer" onClick="answer(this.form.theans.value)"></td>
+<td><input type=button value="Show answer" onClick="showanswer()"></td>
+</tr>
+</table>
+<table border=4>
+<tr><td align=center><b>Results</td>
+<td align=center><b>Total Done</td>
+<td><b>Total Correct</td>
+</tr>
+<tr>
+<td><input type="text" name=results size=12></td>
+<td align=center><input type="text" name=total size=4 ></td>
+<td align=center><input type="text" name=correct size=4 ></td>
+</tr>
+<tr>
+</table>
+</form>
+<div id=qspot></div>
+<div id=ansspot></div>
+<div id=refspot></div>
+<br>
+</body>
+</html>

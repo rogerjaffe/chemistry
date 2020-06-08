@@ -1,0 +1,209 @@
+<html>
+<head><title>Converting Masses</title>
+<style>
+#qspot {position:absolute;left:320;top:300}
+#ansspot {position:absolute;left:320;top:340;height:200}
+#tspot {position:absolute;left:10;top:300}
+#refspot {position:absolute;left:10;top:600;height:200}
+</style>
+<script src=reflist.js></script>
+<script language="javascript">
+//updated 11/21/00-added compete solution
+//checked w/ NS4.7 and IE5
+//global variables
+var ie4 = (document.all) ? true : false;
+//global variables
+refnumber=31
+attempts=0
+which=0
+theanswer=0
+corrt=0
+totl=0
+function quads(name,factor,mp,mp2){
+	this.name=name
+	this.factor=factor
+	this.mp=mp
+	this.mp2=mp2
+}
+mass=new Array()
+mass[1]=new quads("pounds",1)
+mass[2]=new quads("ounces",16,"*1/16")
+mass[3]=new quads("milligrams",4.54e5,"*1000","*1/1000")
+mass[4]=new quads("grams",454,"","")
+mass[5]=new quads("kilograms",.454,"*1/1000","*1000")
+link=new Array(" pounds to grams "," grams to pounds ")
+seqence=new Array()
+function cleanse(){
+	clear()
+	document.forms[0].correct.value=0
+	document.forms[0].total.value=0
+}
+function clear(){
+	tried=0
+	attempts=0
+	document.forms[0].theans.value=""
+	document.forms[0].results.value=""
+	clearansspot()
+}
+function clearansspot(){
+	if(ie4)ansspot.innerHTML="";
+	else{ 
+		document.ansspot.document.open()
+		document.ansspot.document.clear()
+		document.ansspot.document.close()
+	}
+}
+function startit(){
+	totl++
+	document.forms[0].total.value=totl
+	clear()
+	startmass=0
+	while(startmass<1)startmass=Math.round(100*Math.random())/10;
+	first=Math.ceil(2*Math.random())
+	second=2+Math.ceil(3*Math.random())
+	if(Math.random()>10){
+		fmas=startmass*(mass[first].factor)
+		fdim=mass[first].name
+		smas=startmass*(mass[second].factor)
+		sdim=mass[second].name
+		key=1
+	}
+	else{
+		smas=startmass*(mass[first].factor)
+		sdim=mass[first].name
+		fmas=startmass*(mass[second].factor)
+		fdim=mass[second].name
+		key=2
+	}
+	fmas=Math.round(fmas)
+	smas=Math.round(smas)
+	thequest="Convert "+fmas+fdim+" to "+sdim
+	showquest(thequest)
+	answerpath(key)
+	buildanswer(key)
+}
+function answerpath(key){
+	if(key==1){
+		path=link[0]
+		if(first==2)path=" ounces "+" to "+path;
+		if(second!=4)path=path+" to "+mass[second].name
+	}
+	else{	
+		path=link[1]
+		if(second!=4)path=mass[second].name+" to "+path;
+		if(first!=1)path=path+" to "+mass[first].name
+	}		
+	path="This problem can be solved by following conversion(s):<br><br>"+path+"<br><br>"
+}
+function buildanswer(key){
+	theanswer=""
+	if(key==1){
+		theanswer=fmas
+		if(first==2)theanswer=theanswer+"*16";
+		theanswer=theanswer+"*454"+mass[second].mp
+		}				
+	else{
+		theanswer=fmas+mass[second].mp2+"*1/454"
+		if(first==2)theanswer=theanswer+"*1/16"
+		}
+	theanswer=theanswer+"="+smas
+}
+function showquest(thequest){
+	if(ie4){
+		qspot.innerHTML=thequest
+		}
+	else{
+		document.qspot.document.open()
+		document.qspot.document.write(thequest)
+		document.qspot.document.close()
+	}
+}
+function showanswer(){
+if(attempts>=3){
+	if(ie4){
+		ansspot.innerHTML=path+theanswer
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.write(path,theanswer)
+		document.ansspot.document.close()
+	}
+	}
+}
+function answer(theans){
+	if(tried==1)alert("You've done this one! Get a new problem.");
+	else{
+	if(tried==2){totl++;document.forms[0].total.value=totl}
+	attempts++
+	if(theans>.95*smas & theans<1.05*smas){
+		corrt++
+		document.forms[0].results.value="Correct"
+		document.forms[0].correct.value=corrt
+		tried=1
+	}
+	else{
+		document.forms[0].results.value="Incorrect"
+		tried=2
+	}
+	}
+}
+		
+</script>
+</head>
+<body onLoad="cleanse(),setrefs()">
+<h2>Converting Masses</h2>
+This page provides drill and practice in converting mass measures between
+the English (pounds and ounces) and the metric (grams, etc). It will help you
+with both your math skills and you understanding of both systems of measure.The solutions presented on this page utilize a very limited set of conversion factors and a single "bridge" between the English and metric systems(1.00pounds=454g)<br>
+Thus, the solution described is not the only one possible, by any means.
+<h4>usage</h4>
+<ul>
+<li>To begin-press "New Conversion" and a conversion will appear to the right of the button.
+<li>Put the correct value into the answer cell and press "Check Answer."
+<li>The results on the problem and a running total will appear in the second table.
+<li>If you get a problem "incorrect", you should redo it and recheck your
+answer.
+<li>If you miss a problem three times, pressing the "Show Answer" button will cause a complete solution to appear.
+</ul>
+
+<form>
+<table>
+<tr><td><input type=button value="New Conversion" onClick="startit()"><td></tr>
+<tr><td><b>Enter your answer</b></td>
+<td><input type="text" name=theans size=8></td>
+</tr>
+<tr>
+<td><input type=button value="Check answer" onClick="answer(this.form.theans.value)"></td>
+<td><input type=button value="Show answer" onClick="showanswer()"></td>
+</tr>
+</table>
+<table border=4>
+<tr><td align=center><b>Results</td>
+<td align=center><b>Total Done</td>
+<td><b>Total Correct</td>
+</tr>
+<tr>
+<td><input type="text" name=results size=12></td>
+<td align=center><input type="text" name=total size=4 ></td>
+<td align=center><input type="text" name=correct size=4 ></td>
+</tr>
+<tr>
+</table>
+</form>
+<div id=qspot></div>
+<div id=ansspot></div>
+<div id=refspot></div>
+<br>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+

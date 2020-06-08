@@ -1,0 +1,185 @@
+<html>
+<head>
+<title>pA,pB-cs</title>
+<style>
+#ansspot {position:absolute;left:300;top:360;height:300}
+#tspot {position:absolute;left:10;top:300}
+#refspot {position:absolute;left:10;top:600;height:50}
+</style>
+<script src="reflist.js"></script>
+<script src="numberconvert.js"></script>
+<script src="ionformulas.js"></script>
+<script language="javascript">
+//updated 7/10/01-added complete solution
+var ie4 = (document.all) ? true : false;
+//global variables
+refnumber=127
+corrt=0
+tried=0
+totl=0
+theanswer=0
+thesolution=0
+alldata=0
+solved=0
+shown=0
+symbols=new Array("","A","B","pA","pB")
+equation=new Array()
+equation[0]=symbols[1]+"=10<sup>-"+symbols[3]+"</sup>"//H=10^-pA
+equation[1]=symbols[2]+"=10<sup>-"+symbols[4]+"</sup>"//OH=10^-p0H
+equation[2]=symbols[1]+"=10<sup>-14</sup>/"+symbols[2]//H=10^-14/OH
+equation[3]=symbols[2]+"=10<sup>-14</sup>/"+symbols[1]//H=10^-14/OH
+equation[4]=symbols[3]+"=-log"+symbols[1]//pA=-logH
+equation[5]=symbols[4]+"=-log"+symbols[2]//p0H=-logOH
+equation[6]=symbols[3]+"=14-"+symbols[4]//pA=14-pB
+equation[7]=symbols[4]+"=14-"+symbols[3]//pB=14-pA
+eqnsets=new Array()
+eqnsets[0]=new Array("")
+eqnsets[1]=new Array(3,4,5)
+eqnsets[2]=new Array(2,4,5)
+eqnsets[3]=new Array(7,0,1)
+eqnsets[4]=new Array(6,0,1)
+function clear(){
+	for(j=1;j<5;j++)document.forms[0].elements[j].value="";
+	document.forms[0].results.value=""
+	attempts=0
+	tried=0
+	clearansspot()
+}
+function cleanse(){
+	clear()
+	document.forms[0].total.value=0
+	document.forms[0].correct.value=0
+}
+function startit(){
+	alldata=new Array()
+	clear()
+	totl++
+	document.forms[0].total.value=totl
+	alldata[3]=0
+	while(alldata[3]<1)alldata[3]=12*Math.random();
+	alldata[3]=number(alldata[3],3,3)
+	alldata[4]=number((14-alldata[3]),3,3)
+	alldata[1]=Math.pow(10,-alldata[3])
+	alldata[2]=Math.pow(10,-alldata[4])
+	alldata[1]=number(alldata[1],3,1)
+	alldata[2]=number(alldata[2],3,1)	
+	makeproblem()
+	getsolutions()
+	buildanswer()
+}
+function makeproblem(){
+	shown=Math.ceil(4*Math.random())
+	document.forms[0].elements[shown].value=alldata[shown]
+	}
+function getsolutions(){
+	solved=new Array()
+	solved[0]="10<sup>-"+alldata[3]+"</sup>="+alldata[1]//H=10^-pA
+	solved[1]="10<sup>-"+alldata[4]+"</sup>="+alldata[2]//OH=10^-p0H
+	solved[2]="10<sup>-14</sup>/("+alldata[2]+")="+alldata[1]//H=10^-14/OH
+	solved[3]="10<sup>-14</sup>/("+alldata[1]+")="+alldata[2]//H=10^-14/OH
+	solved[4]="-log("+alldata[1]+")="+alldata[3]//pA=-logH
+	solved[5]="-log("+alldata[2]+")="+alldata[4]//p0H=-logOH
+	solved[6]="14-"+alldata[4]+"="+alldata[3]//pA=14-pB
+	solved[7]="14-"+alldata[3]+"="+alldata[4]//pB=14-pA
+}
+function buildanswer(){
+	theeqn=geteqn()
+	thesolution="When the "+symbols[shown]+" is given, the other values are readily determined by the series of steps shown below.<br>"
+	thesolution+=theeqn
+}
+function geteqn(which){
+	theeqn="<br>"
+	for(var j=0;j<eqnsets[shown].length;j++)theeqn+=equation[eqnsets[shown][j]]+"   <B>=></B>   "+solved[eqnsets[shown][j]]+"<br>";
+	return theeqn
+	}
+function answer(form){
+	if(tried==1)alert("You've already done this one! Get a new problem");
+	else{
+		test=0
+		attempts++
+		if(tried==2){totl++;document.forms[0].total.value=totl};
+		for(j=1;j<=4;j++){
+			if(form.elements[j].value<.95*alldata[j] || form.elements[j].value>1.05*alldata[j])test++;
+		}
+		if(test==0){
+			document.forms[0].results.value="correct"
+			corrt++
+			document.forms[0].correct.value=corrt
+			tried=1
+			}
+		else{
+			document.forms[0].results.value="incorrect"
+			tried=2
+			}
+		}
+}
+function showanswer(){
+if(attempts>=3){
+	if(ie4){
+		ansspot.innerHTML=thesolution
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.write(thesolution)
+		document.ansspot.document.close()
+	}
+	}
+}
+function clearansspot(){
+	if(ie4){
+		ansspot.innerHTML=""
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.clear()
+		document.ansspot.document.close()
+	}
+}
+
+</script>
+</head>
+<body onLoad="cleanse(),setrefs()">
+<h2>pA, pB, A and B</h2>
+This page is a drill and practice exercise in designed for Chemistry 108. If you are not a student in that class, this page will not be much use to you. When
+you press "New Problem" a value will appear in one of the cells in the table. You must
+properly fill in the other three windows. Pressing "Cheack Answer" checks your answer and
+returns the result in the second table. If you get a problem incorrect, you
+should retry it until it is correct. 
+<h4>Hints</h4>
+<ul>
+<li>Use <b>TAB</b> to move between cells
+<li>Use "e" notation for scientific notation: 1.2*10<sup>-3</sup> would be entered 1.2e-3
+<li>If you miss a problem three times, pressing "Show Answer" will cause a complete solution to be displayed.
+</ul>
+<form>
+<input type=button value="New Problem" onClick="startit()">
+<table border=4>
+<tr>
+<td align=center>A</td><td align=center>B</td><td align=center>pA</td><td align=center>pB</td>
+</tr>
+<tr>
+<td><input type="text" size=12></td>
+<td><input type=text size=12></td>
+<td><input type=text size=8></td>
+<td><input type=text size=8></td>
+</tr>
+</table>
+<input type=button value="Check Answer" onClick=answer(this.form)>
+<input type=button value="Show Answer" onClick=showanswer()>
+<table border=4>
+<tr>
+<td><b>Results</b></td>
+<td><b>Total</b></td>
+<td><b>Correct</b></td></tr>
+<tr>
+<td><input type="text" name=results size=12></td>
+<td align=center><input name=total type="text" size=3></td>
+<td align=center><input name=correct type="text" size=3></td>
+</tr>
+</table>
+</form>
+<div id=qspot></div>
+<div id=ansspot></div>
+<div id=refspot></div>
+</body>
+</html>

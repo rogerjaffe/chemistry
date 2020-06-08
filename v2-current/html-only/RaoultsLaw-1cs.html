@@ -1,0 +1,182 @@
+<html>
+<head>
+<title>Raoult's Law-one volatile-cs</title>
+<style>
+#qspot {position:absolute;left:350;top:200}
+#ansspot {position:absolute;left:350;top:300;height:200}
+#tspot {position:absolute;left:10;top:300}
+#refspot {position:absolute;left:10;top:600;height:200}
+</style>
+<script src=numberconvert.js></script>
+<script src="reflist.js"></script>
+<script>
+refnumber=60
+totl=0
+corrt=0
+theanswer=""
+option=0
+varset=new Array()
+var ie4=(document.all)?true:false;
+thedata=new Array()
+thedata[0]=new Array("acetaldehyde",833)
+thedata[1]=new Array("acetone",227)
+thedata[2]=new Array("benzene",97)
+thedata[3]=new Array("chloroform",193)
+thedata[4]=new Array("cyclohexane",93)
+thedata[5]=new Array("cyclopentane",301)
+thedata[6]=new Array("diethylamine",234)
+thedata[7]=new Array("diethylether",528)
+thedata[8]=new Array("diethylsulfide",59)
+thedata[9]=new Array("ethanol",60.1)
+thedata[10]=new Array("ethylmercaptan",519)
+thedata[11]=new Array("heptane",45.7)
+thedata[12]=new Array("hexane",150)
+thedata[13]=new Array("methanol",127)
+raoults="P<sub>a</sub>=P<sub>o</sub>*X<sub>a</sub>"
+rlaws=new Array("X<sub>a</sub>=P<sub>a</sub>/P<sub>o</sub>",raoults,"P<sub>o</sub>=P<sub>a</sub>/X<sub>a</sub>")
+thephrase=new Array("A solution of "," with a nonvolatile compound has ",", what is the "," of the ","?")
+inserts=new Array()
+inserts[0]=new Array(" vapor pressure of "," torr. If P<sup>o</sup> is ",""," mole fraction ")
+inserts[1]=new Array(" mole fraction of ",". If P<sup>o</sup> is ",""," vapor pressure ")
+inserts[2]=new Array(" mole fraction of "," and a partial pressure of "," torr."," P<sup>o</sup> ")
+//programs begin
+function cleanse(){
+	totl=0
+	corrt=0
+	document.forms[0].correct.value=""
+	document.forms[0].total.value=""
+	clear()
+}
+function clear(){
+	clearansspot()
+	attempts=0
+	document.forms[0].results.value=""
+	tried=0
+	document.forms[0].theans.value=""
+}
+function startit(){
+	clear()
+	totl++
+	document.forms[0].total.value=totl
+	choice=Math.floor(Math.random()*thedata.length);
+	chi=0;
+	while(chi<.6 || chi>.9)chi=Math.random();
+	chi=number(chi,3,3)
+	option=Math.floor(3*Math.random())
+	buildquest(choice,chi,option)
+	}
+function buildquest(choice,chi,option){
+	thecmpd=thedata[choice][0]
+	po=getpo(choice)
+	p=chi*po
+	chi=number(chi,3,3)
+	p=number(p,3,3)
+	alldata=new Array(thecmpd,p,po,chi)
+	varset[0]=new Array(chi,p,po)
+	varset[1]=new Array(p,chi,po)
+	varset[2]=new Array(po,chi,p)
+	dinsert=(inserts[option][0]+varset[option][1]+inserts[option][1]+varset[option][2]+inserts[option][2]);
+	thequest=thephrase[0]+thecmpd+thephrase[1]+dinsert+thephrase[2]+inserts[option][3]+thephrase[3]+thecmpd+thephrase[4]
+	showquest(thequest)
+	buildanswer()
+	}
+function buildanswer(){
+	thesolution="Raoult's Law states that the observed vapor pressure of a volatile material<br>is the product of the neat vapor pressure and compounds mole fraction:<br>"+raoults
+	option==1?thesolution+="<br>Substituting in the values and solving yields:<br>":thesolution+="<br>Rearranging Raoults Law:<br> "+rlaws[option]+"<br>and then substituting and solving yields:<br>"
+	theeqn=geteqn()
+	thesolution+=theeqn
+}
+function geteqn(){
+	if(option==0)theeqn=p+"/"+po+"="+chi;
+	if(option==1)theeqn=po+"*"+chi+"="+p
+	if(option==2)theeqn=p+"/"+chi+"="+po
+	return theeqn
+}
+function showanswer(){
+if(attempts>=3){
+	if(ie4){
+		ansspot.innerHTML=thesolution
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.write(thesolution)
+		document.ansspot.document.close()
+	}
+	}
+}
+function clearansspot(){
+	if(ie4){
+		ansspot.innerHTML=""
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.clear()
+		document.ansspot.document.close()
+	}
+}
+function getpo(choice){
+	factor=0
+	while(factor<.8 || factor>1.2)factor=Math.random()*2;
+	basep=thedata[choice][1]
+	po=number(factor*basep,3,3)
+	return po
+}
+function showquest(thequest){
+	if(ie4){
+		qspot.innerHTML=thequest
+		}
+	else{
+		document.qspot.document.open()
+		document.qspot.document.write(thequest)
+		document.qspot.document.close()
+	}
+}
+function answer(ans){
+if(tried==1){
+		alert("Sorry, you've already submitted this problem! We'll get you a new one!")
+		startit()}
+else{
+	attempts++
+ 	if(tried==2){totl++;document.forms[0].total.value=totl}
+	if (ans>.95*varset[option][0]& ans<1.05*varset[option][0]){
+		document.forms[0].results.value="correct"
+		corrt++
+		document.forms[0].correct.value=corrt
+		tried=1
+		}
+	else {
+		tried=2
+		document.forms[0].results.value="incorrect"
+	}
+}}
+	
+</script>
+</head>
+<body onLoad="cleanse(),setrefs()">	
+<h3>Raoult's Law-One Volatile Component</h3>
+This page presents problems involving the vapor pressures of mixtures containing a single volatile component. When you press "New Problem", a question will appear below the table. All of the values presented and the question asked relate to the volatile component. Do not be concerned about the nonvolatile material. Determine the value of the answer, enter it in the cell and press "Check Answer", results appear immediately in the table. For purposes of this exercise, assume that all solutions are ideal. If you miss a problem three times, pressing "Show Answer" result in a complete solution appearing.
+<form>
+<input type=button value="New Problem" onClick="startit()"><br>
+<input type=text size=8 name=theans><b>Enter your answer here</b><br>
+<input type=button value="Check answer" onClick="answer(this.form.theans.value)">
+<input type=button value="Show answer" onClick="showanswer()">
+<table border=4>
+<tr><td align=center><b>Results</td>
+<td align=center><b>Total Done</td>
+<td><b>Total Correct</td>
+</tr>
+<tr>
+<td><input type="text" name=results size=12></td>
+<td align=center><input type="text" name=total size=4 ></td>
+<td align=center><input type="text" name=correct size=4 ></td>
+</tr>
+<tr>
+</table>
+</form>
+<div id=qspot></div>
+<div id=ansspot></div>
+<div id=refspot></div>
+<br>
+</body>
+</html>
+

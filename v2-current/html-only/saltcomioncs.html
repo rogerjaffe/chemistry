@@ -1,0 +1,202 @@
+<html>
+<head>
+<title>Common ion effect-cs</title>
+<style>
+#qspot {position:absolute;left:320;top:220}
+#ansspot {position:absolute;left:10;top:320;height:300}
+#tspot {position:absolute;left:10;top:300}
+#refspot {position:absolute;left:10;top:600;height:50}
+</style>
+<script src="reflist.js"></script>
+<script src="numberconvert.js"></script>
+<script language="javascript">
+//updated 11/14/00-added complete solution
+var ie4 = (document.all) ? true : false;
+//global variables
+refnumber=129
+totl=0
+corrt=0
+attempts=0
+which=0
+option=0
+choice=0
+theanswer=""
+showK=0
+line0=""
+line1=""
+line2=""
+function clear(){
+	zeroout()
+	document.forms[0].total.value=0
+	document.forms[0].correct.value=0
+}
+function zeroout(){
+	tried=0
+	attempts=0
+	clearansspot()
+	document.forms[0].results.value=""
+	document.forms[0].theans.value=""
+}
+concs=new Array(.01,.05,.001,.005,.002)
+conc=new Array()
+thedata=new Array()
+cmpds=new Array()
+cmpds[0]=new Array("AgCl",143,1.8e-10,1,1,"AgNO<SUB>3</SUB>","NaCl")
+cmpds[1]=new Array("BaCO<SUB>3</SUB>",197,5.1e-9,1,1,"Ba(NO<SUB>3</SUB>)<SUB>2</SUB>","K<SUB>2</SUB>CO<SUB>3</SUB>")
+cmpds[2]=new Array("CaF<SUB>2</SUB>",78,5.3e-9,1,2,"Ca(NO<SUB>3</SUB>)<SUB>2</SUB>","NaF")
+cmpds[3]=new Array("FeS",88,6e-19,1,1,"Fe(NO<SUB>3</SUB>)<SUB>2</SUB>","Na<SUB>2</SUB>S")
+cmpds[4]=new Array("PbCrO<SUB>4</SUB>",323,2.8e-19,1,1,"Pb(NO<SUB>3</SUB>)<SUB>2</SUB>","K<SUB>2</SUB>CrO<SUB>4</SUB>")
+cmpds[5]=new Array("Fe(OH)<SUB>3</SUB>",107,4e-38,1,3,"Fe(NO<SUB>3</SUB>)<SUB>3</SUB>","KOH")
+cmpds[6]=new Array("LiF",26,3.8e-3,1,1,"LiNO<SUB>3</SUB>","KF")
+cmpds[7]=new Array("Co(OH)<SUB>2</SUB>",93,1.6e-15,1,2,"Co(NO<SUB>3</SUB>)<SUB>2</SUB>","KOH")
+cmpds[8]=new Array("TlBr",284,3.4e-6,1,1,"TlNO<SUB>3</SUB>","NaBr")
+cmpds[9]=new Array("Mg(OH)<SUB>2</SUB>",58,1.8e-11,1,2,"Mg(NO<SUB>3</SUB>)<SUB>2</SUB>","KOH")
+cmpds[10]=new Array("AlPO<SUB>4</SUB>",122,6.3e-19,1,1,"Al(NO<SUB>3</SUB>)<SUB>3</SUB>","K<SUB>3</SUB>PO<SUB>4</SUB>")
+cmpds[11]=new Array("BaF<SUB>2</SUB>",175,1.0e-6,1,2,"Ba(NO<SUB>3</SUB>)<SUB>2</SUB>","KF")
+cmpds[12]=new Array("Cd(OH)<SUB>2</SUB>",146,2.5e-14,1,2,"Cd(NO<SUB>3</SUB>)<SUB>2</SUB>","KOH")
+cmpds[13]=new Array("CuI",190,1.1e-12,1,1,"CuNO<SUB>3</SUB>","KI")
+cmpds[14]=new Array("CuCN",89.6,3.2e-20,1,1,"CuNO<SUB>3</SUB>","KCN")
+cmpds[15]=new Array("PbBr<SUB>2</SUB>",367,4e-5,1,2,"Pb(NO<SUB>3</SUB>)<SUB>2</SUB>","KBr")
+cmpds[16]=new Array("Li<SUB>2</SUB>CO<SUB>3</SUB>",74,2.5e-2,2,1,"LiNO<SUB>3</SUB>","K<SUB>2</SUB>CO<SUB>3</SUB>")
+cmpds[17]=new Array("Ag<SUB>2</SUB>SO<SUB>3</SUB>",296,1.5e-14,2,1,"AgNO<SUB>3</SUB>","K<SUB>2</SUB>SO<SUB>3</SUB>")
+cmpds[18]=new Array("NiCO<SUB>3</SUB>",118.7,1.4e-11,1,1,"Ni(NO<SUB>3</SUB>)<SUB>2</SUB>","K<SUB>2</SUB>CO<SUB>3</SUB>")
+cmpds[19]=new Array("Tl(OH)<SUB>3</SUB>",255,6.3e-46,1,3,"Tl(NO<SUB>3</SUB>)<SUB>3</SUB>","KOH")
+
+function startit(){
+	totl++
+	document.forms[0].total.value=totl
+	zeroout()
+	which=Math.floor(cmpds.length*Math.random())
+	K=cmpds[which][2]
+	showK=number(K,3,2)
+	cfactor=cmpds[which][3]
+	afactor=cmpds[which][4]
+	Math.random()>.5?option=0:option=1;
+	option==0?choice=1:choice=0;
+	conc[option]=concs[Math.floor(5*Math.random())]
+	if(option==0){
+		first=Math.pow(conc[0],cfactor)
+		second=K/first
+		conc[1]=Math.pow(second,1/afactor)
+	}
+	else{
+		first=Math.pow(conc[1],afactor)
+		second=K/first
+		conc[0]=Math.pow(second,1/cfactor)
+	}
+	conc[2]=number(conc[0],3,2)
+	conc[3]=number(conc[1],3,2)
+	buildquest()	
+}
+function buildquest(){
+	thequest="What would the solubility be of "+cmpds[which][0]+"(Ksp="+showK+") in a "+conc[option]+"<b>M</b> solution of "+cmpds[which][5+option]+"?"
+	buildanswer()
+	showquest(thequest)
+}	
+function buildanswer(){
+	getequations()
+	theanswer="To solve this problem, you first rearrange the Ksp expression to solve for the missing concentration. To simplify the presentation, we will represent the metal by M and the anion by X<Br>."+line0+"<br>"+line1+"<br>Then, substitute in the K and the concentration and solve:<br>"+line2
+	showanswer()
+}
+function getequations(){
+	line0="Ksp="
+	cfactor==1?(line0+="[M]"):(line0+="[M]<sup>"+cfactor+"</sup>");
+	afactor==1?(line0+="[X]"):(line0+="[X]<sup>"+afactor+"</sup>");
+	option==0?line2="[X]=("+showK+"/":line2="[M]=("+showK+"/";
+	if(option==0){
+		line1="[X]=(Ksp/[M]"
+		cfactor==1?line1+=")":line1+="<sup>"+cfactor+"</sup>)";
+		afactor==1?line1+="":line1+="<sup>1/"+afactor+"</sup>"
+		cfactor==1?line2+=conc[2]+")":line2+="("+conc[2]+")<sup>"+cfactor+"</sup>)";
+		afactor==1?line2+="":line2+="<sup>1/"+afactor+"</sup>"
+		line2+=("="+conc[3])
+	}
+	if(option==1){
+		line1="[M]=(Ksp/[X]"
+		afactor==1?line1+=")":line1+="<sup>"+afactor+"</sup>)";
+		cfactor==1?line1+="":line1+=")<sup>1/"+cfactor+"</sup>"
+		afactor==1?line2+=conc[3]+")":line2+="("+conc[3]+")<sup>"+afactor+"</sup>)";
+		cfactor==1?line2+="":line2+="<sup>1/"+cfactor+"</sup>)"
+		line2+=("="+conc[2])	
+	}
+}
+function answer(){
+}
+function showquest(thequest){
+	if(ie4){
+		qspot.innerHTML=thequest
+		}
+	else{
+		document.qspot.document.open()
+		document.qspot.document.write(thequest)
+		document.qspot.document.close()
+	}
+}
+function answer(ans){
+	if(tried==1)alert("You've done this one. Get a new problem!");
+	else{
+	attempts++	
+	if(ans>.95*conc[choice] & ans<1.05*conc[choice]){
+		document.forms[0].results.value="Correct"
+		document.forms[0].correct.value++
+		tried=1
+	}
+	else{
+		if(tried==2){totl++;document.forms[0].total.value=totl}
+		document.forms[0].results.value="Incorrect"
+		tried=2
+	}
+	}
+}
+function showanswer(){
+if(attempts>=3){
+	if(ie4){
+		ansspot.innerHTML=theanswer
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.write(theanswer)
+		document.ansspot.document.close()
+	}
+	}
+}
+function clearansspot(){
+	if(ie4){
+		ansspot.innerHTML=""
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.clear()
+		document.ansspot.document.close()
+	}
+}
+
+</script>
+</head>
+<body onLoad=clear(),setrefs()>
+<h2>Common Ion Effect</h2>
+This page presents basic problems involving the common ion effect in solubility equilibria. Since it's an introduction, all of the problems will fit the approximatiom model. That is, you can view the common ion concentration as coming solely from the soluble material. The other ion will come solely from the slightly soluble material. Pressing "New Problem" will cause a question to appear. Determine the value of the answer, enter it in the answer cell and press "Check Answer". Results will appear in the table. If you miss a question three times, pressing "Show Answer" will display a complete solution.
+<form>
+<input type=button value="New Problem" onClick="startit()"><br>
+<input type=text size=8 name=theans>Enter your answer here<br>
+<input type=button value="Check Answer" onClick="answer(this.form.theans.value)">
+<input type=button value="Show Answer" onClick="showanswer()">
+<table border=4>
+<tr><td align=center><b>Results</td>
+<td align=center><b>Total Done</td>
+<td><b>Total Correct</td>
+</tr>
+<tr>
+<td><input type="text" name=results size=12></td>
+<td align=center><input type="text" name=total size=4 ></td>
+<td align=center><input type="text" name=correct size=4 ></td>
+</tr>
+<tr>
+</table>
+</form>
+<div id=qspot></div>
+<div id=ansspot></div>
+<div id=refspot></div>
+<br>
+</body>
+</html>

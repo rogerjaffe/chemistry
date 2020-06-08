@@ -1,0 +1,242 @@
+<html>
+<head>
+<title>Molarity2-cs</title>
+<style>
+#qspot {position:absolute;left:360;top:250}
+#ansspot {position:absolute;left:360;top:320;height:300}
+#tspot {position:absolute;left:10;top:300}
+#refspot {position:absolute;left:10;top:500;height:50}
+</style>
+<script src="reflist.js"></script>
+<script src="numberconvert.js"></script>
+<script src="ionformulas.js"></script>
+<script language="javascript">
+//updated 11/14/00-added complete solution
+var ie4 = (document.all) ? true : false;
+//global variables
+refnumber=72
+corrt=0
+tried=0
+totl=0
+theanswer=0
+thesolution=0
+alldata=0
+solved=0
+cmpd=0
+aindex=0
+function clear(){
+	clearansspot()
+	document.forms[0].theans.value=""
+	document.forms[0].results.value=""
+	attempts=0
+	tried=0
+	}
+function cleanse(){
+	clear()
+	document.forms[0].total.value=0
+	document.forms[0].correct.value=0
+	}
+function item(name,formula,gfw){
+	this.name=name
+	this.formula=formula
+	this.gfw=gfw
+}
+compound=new Array(20)
+compound[1]=new item("sodium chloride","NaCl",58.5)
+compound[2]=new item("sodium nitrate","NaNO<sub>3</sub>",85)
+compound[3]=new item("ammonium chloride","NH<sub>4</sub>Cl",53.5)
+compound[4]=new item("calcium nitrate","Ca(NO<sub>3</sub>)<sub>2</sub>",164)
+compound[5]=new item("methanol","CH<sub>4</sub>O",32)
+compound[6]=new item("ethanol","C<SUB>2</SUB>H<sub>6</sub>O",46)
+compound[7]=new item("acetone","C<SUB>3</SUB>H<sub>6</sub>O",58)
+compound[8]=new item("barium nitrate","Ba(NO<sub>3</sub>)<sub>2</sub>",261.4)
+compound[9]=new item("sodium iodide ","NaI",150)
+compound[10]=new item("sodium bromide","NaBr",103)
+compound[11]=new item("ferric chloride","FeCl<SUB>3</SUB>",162)
+compound[12]=new item("cobalt(II) chloride","CoCl<SUB>2</SUB>",130)
+compound[13]=new item("sucrose","",342.3)
+compound[14]=new item("lithium iodide","LiI",137)
+compound[15]=new item("potassium fluoride","KF",58.1)
+compound[16]=new item("potassium chloride","KCl",74.5)
+compound[17]=new item("calcium chloride","CaCl<SUB>2</SUB>",111)
+compound[18]=new item("barium iodide","BaI<SUB>2</SUB>",391)
+compound[19]=new item("ammonium nitrate","NH<sub>4</sub>NO<sub>3</sub>",80)
+compound[20]=new item("ammonium bromide","NH<sub>4</sub>Br",98)
+question=new Array()
+question[0]=new Array("What volume in "," of a ","<u>M</u> solution of "," would be required if you wanted ","  of solute?")
+question[1]=new Array("How many "," are in  "," of a ","<b>M</b> solution of ","?")
+question[2]=new Array("What is the molarity of a solution of "," which contains "," of solute in a total volume of ","?")
+datalabels=new Array("<u>M</u>","moles","L","mL"," grams "," mg ","gfw")
+equation=new Array()
+equation[0]=new Array("Calculate the molarity:<br>",datalabels[1]+"/"+datalabels[2]+"="+datalabels[0])//N/v=M
+equation[1]=new Array("Calculate the number of moles:<br>",datalabels[0]+"*"+datalabels[2]+"="+datalabels[1])//M*V=n
+equation[2]=new Array("Calculate the volume(L):<br>",datalabels[1]+"/"+datalabels[0]+"="+datalabels[2])//n/M=V
+equation[3]=new Array("Convert moles to grams using the gfw:<br>",datalabels[1]+"*"+datalabels[6]+"="+datalabels[4])//n*gmw=mass
+equation[4]=new Array("Convert grams to moles using the gfw:<br>",datalabels[4]+"/"+datalabels[6]+"="+datalabels[1])//m/gmw=n
+equation[5]=new Array("Convert L to mL:<br>",datalabels[2]+"*1000="+datalabels[3])//L*1000=mL
+equation[6]=new Array("Convert mL to L:<br>",datalabels[3]+"/1000="+datalabels[2])//mL/1000=L
+equation[7]=new Array("Convert g to mg:<br>",datalabels[4]+"*1000="+datalabels[5])//g*1000=mg
+equation[8]=new Array("Convert mg to g:<br>",datalabels[5]+"/1000="+datalabels[4])//mg/1000=g
+problemlist=new Array(12,13,42,43,52,53,112,113,142,143,152,153,212,213,242,243,252,253)
+eqnsets=new Array()
+eqnsets[0]=new Array("2")
+eqnsets[1]=new Array(2,5)
+eqnsets[2]=new Array(4,2)
+eqnsets[3]=new Array(4,2,5)
+eqnsets[4]=new Array(8,4,2)
+eqnsets[5]=new Array(8,4,2,5)
+eqnsets[6]=new Array("1")
+eqnsets[7]=new Array(6,1)
+eqnsets[8]=new Array(1,3)
+eqnsets[9]=new Array(6,1,3)
+eqnsets[10]=new Array(1,3,7)
+eqnsets[11]=new Array(6,1,3,7)
+eqnsets[12]=new Array("0")
+eqnsets[13]=new Array(6,0)
+eqnsets[14]=new Array(4,0)
+eqnsets[15]=new Array(4,6,0)
+eqnsets[16]=new Array(8,4,0)
+eqnsets[17]=new Array(8,4,6,0)
+function startit(){
+	totl++
+	document.forms[0].total.value=totl
+	clear()
+	molarity=0
+	vL=0
+	while(vL<.01)vL=Math.random()
+	vmL=1e3*vL
+	choice=Math.ceil(20*Math.random())
+	cmpd=new Array()
+	cmpd[0]=compound[choice].name
+	cmpd[1]=compound[choice].formula
+	M=0
+	while (M<.05)M=2*Math.random();
+	n=M*vL
+	gmass=n*compound[choice].gfw
+	mgmass=1000*gmass
+	vL=number(vL,3,3)
+	vmL=number(vmL,3,3)
+	M=number(M,3,3)
+	n=number(n,3,3)
+	gmass=number(gmass,3,3)
+	mgmass=number(mgmass,3,3)
+	alldata=new Array(M,n,vL,vmL,gmass,mgmass,compound[choice].gfw)
+	buildquestion()
+	showquest(thequest)
+}
+function buildquestion(){
+	which=Math.floor(3*Math.random())
+	Math.random()>.5?vunit=2:vunit=3;
+	Math.random()>.5?gunit=4:gunit=5;
+	Math.random()>.5?first=1:first=(3+Math.ceil(2*Math.random()));
+	probkey=1*(""+which+first+vunit)
+	if(which==0){thequest=question[which][0]+datalabels[vunit]+question[which][1]+alldata[0]+question[which][2]+cmpd[Math.floor(2*Math.random())]+question[which][3]+alldata[first]+datalabels[first]+question[which][4]
+		aindex=vunit}
+	if(which==1){
+	thequest=question[1][0]+datalabels[first]+question[1][1]+alldata[vunit]+datalabels[vunit]+question[1][2]+alldata[0]+question[which][3]+cmpd[Math.floor(2*Math.random())]+question[1][4]
+		aindex=first}
+	if(which==2){
+		thequest=question[2][0]+cmpd[Math.floor(2*Math.random())]+question[2][1]+alldata[first]+datalabels[first]+question[2][2]+alldata[vunit]+datalabels[vunit]+question[which][3]
+		aindex=0}
+	buildanswer(probkey)
+	showquest(thequest)
+}
+function buildanswer(probkey){
+	getsolved()
+	for(var j=0;j<18;j++){
+		if(probkey==problemlist[j])foundit=j
+	}
+	thesolution=""
+	for( var j=0;j<eqnsets[foundit].length;j++)thesolution+=equation[eqnsets[foundit][j]][0]+equation[eqnsets[foundit][j]][1]+"=>"+solved[eqnsets[foundit][j]]+"<br>";
+}		
+function getsolved(){
+	solved=new Array()
+	solved[0]=alldata[1]+"/"+alldata[2]+"="+alldata[0]//N/v=M
+	solved[1]=alldata[0]+"*"+alldata[2]+"="+alldata[1]//M*V=n
+	solved[2]=alldata[1]+"/"+alldata[0]+"="+alldata[2]//n/V=M
+	solved[3]=alldata[1]+"*"+alldata[6]+"="+alldata[4]//n*gmw=mass
+	solved[4]=alldata[4]+"/"+alldata[6]+"="+alldata[1]//m/gmw=n
+	solved[5]=alldata[2]+"*1000="+alldata[3]//L*1000=mL
+	solved[6]=alldata[3]+"/1000="+alldata[2]//mL/1000=L
+	solved[7]=alldata[4]+"*1000="+alldata[5]//g*1000=mg
+	solved[8]=alldata[5]+"/1000="+alldata[4]//mg/1000=g
+}
+function showquest(thequest){
+	if(ie4){
+		qspot.innerHTML=thequest
+		}
+	else{
+		document.qspot.document.open()
+		document.qspot.document.write(thequest)
+		document.qspot.document.close()
+	}
+}
+
+function answer(ans){
+	if(tried==1)alert("You've done this one! Get a new problem!");
+	else{
+		if(tried==2){totl++;document.forms[0].total.value=totl};
+		attempts++
+		if (ans>.95*alldata[aindex] & ans<1.05*alldata[aindex]){
+    			document.forms[0].results.value="correct"
+			corrt++
+    			document.forms[0].correct.value=corrt
+			tried=1
+			}
+		else{tried=2;document.forms[0].results.value="incorrect"}
+}}
+function showanswer(){
+if(attempts>=3){
+	if(ie4){
+		ansspot.innerHTML=thesolution
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.write(thesolution)
+		document.ansspot.document.close()
+	}
+	}
+}
+function clearansspot(){
+	if(ie4){
+		ansspot.innerHTML=""
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.clear()
+		document.ansspot.document.close()
+	}
+}
+</script>
+</head>
+<BODY onLoad="setrefs(),cleanse()">
+<h3>Molarity, mass and volume</h3>
+This page is an exercise in relating molarity, mass and volume. When you press "New Problem," a
+a question dealing with a solution will appear in the top frame on this page. Determine the value of the correct answer, enter it in the cell and press "Check Answer". You will need a periodic table and possibly your textbook to answer some of the questions. The results appear in the table.
+<ul>
+<li>If you miss a problem three times, pressing "Show Answer" will display a complete solution.
+</ul>
+<form>
+<input type=button value="New Problem" onClick="startit()"><BR>
+<td><b>Enter your answer here</b>
+<input type="text" name=theans size=10><br>
+<input type=button value="Check Answer" onClick="answer(this.form.theans.value)">
+<input type=button value="Show Answer" onClick="showanswer()"><br>
+<table border=4>
+<tr>
+<td><b>Results</b></td>
+<td><b>Total Done</b></td>
+<td><b>Total Correct</b></td></tr>
+</tr>
+<tr>
+<td align=center><input type="text" name=results size=12></td>
+<td align=center><input type="text" name=total size=3></td>
+<td align=center><input type="text" name=correct size=3></td>
+<tr>
+</table>
+</form>
+<div id=qspot></div>
+<div id=ansspot></div>
+<div id=refspot></div>
+</body>
+</html>

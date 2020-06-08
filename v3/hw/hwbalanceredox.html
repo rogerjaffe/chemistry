@@ -1,0 +1,207 @@
+<html>
+<head><Title>Balancing Redox Reactions-homework</Title>
+<script>
+//globals
+thepage="Balance redox"
+corrt=0
+tried=0
+totl=0
+count=0
+which=0
+function clear(){
+	document.forms[0].results.value=""
+	document.forms[0].correct.value=corrt
+	document.forms[0].total.value=totl
+}
+function MakeArray(n){
+	this.length=n
+	for (var i=1;i<=n;i++){
+	this[i]= 0}
+}
+function equation(c1,c2,c3,c4,c5,c6,c7,c8,n){
+	this.c1=c1
+	this.c2=c2
+	this.c3=c3
+	this.c4=c4
+	this.c5=c5
+	this.c6=c6
+	this.c7=c7
+	this.c8=c8
+	this.n=n
+}
+ansr=new MakeArray(8)
+rxn=new MakeArray(33);
+coeffs=new MakeArray(33)
+rxn[1]=new equation("H<sub>2</sub>S + ","MnO<sub>4</sub><sup>-</sup> + ","H<sup>+</sup> => ","S + ","Mn<sup>2</sup><sup>+</sup>+ ","H<sub>2</sub>O","","",6)
+coeffs[1]=new equation(5,2,6,5,2,8,"","")
+rxn[2]=new equation("Cr<sub>2</sub>O<sub>7</sub><sup>2-</sup> +","Br<sup>-</sup> + ","H<sup>+</sup> => ","Cr<sup>3+</sup> +","Br<sub>2</sub> + ","H<sub>2</sub>O","","",6)
+coeffs[2]=new equation(1,6,14,2,3,7,"","")
+rxn[3]=new equation("MnO<sub>4</sub><sup>-</sup> +","AsO<sub>3</sub><sup>3-</sup> + ","H<sub>2</sub>O =>","MnO<sub>2</sub> + ","AsO<sub>4</sub><sup>3-</sup> +","OH<sup>-</sup>","","",6)
+coeffs[3]=new equation(2,3,1,2,3,2,"","")
+rxn[4]=new equation("Cr<sub>2</sub>O<sub>7</sub><sup>2-</sup> +","C<sub>2</sub>H<sub>3</sub>OCl + ","H<sup>+</sup> =>","Cr<sup>3+</sup> + ","CO<sub>2</sub> + ","Cl<sub>2</sub> +","H<sub>2</sub>O","",7)
+coeffs[4]=new equation(3,2,24,6,4,1,15,"")
+rxn[5]=new equation("Cu + ","HNO<sub>3</sub> <=>","Cu(NO<sub>3</sub>)<sub>2</sub> + ","NO + ","H<sub>2</sub>O","","","",5)
+coeffs[5]=new equation(3,8,3,2,4,"","","")
+rxn[6]=new equation("Zn + ","CuSO<sub>4</sub> =>","ZnSO<sub>4</sub> +"," Cu","","","","",4)
+coeffs[6]=new equation(1,1,1,1,"","","","")
+rxn[7]=new equation("Zn + ","H<sub>2</sub>SO<sub>4</sub> =>","ZnSO<sub>4</sub> + ","H<sub>2</sub>","","","","",4)
+coeffs[7]=new equation(1,1,1,1,"","","","")
+rxn[8]=new equation("K<sub>2</sub>Cr<sub>2</sub>O<sub>7</sub> +","KI + ","H<sub>2</sub>SO<sub>4</sub> =>","Cr<sub>2</sub>(SO<sub>4</sub>)<sub>3</sub> + ","I<sub>2</sub>+ ","K<sub>2</sub>SO<sub>4</sub> + ","H<sub>2</sub>O","",7)
+coeffs[8]=new equation(1,6,7,1,3,4,7,"")
+rxn[9]=new equation("KMnO<sub>4</sub> + ","KCl +","H<sub>2</sub>SO<sub>4</sub> => ","MnSO<sub>4</sub> + ","Cl<sub>2</sub>+ ","K<sub>2</sub>SO<sub>4</sub> +","H<sub>2</sub>O","",7)
+coeffs[9]=new equation(2,10,8,2,5,6,8,"")
+rxn[10]=new equation("KClO<sub>3</sub> + ","KBr +","H<sub>2</sub>SO<sub>4</sub> => ","KCl + "," Br<sub>2</sub> +","K<sub>2</sub>SO<sub>4</sub> + ","H<sub>2</sub>O","",7)
+coeffs[10]=new equation(1,6,3,1,3,3,3,"")
+rxn[11]=new equation("KMnO<sub>4</sub> +","H<sub>2</sub>O<sub>2</sub> + ","H<sub>2</sub>SO<sub>4</sub> =>","MnSO<sub>4</sub> + ","O<sub>2</sub> +","K<sub>2</sub>SO<sub>4</sub> + ","H<sub>2</sub>O","",7)
+coeffs[11]=new equation(2,5,3,2,5,1,8,"")
+rxn[12]=new equation("MnO<sub>2</sub> + ","KCl +","H<sub>2</sub>SO<sub>4</sub> => ","MnSO<sub>4</sub> +","Cl<sub>2</sub> + ","K<sub>2</sub>SO<sub>4</sub> +","H<sub>2</sub>O","",7)
+coeffs[12]=new equation(1,2,2,1,1,1,2,"")
+rxn[13]=new equation("Ag + ","HNO<sub>3</sub> =>","AgNO<sub>3</sub> + ","NO + ","H<sub>2</sub>O","","","",5)
+coeffs[13]=new equation(3,4,3,1,2,"","","")
+rxn[14]=new equation("PbO<sub>2</sub> + ","SnSO<sub>4</sub> +","H<sub>2</sub>SO<sub>4</sub> => ","PbSO<sub>4</sub> +","Sn(SO<sub>4</sub>)<sub>2</sub> + ","H<sub>2</sub>O","","",6)
+coeffs[14]=new equation(1,1,2,1,1,2,"","")
+rxn[15]=new equation("KMnO<sub>4</sub> + ","H<sub>2</sub>C<sub>2</sub>O<sub>4</sub> + ","H<sub>2</sub>SO<sub>4</sub> => "," MnSO<sub>4</sub> +","CO<sub>2</sub> + "," K<sub>2</sub>SO<sub>4</sub> + ","H<sub>2</sub>O","",7)
+coeffs[15]=new equation(2,5,3,2,10,1,8,"")
+rxn[16]=new equation("H<sub>2</sub>O<sub>2</sub> +","HNO<sub>2</sub> => ","HNO<sub>3</sub> + "," H<sub>2</sub>O","","","","",4)
+coeffs[16]=new equation(1,1,1,1,"","","","")
+rxn[17]=new equation("Fe + ","CuSO<sub>4</sub> =>","FeSO<sub>4</sub> + ","Cu","","","","",4)
+coeffs[17]=new equation(1,1,1,1,"","","","")
+rxn[18]=new equation("Fe(SO<sub>4</sub>)<sub>3</sub> + ","KI =>","FeSO<sub>4</sub> + "," I<sub>2</sub> +","K<sub>2</sub>SO<sub>4</sub>","","","",5)
+coeffs[18]=new equation(2,2,2,1,1,"","","")
+rxn[19]=new equation("KClO<sub>4</sub> +","H<sub>3</sub>ASO<sub>3</sub> => ","KCl +","H<sub>3</sub>AsO<sub>4</sub>","","","","",4)
+coeffs[19]=new equation(1,4,1,4,"","","","")
+rxn[20]=new equation("H<sub>2</sub>S + ","KClO => ","S + ","KCl +","H<sub>2</sub>O","","","",5)
+coeffs[20]=new equation(1,1,1,1,1,"","","")
+rxn[21]=new equation("CH<sub>2</sub>O + ","Ag<sub>2</sub>O +","OH<sup>-</sup> => ","Ag + ","HCO<sub>2</sub><sup>-</sup> +","H<sub>2</sub>O","","",6)
+coeffs[21]=new equation(1,1,1,2,1,1,"","")
+rxn[22]=new equation("C<sub>2</sub>H<sub>2</sub> + ","MnO<sub>4</sub><sup>-</sup> + ","H<sup>+</sup> =>","CO<sub>2</sub> + ","Mn<sub>2</sub><sup>+</sup> +","H<sub>2</sub>O","","",6)
+coeffs[22]=new equation(1,2,6,2,2,4,"","")
+rxn[23]=new equation("C<sub>2</sub>H<sub>3</sub>OCl +","Cr<sub>2</sub>O<sub>7</sub><sup>2-</sup> + ","H<sup>+</sup> =>","CO<sub>2</sub> + ","Cl<sub>2</sub> + ","Cr<sup>3+</sup> +","H<sub>2</sub>O","",7)
+coeffs[23]=new equation(2,3,24,4,1,6,15,"")
+rxn[24]=new equation("Ag<sup>+</sup> + ","AsH<sub>3</sub> +","H<sub>2</sub>O => ","Ag +"," H<sub>3</sub>AgO<sub>3</sub> +","H<sup>+</sup>","","",6)
+coeffs[24]=new equation(6,1,3,6,1,6,"","")
+rxn[25]=new equation("OH<sup>-</sup> + ","CN<sup>-</sup> +","Fe(CN)<sub>6</sub><sup>3-</sup> => ","CNO<sup>-</sup> +","Fe(CN)<sub>6</sub><sup>4-</sup> + ","H<sub>2</sub>O","","",6)
+coeffs[25]=new equation(2,1,2,1,2,1,"","")
+rxn[26]=new equation("C<sub>2</sub>H<sub>4</sub>O +","NO<sub>3</sub><sup>-</sup> +","H<sup>+</sup> => ","NO +","C<sub>2</sub>H<sub>4</sub>O<sub>2</sub> +","H<sub>2</sub>O","","",6)
+coeffs[26]=new equation(3,2,2,2,3,1,"","")
+rxn[27]=new equation("Zn + ","H<sup>+</sup> + ","NO<sub>3</sub>=> ","Zn<sup>2+</sup> + ","NH<sub>4</sub><sup>+</sup> +","H<sub>2</sub>O","","",6)
+coeffs[27]=new equation(4,10,1,4,1,3,"","")
+rxn[28]=new equation("S<sub>2</sub>O<sub>3</sub><sup>2-</sup> +","I<sub>2</sub> =>","S<sub>4</sub>O<sub>6</sub><sup>2</sup><sup>-</sup> +","I<sup>-</sup>","","","","",4)
+coeffs[28]=new equation(2,1,1,2,"","","","")
+rxn[29]=new equation("IO<sub>3</sub><sup>-</sup> + ","I<sup>-</sup> + ","H<sup>+</sup> => ","I<sub>2</sub>+ ","H<sub>2</sub>O","","","",5)
+coeffs[29]=new equation(1,5,6,3,3,"","","")
+rxn[30]=new equation("Cu + ","H<sub>2</sub>SO<sub>4</sub> =>","CuSO<sub>4</sub> + ","SO<sub>2</sub> + ","H<sub>2</sub>O","","","",5)
+coeffs[30]=new equation(1,2,1,1,2,"","","")
+rxn[31]=new equation("Zn + ","Fe<sup>3+</sup> =>","Fe<sup>2+</sup> + ","Zn<sup>2+</sup>","","","","",4)
+coeffs[31]=new equation(1,2,2,1,"","","","")
+rxn[32]=new equation("ClO<sup>-</sup> + ","Cl<sup>-</sup> +","ClO<sub>3</sub>","","","","","",3)
+coeffs[32]=new equation(3,2,1,"","","","","")
+
+function start(){
+totl++
+document.forms[0].total.value=totl
+tried=0
+var i=Math.ceil(32*Math.random())
+which=i
+document.forms[0].results.value=""
+ansr[0]=coeffs[i]["c1"]
+ansr[1]=coeffs[i]["c2"]
+ansr[2]=coeffs[i]["c3"]
+ansr[3]=coeffs[i]["c4"]
+ansr[4]=coeffs[i]["c5"]
+ansr[5]=coeffs[i]["c6"]
+ansr[6]=coeffs[i]["c7"]
+ansr[7]=coeffs[i]["c8"]
+count=rxn[i]["n"]
+tryit(which,count)
+}
+function tryit(which,count)    {
+parent.frames[0].document.clear();
+parent.frames[0].document.open();
+parent.frames[0].document.writeln ("<html>");
+parent.frames[0].document.writeln ("<head>");
+parent.frames[0].document.writeln ("</head>");
+parent.frames[0].document.writeln ("<body bgcolor = FFFFFF ");
+parent.frames[0].document.writeln ("<font size=+1><b>");
+parent.frames[0].document.writeln ("<form>");
+parent.frames[0].document.writeln ("<table>");
+for (var i=0;i<count;i++){
+z=i+1
+parent.frames[0].document.write ("<input type=text size=2>");
+parent.frames[0].document.write(rxn[which]['c'+z])}
+parent.frames[0].document.writeln ("</table>")
+parent.frames[0].document.writeln ("</form>")
+parent.frames[0].document.forms[0].elements[0].focus();
+parent.frames[0].document.forms[0].elements[0].select();
+parent.frames[0].document.writeln ("<br>")
+parent.frames[0].document.writeln ("</font>");
+parent.frames[0].document.close();
+}
+function answer(){
+if(tried==1){
+		alert("Sorry, you've already submitted this problem! We'll get you a new one!")
+		start()}
+else{
+if(tried==2){totl++;document.forms[0].total.value=totl}
+var tally=0
+for(var f=0;f<count;f++){
+if (parent.frames[0].document.forms[0].elements[f].value==ansr[f]){
+	tally++}}
+if (tally==count){
+	document.forms[0].results.value="correct"
+	corrt++
+	tried=1
+	document.forms[0].correct.value=corrt}
+	else{tried=2;document.forms[0].results.value="incorrect"}
+}}
+function timer(z){
+tt=z
+var b=Math.floor(tt/60)
+var j = (tt % 60)
+if (j<10){c="0"}
+else {c=""}
+howlong=b + ":" + c + j
+running=setTimeout("timer(tt+1)",1000)
+}
+function update(){
+	document.forms[0].total.value=totl
+	document.forms[0].correct.value=corrt
+	document.forms[0].time.value=howlong
+	document.forms[0].page.value=thepage
+	document.forms[0].verify.value=Math.round(10000*Math.random())
+}
+</script>
+</head>
+<BODY onLoad="clear(),timer(0)">
+<h3>Balancing Oxidation Reduction Reactions</h3>
+This page is an exercise in balancing oxidation reactions. When you press "New Reaction," a
+ reaction will appear in the top frame on this page. In front of each chemical species will be an empty cell.
+Put the proper coefficient in each cell and then press "Check Answer". The results appear in the
+table. Hints:
+<ul>
+<li>Use only the smallest set of <b>integer</b> coefficients.
+<li>Use <b>TAB</b> to move between cells.
+</ul><br>
+<form ACTION = "../cgi-bin/homework/hw_turnin.php" METHOD = "POST">
+<input type=button value="New Reaction" onClick="start()">
+<input type=button value="Check Answer" onClick="answer()">
+<table border=4>
+<tr>
+<td><b>Results</b></td>
+<td><b>Total</b></td>
+<td><b>Correct</b></td></tr>
+</tr>
+<tr>
+<td><input type="text" name=results size=12></td>
+<td align=center><input type="text" name=total size=3></td>
+<td align=center><input type="text" name=correct size=3></td>
+</tr>
+</table>
+<input type=text name="page" size=1>
+<input type=text name="verify" size=1>
+<input type=text name="time" size=1><br>
+<INPUT TYPE = "submit" VALUE = "Submit your score" onClick="update()">
+ </FORM>
+<a href="index.html" target=welcome><img src="back.gif"></a><br>
+</body>
+</html>

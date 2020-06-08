@@ -1,0 +1,212 @@
+<html>
+<head><title>Heat changes(water only)-cs</title>
+<style>
+#qspot {position:absolute;left:320;top:300}
+#ansspot {position:absolute;left:320;top:380;height:200}
+#tspot {position:absolute;left:10;top:300}
+#refspot {position:absolute;left:10;top:600}
+</style>
+<script src="reflist.js"></script>
+<script src="numberconvert.js"></script>
+<script language="javascript">
+//updated 1/10/01-added complete solution
+var ie4 = (document.all) ? true : false;
+refnumber=87
+//global variables
+attempts=0
+tried=0
+thesolution=""
+which=0
+theanswer=0
+corrt=0
+totl=0
+option=0
+ans=""
+function parts(p1,p2,p3,p4,p5,p6,p7,p8,p9,p10){
+	this.p1=p1
+	this.p2=p2
+	this.p3=p3
+	this.p4=p4
+	this.p5=p5
+	this.p6=p6
+	this.p7=p7
+	this.p8=p8
+	this.p9=p9
+	this.p10=p10
+}
+//0=q,1=Tf,2=Ti,3=mass
+datalabel=new Array("q","T<sub>f</sub>","T<sub>i</sub>","mass")
+dataunit=new Array("Joules","<sup>o</sup>C","<sup>o</sup>C","grams")
+question=new Array()
+seqs=new Array()
+question[0]=new parts("A sample of water with a mass of ","g undergoes a temperature change from ","<sup>o</sup>C to "," <sup>o</sup>C. What is the heat change in Joules?")
+seqs[0]=new Array(3,2,1)
+question[1]=new parts("A sample of water with a mass of ","g and an initial temperature of "," Joules. What is the final temperature?")
+seqs[1]=new Array(3,2,0)
+question[2]=new parts("A sample of water with a mass of ","g and an unknown temperature "," Joules. If the final temperature is found to be ", "<sup>o</sup>C .What was the initial temperature?" )
+seqs[2]=new Array(3,0,1)
+question[3]=new parts("A sample of water of unknown mass undergoes a temperature change from ","<sup>o</sup>C to "," <sup>o</sup>C with a concomitant change in heat content of ","Joules. What is the mass of the water?")
+seqs[3]=new Array(2,1,0)
+baseequation="q=(4.184J/g-deg)*mass*(Tf-Ti)"
+equats=new Array()
+ansseq=new Array()
+equats[0]=new parts("4.184*mass*(Ti-Tf)=q","4.184*","*(","-",")=")
+ansseq[0]=new Array(3,2,1,0)
+equats[1]=new parts("-q/(4.184*mass)+Ti=Tf","-","/4.184*","+","=")
+ansseq[1]=new Array(0,3,2,1)
+equats[2]=new parts("q/(4.184*mass)+Tf=Ti","","/4.184*","+","=")
+ansseq[2]=new Array(0,3,1,2)
+equats[3]=new parts("q/(4.184J/g-deg*(Tf-Ti)=mass","","/(4.184*(","-",")=")
+ansseq[3]=new Array(0,1,2,3)
+function cleanse(){
+	clear()
+	document.forms[0].total.value=0
+	document.forms[0].correct.value=0
+}
+function clear(){
+	clearansspot()
+	document.forms[0].results.value=""
+	document.forms[0].theans.value=""
+	attempts=0
+	tried=0
+}
+function clearansspot(){
+	if(ie4){
+		ansspot.innerHTML=""
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.clear()
+		document.ansspot.document.close()
+	}
+}
+function startit(){
+	clear()	
+	totl++
+	document.forms[0].total.value=totl
+	document.forms[0].results.value=""
+	Ti=0	
+	while(Ti<10)Ti=number((100*Math.random()),4,3);
+	Tf=Ti;
+	while(Tf>Ti-5 & Tf<Ti+5)Tf=number((100*Math.random()),4,3);
+	mass=number(1000*Math.random(),4,3)
+	q=number((4.184*mass*(Tf-Ti)),4,3)
+	thedata=new Array(q,Tf,Ti,mass)
+	option=Math.floor(4*Math.random())
+	buildquest(thedata,option)
+	buildanswer(thedata,option)
+}
+function buildquest(thedata,option){
+	insert=""
+	x=thedata[0]
+	if(option==1 || option==2)insert=getinsert(option,x)
+	if(option!=1)thequest=question[option].p1+thedata[seqs[option][0]]+question[option].p2+insert+Math.abs(thedata[seqs[option][1]])+question[option].p3+thedata[seqs[option][2]]+question[option].p4;
+	else thequest=question[option].p1+thedata[seqs[option][0]]+question[option].p2+thedata[seqs[option][1]]+insert+Math.abs(thedata[seqs[option][2]])+question[option].p3;
+	showquest(thequest)
+	//document.forms[0].theans.value=thedata[option]
+}
+function getinsert(option,x){
+	x>0?insert=" gains ":insert=" loses ";
+	return insert
+}
+function buildanswer(thedata,option){
+	thetable=gettable(option)
+	ans=thedata[option]
+	theanswer=""
+	theanswer=equats[option].p1+"<br>"+equats[option].p2+thedata[ansseq[option][0]]+equats[option].p3+thedata[ansseq[option][1]]+equats[option].p4+thedata[ansseq[option][2]]+equats[option].p5+thedata[ansseq[option][3]]+dataunit[option]
+	thesolution=thetable+theanswer
+	showanswer()
+}
+function gettable(option){
+	thetable=""
+	for(j=0;j<=3;j++){
+		thetable+=(datalabel[j]+"=");
+		j!=option?thetable+=thedata[j]:thetable+="?";
+		thetable+=(dataunit[j]+"<br>");
+	}
+	return thetable
+}		
+function showquest(thequest){
+	if(ie4){
+		qspot.innerHTML=thequest
+		}
+	else{
+		document.qspot.document.open()
+		document.qspot.document.write(thequest)
+		document.qspot.document.close()
+	}
+}
+function answer(x){
+	if(tried==1)alert("You've doen this one. Get a new problem.")
+	else{
+	if(tried==2){totl++;document.forms[0].total.value=totl}
+	attempts++
+	if(x>.95*thedata[option] & x<1.05*thedata[option]){
+		document.forms[0].results.value="Correct"
+		corrt++
+		document.forms[0].correct.value=corrt
+		tried=1
+	}
+	else{
+		document.forms[0].results.value="Incorrect"
+		tried=2
+	}
+}}
+function showanswer(tans){
+if(attempts>=3){
+	if(ie4){
+		ansspot.innerHTML=thesolution
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.write(thesolution)
+		document.ansspot.document.close()
+	}
+	}
+}	
+</script>
+</head>
+<body onLoad="cleanse(),setrefs()">
+<h2>Temperature changes and heat</h2>
+This page deals with heat changes accompanying temperature changes for water. The problems
+are randomly generated when you press the "New Problem" button. Getting new problems is just a matter of 
+pressing the "New Problem" button at any time. 
+<ul>
+<li>To begin-press "New Problem" and a question will appear to the right of the button.
+<li>Put the correct value into the answer cell and press "Check Answer."
+<li>The results on the problem and a running total will appear in the second table.
+<li>If you get a problem "incorrect", you should redo it and recheck your
+answer.
+<li>If you miss a problem three times, pressing the "Show Answer" button will cause a complete solution to appear.
+</ul>
+
+<form>
+<table>
+<tr><td><input type=button value="New Problem" onClick="startit()"><td></tr>
+<tr><td><b>Enter your answer</b></td>
+<td><input type="text" name=theans size=8></td>
+</tr>
+<tr>
+<td><input type=button value="Check answer" onClick="answer(this.form.theans.value)"></td>
+<td><input type=button value="Show answer" onClick="showanswer()"></td>
+</tr>
+</table>
+<table border=4>
+<tr><td align=center><b>Results</td>
+<td align=center><b>Total Done</td>
+<td><b>Total Correct</td>
+</tr>
+<tr>
+<td><input type="text" name=results size=12></td>
+<td align=center><input type="text" name=total size=4 ></td>
+<td align=center><input type="text" name=correct size=4 ></td>
+</tr>
+<tr>
+</table>
+</form>
+<div id=qspot></div>
+<div id=ansspot></div>
+<div id=refspot></div>
+<br>
+</body>
+</html>

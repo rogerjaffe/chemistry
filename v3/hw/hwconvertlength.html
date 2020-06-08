@@ -1,0 +1,202 @@
+<html>
+
+<head><title>Converting Distance-Homework</title>
+
+<script language="javascript">
+//Last revision 7/8/98
+//globals
+thepage="Convert length"
+corrt=0
+tried=0
+totl=0
+theanswer=0
+which=0
+function clear(){
+	document.forms[0].results.value=""
+	document.forms[0].correct.value=corrt
+	document.forms[0].total.value=totl
+	document.forms[0].second.value=""
+	document.forms[0].fourth.value=""
+	cleanup()
+}
+function cleanup(){
+	document.forms[0].first.value=""
+	document.forms[0].third.value=""
+}
+
+function begin(){
+	cleanup()
+	totl++
+	document.forms[0].total.value=totl
+	document.forms[0].results.value=""
+	tried=0
+	var mm=Math.round(100*(Math.pow(10,Math.random())))/100
+	t=Math.random()
+	if (t<.33){mm=10*mm}
+	else {if(t<.67){mm=100*mm}}
+	var inch=Math.round(1000*(mm/25.4))/1000
+	var feet=Math.round(10000*(inch/12))/10000
+	var yard=Math.round(10000*(feet/3))/10000
+	var cm = Math.round(1000*(mm/10))/1000
+	var m = Math.round(10000*(cm/100))/10000
+//decide whether to display metric or English
+	var d=Math.random()
+	if (d<.50){english(inch,feet,yard,cm,m,mm)}
+	else{metric(inch,feet,yard,cm,m,mm)}
+}
+function english(inch,feet,yard,cm,m,mm){
+//decide to display inch,feet or yards
+	var d=Math.random()
+	if (d<.33){
+		document.forms[0].first.value=inch
+		document.forms[0].second.value="inches"}
+	else {if (d<.67){
+		document.forms[0].first.value=feet
+		document.forms[0].second.value="feet"}
+	else {
+		document.forms[0].first.value=yard
+		document.forms[0].second.value="yards"}}
+
+//decide what the unknown is to be cm,m,mm
+	var d=Math.random()
+	if (d<.33){
+		document.forms[0].fourth.value="centimeters"
+		theanswer=cm}
+	else {if(d<.67){
+		document.forms[0].fourth.value="meters"
+		theanswer=m}
+	else {
+		document.forms[0].fourth.value="millimeters"
+		theanswer=mm}}
+	which=2
+	document.forms[0].third.focus()
+	document.forms[0].third.select()
+}
+
+function metric(inch,feet,yard,cm,m,mm,km){
+//decide unknown inch,feet or yards
+	var d=Math.random()
+	if (d<.33){
+	theanswer=inch
+		document.forms[0].second.value="inches"}
+	else {if (d<.67){
+	theanswer=feet
+		document.forms[0].second.value="feet"}
+	else {
+	theanswer=yard
+		document.forms[0].second.value="yards"}}
+
+//decide what the known is to be cm,mm,km
+	var d=Math.random()
+	if (d<.33){
+		document.forms[0].fourth.value="centimeters"
+		document.forms[0].third.value=cm}
+	else {if(d<.67){
+		document.forms[0].fourth.value="meters"
+		document.forms[0].third.value=m}
+	else {
+		document.forms[0].fourth.value="millimeters"
+		document.forms[0].third.value=mm}}
+	document.forms[0].first.focus()
+	document.forms[0].first.select()
+	which=0
+}
+
+
+
+function answer(form){
+if(tried==1){
+		alert("Sorry, you've already submitted this problem! We'll get you a new one!")
+		begin()}
+else{
+	if(tried==2){totl++;document.forms[0].total.value=totl}
+	if (document.forms[0].elements[which].value>.95*theanswer & document.forms[0].elements[which].value<1.05*theanswer){
+	document.forms[0].results.value="correct"
+	corrt++
+	document.forms[0].correct.value=corrt
+	tried=1
+}
+else {
+		document.forms[0].results.value="incorrect"
+		tried=2}
+}}
+function timer(z){
+tt=z
+var b=Math.floor(tt/60)
+var j = (tt % 60)
+if (j<10){c="0"}
+else {c=""}
+howlong=b + ":" + c + j
+running=setTimeout("timer(tt+1)",1000)
+}
+function update(){
+	document.forms[0].total.value=totl
+	document.forms[0].correct.value=corrt
+	document.forms[0].time.value=howlong
+	document.forms[0].page.value=thepage
+	document.forms[0].verify.value=Math.round(10000*Math.random())
+}
+
+</script>
+</head>
+<body onLoad=clear(),timer(0)>
+<h2> Converting Distance</h2>
+This is a drill and practice page involving converting distance measures between
+the English (inches, feet and yards) and metric (mm,cm,meters,km). It is intended to
+help with both your math skill and your understanding of the metric system.
+<h4>Hints</h4>
+<ul>
+<li>First, select and submit the instructor's name.
+<li>To begin-press "New Problem" and three of the four cells will fill.
+<li>Put the correct value into the empty cell and press "Check Answer."
+<li>The results on the problem and a running total will appear in the second table.
+<li>If you get a problem "incorrect", you should redo it and recheck your
+answer.
+</ul>
+<form ACTION = "../cgi-bin/homework/hw_turnin.php" METHOD = "POST">
+<table border=4>
+<tr>
+<td><input type="text" name=first size=8></td>
+<td><input type="text" name=second size=8></td>
+<td><b>equals</td>
+<td><input type="text" name=third size=8></td>
+<td><input type="text" name=fourth size=8></td>
+</tr>
+<tr>
+<td><input type="button" value="New Problem" onClick=begin()></td>
+<td><input type="button" value="Check Answer" onClick=answer(this.form)></td>
+</tr>
+</table>
+<table border=4>
+<tr>
+<td align=center><b>Results</td>
+<td align=center><b>Total</td>
+<td><b>Total Correct</td>
+</tr>
+<tr>
+<td><input type="text" name=results size=12></td>
+<td align=center><input name=total type="text" size=4 ></td>
+<td align=center><input name=correct type="text" size=4 ></td>
+</tr>
+</table>
+<input type=text name="page" size=1>
+<input type=text name="verify" size=1>
+<input type=text name="time" size=1><br>
+<INPUT TYPE = "submit" VALUE = "Submit your score" onClick="update()">
+ </FORM>
+<br>
+<a href="index.html"><img src="back.gif"></a><br>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+

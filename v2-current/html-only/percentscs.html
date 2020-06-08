@@ -1,0 +1,176 @@
+<html>
+<head>
+<title>Percents-cs</title>
+<style>
+#qspot {position:absolute;left:350;top:170}
+#ansspot {position:absolute;left:410;top:190}
+#refspot {position:absolute;left:10;top:600;height:200}
+</style>
+<script src="reflist.js"></script>
+<script src=numberconvert.js></script>
+<script language=javascript>
+//updated 10/25/00 added complete solution
+//checked with IE5 and NS47
+refnumber=8
+var ie4 = (document.all) ? true : false;
+tried=0
+attempts=0
+theanswer=0
+answered=0
+percent=0
+which=0
+all=0
+part=0
+totl=0
+corrt=0
+thedata=0
+thesolution=""
+needed=new Array()
+needed[0]="part"
+needed[1]="total"
+needed[2]="per cent"
+choices=new Array()
+function parts(p1,p2,p3,p4,p5,p6,p7,p8){
+	this.p1=p1
+	this.p2=p2
+	this.p3=p3
+	this.p4=p4
+	this.p5=p5
+	this.p6=p6
+	this.p7=p7
+	this.p8=p8
+}
+formula=new Array()
+formula[0]="part=(total*%)/100"
+formula[1]="total=(part*100)/%"
+formula[2]="%=(part/total)*100"
+ansphrase=new parts("(I)%=(part/total)*100<br>Organize your data, identifying the givens and the unknown:","<br>Since you need to calculate<b> ","</b>, arrange equation(I):<br> ","<br>Substitute in the values and perform the calculation:")
+function clear(){
+	for(var j=0;j<3;j++)document.forms[0].elements[j].value="";
+	document.forms[0].results.value=""
+	tried=0
+	attempts=0
+	clearansspot()
+	}
+function cleanse(){
+	clear()
+	document.forms[0].total.value=0
+	document.forms[0].correct.value=0
+}
+function clearansspot(){
+	if(ie4){
+		ansspot.innerHTML=""
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.clear()
+		document.ansspot.document.close()
+	}
+}
+function startit(){
+	clear()
+	totl++
+	document.forms[0].total.value=totl
+	thedata=new Array()
+	thedata[2]=0
+	while(thedata[2]>95 || thedata[2]<5)thedata[2]=100*Math.random();
+	thedata[1]=10*Math.random()
+	thedata[0]=thedata[2]*thedata[1]/100
+	for(var j=0;j<3;j++)thedata[j]=number(thedata[j],3,3)
+	which=Math.floor(3*Math.random())
+	for(var j=0;j<3;j++)if(j!=which)document.forms[0].elements[j].value=thedata[j];
+	buildanswer()
+}
+function buildanswer(){
+	thetable=gettable()
+	if(which==0)thefinal=thedata[2]+"*"+thedata[1]+"/100="+thedata[0]
+	if(which==1)thefinal="100*"+thedata[0]+"/"+thedata[2]+"="+thedata[1]
+	if(which==2)thefinal="("+thedata[0]+"/"+thedata[1]+")*100="+thedata[2]
+	thesolution=ansphrase.p1+thetable+ansphrase.p2+needed[which]+ansphrase.p3+formula[which]+ansphrase.p4+thefinal
+}
+function gettable(){
+	thetable="<br>"
+	for(j=0;j<3;j++)j==which?thetable+=needed[j]+"="+"?"+"<br>":thetable+=needed[j]+"="+thedata[j]+"<br>";
+	return thetable
+}	
+function answer(form){
+	if(tried==1)alert("You've already done this one! Get a new Problem");
+	else{
+	if(tried==2){totl++;document.forms[0].total.value=totl}
+	attempts++
+		if (form.elements[which].value>.95*thedata[which] & form.elements[which].value<1.05*thedata[which])
+ 		{		
+		document.forms[0].results.value="correct"
+		corrt++
+		document.forms[0].correct.value=corrt
+		tried=1
+		}
+	else {
+		document.forms[0].results.value="incorrect"
+		tried=2
+		}
+	}
+}
+
+	
+function showanswer(){
+if(attempts>=3){
+	if(ie4){
+		ansspot.innerHTML=thesolution
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.write(thesolution)
+		document.ansspot.document.close()
+	}
+	}
+}
+</script>
+</head>
+<body onLoad="cleanse(),setrefs()">
+<h2>Percentages</h2>
+This page lets you practice your percentage calculations. The problems
+are randomly generated when you press the "New Problem" button. Enter your answer in the empty
+square and press "Check Answer". The part and total are always intergers, but the percentage may be a real number. Percentages, when calculated, should be entered with three sugnificant figures. The results are displayed in the second table which will
+tell you whether you got the correct answer or not and keeps a running total of your score.
+If you get a question wrong, you can redo and recheck your answer. Getting new problems is just a matter of 
+pressing the "New Problem" button at any time. 
+<ul>
+<li>If you miss a problem three times, pressing "Show Answer" will cause the correct answer to appear.
+</ul>
+<form>
+<table border=4>
+<tr>
+<TD ALIGN=CENTER><b>Part</td>
+<td align=center><b>Total</td>
+<td align=center><b>Percent</td>
+</tr>
+<tr>
+<td align=center><input type="text" name=all size=8 ></td>
+<td align=center><input type="text" name=part size=8 ></td>
+<td align=center><input type="text" name=percent size=8 ></td>
+</tr>
+<tr>
+<td><input type="button" value="New Problem" onClick=startit()></td>
+<td><input type="button" value="Check Answer" onClick=answer(this.form)></td>
+<td><input type="button" value="Show Answer" onClick=showanswer()></td>
+</tr>
+</table>
+<br>
+<table border=4>
+<tr><td align=center><b>Results</td>
+<td align=center><b>Total Done</td>
+<td><b>Total Correct</td>
+</tr>
+<tr>
+<td><input type="text" name=results size=12></td>
+<td align=center><input name=total type="text" size=4 ></td>
+<td align=center><input name=correct type="text" size=4 ></td>
+</tr>
+</table>
+</form>
+<div id=qspot></div>
+<div id=ansspot></div>
+<div id=refspot></div>
+</body>
+</html>

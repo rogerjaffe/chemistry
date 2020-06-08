@@ -1,0 +1,157 @@
+<html>
+<head><title>Converting Temperatures-Homework</title>
+<script language=javascript>
+//Last Update 7/28/98
+thepage="Converting Temperatures(29)"
+howlong=""
+totl=0
+corrt=0
+tried=0
+which=""
+tried=0
+theanswer=""
+function clear(){
+	document.forms[0].first.value=""
+	document.forms[0].second.value=""
+	document.forms[0].third.value=""
+	document.forms[0].results.value=""
+	tried=0
+}
+function cleanse(){
+clear()
+document.forms[0].total.value=0
+document.forms[0].correct.value=0
+document.forms[0].time.value="" 
+}
+
+//This is the function started when "New Problem" is pushed	
+//This function first clears all old values using zeroout()
+//The three variables(a,b,c) are then determined, using Math.random() to 
+//generate a and simple functions to generate  b and c. Depending on the acceptable
+//range of your variables, you can use differing functions to generate them.
+function begin(){
+	totl++
+	document.forms[0].total.value=totl
+	document.forms[0].results.value=""
+	tried=0
+	clear()
+	var K=1001
+	while (K>1000){
+	var K=Math.pow(200,Math.pow(10,Math.random()))
+	var C=K-273.15
+	var F=1.8*C + 32}
+//The three variables are then converted to four significant figures.
+	if (K>100){K=Math.round(10*K)/10}
+      else {K=Math.round(100*K)/100}
+	if (C>100){C=Math.round(10*C)/10}
+	else {C=Math.round(100*C)/100}
+	if (F>100){F=Math.round(10*F)/10}
+	else {F=Math.round(100*F)/100}
+	document.forms[0].first.value=K
+	document.forms[0].second.value=C
+	document.forms[0].third.value=F
+var pickit=Math.random()
+if (pickit<.33){
+	document.forms[0].first.value=""
+	document.forms[0].second.value=""
+	document.forms[0].first.focus()
+	document.forms[0].first.select()}
+else{if(pickit<.67){
+	document.forms[0].second.value=""
+	document.forms[0].third.value=""
+	document.forms[0].second.focus()
+	document.forms[0].second.select()}
+else{
+	document.forms[0].first.value=""
+	document.forms[0].third.value=""
+	document.forms[0].first.focus()
+	document.forms[0].first.select()}
+}} 
+// This is the "Check Answer Function
+//This function checks for correctness by comparing the values. 
+//The results are then posted to the second table. 
+function answer(form){
+if(tried==1){
+		alert("Sorry, you've already submitted this problem! We'll get you a new one!")
+		choose()}
+else{if(tried==2){totl++;document.forms[0].total.value=totl}
+	if (1.0*form.first.value>.99*(1.0*form.second.value + 273) &
+	1.0*form.first.value<1.01*(1.0*form.second.value + 273) &
+	Math.abs(form.third.value)>Math.abs(.99*((1.8*form.second.value)+ 32)) &
+	Math.abs(form.third.value)<Math.abs(1.01*((1.8*form.second.value) + 32)))
+	{	
+	document.forms[0].results.value="correct"
+	tried=1
+	corrt++
+	document.forms[0].correct.value=corrt
+	}
+	else {
+	tried=2
+	document.forms[0].results.value="incorrect"
+	}
+}}
+
+function timer(z){
+tt=z
+var b=Math.floor(tt/60)
+var j = (tt % 60)
+if (j<10){c="0"}
+else {c=""}
+howlong=b + ":" + c + j
+running=setTimeout("timer(tt+1)",1000)
+}
+
+function update(){
+	document.forms[0].total.value=totl
+	document.forms[0].correct.value=corrt
+	document.forms[0].time.value=howlong
+	document.forms[0].page.value=thepage
+	document.forms[0].verify.value=Math.round(10000*Math.random())
+}
+</script>
+</head>
+<body onLoad="cleanse(), timer(0)">
+
+<h2>Converting Temperatures</h2>
+On this page, you will find problems on converting between the three common temperature
+scales. When you press "New Problem", one of the cells will show a number. Fill in
+the missing two values and press "Check Answer". Results will show in the second
+table. It is recommended that you redo any problems reported incorrect until you
+get them right.<br>
+<form ACTION = "../cgi-bin/homework/hw_turnin.php" METHOD = "POST">
+<table border=4>
+<tr>
+<TD ALIGN=CENTER><b>K</td>
+<td align=center><b><sup>o</sup>C</td>
+<td align=center><b><sup>o</sup>F</td>
+</tr>
+<tr>
+<td align=center><input type="text" name=first size=8 ></td>
+<td align=center><input type="text" name=second size=8 ></td>
+<td align=center><input type="text" name=third size=8 ></td>
+</tr>
+<tr>
+<td><input type="button" value="New Problem" onClick=begin()></td>
+<td><input type="button" value="Check Answer" onClick=answer(this.form)></td>
+</tr>
+</table>
+<br>
+<table border=4>
+<tr><td align=center><b>Results</td>
+<td align=center><b>Total Done</td>
+<td><b>Total Correct</td>
+</tr>
+<tr>
+<td><input type="text" name="results" size=12></td>
+<td align=center><input type="text" name="total" size=4 ></td>
+<td align=center><input type="text" name="correct" size=4 ></td>
+</table>
+<input type=text name="page" size=1>
+<input type=text name="verify" size=1>
+<input type=text name="time" size=1><br>
+<INPUT TYPE = "submit" VALUE = "Submit your score" onClick="update()">
+</form>
+<br>
+<a href="hwintro.html"><img src="back.gif"></a><br>
+</form>
+</body>

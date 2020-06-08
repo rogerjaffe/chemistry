@@ -1,0 +1,218 @@
+<html>
+<head>
+<title>Electrochemical series</title>
+<style>
+#qspot {position:absolute;left:360;top:250}
+#ansspot {position:absolute;left:20;top:420;height:300}
+#tspot {position:absolute;left:10;top:300}
+#refspot {position:absolute;left:10;top:600;height:50}
+</style>
+<script src="reflist.js"></script>
+<script src="ionformulas.js"></script>
+<script language="javascript">
+//updated 11/14/00-added complete solution
+var ie4 = (document.all) ? true : false;
+//global variables
+refnumber=189
+corrt=0
+tried=0
+totl=0
+theanswer=0
+which=0
+thecmpds=""
+hrxn=""
+attempts=0
+first=3
+second=0
+option=0
+potentials=""
+theform="<form><input type=radio name=theans onClick='answer(0)'><b>Spontaneous<input type=radio name=theans onClick='answer(1)'>Nonspontaneous</b></form>"
+halfrxn=new Array()
+halfrxn[0]=new Array("F2","F-",2,3.06)
+halfrxn[1]=new Array("F2O","F-",4,2.1)
+halfrxn[2]=new Array("O3","O2",2,2.07)
+halfrxn[3]=new Array("S2O8-2","SO4-2",2,2.01)
+halfrxn[4]=new Array("NO3-","NO2",1,1.80)
+halfrxn[5]=new Array("MnO4-","Mn+2",5,1.69)
+halfrxn[6]=new Array("ClO2-","ClO-",2,1.64)
+halfrxn[7]=new Array("BrO3-","Br2",10,1.52)
+halfrxn[8]=new Array("PbO2","Pb+2",2,1.455)
+halfrxn[9]=new Array("Au+3","Au+",2,1.41)
+halfrxn[10]=new Array("Cl2","Cl-",2,1.36)
+halfrxn[11]=new Array("Cr2O7-2","Cr+3",6,1.33)
+halfrxn[12]=new Array("MnO2","Mn+2",2,1.23)
+halfrxn[13]=new Array("IO3-","I2",10,1.20)
+halfrxn[14]=new Array("ClO4-","ClO3-",2,1.19)
+halfrxn[15]=new Array("Br2","Br-",2,1.087)
+halfrxn[16]=new Array("VO2+","VO+2",1,1.00)
+halfrxn[17]=new Array("HNO2","NO",1,.99)
+halfrxn[18]=new Array("NO3-","NO",3,.96)
+halfrxn[19]=new Array("ClO2","ClO2-",1,.954)
+halfrxn[20]=new Array("HgO","Hg",2,.926)
+halfrxn[21]=new Array("Ag+","Ag",1,.7995)
+halfrxn[22]=new Array("Fe+3","Fe+2",1,.771)
+halfrxn[23]=new Array("Hg+2","Hg2+2",2,.92)
+halfrxn[24]=new Array("ClO-","Cl-",2,.89)
+halfrxn[25]=new Array("AsO2-","As",3,.68)
+halfrxn[26]=new Array("I2","I-",2,.628)
+halfrxn[27]=new Array("MnO4-","MnO2",3,.588)
+halfrxn[28]=new Array("Sb2O5","SbO+",4,.559)
+halfrxn[29]=new Array("I3-","I-",2,.545)
+halfrxn[30]=new Array("VO+2","V+3",1,.337)
+halfrxn[31]=new Array("UO2+2","U+4",2,.334)
+halfrxn[32]=new Array("BiO+","Bi",3,.32)
+halfrxn[33]=new Array("PbO2","PbO",2,.28)
+halfrxn[34]=new Array("SbO+","Sb",3,.212)
+halfrxn[35]=new Array("Mo+3","Mo",3,.20)
+halfrxn[36]=new Array("SO4-2","SO2",2,.17)
+halfrxn[37]=new Array("Sn+4","Sn+2",2,.154)
+halfrxn[38]=new Array("Sb2O3","Sb",6,.152)
+halfrxn[39]=new Array("TiO+3","Ti+3",1,.10)
+halfrxn[40]=new Array("Sn+2","Sn",2,.01)
+halfrxn[41]=new Array("H+","H2",2,0)
+halfrxn[42]=new Array("GeO2","GeO",2,-.118)
+halfrxn[43]=new Array("H3PO3","H3PO2",2,-.50)
+halfrxn[44]=new Array("SO3-2","S2O3-2",4,-.58)
+halfrxn[45]=new Array("H3BO3","B",3,-.87)
+halfrxn[46]=new Array("Cr+2","Cr",2,-.91)
+halfrxn[47]=new Array("Al+3","Al",3,-1.66)
+halfrxn[48]=new Array("Th+4","Th",4,-1.90)
+halfrxn[49]=new Array("Mg+2","Mg",2,-2.37)
+halfrxn[50]=new Array("Be2O3-2","Be",4,-2.62)
+choice=new Array()
+choice[0]=new Array("I","II","<B>below</B>","<B>spontaneous</B>")
+choice[1]=new Array("II","I","<B>above</B>","<B>nonspontaneous</B>")
+ansphrase=new Array("The half reactions (both written as reductions) are as shown below.<br>","The overall reaction is written such that reaction "," is the reduction and reaction "," is the oxidation.<br>Since the oxidation is "," the reduction in the series, the reaction is "," as written.")
+function clear(){
+	document.forms[0].results.value=""
+	attempts=0
+	tried=0
+	clearansspot()
+	}
+function cleanse(){
+	clear()
+	document.forms[0].total.value=0
+	document.forms[0].correct.value=0
+	}
+function startit(){
+	clear()
+	thedata=new Array()
+	totl++
+	document.forms[0].total.value=totl
+	document.forms[0].results.value=""
+	first=Math.floor(Math.random()*halfrxn.length)
+	second=first
+	while(second==first)second=Math.floor(Math.random()*halfrxn.length)
+	getcmpds(first,second)
+	thediff=first-second
+	thediff>0?which=1:which=0;
+	reaction=""
+	reaction="Using the positions in the electrochemical series, is the reaction below spontaneous or nonspontaneous, as written?<br>"+thecmpds[1]+" + "+thecmpds[2]+" => "+thecmpds[3]+" + "+thecmpds[4]+"<br>"+theform
+	showquest(reaction)
+	buildanswer()
+}
+function getcmpds(first,second){
+	hrxn=new Array()
+	thecmpds=new Array()
+	option=Math.floor(2*Math.random())
+	if(option==0){
+	thecmpds[1]=completeformula(halfrxn[first][0])
+	thecmpds[2]=completeformula(halfrxn[second][1])
+	thecmpds[3]=completeformula(halfrxn[first][1])	
+	thecmpds[4]=completeformula(halfrxn[second][0])
+	electrons=new Array(halfrxn[first][2],halfrxn[second][2])
+	hrxn[1]="(I)"+thecmpds[1]+"+"+electrons[0]+"e<sup>-</sup> =>"+thecmpds[3]+"<br>"
+	hrxn[2]="(II)"+thecmpds[4]+"+"+electrons[1]+"e<sup>-</sup> => "+thecmpds[2]+"<br>"
+	}
+	else{
+	thecmpds[2]=completeformula(halfrxn[first][0])
+	thecmpds[1]=completeformula(halfrxn[second][1])
+	thecmpds[4]=completeformula(halfrxn[first][1])	
+	thecmpds[3]=completeformula(halfrxn[second][0])
+	electrons=new Array(halfrxn[second][2],halfrxn[first][2])
+	hrxn[1]="(I)"+thecmpds[3]+"+"+electrons[0]+"e<sup>-</sup> =>"+thecmpds[1]+"<br>"
+	hrxn[2]="(II)"+thecmpds[2]+"+"+electrons[1]+"e<sup>-</sup> => "+thecmpds[4]+"<br>"
+	}
+}
+function buildanswer(){
+	theanswer=ansphrase[0]+hrxn[1]+hrxn[2]+ansphrase[1]+choice[option][0]+ansphrase[2]+choice[option][1]+ansphrase[3]+choice[which][2]+ansphrase[4]+choice[which][3]+ansphrase[5]
+	}
+function showquest(thequest){
+	if(ie4){
+		qspot.innerHTML=thequest
+		}
+	else{
+		document.qspot.document.open()
+		document.qspot.document.write(thequest,"<br>")
+		document.qspot.document.close()
+	}
+}
+function showanswer(){
+	if(ie4){
+		finish=""
+		for(k=0;k<7;k++)finish+=(choice[k]+"="+neat[k]+"<br>");
+		theanswer+=finish
+		ansspot.innerHTML=theanswer
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.write(theanswer,"<br>")
+		document.ansspot.document.close()
+	}
+}
+function clearansspot(){
+	if(ie4){
+		ansspot.innerHTML=""
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.clear()
+		document.ansspot.document.close()
+	}
+}
+function answer(ans){
+	if(tried==1)alert("You've done this one. Get a new problem.");
+	else{
+	if(ans==which){
+		tried=1
+		corrt++
+		document.forms[0].results.value="correct"
+		document.forms[0].correct.value=corrt
+	}
+	else{
+		tried=1
+		document.forms[0].results.value="incorrect"
+		showanswer()
+	}
+}}
+</script>
+</head>
+<body onLoad="cleanse(),setrefs()">
+<h3>Using the electrochemical Series E<sup>o</sup></h3>
+This page provides basic exercisesin using the electrochemical series. When you press "New Problem", an unbalanced redox reaction. Using only the positions in the electrochemical series, determine whether the reaction will be spontaneous or non spontanous, as written, and click on the appropriate circle. Results will appear in the table. <ul>
+<li>In order to do the problems as designed you need a table of electrochemical potentials, written as reductions and arranged in order of decreasing potential.
+<li>If you miss a problem, a complete solution will appear.
+</ul>
+<form>
+<table>
+<tr><td><input type=button value="New Problem" onClick="startit()"><td></tr>
+</table>
+<table border=4>
+<tr><td align=center><b>Results</td>
+<td align=center><b>Total Done</td>
+<td><b>Total Correct</td>
+</tr>
+<tr>
+<td><input type="text" name=results size=12></td>
+<td align=center><input type="text" name=total size=4 ></td>
+<td align=center><input type="text" name=correct size=4 ></td>
+</tr>
+<tr>
+</table>
+</form>
+<div id=qspot></div>
+<div id=ansspot></div>
+<div id=refspot></div>
+<br>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<?php
+$filename = "h:\\shared\\web\\wwwroot\\chemistry\\html\\savedata\\Voss\\homework.txt";
+//$filename = "C:\\chemistry\\html\\savedata\\Voss\\homework.txt";
+$header = "Student name,Instructor,Page,Total,Correct,Verify,Completion Time,Date,TimeOfDay\r\n";
+$yourname = $_POST['yourname'];
+$instructor = $_POST['instructor'];
+$correct = $_POST['correct'];
+$page = $_POST['page'];
+$time = $_POST['time'];
+$verify = $_POST['verify'];
+$total = $_POST['total'];
+$results = $_POST['results'];
+$date = date('Y/m/d g:i:sa');
+
+if (!file_exists($filename)) {
+  $handle = fopen($filename, 'w');
+  fwrite($handle, $header);
+  fclose($handle);
+}
+$handle = fopen($filename, 'a');
+$text = "$yourname,$instructor,$page,$total,$correct,$verify,$time,$date\r\n";
+fwrite($handle, $text);
+fclose($handle);
+  
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<title>Mr. Voss' Chemistry System</title>
+</head>
+<body>
+<p><b>Great job working on your chemistry <?php echo $yourname ?>!  Here is the information that was submitted:</b></p>
+<p>
+  <ul>
+    <li><b>Instructor</b>:&nbsp;<?php echo $instructor ?></li>
+    <li><b>Page</b>:&nbsp;<?php echo $page ?></li>
+    <li><b>Total</b>:&nbsp;<?php echo $total ?></li>
+    <li><b>Correct</b>:&nbsp;<?php echo $correct ?></li>
+    <li><b>Verify</b>:&nbsp;<?php echo $verify ?></li>
+    <li><b>Time</b>:&nbsp;<?php echo $time ?></li>
+    <li><b>Date/Time</b>:&nbsp;<?php echo $date ?></li>
+  </ul>
+</p>
+</body>
+</html>
+
+

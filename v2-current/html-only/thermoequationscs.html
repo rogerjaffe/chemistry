@@ -1,0 +1,205 @@
+<html>
+<head>
+<title>Using Thermochemical Equations</title>
+<style>
+#qspot {position:absolute;left:360;top:250}
+#ansspot {position:absolute;left:20;top:420;height:300}
+#tspot {position:absolute;left:10;top:300}
+#refspot {position:absolute;left:10;top:600}
+</style>
+<script src="reflist.js"></script>
+<script src="numberconvert.js"></script>
+<script src="reactionsets.js"></script>
+<script language="javascript">
+//updated 11/14/00-added complete solution
+var ie4 = (document.all) ? true : false;
+refnumber=101
+//global variables
+corrt=0
+tried=0
+totl=0
+which=0
+opt=0
+option=0
+problem=""
+thequest=""
+thesolution=""
+theheat=0
+qunit=""
+qty=0
+missing=0
+function cleanse(){
+	clear()
+	document.forms[0].total.value=0
+	document.forms[0].correct.value=0
+}
+function clear(){
+	document.forms[0].theans.value=""
+	document.forms[0].results.value=""
+	clearansspot()
+	tried=0
+	attempts=0
+}
+function clearansspot(){
+	if(ie4){
+		ansspot.innerHTML=""
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.clear()
+		document.ansspot.document.close()
+	}
+}
+preamble="Given the following thermochemical equation:<br>"
+question=new Array()
+question[1]=new Array("What is the heat change in <b>KJ</b> accompanying the reaction of "," of ","?")
+question[2]=new Array("What is the heat change in <b>KJ</b> accompanying the production of "," of ","?")
+question[3]=new Array("If a reaction has a heat change of ","<B>KJ</b>, what quantity of "," in<b> ","</b> reacted?")
+question[4]=new Array("If a reaction has a heat change of ","<b>KJ</b>, what quantity of "," in<b> ","</b> is produced?")
+ansphrase=new Array("Heat can be treated like any other stoichiometric term in a balanced equation. In this case the ratio of the heat to<b> ","</b> is used to solve the question, remembering that that ratio is intrinic. The actual solution follows the series of steps below.<Br>From the balanced equation it can be seen that:<br>","<br>This ratio must equal that for the specific situation described in the reaction. Setting up the equation and then solving for the heat yields the following:<br>")
+//begin program
+function startit(){
+	clear()
+	totl++
+	document.forms[0].total.value=totl
+	document.forms[0].results.value=""
+	//the choose() function is part of reactionsets.js. It picks a reaction and builds arrays of formulas and masses
+	choose()
+	theheat=getheat()
+	thequest=preamble+equation+"  <b> q= "+theheat+"</b>KJ<br>"
+	buildquestion()
+}
+function getheat(){
+	theheat=0
+	while(theheat<50)theheat=number(5000*Math.random(),3,3)
+	if(Math.random()>.5)theheat=-1*theheat
+	return theheat
+}
+function buildquestion(which,opt){
+	first=Math.floor(rxn[choice][0]*Math.random())
+	second=first
+	while(second<=(rxn[choice][0]-1))second=Math.floor(coeffs[choice].length*Math.random())
+	if(Math.random()>.5){cpd=first;option=1}
+	else{cpd=second;option=2};
+	themass=number(100*Math.random(),3,3)
+	cmpdmass=masses[cpd]/coeffs[choice][cpd]
+	themoles=number(1*themass/cmpdmass,3,3)
+	if(Math.random()>.5){
+		qunit="grams "
+		qty=themass
+		thisheat=theheat*qty/masses[cpd]
+	}
+	else{
+		qunit="moles "
+		qty=themoles
+		thisheat=theheat*qty/coeffs[choice][cpd]
+	}
+	missing=Math.floor(1.5*Math.random())
+	if(missing==0){
+	theanswer=thisheat
+	thequest+="<br>"+question[option][0]+qty+qunit+question[option][1]+formula[cpd]+question[option][2]
+	}
+	else{
+	theanswer=qty
+	thequest+="<br>"+question[option+missing][0]+number(thisheat,3,3)+question[option+missing][1]+formula[cpd]+question[option+missing][2]+qunit+question[option+missing][3]
+	}
+	buildanswer(cpd)
+	showquest()	
+}
+function buildanswer(cpd){
+	theeqn=geteqns(cpd)
+	thesolution=ansphrase[0]+qunit+" of "+formula[cpd]+ansphrase[1]+theeqn[0]+ansphrase[2]+theeqn[1]+"<br>"+theeqn[2]
+}
+function geteqns(cpd){
+	theeqn=new Array()
+	theeqn[0]="q/("+qunit+" of "+formula[cpd]+")="+theheat+"/"
+	qunit=="grams "?theeqn[0]+=masses[cpd]:theeqn[0]+=coeffs[choice][cpd];
+	theeqn[1]=theeqn[0]+"=q/"+qty
+	if(missing==0){
+	theeqn[2]=qty+"*"+theeqn[0]+"="+number(theanswer,3,3)+"<b>KJ</b>"
+	}
+	else{
+	theeqn[2]=number(thisheat,3,3)+"/"+theheat+"="+theanswer+qunit;
+	qunit="grams "?theeqn[2]=masses[cpd]+"*"+theeqn[2]:theeqn[2]=coeffs[choice][cpd]+"*"+theqn[2]
+	}
+
+	return theeqn
+}
+function showquest(){
+	if(ie4){
+		qspot.innerHTML=thequest
+		}
+	else{
+		document.qspot.document.open()
+		document.qspot.document.write(thequest)
+		document.qspot.document.close()
+	}
+}
+function showanswer(){
+if(attempts>=3){
+	if(ie4){
+		ansspot.innerHTML=thesolution
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.write(thesolution)
+		document.ansspot.document.close()
+	}
+	}
+}
+function answer(val){
+	if(tried==1)alert("You've done this one. Get a new problem.")
+	else{
+	attempts++
+	test=1
+	if(tried==1)alert("You've already done this problem. Get a new one!");
+	else{
+	if(tried==2){totl++;document.forms[0].total.value=totl};
+	if(theanswer<0){
+		if(val>1.05*theanswer & val<.95*theanswer)test=0;
+	}
+	else{
+		if(val<1.05*theanswer & val>.95*theanswer)test=0;
+	}
+	if(test==0){
+    		document.forms[0].results.value="correct"
+    		corrt++
+    		document.forms[0].correct.value=corrt
+    		tried=1
+	}
+	else{
+    		tried=2
+    		document.forms[0].results.value="incorrect"}
+	}	
+}}
+</script>
+</head>
+<body onLoad="cleanse(),setrefs()">
+<h2>The Thermochemical Equation</h2>
+This page provides exercises in the use of thermochemical equations. To produce a problem, click on the "New Problem" button in the main frame and a question will appear in the top frame. There are also an answer cell and a "Check Answer" button in the top frame. Determine the value of the answer, enter it in the cell and press the "Check Answer" Button. <b>Be careful about the sign</b> of the heat change. All heats should be entered in terms of KJ. Since this page is designed t0 provide exercises in using theormochemical equations, the heats are randomly generated and should not be considered as accurate for the described processes
+<ul>
+<li>If you miss a problem three times, pressing "Show Answer" will cause the correct answer to appear.
+</ul>
+<form>
+<input type=button value="New Problem" onClick="startit()"><br>
+<input type=text size=8 name=theans><b>Enter the answer here<br>
+<input type=button value="Check Answer" onClick="answer(this.form.theans.value)">
+<input type=button value="Show Answer" onClick="showanswer()">
+<table border=4>
+<tr>
+<td>Results</td>
+<td>Total</td>
+<td>Correct</td> 
+</tr>
+<tr>
+<td><input type=text name=results size=10></td>
+<td><input type=text name=total size=5></td>
+<td><input type=text name=correct size=5></td>
+</tr>
+</table></form>
+<div id=qspot></div>
+<div id=ansspot></div>
+<div id=refspot></div>
+</body>
+</html>
+ 

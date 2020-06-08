@@ -1,0 +1,217 @@
+<html>
+<head><title>Osmotic Pressure-cs</title>
+<style>
+#qspot {position:absolute;left:320;top:300}
+#ansspot {position:absolute;left:320;top:380;height:300}
+#tspot {position:absolute;left:10;top:300}
+#refspot {position:absolute;left:10;top:600}
+</style>
+<script src="reflist.js"></script>
+<script src="numberconvert.js"></script>
+<script language="javascript">
+//updated 1/10/01-added complete solution
+var ie4 = (document.all) ? true : false;
+refnumber=73
+//global variables
+alldata=0
+attempts=0
+which=0
+theanswer=0
+corrt=0
+totl=0
+option=0
+thesolution=""
+tests=0
+alldata=new Array()
+function solute(formula,gfw,parts,gs){
+	this.formula=formula
+	this.gfw=gfw
+	this.parts=parts
+	this.gs=gs
+}
+//This creates an array of solutes with 20 elements
+cmpd=new Array();
+//The following are the elements in the item array which have the properties
+//shown in solute
+cmpd[0]=new solute("CsCl",168.4,2,25);
+cmpd[1]=new solute("NaCl",58.45,2,25)
+cmpd[2]=new solute("NaNO3",85,2,25)
+cmpd[3]=new solute("KI",166,2,25)
+cmpd[4]=new solute("KOH",56,2,25)
+cmpd[5]=new solute("Ca(NO3)2",164,3,25)
+cmpd[6]=new solute("CH3OH",32,1,25)
+cmpd[7]=new solute("HCl",36.5,2,25)
+cmpd[8]=new solute("ethanol",46,1,25)
+cmpd[9]=new solute("LiBr",104.9,2,25)
+cmpd[10]=new solute("Fe(NO3)3",242,4,25)
+cmpd[11]=new solute("Mg(NO3)2",148,3,25)
+cmpd[12]=new solute("HNO3",63,2,25)
+cmpd[13]=new solute("CaI2",294,3,25)
+cmpd[14]=new solute("Co(NO3)2",183,3,25)
+cmpd[15]=new solute("Na2SO4",142.08,3,27.8)
+cmpd[16]=new solute("NaOH",40.01,2,25)
+cmpd[17]=new solute("KNO2",85.1,2,25)
+cmpd[18]=new solute("HI",128,2,25)
+ansphrase=new Array("First, calculate the 'effective' moles of solute by calculating actual moles and then multiplying by the number of 'particles' per mole (here we use the symbol 'DF'-dissolving factor for that term).<br>","<br>Then, using the solution volume in liters, calculate the molarity.<br>","<br>The osmotic pressure can then be calculated<br>")
+symbols=new Array("P(atm)","T(K)","V(L)","mass(solute)","gfw(solute)","DF","moles(solute)","<u>M</u>")
+solved=0
+equations=new Array()
+equations[0]=symbols[6]+"="+symbols[5]+"*"+symbols[3]+"/"+symbols[4]//effmolessolute=DF*mass/gfw
+equations[1]=symbols[7]+"="+symbols[6]+"/"+symbols[2]//M=n/V
+equations[2]=symbols[0]+"="+symbols[7]+"*0.082*"+symbols[1]//P=M*R*T
+//This is the function started when "New Problem" is pushed	
+//This function first clears all old values using zeroout()
+//The four variables(a,b,t) are then determined, using Math.random()
+//They are then passed to the calculate function
+function cleanse(){
+	clear()
+	totl=corrt=0
+	document.forms[0].total.value=0
+	document.forms[0].correct.value=0
+}
+function clear(){
+	for(j=0;j<5;j++)document.forms[0].elements[j].value=""
+	attempts=0
+	tried=0
+	clearansspot()
+	document.forms[0].results.value=""
+}
+function startit(){
+	clear()
+	totl++
+	document.forms[0].total.value=totl
+	which=Math.floor(cmpd.length*Math.random())
+	alldata[4]=cmpd[which].gfw
+	alldata[3]=0
+	while(alldata[3]<2 || alldata[3]>cmpd[which]["gs"])alldata[3]=25*Math.random();
+	alldata[1]=alldata[8]=0
+	while(alldata[1]<290 || alldata[1]>320)alldata[1]=400*Math.random();
+	while(alldata[8]<200)alldata[8]=700*Math.random();
+      calculate()
+}
+function calculate(){
+	alldata[5]=cmpd[which].parts
+	alldata[6]=alldata[5]*alldata[3]/alldata[4]
+	alldata[2]=alldata[8]/1000
+	alldata[7]=alldata[6]/alldata[2]
+	alldata[0]=alldata[7]*.082*alldata[1]
+	for( var j=0;j<alldata.length;j++){
+		if(j!=5)alldata[j]=number(alldata[j],4,3);
+	}
+	alldata[5]=Math.round(alldata[5])
+	compd=cmpd[which].formula
+	buildquest()
+}
+//This function creates the problem and the answer method by first filling up 
+//two tables and then partially clearing the "problem" table
+//table
+function buildquest(){
+	document.forms[0].cpd.value=compd
+	document.forms[0].themass.value=alldata[3]
+	document.forms[0].thevol.value=alldata[8]
+	document.forms[0].thet.value=alldata[1]
+	buildanswer()	
+}
+// This is the "Check Answer Function
+function answer(form){
+	attempts++
+	if(tried==1)alert("You've done this one! Get a new problem.");
+	else{
+	if(tried==2){totl++;document.forms[0].total.value=totl}
+	if(form.thep.value>.95*alldata[0] & form.thep.value<1.05*alldata[0]){
+		document.forms[0].results.value="correct"
+		corrt++
+		document.forms[0].correct.value=corrt
+		tried=1
+		}
+	else{
+		document.forms[0].results.value="incorrect"
+		tried=2
+		}
+	}
+}
+function buildanswer(){
+	getsolved()
+	thesolution=""
+	for(j=0;j<ansphrase.length;j++)thesolution+=ansphrase[j]+equations[j]+"=>"+solved[j];
+	showanswer()
+}
+function getsolved(){
+	solved=new Array()
+	solved[0]=alldata[5]+"*"+alldata[3]+"/"+alldata[4]+"=<b>"+alldata[6]+"moles</b>"//effmolessolute=DF*mass/gfw
+	solved[1]=alldata[6]+"/"+alldata[2]+"=<b>"+alldata[7]+"M</b>"//M=n/V
+	solved[2]=alldata[7]+"*0.082*"+alldata[1]+"=<b>"+alldata[0]+"atm</b>"//P=M*R*T
+}
+function showanswer(){
+if(attempts>=3){
+	if(ie4){
+		ansspot.innerHTML=thesolution
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.write(thesolution)
+		document.ansspot.document.close()
+	}
+	}
+}
+function clearansspot(){
+	if(ie4){
+		ansspot.innerHTML=""
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.clear()
+		document.ansspot.document.close()
+	}
+}
+
+</script>
+</head>
+<body onLoad="cleanse(),setrefs()">
+<h2>Osmotic Pressure</h2>
+This page is an exercise in osmotic pressure relationships. When you press "New Problem" a solute formula appears in the first cell and the next three cells will display values. Calculate the osmotic pressure in atm, enter it in the last cell and press "Check Answer." Results appear in the scoring table.
+<h4>Hints</h4>
+<ul>
+<li>Be careful about dissociating solutes
+<li>All solutions are treated as ideal
+<li>It is assumed there are not additional processes beyond the possible solute dissociation (such as <b>weak</b> acid/base processes).
+<li>If you miss a problem three times, pressing "Show Answer" will display a complete solution.
+</ul>
+<form>
+<table border=4>
+<tr>
+<TD ALIGN=CENTER><b>Solute</td>
+<td align=center><b>Solute(grams)</td>
+<td align=center><b>Volume(mL)</td>
+<td align=center><b>T(in K)</td>
+<td align=center><b>Osmotic P(atm)</td>
+</tr>
+<tr>
+<td align=center><input type="text" name=cpd size=10 ></td>
+<td align=center><input type="text"  name=themass size=6 ></td>
+<td align=center><input type="text" name=thevol size=6 ></td>
+<td align=center><input type="text" name=thet size=6 ></td>
+<td align=center><input type="text" name=thep size=6 ></td>
+</tr>
+<tr>
+<td><input type="button" value="New Problem" onClick=startit()></td>
+<td><input type="button" value="Check Answer" onClick=answer(this.form)></td>
+<td><input type="button" value="Show Answer" onClick=showanswer()></td>
+</tr>
+</table>
+<table border=4>
+<tr><td align=center><b>Results</td>
+<td align=center><b>Total Done</td>
+<td><b>Total Correct</td>
+</tr>
+<tr>
+<td><input type="text" name=results size=12></td>
+<td align=center><input name=total type="text" size=4 ></td>
+<td align=center><input name=correct type="text" size=4 ></td>
+</tr>
+</table>
+<div id=qspot></div>
+<div id=ansspot></div>
+<div id=refspot></div>
+</body>
+</html>

@@ -1,0 +1,345 @@
+<html>
+<head><title>Calculate K-cs</title>
+<style>
+#qspot {position:absolute;left:320;top:220}
+#ansspot {position:absolute;left:320;top:450;height:400}
+#tspot {position:absolute;left:10;top:300}
+#refspot {position:absolute;left:10;top:600}
+</style>
+<script src="reflist.js"></script>
+<script src="numberconvert.js"></script>
+<script language=javascript>
+//updated 1/9/01 added complete solution
+var ie4 = (document.all) ? true : false;
+thepage="Advanced K calcs"
+refnumber=195
+totl=0
+corrt=0
+tried=0
+attempts=0
+which=0
+threaction=0
+alldata=0
+theK=0
+qtable=anstable=""
+anser=0
+thesolution=""
+vformula=""
+gformula=""
+formulas=0
+numstring="0123456789"
+cmpd=new Array()
+coef=new Array()
+cmpd[0]=new Array(1,"N2O4","N2O","O2")
+coef[0]=new Array(2,2,3)
+cmpd[1]=new Array(2,"H2","O2","H2O")
+coef[1]=new Array(2,1,2)
+cmpd[2]=new Array(2,"N2","H2","NH3") 
+coef[2]=new Array(1,3,2)
+cmpd[3]=new Array(1,"CH3OH","CO","H2")
+coef[3]=new Array(1,1,2)
+cmpd[4]=new Array(2,"CO","H2","CH3OH")
+coef[4]=new Array(1,2,1)
+cmpd[5]=new Array(2,"NO","O2","NO3")
+coef[5]=new Array(1,1,1)
+cmpd[6]=new Array(1,"NO3","NO"," O2")
+coef[6]=new Array(1,1,1)
+cmpd[7]=new Array(2,"NO3"," NO","NO2")
+coef[7]=new Array(1,1,2)
+cmpd[8]=new Array(1,"NO2","NO3"," NO")
+coef[8]=new Array(2,1,1)
+cmpd[9]=new Array(2,"NO","O2","NO2")
+coef[9]=new Array(2,1,2)
+cmpd[10]=new Array(2,"H2","ICl","I2","HCl")
+coef[10]=new Array(1,2,1,2)
+cmpd[11]=new Array(2,"I2","HCl","H2","ICl")
+coef[11]=new Array(1,2,1,2)
+cmpd[12]=new Array(2,"CO","NO","CO2","N2")
+coef[12]=new Array(2,2,2,1)
+cmpd[13]=new Array(2,"CO2","N2","CO","NO")
+coef[13]=new Array(2,1,2,2)
+cmpd[14]=new Array(2,"SO2","O2","SO3")
+coef[14]=new Array(2,1,2)
+cmpd[15]=new Array(1,"SO3","SO2","O2")
+coef[15]=new Array(2,2,1)
+cmpd[16]=new Array(1,"N2O4","NO2")
+coef[16]=new Array(1,2)
+cmpd[17]=new Array(1,"NO2","N2O4")
+coef[17]=new Array(2,1)
+cmpd[18]=new Array(1,"NOBr","NO"," Br2")
+coef[18]=new Array(2,1,2)
+cmpd[19]=new Array(2,"CH4"," O2","H2CO","H2O")
+coef[19]=new Array(1,1,1,1)
+cmpd[20]=new Array(2,"NO","Br2","NOBr")
+coef[20]=new Array(2,1,2)
+cmpd[21]=new Array(2,"CS2","H2","CH4","H2S")
+coef[21]=new Array(1,4,1,2)
+cmpd[22]=new Array(2,"CO","H2O","CO2","H2")
+coef[22]=new Array(1,1,1,1)
+cmpd[23]=new Array(2,"CO2","H2","CO","H2O")
+coef[23]=new Array(1,1,1,1)
+cmpd[24]=new Array(2,"CH4","H2S","CS2","4H2")
+coef[24]=new Array(1,2,1,4)
+cmpd[25]=new Array(1,"SO2Cl2","SO2","Cl2")
+coef[25]=new Array(1,1,1)
+cmpd[26]=new Array(2,"SO2","Cl2","SO2Cl2")
+coef[26]=new Array(1,1,1)
+cmpd[27]=new Array(2,"Cl2","F2","ClF3")
+coef[27]=new Array(1,3,2)
+cmpd[28]=new Array(1,"ClF3","Cl2","F2")
+coef[28]=new Array(2,1,3)
+cmpd[29]=new Array(1,"COF2","CO2","CF4")
+coef[29]=new Array(2,1,1)
+cmpd[30]=new Array(2,"CO2","CF4","COF2")
+coef[30]=new Array(1,1,2)
+cmpd[31]=new Array(2,"CO","Cl2","COCl2")
+coef[31]=new Array(1,1,1)
+cmpd[32]=new Array(1,"COCl2","CO","Cl2")
+coef[32]=new Array(1,1,1)
+cmpd[33]=new Array(1,"PCl5","PCl3","Cl2")
+coef[33]=new Array(1,1,1)
+cmpd[34]=new Array(2,"PCl3","Cl2","PCl5")
+coef[34]=new Array(1,1,1)
+cmpd[35]=new Array(2,"N2O","O2","N2O4")
+coef[35]=new Array(2,3,2)
+basequest=new Array("The table provides concentration data for the reaction shown going to equilibrium. Use the data to calculate the value of K?<br>")
+ansphrase=new Array("Using basic stoichiometry, determine the missing equilibrium concentrations and complete the table.","Then, write the equation for Q","and carefully substitute the values and calculate K, making sure that you include the exponents in your calculation.")
+//begin programs
+function clear(){
+	document.forms[0].results.value=""
+	document.forms[0].theans.value=""
+	attempts=0
+	tried=0
+	clearansspot()
+	}
+function cleanse(){
+	clear()
+	document.forms[0].total.value=0
+	document.forms[0].correct.value=0
+	}
+function startit(){
+	clear()
+	tried=0
+	totl++
+	document.forms[0].total.value=totl
+	which=Math.floor(cmpd.length*Math.random())
+	//which=0
+	alldata=new Array()
+	for(var j=0;j<(cmpd[which].length-1);j++){
+		alldata[j]=new Array()
+		alldata[j][0]=coef[which][j]
+		alldata[j][1]=process(cmpd[which][j+1]);
+	}
+	reversed=(Math.random()>.5)?false:true;
+	getreaction()
+	getconcs()
+	getform()
+	theK=getconstant()
+	buildquest()
+	buildanswer()
+}
+function getreaction(){
+	if(reversed){
+		brkpt=cmpd[which][0]
+		alldata[brkpt][0]==1?thereaction=alldata[brkpt][1]:thereaction=alldata[brkpt][0]+alldata[brkpt][1];
+		for(j=brkpt+1;j<alldata.length;j++){
+			//j==(alldata.length-1)?thereaction+="=>":thereaction+=" + ";
+			thereaction+=" + ";
+			alldata[j][0]==1?thereaction+=alldata[j][1]:thereaction+=alldata[j][0]+alldata[j][1];
+		}
+		thereaction+="=>"
+		for(j=0;j<brkpt;j++){
+		if(j!=0)thereaction+=" + ";
+		alldata[j][0]==1?thereaction+=alldata[j][1]:thereaction+=alldata[j][0]+alldata[j][1];
+		}
+	}
+	else{
+	alldata[0][0]==1?thereaction=alldata[0][1]:thereaction=alldata[0][0]+alldata[0][1];
+	for(j=1;j<alldata.length;j++){
+		j==cmpd[which][0]?thereaction+="=>":thereaction+=" + ";
+		alldata[j][0]==1?thereaction+=alldata[j][1]:thereaction+=alldata[j][0]+alldata[j][1];
+		}
+	}
+}
+function process(formula){
+	newformula=""
+	for(j=0;j<formula.length;j++){
+		numstring.indexOf(formula.charAt(j))>0?newformula+="<sub>"+formula.charAt(j)+"</sub>":newformula+=formula.charAt(j)};
+	return newformula
+}
+
+function getconcs(){
+	for(var j=0;j<cmpd[which].length-1;j++){
+		alldata[j][2]=0
+		if(reversed){
+			if(j>=cmpd[which][0]){
+				alldata[j][2]=0
+				while(alldata[j][2]<.01 || alldata[j][2]>.5)alldata[j][2]=number(Math.random(),2,3);
+		}}
+		else{
+			if(j<cmpd[which][0]){
+				alldata[j][2]=0
+				while(alldata[j][2]<.01 || alldata[j][2]>.5)alldata[j][2]=number(Math.random(),2,3);
+		}}
+	}
+	factor=0
+	while(factor>.9 || factor<.05)factor=Math.random()
+	if(reversed){
+		change=alldata[brkpt][2]*factor/alldata[brkpt][0]
+		for(var j=0;j<alldata.length;j++)j<cmpd[which][0]?alldata[j][3]=alldata[j][2]+alldata[j][0]*change:alldata[j][3]=alldata[j][2]-alldata[j][0]*change;
+		for(var k=0;k<alldata.length;k++){alldata[k][2]=number(alldata[k][2],3,3);alldata[k][3]=number(alldata[k][3],3,3)}
+	}
+	else{
+		change=alldata[0][2]*factor/alldata[0][0]
+		for(var j=0;j<alldata.length;j++)j<cmpd[which][0]?alldata[j][3]=alldata[j][2]-alldata[j][0]*change:alldata[j][3]=alldata[j][2]+alldata[j][0]*change;
+		for(var k=0;k<alldata.length;k++){alldata[k][2]=number(alldata[k][2],3,3);alldata[k][3]=number(alldata[k][3],3,3)}
+	}
+	for(j=0;j<alldata.length;j++)if(1*alldata[j][3]<0)getconcs();
+}
+function getconstant(dataset){
+	constant=1
+	if(reversed){
+	for(var j=0;j<alldata.length;j++){
+		j<cmpd[which][0]?constant*=Math.pow(alldata[j][3],alldata[j][0]):constant*=Math.pow(alldata[j][3],-alldata[j][0])}}
+	else{
+	for(var j=0;j<alldata.length;j++){
+		j<cmpd[which][0]?constant*=Math.pow(alldata[j][3],-alldata[j][0]):constant*=Math.pow(alldata[j][3],alldata[j][0])}}
+	return number(constant,3,2)
+}
+function getform(){
+	gpart1=""
+	vpart1=""
+	gformula="Q="
+	vformula="K="
+	for(var j=cmpd[which][0];j<alldata.length;j++){
+		gpart1+=("["+alldata[j][1]+"]")
+		vpart1+=("["+alldata[j][3]+"]")
+		if(alldata[j][0]!=1){
+			gpart1+=("<sup>"+alldata[j][0]+"</sup>");
+			vpart1+=("<sup>"+alldata[j][0]+"</sup>");
+		}
+	}
+	gpart2=""
+	vpart2=""
+	for(var j=0;j<cmpd[which][0];j++){
+		gpart2+=("["+alldata[j][1]+"]")
+		vpart2+=("["+alldata[j][3]+"]")
+		if(alldata[j][0]!=1){
+			gpart2+=("<sup>"+alldata[j][0]+"</sup>");
+			vpart2+=("<sup>"+alldata[j][0]+"</sup>");
+		}
+	}
+	if(reversed){
+		gformula+=gpart2+"/"+gpart1
+		vformula+=vpart2+"/"+vpart1
+	}
+	else{
+		gformula+=gpart1+"/"+gpart2
+		vformula+=vpart1+"/"+vpart2
+	}
+}
+function buildquest(){
+	buildtable()
+	thequest=basequest[0]+thereaction+qtable	
+	showquest(thequest)
+}
+function buildtable(){
+	shown=Math.floor(Math.random()*alldata.length)
+	anstable="<table><tr><td></td><th>[ ]<sub>i</sub></th><th>[ ]<sub>eq</sub></th></tr>"
+	qtable="<table><tr><td></td><th>[ ]<sub>i</sub></th><th>[ ]<sub>eq</sub></th></tr>"
+	for(j=0;j<alldata.length;j++){
+		anstable+="<td>"+alldata[j][1]+"</td><td>"+alldata[j][2]+"</td><td>"
+		qtable+="<td>"+alldata[j][1]+"</td><td>"+alldata[j][2]+"</td><td>"
+		anstable+=alldata[j][3]+"</td></tr>"
+		j==shown?qtable+=alldata[j][3]+"</td></tr>":qtable+="</td></tr>"
+	}
+	anstable+="</table>"
+	qtable+="</table>"
+}
+function buildanswer(){
+	thesolution=ansphrase[0]+anstable+ansphrase[1]+"<br>"+gformula+"<br>"+ansphrase[2]+"<br>"+vformula+"<br>"+"<br>K="+theK
+}
+function showquest(thequest){
+	if(ie4){
+		qspot.innerHTML=thequest
+		}
+	else{
+		document.qspot.document.open()
+		document.qspot.document.write(thequest)	
+		document.qspot.document.close()
+	}
+}
+function clearansspot(){
+	if(ie4){
+		ansspot.innerHTML=""
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.clear()
+		document.ansspot.document.close()
+	}
+}
+
+function showanswer(){
+if(attempts>=3){
+	if(ie4){
+		ansspot.innerHTML=thesolution
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.write(thesolution)
+		document.ansspot.document.close()
+	}
+	}
+}	
+	
+function answer(ans){
+	attempts++
+	if(tried==1)alert("You've done this one! Get a new problem.");
+	else{
+	if(tried==2){
+		totl++
+		document.forms[0].total.value=totl
+	}
+	if(ans>.95*constant & ans<1.05*constant){
+		document.forms[0].results.value="correct"
+		corrt++
+		document.forms[0].correct.value=corrt
+		tried=1
+	}
+	else{
+		document.forms[0].results.value="incorrect"
+		tried=2
+	}
+}}
+</script>
+</head>
+<body onLoad="cleanse(),setrefs()">
+<h2>Calculating K</h2>
+This page is an exercise in calculating the equilibrium constant. When you press "New Question" a  a balanced equation and a partial set of  equilibrium concentrations will be displayed to the right of the table.  Use the information provided to determine the value of K. Enter it in the answer cell and press "Check Answer." To enter numbers in scientific notation use "e" notation. The results and score appear in the table.<br>
+<ul>
+<li>This page requires Netscape 4.x or IE 5 or higher.
+<li>If you miss a problem three times, pressing "Show Answer" will cause a complete solution to appear.
+</ul>
+<form>
+<input type="button" value="New Problem" onClick=startit()><br>
+<input type="text" name=theans size=12>
+<input type="button" value="Check Answer" onClick=answer(this.form.theans.value)><br>
+<td><input type="button" value="Show Answer" onClick=showanswer()><br>
+<table border=4>
+<tr><td align=center><b>Results</td>
+<td align=center><b>Total Done</td>
+<td><b>Total Correct</td>
+</tr>
+<tr>
+<td><input type="text" name=results size=12></td>
+<td align=center><input type="text" name=total size=4 ></td>
+<td align=center><input type="text" name=correct size=4 ></td>
+</tr>
+</table>
+</form>
+<div id=qspot></div>
+<div id=ansspot></div>
+<div id=refspot></div>
+</body>
+</html>

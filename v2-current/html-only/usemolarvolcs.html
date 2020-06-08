@@ -1,0 +1,203 @@
+<html>
+<head><title>Using Molar Volume</title>
+<style>
+#qspot {position:absolute;left:320;top:300}
+#ansspot {position:absolute;left:320;top:350;height:240}
+#tspot {position:absolute;left:10;top:300}
+#refspot {position:absolute;left:10;top:600}
+</style>
+<script src="reflist.js"></script>
+<script src="numberconvert.js"></script>
+<script language="javascript">
+var ie4 = (document.all) ? true : false;
+option=anskey=0
+refnumber=20
+attempts=corrt=totl=tried=0
+thequest=thesolution=""
+alldata=solved=""
+function cleanse(){
+	clear()
+	document.forms[0].total.value=0
+	document.forms[0].correct.value=0
+	}
+function clear(){
+	attempts=0
+	tried=0
+	clearansspot()
+	document.forms[0].theans.value=""
+	document.forms[0].results.value=""
+	}
+atoms=new Array()
+atoms[0]=new Array("lithium","Li",13.1)
+atoms[1]=new Array("beryllium","Be",5.0)
+atoms[2]=new Array("boron","B",4.60)
+atoms[3]=new Array("carbon","C",5.30)
+atoms[4]=new Array("sodium","Na",23.70)
+atoms[5]=new Array("magnesium","Mg",14)
+atoms[6]=new Array("aluminum","Al",10)
+atoms[7]=new Array("silicon","Si",12.1)
+atoms[8]=new Array("phosphorus","P",17)
+atoms[9]=new Array("sulfur","S",15.5)
+atoms[10]=new Array("potassium","K",45.3)
+atoms[11]=new Array("calcium","Ca",29.9)
+atoms[12]=new Array("scandium","Sc",15)
+atoms[13]=new Array("titanium","Ti",10.60)
+atoms[14]=new Array("chromium","Cr",7.23)
+atoms[15]=new Array("manganese","Mn",7.39)
+atoms[16]=new Array("iron","Fe",7.10)
+atoms[17]=new Array("cobalt","Co",6.70)
+atoms[18]=new Array("nickel","Ni",6.60)
+atoms[19]=new Array("copper","Cu",7.10)
+atoms[20]=new Array("zinc","Zn",9.20)
+atoms[21]=new Array("gallium","Ga",11.80)
+atoms[22]=new Array("germanium","Ge",13.60)
+atoms[23]=new Array("arsenic","As",13.1)
+atoms[24]=new Array("selenium","Se",16.5)
+atoms[25]=new Array("rubidium","Rb",55.9)
+atoms[26]=new Array("strontium","Sr",33.7)
+atoms[27]=new Array("yttrium","Y",19.8)
+atoms[28]=new Array("zirconium","Zr",14.1)
+atoms[29]=new Array("niobium","Nb",10.8)
+atoms[30]=new Array("molybdenum","Mo",9.40)
+atoms[31]=new Array("ruthenium","Ru",8.30)
+atoms[32]=new Array("rhodium","Rh",8.30)
+atoms[33]=new Array("palladium","Pd",8.90)
+atoms[34]=new Array("silver","Ag",10.30)
+atoms[35]=new Array("cadmium","Cd",13.10)
+atoms[36]=new Array("indium","In",15.70)
+atoms[37]=new Array("tin","Sn",16.3)
+atoms[38]=new Array("antimony","Sb",18.4)
+atoms[39]=new Array("tellerium","Te",20.50)
+atoms[40]=new Array("cesium","Cs",70)
+atoms[41]=new Array("barium","Ba",39)
+atoms[42]=new Array("tungsten","W",9.53)
+atoms[43]=new Array("rhenium","Re",8.85)
+atoms[44]=new Array("osmium","Os",8.43)
+atoms[45]=new Array("iridium","Ir",8.54)
+atoms[45]=new Array("platinum","Pt",9.10)
+atoms[46]=new Array("gold","Au",10.2)
+atoms[47]=new Array("thallium","Tl",17.20)
+atoms[48]=new Array("lead","Pb",18.3)
+atoms[49]=new Array("bismuth","Bi",21.3)
+labels=new Array("What is the volume of ","How many moles in ")
+units=new Array("moles","cm<sup>3</sup>")
+symbols=new Array("n","V","MV")
+equations=new Array()
+alldata=new Array()
+equations[1]=symbols[0]+"="+symbols[1]+"/"+symbols[2]
+equations[0]=symbols[1]+"="+symbols[2]+"*"+symbols[0]
+function startit(){
+	clear()
+	totl++
+	document.forms[0].total.value=totl
+	alldata=new Array()
+	which=Math.floor(Math.random()*atoms.length)
+	option=Math.floor(2*Math.random())
+	option==0?anskey=1:anskey=0;
+	alldata[2]=atoms[which][2]
+	alldata[0]=0
+	while(alldata[0]<.1)alldata[0]=number(10*Math.random(),3,3)
+	alldata[1]=number(alldata[0]*alldata[2],3,3)
+	buildquestion()
+}
+function buildquestion(){
+	thequest=labels[option]+alldata[option]+units[option]+" of "+atoms[which][Math.floor(2*Math.random())]+"?";	
+	showquest()
+	buildanswer()
+}
+function buildanswer(){
+	getsolved()
+	thesolution=equations[option]+"=>"+solved[option]
+	showanswer()
+}
+function getsolved(){
+	solved=new Array()
+	inserts=new Array("moles","cm<sup>3</sup>","cm<sup>3</sup>/mole")
+	solved[1]=alldata[1]+inserts[1]+"/"+alldata[2]+inserts[2]+"="+alldata[0]+"<b>moles</b>"
+	solved[0]=alldata[2]+inserts[2]+"*"+alldata[0]+inserts[0]+"="+alldata[1]+"<b>cm<sup>3</sup>"
+}
+function showquest(){
+	if(ie4){
+		qspot.innerHTML=thequest
+		}
+	else{
+		document.qspot.document.open()
+		document.qspot.document.write(thequest)
+		document.qspot.document.close()
+	}
+}
+function showanswer(){
+if(attempts>=3){
+	if(ie4){
+		ansspot.innerHTML=thesolution
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.write(thesolution)
+		document.ansspot.document.close()
+	}
+	}
+}
+function clearansspot(){
+	if(ie4){
+		ansspot.innerHTML=""
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.clear()
+		document.ansspot.document.close()
+	}
+}
+function answer(ans){
+	if(tried==1)alert("You've already done this one. Get a new problem!");
+	else{
+		attempts++
+		if(tried==2){totl++;document.forms[0].total.value=totl}
+		if (ans>.95*alldata[anskey] & ans<1.05*alldata[anskey]){
+			document.forms[0].results.value="correct"
+			corrt++
+			document.forms[0].correct.value=corrt
+			tried=1
+		}
+		else{
+			document.forms[0].results.value="incorrect"
+			tried=2
+		}
+	}
+}
+
+
+</script>
+</head>
+<body onLoad="cleanse()">
+<h3>Using Molar Volume</h3>
+This is a basic exercise in the use of molar volumes of the elements. The best source of malor volumes is the VWR Periodic Table.<ul>
+<li>When you press "New Problem" a question will appear to the right of the table.
+<li>Determine the value of the answer, enter it in the answer cell and press "Check Answer."
+<li>Results and scoring will appear in the table.
+<li>If you miss a problem three times, pressing "Show Answer" will display a complete solution. In the solution "MV" is used as the symbol for molar volume.
+</ul>
+<form>
+<input type=button value="New Problem" onClick="startit()"><br>
+<input name="theans" type=text size=8>
+<input type=button value="Check Answer" onClick="answer(this.form.theans.value)"><br>
+<input type=button value="Show Answer" onClick="showanswer()">
+<table border=4>
+<tr>
+<td>Results</td>
+<td>Total</td>
+<td>Correct</td>
+</tr>
+<tr>
+<td><input type=text name=results size=12></td>
+<td align=center><input name="total" type=text size=3</td>
+<td align=center><input name="correct" type=text size=3></td>
+</tr>
+</table>
+</form>
+<div id=qspot></div>
+<div id=ansspot></div>
+<div id=refspot></div>
+<div id=area></div>
+</body>
+</html>

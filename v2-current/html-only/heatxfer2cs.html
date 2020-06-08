@@ -1,0 +1,213 @@
+<html>
+<head><title>Heat xfer(water + another substance-cs</title>
+<style>
+#qspot {position:absolute;left:320;top:260}
+#ansspot {position:absolute;left:320;top:380;height:400}
+#tspot {position:absolute;left:10;top:300}
+#refspot {position:absolute;left:10;top:600}
+</style>
+<script src="reflist.js"></script>
+<script src="numberconvert.js"></script>
+<script language="javascript">
+//updated 1/10/01-added complete solution
+var ie4 = (document.all) ? true : false;
+refnumber=88
+//global variables
+attempts=0
+which=0
+theanswer=0
+corrt=0
+totl=0
+option=0
+ans=""
+alldata=0
+solved=0
+datalabels=new Array("mass<sub>1</sub>","Ti<sub>1</sub>","mass<sub>2</sub>","Ti<sub>2</sub>","S.H.","T<sub>f</sub>")
+equation=new Array()
+equation[0]=new Array("The basic equation for combining water with another material is<br>","mass<sub>1</sub>*4.184*(Tf-Ti<sub>w</sub>)+mass2*S.H.*(Tf-Ti<sub>2</sub>)=0")
+equation[1]=new Array("Solving for mass<sub>1</sub> yields:<br>","-"+datalabels[2]+"*"+datalabels[4]+"*("+datalabels[5]+"-"+datalabels[3]+")/"+"4.184*("+datalabels[5]+"-"+datalabels[1]+")="+datalabels[0])
+equation[2]=new Array("Solving for mass<sub>2</sub> yields:<br>","-"+datalabels[0]+"*4.184*("+datalabels[5]+"-"+datalabels[1]+")/("+datalabels[4]+"*("+datalabels[5]+"-"+datalabels[3]+"))="+datalabels[2])
+equation[3]=new Array("Solving for Ti<sub>1</sub> yields:<br>",datalabels[2]+"*"+datalabels[4]+"*("+datalabels[5]+"-"+datalabels[3]+")/(4.184*"+datalabels[0]+")+"+datalabels[5]+"="+datalabels[1])
+equation[4]=new Array("Solving for Ti<sub>2</sub> yields:<br>",datalabels[0]+"*4.184*("+datalabels[5]+"-"+datalabels[1]+")/"+datalabels[4]+"*"+datalabels[2]+"+"+datalabels[5]+"="+datalabels[3])
+equation[5]=new Array("Solving for T<sub>f</sub> yields:<br>","(4.184*"+datalabels[0]+"*"+datalabels[1]+"+"+datalabels[4]+"*"+datalabels[2]+"*"+datalabels[3]+")/(4.184*"+datalabels[0]+"+"+datalabels[4]+"*"+datalabels[2]+")="+datalabels[5])
+equation[6]=new Array("Solving for the specific heat of the second material yields:<br>","-"+datalabels[0]+"*4.184*("+datalabels[5]+"-"+datalabels[1]+")/("+datalabels[2]+"*("+datalabels[5]+"-"+datalabels[3]+"))="+datalabels[4])
+eqnsets=new Array()
+//alldata=new Array(mass1,ti1,mass2,ti2,sh,tf,"")
+eqnsets[0]=new Array(0,1)
+eqnsets[1]=new Array(0,3)
+eqnsets[2]=new Array(0,2)
+eqnsets[3]=new Array(0,4)
+eqnsets[4]=new Array(0,6)
+eqnsets[5]=new Array(0,5)
+function cleanse(){
+	clear()
+	for(var j=0;j<6;j++)document.forms[0].elements[j].value=""
+	document.forms[0].total.value=0
+	document.forms[0].correct.value=0
+	}
+function clear(){
+	tried=0
+	attempts=0
+	document.forms[0].results.value=""
+	clearansspot()
+}
+function clearansspot(){
+	if(ie4){
+		ansspot.innerHTML=""
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.clear()
+		document.ansspot.document.close()
+	}
+}
+
+function startit(){
+	clear()
+	tried=0
+	totl++
+	document.forms[0].total.value=totl
+	ti1=100*Math.random()
+	ti2=300*Math.random()
+	ti1=number(ti1,3,3)
+	ti2=number(ti2,3,3)
+	mass1=number(50*Math.random(),3,3)
+	mass2=number(50*Math.random(),3,3)
+	masst=number(1*mass1+1*mass2,3,3)
+	sh=0
+	while(sh<.1){
+	sh=Math.round(100*Math.random())/100}
+	tf=(4.184*mass1*ti1 + mass2*ti2*sh)/(4.184*mass1 + mass2*sh)
+	dt1=number((tf-1*ti1),3,3)
+	dt2=number((tf-1*ti2),3,3)
+	sh=number(sh,3,3)
+	tf=number(tf,3,3)
+	alldata=new Array(mass1,ti1,mass2,ti2,sh,tf,"")
+	option=Math.floor(6*Math.random())
+	if(checktemp(ti1,tf)){buildquest(option)}
+	else startit()
+}
+function checktemp(ti1,tf){
+	if(ti1<100 & Math.abs(ti1-tf)>3)return true;
+	else return false
+}
+function buildquest(){
+	which=Math.floor(6*Math.random())
+	for(var j=0;j<6;j++){
+		j==which?document.forms[0].elements[j].value="":document.forms[0].elements[j].value=alldata[j]
+	}
+	buildanswer()
+}
+function buildanswer(){
+	getsolved()
+	thesolution=""
+	for(var j=0;j<eqnsets[which].length;j++)thesolution+=(equation[eqnsets[which][j]][0]+equation[eqnsets[which][j]][1]+" =><br> "+solved[eqnsets[which][j]]+"<br>");
+}
+function getsolved(){
+	solved=new Array()
+	solved[0]=""
+	solved[99]=alldata[0]+"*("+alldata[5]+"-"+alldata[1]+")+"+alldata[2]+"*("+alldata[5]+"-"+alldata[3]+")=0"
+	solved[1]="-"+alldata[2]+"*("+alldata[5]+"-"+alldata[3]+")/"+"("+alldata[5]+"-"+alldata[1]+")="+alldata[0]
+	solved[2]="-"+alldata[0]+"*("+alldata[5]+"-"+alldata[1]+")/"+"("+alldata[5]+"-"+alldata[3]+")="+alldata[2]
+	solved[3]=alldata[2]+"*("+alldata[5]+"-"+alldata[3]+")/"+alldata[0]+"+"+alldata[5]+"="+alldata[1]
+	solved[4]=alldata[0]+"*("+alldata[5]+"-"+alldata[1]+")/"+alldata[2]+"+"+alldata[5]+"="+alldata[3]
+	solved[5]="("+alldata[0]+"*"+alldata[1]+"+"+alldata[2]+"*"+alldata[3]+")/("+alldata[0]+"+"+alldata[2]+")="+alldata[5]
+	solved[6]="-"+alldata[0]+"*4.184*("+alldata[5]+"-"+alldata[1]+")/("+alldata[2]+"*("+alldata[5]+"-"+alldata[3]+"))="+alldata[4]
+}
+function answer(form){
+	if(tried==1)alert("You've done this one! Get a new problem.");
+	else{
+	if(tried==2){totl++;document.forms[0].total.value=totl};
+	attempts++
+	if (form.elements[which].value>.95*alldata[which] &
+	form.elements[which].value<1.05*alldata[which]){ 
+		document.forms[0].results.value="correct"
+		corrt++
+		document.forms[0].correct.value=corrt
+		tried=1
+		}
+	else {
+		tried=2
+		document.forms[0].results.value="incorrect"
+	}
+}}
+function showanswer(){
+if(attempts>=3){
+	if(ie4){
+		ansspot.innerHTML=thesolution
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.write(thesolution)
+		document.ansspot.document.close()
+	}
+	}
+}
+function clearansspot(){
+	if(ie4){
+		ansspot.innerHTML=""
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.clear()
+		document.ansspot.document.close()
+	}
+}	
+
+</script>
+</head>
+<body onLoad="setrefs(),cleanse()">
+<h2>Heat Transfer-water and another substance</h2>
+This page deals with heat transfer resulting from samples of water and another material initially at different temperatures. The problems
+are randomly generated when you press the "New Problem" button. When you do so, data will
+will appear in four of the cells. Note that there is only one cell for T<sub>f</sub>, since the substances will be at the same final T. Fill in the empty cell and press "Check Answer." The results are displayed in the second table which will
+tell you whether you got the correct answer or not and keeps a running total of your score.
+If you get a question wrong, you should redo and recheck your answer. Getting new problems is just a matter of pressing the "New Problem" button at any time. 
+<ul>
+<li>If you miss a problem three times, pressing "Show Answer" will present a complete solution.
+</ul>
+<form>
+<table border=4>
+<tr>
+<td></td>
+<TD ALIGN=CENTER><b>Mass(g)</td>
+<td align=center><b>T<sub>i</sub></td>
+<TD ALIGN=CENTER><b><b>S.H.(J/g-deg)</td>
+<td align=center><b>T<sub>f</sub></td>
+</tr>
+<tr>
+<td>Water</td>
+<td align=center><input type="text" size=8 ></td>
+<td align=center><input type="text" size=8 ></td>
+<td>4.184J/g-deg</td>
+</tr>
+<tr>
+<td>Second Sample</td>
+<td align=center><input type="text" size=8 ></td>
+<td align=center><input type="text" size=8 ></td>
+<td align=center><input type="text" size=8 ></td>
+<td align=center><input type="text" size=8 ></td>
+</tr>
+<tr>
+<td><input type="button" value="New Problem" onClick=startit()></td>
+<td><input type="button" value="Check Answer" onClick=answer(this.form)></td>
+<td><input type="button" value="Show Answer" onClick=showanswer()></td>
+</tr>
+</table>
+<table border=4>
+<tr><td align=center><b>Results</td>
+<td align=center><b>Total Done</td>
+<td><b>Total Correct</td>
+</tr>
+<tr>
+<td><input type="text" name="results" size=12></td>
+<td align=center><input name="total" type="text" size=4 ></td>
+<td align=center><input name="correct" type="text" size=4 ></td>
+</tr>
+</table>
+</form>
+<div id=qspot></div>
+<div id=ansspot></div>
+<div id=refspot></div>
+</body>
+</html>

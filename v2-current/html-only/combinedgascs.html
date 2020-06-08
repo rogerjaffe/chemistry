@@ -1,0 +1,225 @@
+<html>
+<head><title>Combined Gas Equation-cs</title>
+<style>
+#qspot {position:absolute;left:320;top:260}
+#ansspot {position:absolute;left:320;top:320;height:500}
+#tspot {position:absolute;left:10;top:300}
+#refspot {position:absolute;left:10;top:600}
+</style>
+<script src="reflist.js"></script>
+<script src="numberconvert.js"></script>
+<script language="javascript">
+//updated 11/14/00-added complete solution
+var ie4 = (document.all) ? true : false;
+//global variables
+refnumber=57
+attempts=0
+which=0
+theanswer=0
+corrt=0
+totl=0
+tried=0
+missing=""
+function parts(p1,p2,p3,p4,p5,p6,p7,p8,p9,p10){
+	this.p1=p1
+	this.p2=p2
+	this.p3=p3
+	this.p4=p4
+	this.p5=p5
+	this.p6=p6
+	this.p7=p7
+	this.p8=p8
+	this.p9=p9
+	this.p10=p10
+}
+theR=new Array(.0821,62.4)
+combined="P<SUB>1</SUB>V<SUB>1</SUB>/T<SUB>1</SUB>=P<SUB>2</SUB>V<SUB>2</SUB>/T<SUB>2</SUB>"
+comblaws=new Array("=>P<SUB>1</SUB>=P<SUB>2</SUB>V<SUB>2</SUB>T<SUB>1</SUB>/T<SUB>2</SUB>V<SUB>1</SUB>","=>V<SUB>1</SUB>=P<SUB>2</SUB>V<SUB>2</SUB>T<SUB>1</SUB>/T<SUB>2</SUB>P<SUB>1</SUB>","=>T<SUB>1</SUB>=P<SUB>1</SUB>V<SUB>1</SUB>T<SUB>2</SUB>/P<SUB>2</SUB>V<SUB>2</SUB>","=>P<SUB>2</SUB>=P<SUB>1</SUB>V<SUB>1</SUB>T<SUB>2</SUB>/T<SUB>1</SUB>V<SUB>2</SUB>","=>V<SUB>2</SUB>=P<SUB>1</SUB>V<SUB>1</SUB>T<SUB>2</SUB>/T<SUB>1</SUB>P<SUB>2</SUB>","=>T<SUB>2</SUB>=P<SUB>2</SUB>V<SUB>2</SUB>T<SUB>1</SUB>/P<SUB>1</SUB>V<SUB>1</SUB>")
+seq=new Array()
+seq[0]=new Array(3,4,2,5,1)
+seq[1]=new Array(3,4,2,5,0)
+seq[2]=new Array(0,1,5,3,4)
+seq[3]=new Array(0,1,5,2,4)
+seq[4]=new Array(0,1,5,2,3)
+seq[5]=new Array(3,4,2,0,1)
+labels=new Array("P1","V1","T1","P2","V2","T2")
+dimensions=new Array("pressure","volume","temperature","pressure","volume","temperature")
+units=new Array("atm","L","K","atm","L","K","torr","mL","C","torr","mL","C")
+data=new Array()
+question=new Array()
+question[0]=new parts("A closed gas system initially has "," with the "," unknown. If the same closed system has values of ",", what was the initial ")
+question[1]=new parts("A closed gas system initially has ",". If the ",",respectively, what is the new ")
+ansphrase=new parts("First, organize the data converting the temperature, if needed. Also, be certain that the dimensions of the same variable agree:<br>","Rearrange  the combined gas equation to solve for the missing quantity<br>","<br>Substitute in the knowns and solve,using the appropriate ideal gas constant and converting the initial result to the desired dimension, as necessary:<br>")
+function cleanse(){
+	clear()
+	document.forms[0].total.value=0
+	document.forms[0].correct.value=0
+}
+function clear(){
+	clearansspot()
+	document.forms[0].results.value=""
+	document.forms[0].theans.value=""
+	attempts=0
+	tried=0
+}
+function clearansspot(){
+	if(ie4){
+		ansspot.innerHTML=""
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.clear()
+		document.ansspot.document.close()
+	}
+}
+function startit(){
+	clear()
+	totl++
+	document.forms[0].total.value=totl
+	//first calculate three values data[0]=P1,data[1]=V1,data[2]=T1,data[3]=P2...
+	P1=number((2*Math.random()),3,3)
+	V1=number((10*Math.random()),3,3)
+	T1=0
+	while(T1<200)T1=number(1000*Math.random(),3,3)
+	P2=number((2*Math.random()),3,3)
+	V2=number((10*Math.random()),3,3)
+	T2=number((P2*V2*T1/(P1*V1)),3,3)
+	if(T2<200 || T2>1000){totl--;startit()}
+	else{
+	//set up arrays with v in L and mL, etc
+	data=new Array()
+	data[0]=new Array(P1,number((P1*760),3,3))
+	data[1]=new Array(V1,number(1000*V1,3,3))
+	data[2]=new Array(T1,number((1*T1+273),4,3))
+	data[3]=new Array(P2,number((P2*760),3,3))
+	data[4]=new Array(V2,number(1000*V2,3,3))
+	data[5]=new Array(T2,number((1*T2+273),4,3))
+	buildquest()
+}}
+function buildquest(){
+	missing=new Array(Math.floor(3*Math.random()),Math.floor(2*Math.random()))
+	toshow=new Array()
+	for(var j=0;j<=5;j++){
+		if(j!=missing[0]){
+		choose=Math.floor(2*Math.random())
+		toshow[toshow.length]=dimensions[j]
+		toshow[toshow.length]=data[j][choose]
+		toshow[toshow.length]=units[j+6*choose]
+		data[j][2]=choose
+		}
+	}
+	if(missing[0]<3){
+	thequest=question[0].p1+toshow[0]+" and "+toshow[3]+" of "+toshow[1]+toshow[2]+" and "+toshow[4]+toshow[5]+question[0].p2+dimensions[missing[0]]+question[0].p3+toshow[7]+toshow[8]+", "+toshow[10]+toshow[11]+" and " +toshow[13]+toshow[14]+question[0].p4+dimensions[missing[0]]+ " in "+units[missing[0]+6*missing[1]]+"?"
+	}
+	else{
+	thequest=question[1].p1+dimensions[0]+", "+dimensions[1]+" and "+dimensions[2]+" of "+toshow[1]+toshow[2]+", "+toshow[4]+toshow[5]+" and "+toshow[7]+toshow[8]+question[1].p2+toshow[9]+" and "+toshow[12]+" are changed to "+toshow[10]+toshow[11]+" and "+toshow[13]+toshow[14]+question[1].p3+dimensions[missing[0]]+" in "+units[missing[0]+6*missing[1]]+"?"}
+	showquest(thequest);
+	buildanswer()
+}
+function buildanswer(){
+	datatable=""
+	lines=new Array()
+	for(j=0;j<=5;j++){
+		if(j==missing[0])lines[j]=labels[j]+"=?(in "+units[missing[0]+6*missing[1]]+")";
+		else{			
+			lines[j]=labels[j]+"="+data[j][data[j][2]]+units[j+6*data[j][2]]
+			if(Math.abs(j-missing[0])==3){
+				if(j!=2 & j!=5){
+				if(data[j][2]!=missing[1])lines[j]+=("=>"+data[j][missing[1]]+units[missing[0]+6*missing[1]]);
+				}}
+			if((j==2 || j==5) & data[j][2]==1)lines[j]+=("=>"+data[j][0]+"K");
+		}	
+	}
+	if(missing[0]!=1 & missing[0]!=4){
+			if(data[1][2]!=data[4][2])lines[4]+=("=>"+data[4][data[1][2]]+units[1+6*data[1][2]]);
+		}
+	if(missing[0]!=0 & missing[0]!=3){
+			if(data[0][2]!=data[3][2])lines[3]+=("=>"+data[3][data[0][2]]+units[0+6*data[0][2]]);
+		}
+	for(j=0;j<=5;j++)datatable+=lines[j]+"<br>";
+	theanswer=datatable
+	finish=buildeqn()
+	theanswer=ansphrase.p1+datatable+ansphrase.p2+combined+comblaws[missing[0]]+ansphrase.p3+finish
+	//showanswer()
+}
+function buildeqn(){
+	st=missing[0]
+	theeqn="("+data[seq[st][0]][0]+"*"+data[seq[st][1]][0]+"*"+data[seq[st][2]][0]+")/("+data[seq[st][3]][0]+"*"+data[seq[st][4]][0]+")"+"="
+	if(missing[0]==2 || missing[0]==5){
+		theeqn+=data[missing[0]][0]+"K";
+		if(missing[1]==1)theeqn+="=>"+data[missing[0]][1]+"<sup>o</sup>C";
+	}
+	else{
+		theeqn+=data[missing[0]][missing[1]]+units[missing[0]+6*missing[1]];
+	}
+	return theeqn
+}
+function showquest(thequest){
+	if(ie4){
+		qspot.innerHTML=thequest
+		}
+	else{
+		document.qspot.document.open()
+		document.qspot.document.write(thequest)
+		document.qspot.document.close()
+	}
+}
+function answer(theans){
+	if(tried==1)alert("You've done this one! Get a new problem.");
+	else{
+	if(tried==2){totl++;document.forms[0].total.value=totl};
+	attempts++
+	if(theans>.95*data[missing[0]][missing[1]] & theans<1.05*data[missing[0]][missing[1]]){
+		document.forms[0].results.value="Correct"
+		corrt++
+		document.forms[0].correct.value=corrt
+		tried=1
+	}
+	else{
+		document.forms[0].results.value="Incorrect"
+		tried=2
+	}
+}}
+function showanswer(){
+if(attempts>=3){
+	if(ie4){
+		ansspot.innerHTML=theanswer
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.write(theanswer)
+		document.ansspot.document.close()
+	}
+	}
+}	
+</script>
+</head>
+<body onLoad="cleanse(),setrefs()">
+<h2>Combined Gas Law</h2>
+The combined gas law states that for a closed system (constant moles of gas), the PV product divided by the absolute temperature is constant or P<SUB>1</SUB>V<SUB>1</SUB>/T<SUB>1</SUB>=P<SUB>2</SUB>V<SUB>2</SUB>/T<SUB>2</SUB>. This page provides problems utilizing this relationship. When you press 
+"New Problem",a question will appear to the right of the table. Determine the value of the answer, enter it in the cell and press "Check Answer". Results appear in the table where running totals are also kept. If you get a problem wrong, you should redo it. Since these are all Combined Law problems, you are to assume that all of the changes are taking place under conditions of constant n.
+<ul>
+<li>If you miss a problem three times, pressing the "Show Answer" button will cause the correct answer to appear.
+</ul>
+<form>
+<input type=button value="New Problem" onClick="startit()"><br>
+<input type="text" name=theans size=8>Enter your answer here<br>
+<input type="button" value="Check Answer" onClick=answer(this.form.theans.value)>
+<input type="button" value="Show Answer" onClick=showanswer()>
+<table border=4>
+<tr><td align=center><b>Results</td>
+<td align=center><b>Total Done</td>
+<td><b>Total Correct</td>
+</tr>
+<tr>
+<td><input type="text" name=results size=12></td>
+<td align=center><input type="text" name=total size=4 ></td>
+<td align=center><input type="text" name=correct  size=4 ></td>
+</tr>
+</table>
+</form>
+<div id=qspot></div>
+<div id=ansspot></div>
+<div id=refspot></div>
+</body>
+</html>

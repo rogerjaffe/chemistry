@@ -1,0 +1,236 @@
+<html>
+<head>
+<title>The Arrehnius Equation</title>
+<script>
+//globals
+thepage="The Arrehnius Equation(81)"
+howlong=""
+which=""
+theanswer=""
+temp=0
+Ea=0
+A=0
+k=0
+k1=0
+k2=0
+T1=0
+T2=0
+totl=0
+corrt=0
+tried=0
+R=.008314
+A=1e12
+option=0
+fillin="<form><input type=text size=8 name=ans>"
+function clear(){
+	document.forms[0].verify.value=""
+	document.forms[0].page.value=""
+	document.forms[0].time.value=""
+	document.forms[0].results.value=""
+	document.forms[0].total.value=totl
+	document.forms[0].correct.value=corrt
+}
+function MakeArray(n){
+	this.length=n
+	for (var i=1;i<=n;i++){
+	this[i]= 0}
+}
+function question(p1,p2,p3,p4,p5,p6,p7,p8){
+	this.p1=p1
+	this.p2=p2
+	this.p3=p3
+	this.p4=p4
+	this.p5=p5
+	this.p6=p6
+	this.p7=p7
+	this.p8=p8
+}
+quest=new MakeArray(10)
+quest[1]=new question("A reaction is found to have an activation energy of ","<b>KJ</b> at ","<b>K</b>. What is the value of the rate constant?")
+quest[2]=new question("A reaction is found to have a rate constant of ","<b>sec<sup>-1</sup></b> at ","<b>K</b>. What is the value of the rate constant at ","<b>K</b>?")
+quest[3]=new question("Given the following: ","What is the activation energy in KJ/mole?")
+quest[4]=new question("The following data was collected at ","<b>K</b>. Complete the table.")
+
+//obviously the timer function
+function timer(z){
+tt=z
+var b=Math.floor(tt/60)
+var j = (tt % 60)
+if (j<10){c="0"}
+else {c=""}
+howlong=b + ":" + c + j
+running=setTimeout("timer(tt+1)",1000)
+}
+function begin(){
+
+totl++
+document.forms[0].total.value=totl
+tried=0
+T1=gettemp()
+T2=gettemp()
+Ea=getact()
+Ea2=getact()
+k1=calck(Ea,T1)
+k2=calck(Ea,T2)
+k3=calck(Ea2,T1)
+theanswer=sigfigs(k)
+makequestion()
+}
+function calck(Ea,T){
+k=sigfigs(Ea/(R*T))
+k=-1*k
+k=A*Math.pow(2.303,k)
+return sigfigs(k)
+}
+function makequestion(){
+option=Math.ceil(4*Math.random())
+if(option==1){
+	askit=quest[1]['p1']+Ea+quest[1]['p2']+T1+quest[1]['p3']
+	theanswer=k1
+	display(askit)}
+if(option==2){
+	askit=quest[2]['p1']+k1+quest[2]['p2']+T1+quest[2]['p3']+T2+quest[2]['p4']
+	theanswer=k2
+	display(askit)}
+if(option==3){
+	thetable="<table><tr><td align=center>T(K)</td><td>k(sec<sup-1</sup>)</td></tr><tr><td>"+T1+"</td><td>"+k1+"</td></tr><tr><td>"+T2+"</td><td>"+k2+"</td></tr></table>";
+	askit=quest[3]['p1']+thetable+quest[3]['p2']
+	theanswer=Ea
+	display(askit)}
+if(option==4){
+	empty=Math.ceil(4*Math.random())
+	if(empty==1){theanswer=Ea;Ea=fillin}
+	if(empty==2){theanswer=k1;k1=fillin}
+	if(empty==3){theanswer=Ea2;Ea2=fillin}
+	if(empty==4){theanswer=k3;k3=fillin}
+thetable="<table><tr><td align=center>E<sub>a</sub></td><td>k(sec<sup-1</sup>)</td></tr><tr><td>"+Ea+"</td><td>"+k1+"</td></tr><tr><td>"+Ea2+"</td><td>"+k3+"</td></tr></table>";
+	askit=quest[4]['p1']+T1+quest[4]['p2']+thetable
+	display(askit)}
+
+}
+function getact(){
+act=0
+while(act<10 || act>200){
+	act=Math.round(5000*Math.random())/10}
+return act
+}
+function gettemp(){
+temperature=0
+while(temperature<200){
+	temperature=Math.ceil(500*Math.random())}
+return temperature
+}
+function getk(){
+c=Math.pow(10,Math.random())
+c=Math.round(10*c)/10
+ex=Math.ceil(7*Math.random())
+if(Math.random()>.5){ex=-1*ex}
+k=c+"e"+ex
+return k
+}
+function sigfigs(f){
+ex=0
+if(f>=1000){
+while(f>=1000){
+	ex++
+	f=f/10
+}
+f=Math.round(f)/100
+ex=ex+2
+f=""+f
+if(f.length==1){f=f+"."}
+while(f.length<4){f=f+"0"}
+f=f+"e"+ex
+return f
+}
+else{if(f<100){
+while(f<100){
+	ex++
+	f=f*10
+}
+f=Math.round(f)/100
+ex=2-ex
+f=""+f
+if(f.length==1){f=f+"."}
+while(f.length<4){f=f+"0"}
+if(ex!=0){f=f+"e"+ex}
+return f}
+else{
+f=Math.round(f)/100
+f=""+f
+if(f.length==1){f=f+"."}
+while(f.length<4){f=f+"0"}
+f=f+"e2"
+return f
+}
+}
+}
+function display(askit){
+checkit=window.open("","checkit","scrollbars=yes,width=350,height=250")
+checkit.document.clear()
+checkit.document.writeln ("<html>");
+checkit.document.writeln ("<head><title>Arrhenius</title>");
+checkit.document.writeln ("</head>"); 
+checkit.document.writeln ("<body bgcolor = FFFFFF>");
+checkit.document.writeln (askit,"<br>");
+if(option<4){checkit.document.writeln ("<form><input type=text name=ans size=8>")};
+checkit.document.writeln ("<input type=button value=Submit onClick='opener.answer(this.form.ans.value)'>");
+checkit.document.writeln ("</form></body>");
+checkit.document.writeln ("</html>");
+checkit.document.close();
+checkit.document.forms[0].ans.focus()
+checkit.document.forms[0].ans.select()
+}
+function answer(f){
+if(tried==1){alert("You've already done this one. Get a new Problem!")}
+else{
+if(tried==2){totl++;document.forms[0].total.value=totl}
+if(f>.95*theanswer & f<1.05*theanswer){
+	document.forms[0].results.value="correct"
+	corrt++
+	document.forms[0].correct.value=corrt
+	tried=1}
+else{
+	document.forms[0].results.value="incorrect"
+	tried=2
+	}
+}
+}
+function update(){
+	document.forms[0].total.value=totl
+	document.forms[0].correct.value=corrt
+	document.forms[0].time.value=howlong
+	document.forms[0].page.value=thepage
+	document.forms[0].verify.value=Math.round(10000*Math.random())
+}
+</script>
+</head>
+<body onLoad="clear(), timer(0)">
+<h2>The Arrhenius Equation</h2>
+This page provides basic exercises in the use of the Arrhenius equation. When you press "New Problem", a window with a question and answer cell will appear. Do the appropriate calculations and submit the answer. When needed, use a value of 10<sup>12</sup> for the constant A.
+Before beginning, enter your name, select your instructor and press "Submit."
+
+<form ACTION = "../cgi-bin/homework/hw_turnin.php" METHOD = "POST">
+<input type=button value="New Problem" onClick=begin()>
+<table border=4>
+<tr>
+<td align=center>Results</td>
+<td>Total</td>
+<td>Correct</td>
+</tr>
+<tr>
+<td><input type=text size=12 name=results></td>
+<td align=center><input type=text size=5 name=total></td>
+<td align=center><input type=text size=5 name=correct></td>
+</tr>
+</table>
+
+<input type=text name="page" size=1>
+<input type=text name="verify" size=1>
+<input type=text name="time" size=1><br>
+<INPUT TYPE = "submit" VALUE = "Submit your score" onClick="update()">
+</form>
+<br>
+<a href="lechelp.html"><img src="back.gif"></a><br>
+</body>
+</html>

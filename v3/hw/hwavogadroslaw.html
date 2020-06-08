@@ -1,0 +1,160 @@
+<html>
+<head>
+<title>Avogadro's Law</title>
+<script language="javascript">
+thepage="Avogadro's Law(24)"
+howlong=""
+totl=0
+corrt=0
+tried=0
+which=""
+tried=0
+theanswer=""
+function clear(){
+	document.forms[0].results.value=""
+	document.forms[0].correct.value=corrt
+	document.forms[0].total.value=totl
+}
+function begin(){
+	totl++
+	document.forms[0].total.value=totl
+	document.forms[0].results.value=""
+	tried=0
+//first calculate three values,V1,V2 and n1
+var V1=Math.round(1000*Math.pow(10,Math.random()))/1000
+var V2=Math.round(1000*Math.pow(10,Math.random()))/1000
+var n1=Math.round(1000*Math.random())/1000
+//calculate n2
+var n2=Math.round(1000*V2*(n1/V1))/1000
+//Pass the values to the display function
+display (n1,V1,n2,V2)
+}
+function display(n1,V1,n2,V2){
+if (Math.random()>.5){
+	V1=Math.round(1e3*V1)
+	dimv1="mL"}
+else{dimv1="L"}
+if (Math.random()>.5){
+	V2=Math.round(1e3*V2)
+	dimv2="mL"}
+else{dimv2="L"}
+document.forms[0].elements[0].value=n1
+document.forms[0].elements[1].value=V1
+document.forms[0].elements[2].value=dimv1
+document.forms[0].elements[3].value=n2
+document.forms[0].elements[4].value=V2
+document.forms[0].elements[5].value=dimv2
+//go to the function which blanks a cell and sets problem
+problem()
+}
+function problem(){
+for(g=1;g<100;g++){
+var h=Math.round(.2+4*Math.random())
+if(h!=2){break}}
+theanswer=document.forms[0].elements[h].value
+document.forms[0].elements[h].value=""
+cell=h
+document.forms[0].elements[h].focus()
+document.forms[0].elements[h].select()
+}
+function answer(){
+if(tried==1){
+		alert("Sorry, you've already submitted this problem! We'll get you a new one!")
+		begin()}
+else{
+var h=cell
+if(tried==2){totl++;document.forms[0].total.value++}
+if (document.forms[0].elements[h].value<1.05*theanswer &
+	document.forms[0].elements[h].value>.95*theanswer)
+	{
+	document.forms[0].results.value="correct"
+	corrt++
+	document.forms[0].correct.value=corrt
+	tried=1
+	}
+	else {
+		document.forms[0].results.value="incorrect"
+		tried=2
+		}
+}}
+
+
+//obviously the timer function
+function timer(z){
+tt=z
+var b=Math.floor(tt/60)
+var j = (tt % 60)
+if (j<10){c="0"}
+else {c=""}
+howlong=b + ":" + c + j
+running=setTimeout("timer(tt+1)",1000)
+}
+
+function update(){
+	document.forms[0].total.value=totl
+	document.forms[0].correct.value=corrt
+	document.forms[0].time.value=howlong
+	document.forms[0].page.value=thepage
+	document.forms[0].verify.value=Math.round(10000*Math.random())
+}
+</script>
+</head>
+<body onLoad="clear(), timer(0)">
+<h2>Avogadro's Law</h2>
+Avogadro's Law states that under conditions of constant pressure and temperature, there is
+a direct relationship between the volume and number of moles for an ideal gas. When you press
+"New Problem", all but one of the cells will fill. The cursor will be in the
+empty cell. Calculate the missing quantity, paying close attention to all of the
+dimensions, enter it in the cell and press "Check Answer". Results appear in the second
+table where running totals are also kept. If you get a problem wrong, you should redo it.<br>
+<form ACTION = "../cgi-bin/homework/hw_turnin.php" METHOD = "POST">
+
+<table border=4>
+<tr>
+<td><b>n1</b></td>
+<td><b>V1</b></td>
+<td></td>
+<td></td>
+<td><b>n2</b></td>
+<td><b>V2</b></td>
+<td></td>
+</tr>
+<tr>
+<td><input type=text size =4></td>
+<td><input type=text size =4></td>
+<td><input type=text size =2></td>
+<td></td>
+<td><input type=text size =4></td>
+<td><input type=text size =4></td>
+<td><input type=text size =2></td>
+</tr>
+<tr>
+</tr>
+</table>
+<table>
+<tr>
+<td><input type=button value="New Problem" onClick=begin()>
+<td><input type=button value="Check Answer" onClick=answer()>
+</tr>
+</table>
+<table border=4>
+<tr>
+<td align=center><b>Results</td>
+<td align=center><b>Total Done</td>
+<td align=center><b>Total Correct</td>
+</tr>
+
+<tr>
+<td><input type="text" name="results" size=12></td>
+<td align=center><input type="text" name="total" size=4 ></td>
+<td align=center><input type="text" name="correct" size=4 ></td>
+</table>
+<input type=text name="page" size=1>
+<input type=text name="verify" size=1>
+<input type=text name="time" size=1><br>
+<INPUT TYPE = "submit" VALUE = "Submit your score" onClick="update()">
+</form>
+<br>
+<a href="index.html"><img src="back.gif"></a><br>
+</body>
+</html>

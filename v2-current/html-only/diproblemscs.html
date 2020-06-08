@@ -1,0 +1,245 @@
+<html>
+<head>
+<title>Direct/Indirect Problems</title>
+<style>
+#qspot {position:absolute;left:350;top:170}
+#ansspot {position:absolute;left:320;top:240;height:200}
+#refspot {position:absolute;left:10;top:600;height:200}
+</style>
+<script src=reflist.js></script>
+<script>
+//chencked with NS47 and IE5
+//globals
+refnumber=4
+var ie4 = (document.all) ? true : false;
+totl=0
+corrt=0
+tried=0
+missed=0
+ptype=0
+myans=0
+theans=0
+thesolution=""
+miss=0
+cat=0
+a1=0;a2=0;b1=0;b2=0
+theform="<form><input type=text size=6><input type=button value='Check Answer' onClick=parent.frames[1].screen(this.form)></form>"
+relate=new Array(5)
+relate[1]="directly"
+relate[2]="inversely"
+missing=new Array(5)
+missing[4]="A<sub>1</sub>"
+missing[2]="A<sub>2</sub>"
+missing[3]="B<sub>1</sub>"
+missing[1]="B<sub>2</sub>"
+function setrefs(){
+if(ie4){
+		refspot.innerHTML=booktitle+theref[10]
+		}
+	else{
+		document.refspot.document.open()
+		document.refspot.document.write(booktitle,theref[10])
+		document.refspot.document.close()
+	}
+}
+function parts(p1,p2,p3,p4,p5,p6){
+	this.p1=p1
+	this.p2=p2
+	this.p3=p3
+	this.p4=p4
+	this.p5=p5
+	this.p6=p6
+}
+sequat=new Array(5)
+sequat[1]="A<sub>1</sub>/B<sub>1</sub>=A<sub>2</sub>/B<sub>2</sub>"
+sequat[2]="A<sub>1</sub>*B<sub>1</sub>=A<sub>2</sub>*B<sub>2</sub>"
+fequat=new Array(10)
+fequat[4]="A<sub>1</sub>=A<sub>2</sub>*B<sub>1</sub>/B<sub>2</sub>"
+fequat[2]="A<sub>2</sub>=A<sub>1</sub>*B<sub>2</sub>/B<sub>1</sub>"
+fequat[3]="B<sub>1</sub>=A<sub>1</sub>*B<sub>2</sub>/A<sub>2</sub>"
+fequat[1]="B<sub>2</sub>=A<sub>2</sub>*B<sub>1</sub>/A<sub>1</sub>"
+fequat[8]="A<sub>1</sub>=A<sub>2</sub>*B<sub>2</sub>/B<sub>1</sub>"
+fequat[6]="A<sub>2</sub>=A<sub>1</sub>*B<sub>1</sub>/B<sub>2</sub>"
+fequat[7]="B<sub>1</sub>=A<sub>2</sub>*B<sub>2</sub>/A<sub>1</sub>"
+fequat[5]="B<sub>2</sub>=A<sub>1</sub>*B<sub>1</sub>/A<sub>2</sub>"
+pieces=new Array(5)
+ansphrase=new parts("Since A and B are "," related, the relationship is described by the equation: ", ".<br> The missing variable is ",".<br> Rearranging the equation to solve for "," yields<br> ","<br> Substituting the known values and solving the equation:<br>")
+question=new Array(10)
+question[1]=new parts("A and B are directly related. Initially, it is found that A="," and B="," If A is changed to "," what will be the corresponding value of B?")
+question[2]=new parts("A and B are directly related. Initially, it is found that A="," and B="," If B is changed to "," what will be the corresponding value of A?") 
+question[3]=new parts("A and B are directly related. Initially, it is found that A="," and the value of B is unknown. If A is changed to "," it is found that B=",". What was the initial value of B?")
+question[4]=new parts("A and B are directly related. Initially, it is found that B="," and the value of A is unknown. If B is changed to "," it is found that A=",". What was the initial value of A?")
+question[5]=new parts("A and B are inversely related. Initially, it is found that A="," and B="," If A is changed to "," what will be the corresponding value of B?")
+question[6]=new parts("A and B are inversely related. Initially, it is found that A="," and B="," If B is changed to "," what will be the corresponding value of A?") 
+question[7]=new parts("A and B are inversely related. Initially, it is found that A="," and the value of B is unknown. If A is changed to "," it is found that B=",". What was the initial value of B?")
+question[8]=new parts("A and B are inversely related. Initially, it is found that B="," and the value of A is unknown. If B is changed to "," it is found that A=",". What was the initial value of A?")
+function clear(){
+	document.forms[0].results.value=""
+      document.forms[0].theans.value=""
+      attempts=0
+	tried=0
+	clearansspot()
+	}
+function cleanse(){
+	totl=0
+	corrt=0
+	clear()
+      document.forms[0].total.value=0
+      document.forms[0].correct.value=0
+       }
+function clearansspot(){
+	if(ie4){
+		ansspot.innerHTML=""
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.clear()
+		document.ansspot.document.close()
+	}
+}
+function startit(){
+	clear()
+	totl++
+	document.forms[0].total.value=totl
+	missed=0
+	a1=Math.ceil(100*Math.random())/10
+	a2=Math.ceil(100*Math.random())/10
+	clear()
+	power=Math.random()
+	base=Math.ceil(100*Math.random())
+	factor=Math.pow(base,power)
+	//choose problem
+	ptype=Math.ceil(8*Math.random())
+	calcvalues(ptype)
+	buildquest()
+}
+function calcvalues(ptype){
+	if(ptype<5){
+		cat=1
+		miss=ptype
+		b1=factor*a1
+		b2=a2*b1/a1
+	}
+	else{
+		cat=2
+		miss=ptype-4
+		b1=factor/a1
+		b2=b1*a1/a2
+	}
+	b2=Math.ceil(100*b2)/100
+	b1=Math.ceil(100*b1)/100
+	if(a1<1)a1="0"+a1
+	if(b1<1)b1="0"+b1
+	if(a2<1)a2="0"+a2
+	if(b2<1)b2="0"+b2
+}
+function buildquest(){
+if(ptype==1 || ptype==5){
+	thequest=question[ptype].p1+a1+question[ptype].p2+b1+question[ptype].p3+a2+question[ptype].p4
+	pieces[4]=b2
+	}
+if(ptype==2 || ptype==6){
+	thequest=question[ptype].p1+a1+question[ptype].p2+b1+question[ptype].p3+b2+question[ptype].p4
+	pieces[4]=a2
+	}
+if(ptype==3 || ptype==7){
+	thequest=question[ptype].p1+a1+question[ptype].p2+a2+question[ptype].p3+b2+question[ptype].p4
+	pieces[4]=b1
+	}
+if(ptype==4 || ptype==8){
+	thequest=question[ptype].p1+b1+question[ptype].p2+b2+question[ptype].p3+a2+question[ptype].p4
+	pieces[4]=a1
+	}
+	buildans()
+	showquest(thequest)
+}
+function buildans(){
+	if(ptype==1 || ptype==4 || ptype==7 || ptype==8)pieces[1]=a2;
+		else pieces[1]=a1; 		
+	if(ptype==3 || ptype==2 || ptype==7 || ptype==8)pieces[2]=b2;
+		else pieces[2]=b1; 	
+	if(ptype==1 || ptype==7)pieces[3]=a1;
+	if(ptype==2 || ptype==8)pieces[3]=b1;
+	if(ptype==3 || ptype==5)pieces[3]=a2;
+	if(ptype==4 || ptype==6)pieces[3]=b2;
+	lastpiece=pieces[1]+"*"+pieces[2]+"/"+pieces[3]+"="+pieces[4]
+	thesolution=ansphrase.p1+relate[cat]+ansphrase.p2+sequat[cat]+ansphrase.p3+missing[miss]+ansphrase.p4+missing[miss]+ansphrase.p5+fequat[ptype]+ansphrase.p6+lastpiece
+	showanswer()
+}
+
+function showquest(){
+	if(ie4){
+		qspot.innerHTML=thequest
+		}
+	else{
+		document.qspot.document.open()
+		document.qspot.document.write(thequest)
+		document.qspot.document.close()
+	}
+}
+function screen(val){
+	myans=val
+	if(ptype==1 || ptype==5)theans=b2
+	if(ptype==2 || ptype==6)theans=a2
+	if(ptype==3 || ptype==7)theans=b1
+	if(ptype==4 || ptype==8)theans=a1
+	answer()
+}
+function answer(){
+	if(tried==1)alert("You've already done this problem. Get a new one.");
+	else{
+	if(tried==2){totl++;document.forms[0].total.value=totl}
+	attempts++
+	if(myans>.95*theans & myans<1.05*theans){
+		tried=1
+		document.forms[0].results.value="correct"
+		corrt++
+		document.forms[0].correct.value=corrt
+	}
+	else{
+		document.forms[0].results.value="incorrect"
+		tried=2	
+		}
+	}
+}
+function showanswer(){
+if(attempts>=3){
+	if(ie4){
+		ansspot.innerHTML=thesolution
+	}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.write(thesolution)
+		document.ansspot.document.close()
+	}
+}}
+</script>
+<body onLoad="cleanse()">
+<h3>Direct and Inverse relationships</h3>
+This page provides exercises in direct and inverse relationships. When you press "New Question", a question will appear in the top frame. Determine the value of the answer, enter it in the answer cell and press "Check Answer". Results and running totals appear in the table below. If you miss a problem three times, pressing the "Show Answer" button will display a complete solution.
+<form>
+<input type=button value="New Question" onClick="startit()"><BR>
+<input type="text" name=theans size=8>
+<input type=button value="Check answer" onClick="screen(this.form.theans.value)">
+<input type=button value="Show Answer" onClick=showanswer()><br>
+<b>Enter your answer</b></td>
+<table border=4>
+<tr><td align=center><b>Results</td>
+<td align=center><b>Total Done</td>
+<td><b>Total Correct</td>
+</tr>
+<tr>
+<td><input type="text" name=results size=12></td>
+<td align=center><input type="text" name=total size=4 ></td>
+<td align=center><input type="text" name=correct  size=4 ></td>
+</tr>
+</table>
+</form>
+<br>
+<div id=qspot></div>
+<div id=ansspot></div>
+<div id=refspot></div>
+</body>
+</html>
+
+		

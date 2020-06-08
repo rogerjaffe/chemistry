@@ -1,0 +1,217 @@
+<html>
+<head>
+<title>Combined Gas Law</title>
+<script language="javascript">
+thepage="The Combined Gas Law(27)"
+howlong=""
+totl=0
+corrt=0
+tried=0
+which=""
+tried=0
+theanswer=""
+cell=""
+function clear(){
+for (var i=0;i<12;i++){
+	document.forms[0].elements[i].value=""}
+	document.forms[0].results.value=""
+	triede=0
+}
+function cleanse(){
+clear()
+document.forms[0].total.value=0
+document.forms[0].correct.value=0
+document.forms[0].time.value="" 
+}
+function begin(){
+	totl++
+	document.forms[0].total.value=totl
+	document.forms[0].results.value=""
+	tried=0
+//first calculate five values,P1,V1,T1,P2 and V2
+var P1=Math.round(100*Math.pow(10,Math.random()))/100
+var P2=Math.round(100*Math.pow(10,Math.random()))/100
+var V1=Math.round(100*Math.pow(10,Math.random()))/100
+var V2=Math.round(100*Math.pow(10,Math.random()))/100
+var T1=Math.round(10000*Math.random())/10
+//calculate T2
+var T2=Math.round(10*P2*V2*T1/(P1*V1))/10
+//Pass the values to the display function
+display (P1,V1,T1,P2,V2,T2)
+} function display(P1,V1,T1,P2,V2,T2){
+if (Math.random()>.5){
+	T1=Math.round(T1-273)
+	dimt1="C"}
+else{dimt1="K"}
+if (Math.random()>.5){
+	T2=Math.round(T2-273)
+	dimt2="C"}
+else{dimt2="K"}
+if (Math.random()>.5){
+	V1=Math.round(1e3*V1)
+	dimv1="mL"}
+else{dimv1="L"}
+if (Math.random()>.5){
+	V2=Math.round(1e3*V2)
+	dimv2="mL"}
+else{dimv2="L"}
+if (Math.random()>.5){
+	P1=Math.round(760*P1)
+	dimp1="torr"}
+else{dimp1="atm"}
+if (Math.random()>.5){
+	P2=Math.round(760*P2)
+	dimp2="torr"}
+else{dimp2="atm"}
+document.forms[0].elements[0].value=P1
+document.forms[0].elements[1].value=dimp1
+document.forms[0].elements[2].value=V1
+document.forms[0].elements[3].value=dimv1
+document.forms[0].elements[4].value=T1
+document.forms[0].elements[5].value=dimt1
+document.forms[0].elements[6].value=P2
+document.forms[0].elements[7].value=dimp2
+document.forms[0].elements[8].value=V2
+document.forms[0].elements[9].value=dimv2
+document.forms[0].elements[10].value=T2
+document.forms[0].elements[11].value=dimt2
+//go to the function which blanks a cell and sets problem
+problem()
+}
+function problem(){
+var h=2*Math.round(5*Math.random())
+theanswer=document.forms[0].elements[h].value
+document.forms[0].elements[h].value=""
+cell=h
+document.forms[0].elements[h].focus()
+document.forms[0].elements[h].select()
+}
+function answer(){
+if(triede==1){
+		alert("Sorry, you've already submitted this problem! We'll get you a new one!")
+		begin()}
+else{
+	if(tried==2){totl++;document.forms[0].total.value=totl}
+
+var h=cell
+if (document.forms[0].elements[h].value<1.05*theanswer &
+	document.forms[0].elements[h].value>.95*theanswer)
+{ 
+	document.forms[0].results.value="correct"
+	corrt++
+	document.forms[0].correct.value=corrt
+	tried=1
+	}
+	else {
+		document.forms[0].results.value="incorrect"
+		tried=2
+		}
+}}
+function timer(z){
+tt=z
+var b=Math.floor(tt/60)
+var j = (tt % 60)
+if (j<10){c="0"}
+else {c=""}
+howlong=b + ":" + c + j
+running=setTimeout("timer(tt+1)",1000)
+}
+
+function update(){
+	document.forms[0].total.value=totl
+	document.forms[0].correct.value=corrt
+	document.forms[0].time.value=howlong
+	document.forms[0].page.value=thepage
+	document.forms[0].verify.value=Math.round(10000*Math.random())
+}
+</script>
+</head>
+<body onLoad="cleanse(), timer(0)">
+
+<h2>The Combined Gas Law</h2>
+The combined gas law deals with gas systems where the quantity of the gas is kept constant. It permits the
+treatment of "changes of state where five of the remaining six possible variables are given. When you press
+"New Problem", all but one of the cells will fill. The cursor will be in the
+empty cell. Calculate the missing quantity, paying close attention to all of the
+dimensions, enter it in the cell and press "Check Answer". Results appear in the second
+table where running totals are also kept. If you get a problem wrong, you should redo it.<br>
+<form ACTION = "../cgi-bin/homework/hw_turnin.php" METHOD = "POST">
+
+<table border=4>
+<tr>
+<td><b>State 1</b></td>
+</tr>
+<tr>
+<td><b>P1</b></td>
+<td></td>
+<td></td>
+<td><b>V1</b></td>
+<td></td>
+<td></td>
+<td><b>T1</b></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><input type=text size =4></td>
+<td><input type=text size =4></td>
+<td></td>
+<td><input type=text size =4></td>
+<td><input type=text size =2></td>
+<td></td>
+<td><input type=text size =4></td>
+<td><input type=text size =2></td>
+</tr>
+<tr>
+<td><b>State 2</b></td>
+</tr>
+<td><b>P2</b></td>
+<td></td>
+<td></td>
+<td><b>V2</b></td>
+<td></td>
+<td></td>
+<td><b>T2</b></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><input type=text size =4></td>
+<td><input type=text size =4></td>
+<td></td>
+<td><input type=text size =4></td>
+<td><input type=text size =2></td>
+<td></td>
+<td><input type=text size =4></td>
+<td><input type=text size =2></td>
+<td></td>
+<tr>
+</tr>
+</tr>
+</table>
+<table>
+<tr>
+<td><input type=button value="New Problem" onClick=begin()>
+<td><input type=button value="Check Answer" onClick=answer()>
+</tr>
+</table>
+<table border=4>
+<tr>
+<td align=center><b>Results</td>
+<td align=center><b>Total Done</td>
+<td align=center><b>Total Correct</td>
+</tr>
+<tr>
+<td><input type="text" name="results" size=12></td>
+<td align=center><input type="text" name="total" size=4 ></td>
+<td align=center><input type="text" name="correct" size=4 ></td>
+</table>
+<input type=text name="page" size=1>
+<input type=text name="verify" size=1>
+<input type=text name="time" size=1><br>
+<INPUT TYPE = "submit" VALUE = "Submit your score" onClick="update()">
+</form>
+<br>
+<a href="hwintro.html"><img src="back.gif"></a><br>
+</form>
+</body>

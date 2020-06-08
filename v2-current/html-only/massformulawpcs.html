@@ -1,0 +1,460 @@
+<html>
+<head><title>Word Problems-Mass relationships in Chemical Formulas</title>
+<style>
+#qspot {position:absolute;left:320;top:220}
+#ansspot {position:absolute;left:20;top:360;height:240}
+#tspot {position:absolute;left:10;top:300}
+#refspot {position:absolute;left:10;top:600;height:200}
+</style>
+<script src="reflist.js"></script>
+<script src="numberconvert.js"></script>
+<script language="javascript">
+var ie4 = (document.all) ? true : false;
+refnumber=88
+attempts=corrt=totl=tried=choice=0
+thesolution=given=0
+solved=0
+alldata=0
+thequest=""
+theanswer=qkey=0
+function element(atom,mass){
+        this.atom=atom
+        this.mass=mass
+}
+closeit=new Array(")<sub>compd</sub>",")<sub>sample</sub>")
+labels=new Array("moles","grams")
+ansphrase=new Array("First, identify and evaluate the terms from the chemical formula which will be used to solve the problem. In this case it's "," and "," The solution for the problem is obtained by multiplying the ratio of the two quantities from the formula times the quantity provided regarding the sample.") 
+atoms=new Array()
+moles=new Array()
+atoms[1]=new Array(1,2,4)
+moles[1]=new Array(6,14,3)
+atoms[2]=new Array(1,2,6,4)
+moles[2]=new Array(10,4,2,2)
+atoms[3]=new Array(9,7,4)
+moles[3]=new Array(2,2,5)
+atoms[4]=new Array(1,2,10)
+moles[4]=new Array(10,10,1)
+atoms[5]=new Array(1,2,3,4)
+moles[5]=new Array(8,7,4,2)
+atoms[6]=new Array(1,2,8,4)
+moles[6]=new Array(4,7,3,1)
+atoms[7]=new Array(14,11,4)
+moles[7]=new Array(2,1,3)
+atoms[8]=new Array(19,2,15,4)
+moles[8]=new Array(1,2,1,2)
+atoms[9]=new Array(1,2,4,9)
+moles[9]=new Array(9,7,2,1)
+atoms[10]=new Array(1,2,3,4)
+moles[10]=new Array(2,5,1,2)
+atoms[11]=new Array(1,2,12,6)
+moles[11]=new Array(6,5,1,1)
+atoms[12]=new Array(1,2,3,4)
+moles[12]=new Array(12,14,2,2)
+atoms[13]=new Array(1,2,4)
+moles[13]=new Array(16,12,5)
+atoms[14]=new Array(1,2,4)
+moles[14]=new Array(2,4,1)
+atoms[15]=new Array(1,2,3,4)
+moles[15]=new Array(2,7,1,1)
+atoms[16]=new Array(1,2,3,4)
+moles[16]=new Array(2,5,1,1)
+atoms[17]=new Array(1,2,3,4)
+moles[17]=new Array(8,9,1,1)
+atoms[18]=new Array(1,2,4)
+moles[18]=new Array(2,4,2)
+atoms[19]=new Array(1,2,4)
+moles[19]=new Array(4,6,3)
+atoms[20]=new Array(1,2,4)
+moles[20]=new Array(4,8,2)
+atoms[21]=new Array(1,2,4)
+moles[21]=new Array(3,6,1)
+atoms[22]=new Array(1,2,4)
+moles[22]=new Array(9,8,4)
+atoms[23]=new Array(1,2,6,4)
+moles[23]=new Array(2,3,1,1)
+atoms[24]=new Array(1,2,20,4)
+moles[24]=new Array(2,3,1,1)
+atoms[25]=new Array(1,2,4)
+moles[25]=new Array(3,4,2)
+atoms[26]=new Array(1,2,3)
+moles[26]=new Array(5,5,5)
+atoms[27]=new Array(1,2,3,4)
+moles[27]=new Array(4,6,2,2)
+atoms[28]=new Array(1,2,3,4)
+moles[28]=new Array(3,7,3,4)
+atoms[29]=new Array(1,2,4)
+moles[29]=new Array(2,6,1)
+atoms[30]=new Array(1,2,4)
+moles[30]=new Array(6,12,6)
+atoms[31]=new Array(1,2,4)
+moles[31]=new Array(6,10,1)
+atoms[32]=new Array(16,3,4)
+moles[32]=new Array(1,3,9)
+atoms[33]=new Array(16,11,4)
+moles[33]=new Array(2,1,5)
+atoms[34]=new Array(16,19,4,7)
+moles[34]=new Array(1,1,8,2)
+atoms[35]=new Array(16,4,7)
+moles[35]=new Array(2,12,3)
+atoms[36]=new Array(1,2,3,7)
+moles[36]=new Array(4,6,2,1)
+atoms[37]=new Array(2,3,4,7)
+moles[37]=new Array(6,2,3,1)
+atoms[38]=new Array(1,2,6)
+moles[38]=new Array(5,11,1)
+atoms[39]=new Array(1,2,4)
+moles[39]=new Array(8,10,2)
+atoms[40]=new Array(1,2,3,4)
+moles[40]=new Array(6,14,4,2)
+atoms[41]=new Array(1,2,3,4)
+moles[41]=new Array(4,7,1,4)
+atoms[42]=new Array(29,1,4)
+moles[42]=new Array(1,1,3)
+atoms[43]=new Array(29,1,3)
+moles[43]=new Array(1,2,2)
+atoms[44]=new Array(29,6,4)
+moles[44]=new Array(1,2,8)
+atoms[45]=new Array(29,31,4)
+moles[45]=new Array(1,2,8)
+atoms[46]=new Array(29,7,4)
+moles[46]=new Array(1,1,3)
+atoms[47]=new Array(1,2,3,4)
+moles[47]=new Array(8,10,4,2)
+atoms[48]=new Array(25,1,3)
+moles[48]=new Array(1,2,2)
+atoms[49]=new Array(25,4,6)
+moles[49]=new Array(1,2,2)
+atoms[50]=new Array(25,32,4)
+moles[50]=new Array(1,1,4)
+atoms[51]=new Array(25,31,4)
+moles[51]=new Array(1,2,8)
+atoms[52]=new Array(1,4,5)
+moles[52]=new Array(1,1,2)
+atoms[53]=new Array(22,7,4)
+moles[53]=new Array(2,1,4)
+atoms[54]=new Array(1,2,6,4)
+moles[54]=new Array(2,3,1,1)
+atoms[55]=new Array(1,2,6)
+moles[55]=new Array(6,5,1)
+atoms[56]=new Array(1,2,6)
+moles[56]=new Array(1,1,3)
+atoms[57]=new Array(13,3,4)
+moles[57]=new Array(1,3,9)
+atoms[58]=new Array(13,7,4)
+moles[58]=new Array(1,1,4)
+atoms[59]=new Array(13,4,6)
+moles[59]=new Array(1,2,2)
+atoms[60]=new Array(13,4,5)
+moles[60]=new Array(1,2,2)
+atoms[61]=new Array(1,2,4)
+moles[61]=new Array(9,6,2)
+atoms[62]=new Array(1,2,4)
+moles[62]=new Array(7,8,1)
+atoms[63]=new Array(28,1,4)
+moles[63]=new Array(1,2,4)
+atoms[64]=new Array(28,6,4)
+moles[64]=new Array(1,2,8)
+atoms[65]=new Array(28,1,3)
+moles[65]=new Array(1,1,1)
+atoms[66]=new Array(1,3,20)
+moles[66]=new Array(1,1,1)
+atoms[67]=new Array(1,2,4,7)
+moles[67]=new Array(4,10,4,1)
+atoms[68]=new Array(21,1,2)
+moles[68]=new Array(1,2,6)
+atoms[69]=new Array(12,1,2)
+moles[69]=new Array(1,12,10)
+atoms[70]=new Array(1,2,3,4)
+moles[70]=new Array(8,11,1,2)
+atoms[71]=new Array(1,2,3,4)
+moles[71]=new Array(4,9,1,1)
+atoms[72]=new Array(2,3,4)
+moles[72]=new Array(3,1,1)
+atoms[73]=new Array(1,6,4)
+moles[73]=new Array(1,1,1)
+atoms[74]=new Array(1,2,6)
+moles[74]=new Array(4,9,1)
+atoms[75]=new Array(1,2,4)
+moles[75]=new Array(3,6,3)
+atoms[76]=new Array(23,1,4)
+moles[76]=new Array(1,2,4)
+atoms[77]=new Array(23,6,4)
+moles[77]=new Array(1,2,6)
+atoms[78]=new Array(23,7,4)
+moles[78]=new Array(1,1,3)
+atoms[79]=new Array(1,2,7)
+moles[79]=new Array(2,4,5)
+atoms[80]=new Array(14,1,4)
+moles[80]=new Array(2,1,3)
+atoms[81]=new Array(14,6,4)
+moles[81]=new Array(1,1,4)
+atoms[82]=new Array(1,2,3,4)
+moles[82]=new Array(9,15,3,7)
+atoms[83]=new Array(12,20,4)
+moles[83]=new Array(1,2,6)
+atoms[84]=new Array(12,7,4)
+moles[84]=new Array(1,1,4)
+atoms[85]=new Array(1,2,3,4)
+moles[85]=new Array(4,5,1,3)
+atoms[86]=new Array(31,7,4)
+moles[86]=new Array(1,1,3)
+atoms[87]=new Array(1,2,4)
+moles[87]=new Array(6,12,6)
+atoms[88]=new Array(1,2,4)
+moles[88]=new Array(7,4,7)
+atoms[89]=new Array(1,2,3,7)
+moles[89]=new Array(5,4,4,1)
+atoms[90]=new Array(1,2,26,4)
+moles[90]=new Array(4,6,1,4)
+atoms[91]=new Array(26,7,4)
+moles[91]=new Array(1,1,4)
+atoms[92]=new Array(26,6,4)
+moles[92]=new Array(1,1,3)
+atoms[92]=new Array(1,2,3,4)
+moles[92]=new Array(11,17,1,3)
+atoms[93]=new Array(1,2,4)
+moles[93]=new Array(11,8,2)
+atoms[94]=new Array(1,2,6)
+moles[94]=new Array(10,13,1)
+atoms[95]=new Array(27,1,4)
+moles[95]=new Array(1,4,4)
+atoms[96]=new Array(27,33,4)
+moles[96]=new Array(1,1,3)
+atoms[97]=new Array(1,2,3,4)
+moles[97]=new Array(6,7,3,1)
+atoms[98]=new Array(3,4,6)
+moles[98]=new Array(1,1,1)
+atoms[99]=new Array(3,4,5)
+moles[99]=new Array(1,2,1)
+atoms[100]=new Array(34,3,4)
+moles[100]=new Array(1,2,6)
+atoms[101]=new Array(1,20,4)
+moles[101]=new Array(5,1,6)
+atoms[102]=new Array(1,2,4,7)
+moles[102]=new Array(6,6,1,4)
+atoms[103]=new Array(1,2,19,4)
+moles[103]=new Array(2,3,1,2)
+atoms[104]=new Array(1,2,4)
+moles[104]=new Array(3,8,1)
+atoms[105]=new Array(1,2,4)
+moles[105]=new Array(7,8,2)
+atoms[106]=new Array(9,33,4)
+moles[106]=new Array(2,1,3)
+//Symbols and gaws for 34 common elements
+gaws=new Array(10)
+gaws[1]=new element("C",12)
+gaws[2]=new element("H",1)
+gaws[3]=new element("N",14)
+gaws[4]=new element("O",16)
+gaws[5]=new element("F",19)
+gaws[6]=new element("Cl",35.45)
+gaws[7]=new element("S",32)
+gaws[8]=new element("Br",80)
+gaws[9]=new element("Na",23)
+gaws[10]=new element("Fe",55.85)
+gaws[11]=new element("Si",28.1)
+gaws[12]=new element("Mg",24.3)
+gaws[13]=new element("Cr",52)
+gaws[14]=new element("Li",6.94)
+gaws[15]=new element("P",30.97)
+gaws[16]=new element("Al",26.98)
+gaws[17]=new element("B",10.81)
+gaws[18]=new element("Ag",107.87)
+gaws[19]=new element("K",39.1)
+gaws[20]=new element("I",126.9)
+gaws[21]=new element("Zn",65.4)
+gaws[22]=new element("Cs",132.9)
+gaws[23]=new element("Pb",207.2)
+gaws[24]=new element("Sn",118.7)
+gaws[25]=new element("Ca",40.1)
+gaws[26]=new element("Hg",200.6)
+gaws[27]=new element("Ni",58.7)
+gaws[28]=new element("Cu",63.55)
+gaws[29]=new element("Ba",137.3)
+gaws[30]=new element("Co",58.9)
+gaws[31]=new element("Mn",54.94)
+gaws[32]=new element("Mo",95.94)
+gaws[33]=new element("Se",78.96)
+gaws[34]=new element("Pd",106.4)
+symbols=new Array()
+symbols=new Array("moles of compound","grams of compound")
+function cleanse(){
+	clear()
+	document.forms[0].total.value=0
+	document.forms[0].correct.value=0
+}
+function clear(){
+	document.forms[0].results.value=""
+	document.forms[0].theans.value=""
+	attempts=0
+	tried=0
+	clearansspot()
+}
+function startit(){
+	clear()
+	totl++
+	document.forms[0].total.value=totl
+	//choose compound,total mass,moles and make arrays of components and masses
+	//choice=Math.ceil(Math.random()*atoms.length)
+	choice++
+	cmpd=buildformula()
+	symbols[0]=new Array(("moles of "+cmpd),("grams of "+cmpd))
+	gfw=getgfw()
+	alldata=new Array()
+	alldata[0]=new Array(cmpd,1,gfw)
+	themass=0
+	while(themass<.1)themass=100*Math.random();
+	themoles=themass/gfw
+	alldata[0][4]=number(themass,3,3)
+	alldata[0][3]=number(themoles,3,3)
+	//masses of component elements
+	for(var j=1;j<=atoms[choice].length;j++){
+		key=atoms[choice][j-1]
+		alldata[j]=new Array()
+		alldata[j]=new Array(gaws[key].atom,moles[choice][j-1])
+		alldata[j][2]=number(gaws[key].mass*moles[choice][j-1],3,3)
+		alldata[j][3]=number(alldata[0][3]*moles[choice][j-1],3,3)
+		alldata[j][4]=number(alldata[j][3]*gaws[key].mass,3,3)
+	}
+	for(j=1;j<alldata.length;j++)symbols[j]=new Array(("moles of "+alldata[j][0]),("grams of "+alldata[j][0]))	
+	buildquest()
+}
+function buildformula(){
+	cmpd=""
+	for(var j=0;j<atoms[choice].length;j++){
+		var key=atoms[choice][j]
+		cmpd+=gaws[key].atom
+		if(moles[choice][j]!=1)cmpd+="<sub>"+moles[choice][j]+"</sub>";
+	}
+	return cmpd
+}
+function getgfw(){
+	gfw=0
+	for(var j=0;j<atoms[choice].length;j++){
+		var key=atoms[choice][j]
+		gfw+=moles[choice][j]*gaws[key].mass
+	}
+	return gfw
+}
+function buildquest(){
+	first=Math.ceil(Math.random()*atoms[choice].length);
+	second=first
+	while(second==first)second=Math.ceil(Math.random()*atoms[choice].length);
+	second=first
+	while(second==first)second=Math.floor(Math.random()*atoms[choice].length);
+	key1=Math.floor(2*Math.random())
+	if(key1==0)key2=first;
+	else{
+		Math.random()>.5?key2=0:key2=second;
+	}
+	opt1=Math.floor(2*Math.random())
+	opt2=Math.floor(2*Math.random())
+	thequest="A sample of "+alldata[0][0]+" contains "+alldata[key1][3+opt1]+labels[opt1]+" of "+alldata[key1][0]+". How many "+labels[opt2]+" of "+alldata[key2][0]+" are present?<br>"
+	theanswer=alldata[key2][3+opt2]
+	checkdata=alldata[key1][0]+","+alldata[key1][3+opt1]+"<br>"
+	checkdata+=alldata[key2][0]+","+alldata[key2][3+opt2]
+	showquest()
+	buildanswer()
+}
+function buildanswer(){
+	theeqn=buildequation()
+	thesolution=ansphrase[0]+"<b>"+symbols[key1][opt1]+"</b> and<b> "+symbols[key2][opt2]+"</b>"
+	thesolution+=ansphrase[2]+"<hr>"+theeqn
+	showanswer()
+}
+function buildequation(){
+	theeqn="From the formula for "+alldata[0][0]+"<br>"
+	theeqn+="("+symbols[key2][opt2]+closeit[0]+"/("+symbols[key1][opt1]+closeit[0]+"*("+symbols[key1][opt1]+closeit[1]+"=("+symbols[key2][opt2]+closeit[1]+"<br>"
+	theeqn+="("+alldata[key2][1+opt2]+"/"+alldata[key1][1+opt1]+")*"+alldata[key1][3+opt1]+"="+alldata[key2][3+opt2]+labels[opt2]
+	return theeqn
+}
+			
+function showquest(){
+	if(ie4){
+		qspot.innerHTML=thequest
+		}
+	else{
+		document.qspot.document.open()
+		//for(j=0;j<alldata.length;j++)document.qspot.document.write(alldata[j],"<br>")
+		document.qspot.document.write(thequest)
+		document.qspot.document.close()
+	}
+}
+function answer(ans){
+	if(tried==1)alert("You've done this one! Get a new problem.")
+	else{
+	attempts++
+	if(tried==2){totl++;document.forms[0].total.value=totl}
+	if (ans>.95*theanswer & ans<1.05*theanswer){
+    		document.forms[0].results.value="correct"
+		corrt++
+    		document.forms[0].correct.value=corrt
+		tried=1
+	}
+	else {
+		document.forms[0].results.value="incorrect"
+		tried=2
+	}
+	}
+}
+function showanswer(){
+if(attempts>=3){
+	if(ie4){
+		ansspot.innerHTML=thesolution
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.write(thesolution)
+		document.ansspot.document.close()
+	}
+	}
+}
+function clearansspot(){
+	if(ie4){
+		ansspot.innerHTML=""
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.clear()
+		document.ansspot.document.close()
+	}
+}
+
+</script>
+</head>
+<body onLoad="setrefs(),cleanse()">
+<h2>Mass and Mole Relationships in Chemical Formulas</h2>
+This page randomly generates problems involving chemical formulas. To start,press "New Problem" and a question will appear to the right of the table. Determine the value of the
+answer, enter it in the cell and press "Check Answer". <ul>
+<li>If you miss a problem three times, pressing "Show Answer" will display a complete solution. 
+</ul>
+<form>
+<table>
+<tr>
+<input type="button" value="New Problem" onClick="startit()">
+<input type="button" value="Check Answer" onClick="answer(this.form.theans.value)">
+<input type="button" value="Show Answer" onClick="showanswer()">
+</tr>
+<tr>
+<td><b>Enter your answer here</b></td>
+<td align=center><input type="text" name=theans size=10></td>
+</tr>
+</table>
+<table border=4>
+<tr>
+<td><b>Results</b></td>
+<td><b>Total Done</b></td>
+<td><b>Total Correct</b></td></tr>
+</tr>
+<tr>
+<td align=center><input type="text" name=results size=10></td>
+<td align=center><input type="text" name=total size=3></td>
+<td align=center><input type="text" name=correct size=3></td>
+<tr>
+</table>
+</form>
+<div id=qspot></div>
+<div id=ansspot></div>
+<div id=refspot></div>
+</body>
+</html>

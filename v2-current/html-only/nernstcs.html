@@ -1,0 +1,509 @@
+<html>
+<head><title>Nernst Equation-cs</title>
+<style>
+#qspot {position:absolute;left:340;top:220}
+#ansspot {position:absolute;left:340;top:420;height:600}
+#tspot {position:absolute;left:10;top:300}
+#refspot {position:absolute;left:10;top:600}
+</style>
+<script src="ionformulas.js"></script>
+<script src="numberconvert.js"></script>
+<script language="javascript">
+var ie4=(document.all)?true:false;
+refnumber=187
+corrt=0
+tried=0
+totl=0
+equations=""
+theanswer=0
+which=0
+thesteps=new Array()
+thecmpds=tablecmpds=""
+front=""
+back=""
+coeffs=""
+factor=""
+theratio=valueratio=0
+W=H=0
+attempts=0
+type=0
+first=3
+second=0
+reaction=""
+balreaction=""
+theconcs=""
+thetable=""
+theE=theQ=thelog=0
+num=denom=valuenum=valuedenom=""
+terms=0
+netes=0
+concset=new Array("0.10","0.20","0.40","0.05","0.80","1.0","0.010")
+soltype=new Array("<b> (acidic)</b>","<b> (basic)</b>")
+acidtype=new Array("H<sup>+</sup>","OH<sup>-</sup>")
+water="H<sub>2</sub>O(l)"
+thecell="<input type=text size=2 value=''>"
+thebutton="<input type=button value='Check Answer' onClick='answer(this.form)'>"
+thenernst="E=E<sup>o</sup>-0.059/n*logQ"
+function cleanse(){
+	clear()
+	document.forms[0].correct.value=0
+	document.forms[0].total.value=0
+}
+function clear(){
+	tried=0
+	attempts=0
+	document.forms[0].results.value=""
+	if(ie4)ansspot.innerHTML="";
+	else{ 
+		document.ansspot.document.open()
+		document.ansspot.document.clear()
+		document.ansspot.document.close()
+	}
+}
+phasesym=new Array("(aq)","(g)","(s)","(l)")
+phrases=new Array("The Nernst Equation has the general form:","First, the equation is rewritten to fit the reaction under study.","Then, the values for E<sup>o</sup>,n and the concentration terms are entered.","Q is evaluated","The terms are solved and combined.","Finally, E is calculated")
+//halfrxn-reduction couples and the electrons 
+halfrxn=new Array()
+//information needed-coeffs,followed by H+ and H20 for acid, followed by OH-,H20 for base.If //sign is +its a reagent 
+dataset=new Array()
+phase=new Array()
+halfrxn[0]=new Array("Fe+3","Fe+2",1)
+dataset[0]=new Array(1,1,0,0,0,0)
+phase[0]=new Array(0,0)
+halfrxn[1]=new Array("F2","F-",2)
+dataset[1]=new Array(1,2,0,0,0,0)
+phase[1]=new Array(1,0)
+halfrxn[2]=new Array("O3","O2",2)
+dataset[2]=new Array(1,1,2,1,-2,-1)
+phase[2]=new Array(1,1)
+halfrxn[3]=new Array("PbO2","Pb+2",2)
+dataset[3]=new Array(1,1,4,2,-4,-2)
+phase[3]=new Array(2,0)
+halfrxn[4]=new Array("Cl2","Cl-",2)
+dataset[4]=new Array(1,2,0,0,0,0)
+phase[4]=new Array(1,0)
+halfrxn[5]=new Array("Mg+2","Mg",2)
+phase[5]=new Array(0,2)
+dataset[5]=new Array(1,1,0,0,0,0)
+halfrxn[6]=new Array("Al+3","Al",3)
+dataset[6]=new Array(1,1,0,0,0,0)
+phase[6]=new Array(0,2)
+halfrxn[7]=new Array("Cr+2","Cr",2)
+dataset[7]=new Array(1,1,0,0,0,0)
+phase[7]=new Array(0,2)
+halfrxn[8]=new Array("MnO4-","Mn+2",5)
+dataset[8]=new Array(1,1,8,4,-8,-4)
+phase[8]=new Array(0,0)
+halfrxn[9]=new Array("Cr2O7-2","Cr+3",6)
+dataset[9]=new Array(1,2,14,7,-14,-7)
+phase[9]=new Array(0,0)
+halfrxn[10]=new Array("ClO2-","ClO-",2)
+dataset[10]=new Array(1,1,2,1,-2,-1)
+phase[10]=new Array(0,0)
+halfrxn[11]=new Array("ClO4-","Cl-",8)
+dataset[11]=new Array(1,1,8,4,-4,-8)
+phase[11]=new Array(0,0)
+halfrxn[12]=new Array("PbO2","PbO",2)
+dataset[12]=new Array(1,1,2,1,-1,-2)
+phase[12]=new Array(2,2)
+halfrxn[13]=new Array("Au+3","Au+",2)
+phase[13]=new Array(0,0)
+dataset[13]=new Array(1,1,0,0,0,0)
+halfrxn[14]=new Array("MnO4-","MnO2",3)
+phase[14]=new Array(0,2)
+dataset[14]=new Array(1,1,4,2,-4,-2)
+halfrxn[15]=new Array("IO3-","I2",10)
+dataset[15]=new Array(2,1,12,6,-6,-12)
+phase[15]=new Array(0,0)
+halfrxn[16]=new Array("ClO-","Cl-",2)
+dataset[16]=new Array(1,1,2,1,-2,-1)
+phase[16]=new Array(0,0)
+halfrxn[17]=new Array("Fe2O3","Fe",6)
+dataset[17]=new Array(1,2,6,3,99,99)
+phase[17]=new Array(2,2)
+halfrxn[18]=new Array("Br2","Br-",2)
+dataset[18]=new Array(1,2,0,0,0,0)
+phase[18]=new Array(0,0)
+halfrxn[19]=new Array("Ag+","Ag",1)
+dataset[19]=new Array(1,1,0,0,0,0)
+phase[19]=new Array(0,2)
+halfrxn[20]=new Array("S2O8-2","SO4-2",2)
+dataset[20]=new Array(1,2,0,0,0,0)
+phase[20]=new Array(0,0)
+halfrxn[21]=new Array("SO4-2","SO2",2)
+dataset[21]=new Array(1,1,4,2,-4,-2)
+phase[21]=new Array(0,0)
+halfrxn[22]=new Array("MnO2","Mn+2",2)
+dataset[22]=new Array(1,1,4,2,-4,-2)
+phase[22]=new Array(2,0)
+halfrxn[23]=new Array("NO3-","NO",3)
+dataset[23]=new Array(1,1,4,2,-4,-2)
+phase[23]=new Array(0,0)
+halfrxn[24]=new Array("I2","I-",2)
+dataset[24]=new Array(1,2,0,0,0,0)
+phase[24]=new Array(0,0)
+halfrxn[25]=new Array("Sn+4","Sn+2",2)
+dataset[25]=new Array(1,1,0,0,0,0)
+phase[25]=new Array(0,0)
+halfrxn[26]=new Array("Sn+2","Sn",2)
+dataset[26]=new Array(1,1,0,0,0,0)
+phase[26]=new Array(0,2)
+halfrxn[27]=new Array("BrO3-","Br2",10)
+dataset[27]=new Array(2,1,12,6,-6,-3)
+phase[27]=new Array(0,0)
+halfrxn[28]=new Array("VO2+","VO+2",1)
+dataset[28]=new Array(1,1,2,1,-2-1)
+phase[28]=new Array(0,0)
+halfrxn[29]=new Array("NO2-","NO",1)
+dataset[29]=new Array(1,1,2,1,-2,-1)
+phase[29]=new Array(0,0)
+halfrxn[30]=new Array("Hg+2","Hg2+2",2)
+dataset[30]=new Array(2,1,0,0,0,0)
+phase[30]=new Array(0,0)
+halfrxn[31]=new Array("Sb2O5","SbO+",4)
+dataset[31]=new Array(1,2,6,3,-6,-3)
+phase[31]=new Array(2,0)
+halfrxn[32]=new Array("I3-","I-",2)
+dataset[32]=new Array(1,3,0,0,0,0)
+phase[32]=new Array(0,0)
+halfrxn[33]=new Array("VO+2","V+3",1)
+dataset[33]=new Array(1,1,2,1,-2,-1)
+phase[33]=new Array(0,0)
+halfrxn[34]=new Array("UO2+2","U+4",2)
+dataset[34]=new Array(1,1,4,2,-4,-2)
+phase[34]=new Array(0,0)
+halfrxn[35]=new Array("BiO+","Bi",3)
+dataset[35]=new Array(1,1,2,1,-2,-1)
+phase[35]=new Array(0,2)
+halfrxn[36]=new Array("SbO+","Sb",3)
+dataset[36]=new Array(1,1,2,1,-2,-1)
+phase[36]=new Array(0,2)
+halfrxn[37]=new Array("SO4-2","SO2",2)
+dataset[37]=new Array(1,1,4,2,-4,-2)
+phase[37]=new Array(0,0)
+halfrxn[38]=new Array("TiO+2","Ti+3",1)
+dataset[38]=new Array(1,1,2,1,-2,-1)
+phase[38]=new Array(0,0)
+halfrxn[39]=new Array("Mo+3","Mo",3)
+dataset[39]=new Array(1,1,0,0,0,0)
+phase[39]=new Array(0,2)
+halfrxn[40]=new Array("H3PO3","H3PO2",2)
+dataset[40]=new Array(1,1,2,1,99,99)
+phase[40]=new Array(0,0)
+halfrxn[41]=new Array("Th+4","Th",4)
+dataset[41]=new Array(1,1,0,0,0,0)
+phase[41]=new Array(0,2)
+halfrxn[42]=new Array("Sb2O3","Sb",6)
+dataset[42]=new Array(1,2,6,3,-6,-3)
+phase[42]=new Array(2,2)
+halfrxn[43]=new Array("H3BO3","B",3)
+dataset[43]=new Array(1,1,3,3,99,99)
+phase[43]=new Array(0,2)
+halfrxn[44]=new Array("AsO2-","As",3)
+dataset[44]=new Array(1,1,4,2,-4,-2)
+phase[44]=new Array(0,2)
+halfrxn[45]=new Array("Be2O3-2","Be",4)
+dataset[45]=new Array(1,2,6,3,-6,-3)
+phase[45]=new Array(0,2)
+halfrxn[46]=new Array("ClO2","ClO2-",1)
+dataset[46]=new Array(1,1,0,0,0,0)
+phase[46]=new Array(0,0)
+halfrxn[47]=new Array("F2O","F-",4)
+dataset[47]=new Array(1,2,2,1,-2,-1)
+phase[47]=new Array(0,0)
+halfrxn[48]=new Array("GeO2","GeO",2)
+dataset[48]=new Array(1,1,2,1,-2,-1)
+phase[48]=new Array(2,2)
+halfrxn[49]=new Array("HgO","Hg",2)
+dataset[49]=new Array(1,1,2,1,-2,-1)
+phase[49]=new Array(2,2)
+halfrxn[50]=new Array("NO3-","NO2",1)
+dataset[50]=new Array(1,1,2,1,99,99)
+phase[50]=new Array(0,0)
+function cleanse(){
+	clear()
+	document.forms[0].total.value=0
+	document.forms[0].correct.value=0
+}
+function clear(){
+	tried=0
+	attempts=0
+	document.forms[0].results.value=""
+	document.forms[0].theans.value=""
+}
+function startit(){
+	clear()
+	totl++
+	document.forms[0].total.value=totl
+	Math.random()>.25?type=0:type=1;
+	document.forms[0].results.value=""
+	first=Math.floor(Math.random()*halfrxn.length)
+	theE=0
+	while(theE<.10)theE=3*Math.random()
+	theE=number(theE,3,3)
+	if(Math.random()<.5)theE=-1*theE
+	second=first
+	while(second==first)second=Math.floor(Math.random()*halfrxn.length)
+	if(type==1){
+		if(dataset[first][4]==99 || dataset[second][4]==99)startit();
+		}
+	getcmpds(first,second)
+	//gethalfs(first,second)
+	reaction=""
+	reaction=thecmpds[1]+" + "+thecmpds[2]+" => "+thecmpds[3]+" + "+thecmpds[4]+soltype[type]
+	getcoeffs(first,second)
+}
+function getcoeffs(first,second){
+	coeffs=new Array(0,dataset[first][0],dataset[second][1],dataset[first][1],dataset[second][0])
+	factor=new Array()
+	lost=halfrxn[first][2]
+	gain=halfrxn[second][2]
+	if(lost==gain)factor[0]=factor[1]=1;
+	else{
+		while(gain%2==0 & lost%2==0){
+			gain=gain/2
+			lost=lost/2
+			}
+		while(gain&3==0 & lost%2==0){
+			gain=gain/3
+			lost=lost/3
+			}
+	}
+	if(lost>gain){
+		if((lost%gain)==0){factor[0]=1;factor[1]=lost/gain}
+		else{factor[0]=gain;factor[1]=lost}
+	}
+	else{
+		if((gain%lost)==0){factor[0]=gain/lost;factor[1]=1}
+		else{factor[0]=gain;factor[1]=lost}
+	}
+	netes=factor[0]*lost
+	H=factor[0]*dataset[first][2+2*type]-factor[1]*dataset[second][2+2*type];
+	W=factor[0]*dataset[first][3+2*type]-factor[1]*dataset[second][3+2*type];
+	thesteps[6]=""
+	terms=new Array()
+	H>0?terms[0]=H:terms[5]=Math.abs(H);
+	W>0?terms[5]=W:terms[0]=Math.abs(W);
+	for(j=1;j<5;j++){
+		if(j==1 || j==3)terms[j]=factor[0]*coeffs[j];
+		else terms[j]=factor[1]*coeffs[j];
+	}
+	getconcs(first,second,terms)
+	//thesteps[6]=terms[1]+thecmpds[1]+" + "+terms[2]+thecmpds[2]+" => "+terms[3]+thecmpds[3]+" + "+terms[4]+thecmpds[4]
+	sterms=new Array()
+	for(j=1;j<5;j++)terms[j]>1?sterms[j]=terms[j]:sterms[j]="";
+	thesteps[6]=sterms[1]+thecmpds[1]+" + "+sterms[2]+thecmpds[2]+" => "+sterms[3]+thecmpds[3]+" + "+sterms[4]+thecmpds[4]
+	if(H!=0){
+		Math.abs(H)>1?sH=Math.abs(H):sH="";
+		H>0?thesteps[6]=sH+thecmpds[0]+" + "+thesteps[6]:thesteps[6]+=" + "+sH+thecmpds[0];
+		hterm=tablecmpds[0]
+		if(Math.abs(H)>1)hterm+=("<sup>"+Math.abs(H)+"</sup>")
+		theconcs[theconcs.length]=new Array(tablecmpds[0],concset[Math.floor(Math.random()*concset.length)],hterm,-H);
+		concH="["+theconcs[theconcs.length-1][1]+"]"
+		if(Math.abs(H)>1)concH+="<sup>"+Math.abs(H)+"</sup>"
+		H>0?denom+=hterm:num+=hterm
+		H>0?valuedenom+=concH:valuenum+=concH	
+	}
+	if(W!=0){
+		Math.abs(W)>1?sW=Math.abs(W):sW="";
+		W>0?thesteps[6]+=" + "+sW+thecmpds[5]:thesteps[6]=sW+thecmpds[5]+" + "+thesteps[6];
+	}
+	theratio=num+"/"+denom
+	valueratio=valuenum+"/"+valuedenom
+	balreaction=thesteps[6]+"   E<sup>o</sup>= "+theE+"<b>V</b>"
+	buildquest(terms)	
+	buildanswer()		
+}
+function getcmpds(first,second){
+	thecmpds=new Array()
+	tablecmpds=new Array()
+	tablecmpds[0]=acidtype[type]
+	tablecmpds[1]=completeformula(halfrxn[first][0])
+	tablecmpds[2]=completeformula(halfrxn[second][1])
+	tablecmpds[3]=completeformula(halfrxn[first][1])
+	tablecmpds[4]=completeformula(halfrxn[second][0])
+	tablecmpds[5]=water
+	thecmpds[0]=acidtype[type]+"(aq)"
+	thecmpds[1]=tablecmpds[1]+phasesym[phase[first][0]]
+	thecmpds[2]=tablecmpds[2]+phasesym[phase[second][1]]
+	thecmpds[3]=tablecmpds[3]+phasesym[phase[first][1]]
+	thecmpds[4]=tablecmpds[4]+phasesym[phase[second][0]]
+	thecmpds[5]=water
+	for(j=0;j<6;j++)tablecmpds[j]="["+tablecmpds[j]+"]"
+}
+function getconcs(first,second,terms){
+	num=denom=""
+	valuenum=valuedenom=""
+	conc=new Array()
+	theconcs=new Array()
+	thetable="<br>"
+	if(phase[first][0]<2){theconcs[theconcs.length]=new Array(tablecmpds[1],concset[Math.floor(Math.random()*concset.length)],tablecmpds[1],-1);
+		valuedenom+="["+theconcs[theconcs.length-1][1]+"]"
+		if(terms[1]>1){
+			theconcs[theconcs.length-1][2]=tablecmpds[1]+"<sup>"+terms[1]+"</sup>"
+			theconcs[theconcs.length-1][3]=-terms[1]
+			valuedenom+="<sup>"+terms[1]+"</sup>"		
+		}
+		denom+=theconcs[theconcs.length-1][2]
+		}
+	if(phase[first][1]<2){theconcs[theconcs.length]=new Array(tablecmpds[3],concset[Math.floor(Math.random()*concset.length)],tablecmpds[3],1);
+		valuenum+="["+theconcs[theconcs.length-1][1]+"]"
+		if(terms[3]>1){
+			theconcs[theconcs.length-1][2]=tablecmpds[3]+"<sup>"+terms[3]+"</sup>"
+			theconcs[theconcs.length-1][3]=terms[3]	
+			valuenum+="<sup>"+terms[3]+"</sup>"
+		}
+		num+=theconcs[theconcs.length-1][2]
+		}
+	if(phase[second][0]<2){theconcs[theconcs.length]=new Array(tablecmpds[4],concset[Math.floor(Math.random()*concset.length)],tablecmpds[4],1);
+		valuenum+="["+theconcs[theconcs.length-1][1]+"]"
+		if(terms[4]>1){
+			theconcs[theconcs.length-1][2]=tablecmpds[4]+"<sup>"+terms[4]+"</sup>"
+			theconcs[theconcs.length-1][3]=terms[4]
+			valuenum+="<sup>"+terms[4]+"</sup>"
+		}
+		num+=theconcs[theconcs.length-1][2]
+		}
+	if(phase[second][1]<2){theconcs[theconcs.length]=new Array(tablecmpds[2],concset[Math.floor(Math.random()*concset.length)],tablecmpds[2],-1);
+		valuedenom+="["+theconcs[theconcs.length-1][1]+"]"
+		if(terms[2]>1){
+			theconcs[theconcs.length-1][2]=tablecmpds[2]+"<sup>"+terms[2]+"</sup>"
+			theconcs[theconcs.length-1][3]=-terms[2]
+			valuedenom+="<sup>"+terms[2]+"</sup>"	
+		}
+		denom+=theconcs[theconcs.length-1][2]
+		}
+	if(denom==""){denom="1";valuedenom="1"}
+	if(num==""){num="1";valuenum="1"}
+}
+function buildquest(){
+	thequest=""
+	for(j=0;j<theconcs.length;j++)thetable+=theconcs[j][0]+":"+theconcs[j][1]+"<b>M</b><br>";
+	thequest=balreaction+thetable
+	showquest(thequest)
+}
+function buildanswer(){
+	theQ=calcQ()
+	equations=new Array()
+	equations[0]=thenernst
+	equations[1]="E="+theE+"-0.059/"+netes+"*log("+theratio+")"
+	equations[2]="E="+theE+"-0.059/"+netes+"*log("+valueratio+")"
+	equations[3]="E="+theE+"-0.059/"+netes+"*log("+theQ+")"
+	equations[4]="E="+theE+"-"+number(.059/netes,3,3)+"*"+number(thelog,3,3)
+	solvedvalue=theE-1*number(.059/netes*thelog,3,3)
+	equations[5]="E="+number(solvedvalue,3,3)
+	theanswer=solvedvalue
+	solved=new Array()
+	for(var j=0;j<theconcs.length;j++){
+		solved[j]=theconcs[j][2]+"=>["+theconcs[j][1]+"]";
+		if(Math.abs(theconcs[j][3])>1)solved[j]+="<sup>"+Math.abs(theconcs[j][3])+"</sup>";
+		solved[j]+="="+number(Math.pow(1*theconcs[j][1],Math.abs(theconcs[j][3])),2,3)
+	}	
+	showanswer(equations)
+}
+function calcQ(){
+	theQ=1
+	for(var j=0;j<theconcs.length;j++)theQ*=Math.pow(theconcs[j][1],theconcs[j][3])
+	thelog=Math.log(theQ)/2.303
+	if(theQ>100 || theQ<.01)return number(theQ,3,2);
+	else return number(theQ,3,3)
+}					
+function showquest(thequest){
+	if(ie4){
+		qspot.innerHTML=thequest
+		}
+	else{
+		document.qspot.document.open()
+		document.qspot.document.write(thequest)
+		document.qspot.document.close()
+	}
+}
+function showanswer(equations){
+if(attempts>=3){
+		if(ie4){
+		answerit=reaction+"<br>"+phrases[0]
+		for( var j=0;j<7;j++){
+			if(j==2)answerit+=phrases[1];
+			if(j==4)answerit+=phrases[2];
+			if(j==6)answerit+=phrases[3];
+			answerit+=thesteps[j]+"<br>";
+		}
+		ansspot.innerHTML=answerit
+		}
+	else{
+		document.ansspot.document.open()
+		for(j=0;j<equations.length;j++)document.ansspot.document.write(phrases[j]+"<br>"+equations[j]+"<br>")
+		document.ansspot.document.close()
+		}
+	}
+}
+function clearansspot(){
+	if(ie4){
+		ansspot.innerHTML=""
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.clear()
+		document.ansspot.document.close()
+	}
+}
+	
+function answer(ans){
+	attempts++
+	if(tried==1){alert("You've already done this problem. Get a new one!")}
+	else{kk=0
+	if(tried==2){totl++;document.forms[0].total.value=totl}
+	if(theanswer<0){
+		if(ans>1.05*theanswer & ans<.95*theanswer){
+    		kk=1}}
+	else{
+		if(ans<1.05*theanswer & ans>.95*theanswer){
+    	kk=1}
+	}
+	if(kk==1){
+    		document.forms[0].results.value="correct"
+    		corrt++
+    		document.forms[0].correct.value=corrt
+    		tried=1
+	}
+	else{
+    		tried=2
+    	document.forms[0].results.value="incorrect"}
+	}	
+}
+
+</script>
+</head>
+<body onLoad="cleanse()">
+<h3>The Nernst Equation</h3>
+This page will present problems utilizing the Nernst Equation. It's operation is quite straightforward<ul>
+<li>Pressing New Problem will present a balanced redox equation with it's E<sup>o</sup> value and a set of concentrations.
+<li>Calculate the value for the potential, enter it in the cell and press "Check Answer"
+<li>The results will appear in the table.
+<li>If you miss a problem three times, pressing show answer will cause a complete solution to appear.
+<li>The values for E<sup></sup> are randomly generated to ensure the widest possible variety of questions.
+</ul>
+<form>
+<input type="button" value="New Reaction" onClick="startit()"><br>
+<input type=text name=theans size=8><input type=button value="Check Answer" onClick=answer(this.form.theans.value)><br>
+<td><input type=button value="Show answer" onClick="showanswer(equations)"></td>
+</tr>
+</table>
+<table border=4>
+<tr><td align=center><b>Results</td>
+<td align=center><b>Total Done</td>
+<td><b>Total Correct</td>
+</tr>
+<tr>
+<td><input type="text" name=results size=12></td>
+<td align=center><input type="text" name=total size=4 ></td>
+<td align=center><input type="text" name=correct size=4 ></td>
+</tr>
+<tr>
+</table>
+</FORM>
+<div id=qspot></div>
+<div id=ansspot></div>
+<div id=refspot></div>
+</body>
+</html>

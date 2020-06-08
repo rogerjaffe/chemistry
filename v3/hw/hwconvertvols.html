@@ -1,0 +1,201 @@
+<html>
+
+<head><title>Converting Volumes-Homework</title>
+
+<script language="javascript">
+//Last Update 7/28/98
+//globals
+thepage="Converting Volumes(5)"
+howlong=""
+totl=0
+corrt=0
+tried=0
+which=""
+tried=0
+theanswer=""
+flag=0
+function clear(){
+	document.forms[0].first.value=""
+	document.forms[0].second.value=""
+	document.forms[0].third.value=""
+	document.forms[0].fourth.value=""
+	document.forms[0].results.value=""
+	theanswer=0
+	document.forms[0].total.value=0
+	document.forms[0].correct.value=0
+	document.forms[0].time.value=""
+}
+function empty(){
+	document.forms[0].first.value=""
+	document.forms[0].second.value=""
+	document.forms[0].third.value=""
+	document.forms[0].fourth.value=""
+	which=0
+}
+function begin(){
+	totl++
+	document.forms[0].total.value=totl
+	empty()
+      tried=0
+	document.forms[0].results.value=""
+	qt=Math.round(1000*Math.random())/10000
+	var oz=Math.round(1000*(32*qt))/1000
+	var gal=Math.round(10000*(qt/4))/10000
+	var ml=Math.round(10*(946*qt))/10
+	var lit=Math.round(10*ml)/10000
+
+//decide whether to display metric or English
+	var d=Math.random()
+	if (d<.50){english(qt,oz,gal,ml,lit)}
+	else{metric(qt,oz,gal,ml,lit)}
+}
+function english(qt,oz,gal,ml,lit){
+	which=1
+//decide to display qts,ounces or gallons
+	var d=Math.random()
+	if (d<.33){
+		document.forms[0].elements[0].value=qt
+		document.forms[0].elements[1].value="quarts"}
+	else {if (d<.67){
+		document.forms[0].elements[0].value=oz
+		document.forms[0].elements[1].value="ounces"}
+	else {
+		document.forms[0].elements[0].value=gal
+		document.forms[0].elements[1].value="gallons"}}
+//decide what the unknown is to be
+	var d=Math.random()
+	if (d<.53){
+		document.forms[0].elements[3].value="ml"
+		theanswer=ml}
+	else {
+		document.forms[0].elements[3].value="liters"
+		theanswer=lit}
+	document.forms[0].elements[2].focus()
+	document.forms[0].elements[2].select()
+
+}
+function metric(qt,oz,gal,ml,lit){
+//decide on the unknown qts,ounces or gallons
+	var d=Math.random()
+	if (d<.33){
+		theanswer=qt
+		document.forms[0].elements[1].value="quarts"}
+	else {if (d<.67){
+		theanswer=oz
+		document.forms[0].elements[1].value="ounces"}
+	else {
+		theanswer=gal
+		document.forms[0].elements[1].value="gallons"}}
+//decide what the known is to be
+	var d=Math.random()
+	if (d<.50){
+		document.forms[0].elements[3].value="ml"
+		document.forms[0].elements[2].value=ml}
+	else {
+		document.forms[0].elements[3].value="liters"
+		document.forms[0].elements[2].value=lit}
+	document.forms[0].elements[0].focus()
+	document.forms[0].elements[0].select()
+
+}
+function answer(form){
+if(tried==1){
+		alert("Sorry, you've already submitted this problem! We'll get you a new one!")
+		choose()}
+else{
+	if(tried==2){totl++;document.forms[0].total.value=totl}
+	if (which==1){
+		if (form.elements[2].value>.99*theanswer &
+		form.elements[2].value<1.01*theanswer){
+		document.forms[0].results.value="correct"
+		corrt++
+		document.forms[0].correct.value=corrt
+		tried=1}
+	else {
+		document.forms[0].results.value="incorrect"
+		tried=2
+		}}
+	else {
+		if (form.elements[0].value>.99*theanswer &
+		form.elements[0].value<1.01*theanswer){
+		document.forms[0].results.value="correct"
+		corrt++
+		document.forms[0].correct.value=corrt
+		tried=1}
+		else {
+		document.forms[0].results.value="incorrect"
+		tried=2
+		}}
+}}
+function timer(z){
+tt=z
+var b=Math.floor(tt/60)
+var j = (tt % 60)
+if (j<10){c="0"}
+else {c=""}
+howlong=b + ":" + c + j
+running=setTimeout("timer(tt+1)",1000)
+}
+function update(){
+	document.forms[0].total.value=totl
+	document.forms[0].correct.value=corrt
+	document.forms[0].time.value=howlong
+	document.forms[0].page.value=thepage
+	document.forms[0].verify.value=Math.round(10000*Math.random())
+}
+
+
+</script>
+</head>
+<body onLoad="clear(), timer(0)">
+<h2>Converting Volumes</h2>
+Here you will perform problems involving converting volumes between the English and metric systems
+to help develop your math skills and your understanding of both systems.
+<h4>usage</h4>
+<ul>
+<li>To begin-press "New Problem" and three of the four cells will fill.
+<li>Put the correct value into the empty cell and press "Check Answer."
+<li>The results on the problem and a running total will appear in the second table.
+<li>If you get a problem "incorrect", you should redo it and recheck your
+answer.
+</ul>
+<form ACTION = "../cgi-bin/homework/hw_turnin.php" METHOD = "POST">
+<table border=4>
+<tr>
+<td><input type="text" name=first size=8></td>
+<td><input type="text" name=second size=8></td>
+<td><b>equals</td>
+<td><input type="text" name=third size=8></td>
+<td><input type="text" name=fourth size=8></td>
+</tr>
+<tr>
+<td><input type="button" value="New Problem" onClick=begin()></td>
+<td><input type="button" value="Check Answer" onClick=answer(this.form)></td>
+</tr>
+</table>
+<br>
+<table border=4>
+<tr>
+<td align=center><b>Results</td>
+<td align=center><b>Total Done</td>
+<td><b>Total Correct</td>
+</tr>
+<tr>
+<td><input type="text" name="results" size=12></td>
+<td align=center><input type="text" name="total" size=4 ></td>
+<td align=center><input type="text" name="correct" size=4 ></td>
+
+</tr>
+</table>
+<input type=text name="page" size=1>
+<input type=text name="verify" size=1>
+<input type=text name="time" size=1><br>
+<INPUT TYPE = "submit" VALUE = "Submit your score" onClick="update()">
+</FORM>
+<br>
+<a href="index.html"><img src="back.gif"></a><br>
+</body>
+</html>
+
+
+

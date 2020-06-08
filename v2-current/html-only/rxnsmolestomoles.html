@@ -1,0 +1,158 @@
+<html>
+<head><title>Basic Stoichiometry-moles to moles</title>
+<style>
+#qspot {position:absolute;left:320;top:240}
+#ansspot {position:absolute;left:320;top:340;height:200}
+#tspot {position:absolute;left:10;top:300}
+#refspot {position:absolute;left:10;top:600;height:100}
+</style>
+<script src=reactionsets.js></script>
+<script src="reflist.js"></script>
+<script src="numberconvert.js"></script>
+<script language="javascript">
+var ie4=(document.all)?true:false;
+refnumber=177
+totl=0
+corrt=0
+tried=0
+attempts=0
+first=0
+second=0
+theanswer=0
+thesolution=""
+qphrase=new Array()
+seq=new Array()
+introphrase="For the balanced equation shown below, how many moles of "
+qphrase[0]=new Array(" will react with "," moles of ","?")
+qphrase[1]=new Array(" be produced by "," moles of ","?")
+qphrase[2]=new Array(" reacted, if "," moles of "," are produced?")
+qphrase[3]=new Array(" will be produced, if "," moles of "," are produced?")
+ansphrase=new Array("To answer this question, you use the stiochiometric ratio between "," and ","<br>Rearranging the equation and solving for "," yields:<br> ")
+function cleanse(){
+	document.forms[0].total.value=0
+	document.forms[0].correct.value=0
+	clear()
+}
+function clear(){
+	tried=0
+	attempts=0
+	document.forms[0].theans.value=""	
+	document.forms[0].results.value=""
+	clearansspot()
+}
+function startit(){
+	clear()
+	totl++
+	document.forms[0].total.value=totl
+	document.forms[0].results.value=""
+	choose()
+	buildquestion()
+}
+function buildquestion(){
+	first=Math.floor(coeffs[choice].length*Math.random())
+	second=first
+	while(second==first)second=Math.floor(coeffs[choice].length*Math.random())
+	if(first<=splt)second<=splt?option=0:option=1;
+	else second<=splt?option=2:option=3;
+	moles=new Array()
+	moles[0]=number(Math.random(),4,3)
+	moles[1]=moles[0]*coeffs[choice][second]/coeffs[choice][first]
+	moles[1]=theanswer=number(moles[1],4,3)
+	thewhole=new Array(moles[0],moles[1],formula[first],formula[second])
+	thequest=introphrase+thewhole[3]+qphrase[option][0]+thewhole[0]+qphrase[option][1]+thewhole[2]+qphrase[option][2]+"<br>"+equation
+	buildanswer(thewhole)
+	theanswer=thewhole[1]
+	showquest(thequest)
+}
+function buildanswer(thewhole){
+	eqn1=thewhole[3]+"/"+thewhole[2]+"="+coeffs[choice][second]+"/"+coeffs[choice][first]+"=?/"+thewhole[0]
+	eqn2=coeffs[choice][second]+"/"+coeffs[choice][first]+"*"+thewhole[0]+"="+thewhole[1]
+	thesolution=ansphrase[0]+thewhole[3]+ansphrase[1]+thewhole[2]+"<br>"+eqn1+"<br>"+ansphrase[2]+thewhole[3]+ansphrase[3]+eqn2
+	//showanswer(thesolution)
+}	
+function showquest(thequest){
+	if(ie4){
+		qspot.innerHTML=thequest
+		}
+	else{
+		document.qspot.document.open()
+		document.qspot.document.write(thequest)
+		document.qspot.document.close()
+	}
+}
+
+function answer(ans){
+	attempts++
+	if(tried==1)alert("You've done this one. Get a new problem!")
+	else{
+	if(tried==2){totl++;document.forms[0].total.value=totl}
+	if(ans>.95*theanswer & ans<1.05*theanswer){
+		tried=1
+		document.forms[0].results.value="Correct"
+		corrt++
+		document.forms[0].correct.value=corrt
+	}
+	else{
+		tried=2
+		document.forms[0].results.value="Incorrect"
+	}}
+}
+function showanswer(){
+if(attempts>=3){
+	if(ie4){
+		ansspot.innerHTML=thesolution
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.write(thesolution)
+		document.ansspot.document.close()
+	}
+	}
+}	
+function clearansspot(){
+	if(ie4){
+		ansspot.innerHTML=""
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.clear()
+		document.ansspot.document.close()
+	}
+}
+
+</script>	
+</head>
+<body onload="cleanse();setrefs()">
+<h3>Using Balanced Chemical Equations-Moles to moles</h3>
+This page provides exercises in using chemical reactions to relate moles of two substances. When you press "New Problem", a balanced chemical equation with a question will be displayed. Determine the correct value of the answer, enter it in the cell and press "Check Answer." Results will appear immediately in the scoring table. 
+<form>
+<table>
+<tr><td><input type=button value="New Problem" onClick="startit()"><td></tr>
+<tr><td><b>Enter your answer</b></td>
+<td><input type="text" name=theans size=8></td>
+</tr>
+<tr>
+<td><input type=button value="Check answer" onClick="answer(this.form.theans.value)"></td>
+<td><input type=button value="Show answer" onClick="showanswer()"></td>
+</tr>
+</table>
+<table border=4>
+<tr><td align=center><b>Results</td>
+<td align=center><b>Total Done</td>
+<td><b>Total Correct</td>
+</tr>
+<tr>
+<td><input type="text" name=results size=12></td>
+<td align=center><input type="text" name=total size=4 ></td>
+<td align=center><input type="text" name=correct size=4 ></td>
+</tr>
+<tr>
+</table>
+</form>
+<div id=qspot></div>
+<div id=ansspot></div>
+<div id=refspot></div>
+<br>
+</body>
+</html>
+

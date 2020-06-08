@@ -1,0 +1,223 @@
+<html>
+<head><title>Quantum Numbers-cs</title>
+<style>
+#qspot {position:absolute;left:320;top:240}
+#ansspot {position:absolute;left:320;top:340;height:200}
+#tspot {position:absolute;left:10;top:300}
+#refspot {position:absolute;left:10;top:600;height:100}
+</style>
+<script src=reactionsets.js></script>
+<script src="reflist.js"></script>
+<script src="numberconvert.js"></script>
+<script language="javascript">
+var ie4=(document.all)?true:false;
+refnumber=42
+attempts=0
+totl=0
+corrt=0
+theanswer=""
+thesolution=""
+symbols=new Array("s","p","d","f","g","h","i","j","k")
+theform=new Array()
+theform[0]="<form><input type=text size=8 name='theans' value=''><input type='button' value='Check Answer' onClick='answer(this.form.theans.value)'></form>"
+theform[1]="<form><input type=radio name='theans' onClick='answer(0)'><b>Y<input type='radio' name='theans' onClick='answer(1)'>N</b></form>"
+function cleanse(){
+	clear()
+	document.forms[0].total.value=0
+	document.forms[0].correct.value=0
+}
+function clear(){
+	document.forms[0].results.value=""
+	clearansspot()
+	tried=0
+	attempts=0
+}
+function question(p1,p2,p3,p4,p5){
+	this.p1=p1
+	this.p2=p2
+	this.p3=p3
+	this.p4=p4
+	this.p5=p5
+}
+quest=new Array(10)
+ansphrase=new Array()
+quest[0]=new question("For a principle quantum number,n, equal to "," ,what is largest allowed value of l?","")
+ansphrase[0]=new Array("The largest allowed value of l equals n-1. In this case that would be ")
+quest[1]=new question("For a principle quantum number,n, equal to "," ,is it possible for l to be equal to ","(Y or N)?","")
+ansphrase[1]=new Array("l has allowed values from 0 to n-1. Since, in this case, the value of l is "," that range, the answer is ")
+quest[2]=new question("For a principle quantum number,n, equal to "," ,what is the total<br>number of orbitals permitted?","")
+ansphrase[2]=new Array("The total number of orbitals at a given principal quantion level is n<sup>2</sup>. In this case that would be ")
+quest[3]=new question("For a principle quantum number,n, equal to "," ,what is the total<br>electron capacity of that level?","")
+ansphrase[3]=new Array("The total electron capacity is 2*n<sup>2</sup>. In this case that equals ")
+quest[4]=new question("For the quantum number,l, equal to "," is an m<sub>l</sub> value of "," permitted(Y or N)?")
+ansphrase[4]=new Array("m<sub>l</sub> values must be integers in the range -l..0..+l. Since, in this case, the value of m<sub>l</sub> is "," that range, the answer is ")
+quest[5]=new question("For the quantum number,l, equal to "," ,how many orbitals of that type<br>are permitted?","")
+ansphrase[5]=new Array("The number of orbitals for a given value of l is 2*l+1. This case, that is ")
+quest[6]=new question("Is the<b> ","</b> orbital permitted(Y or N)?","")
+ansphrase[6]=new Array("The value of l must be less than or equal to n-1. Here, n="," and l="," so the answer is ")
+quest[7]=new question("What is the l quantum number for an <b>","</b> orbital?","")
+ansphrase[7]=new Array("Here you have to know how the symbols correlate with the values of l. An "," orbital correspnds to an l value of ")
+quest[8]=new question("What is the correct representation for an orbital which has an n value of "," and an l value of ","?")
+ansphrase[8]=new Array("")
+thedata=0
+qarray=new Array(0,9,0,1,0,9,0,9,1,2,1,9,4,9,3,9,0,1)
+farray=new Array(0,1,0,0,1,0,1,0,0)
+function startit(){
+	clear()
+	totl++
+	document.forms[0].total.value=totl
+	thedata=new Array()
+	thedata[0]=Math.ceil(9*Math.random())
+	thedata[1]=Math.floor(9*Math.random())
+	thedata[2]=Math.floor(9*Math.random())
+	thedata[3]=symbols[thedata[1]]
+	thedata[4]=thedata[0]+symbols[thedata[1]]
+	thedata[9]=""
+	if(Math.random()>.5){thedata[2]=-thedata[2]}
+	buildquestion()
+}
+function buildquestion(n,l,ml){
+//select the question
+	h=Math.floor(9*Math.random())
+	if(h==0){
+		theanswer=thedata[0]-1
+	}
+	if(h==1){
+		if(thedata[1]<=thedata[0]-1){theanswer=0}
+		else{theanswer=1}
+	}
+	if(h==2){
+		theanswer=thedata[0]*thedata[0]
+	}
+	if(h==3){
+		theanswer=2*thedata[0]*thedata[0]
+	}
+	if(h==4){
+		if(Math.abs(thedata[2])<=thedata[1]){theanswer=0}
+		else{theanswer=1}
+	}
+	if(h==5){
+		theanswer=2*thedata[1]+1
+	}
+	if(h==6){
+		if(thedata[1]<=thedata[0]-1){theanswer=0}
+		else{theanswer=1}
+	}
+	if(h==7){
+		theanswer=thedata[1]
+	}
+	if(h==8){
+		if(thedata[1]>=thedata[0]){startit()}
+		else{
+			theanswer=thedata[4]
+	}}
+//now compose the question
+	thequest=quest[h].p1+thedata[qarray[2*h]]+quest[h].p2+thedata[qarray[2*h+1]]+quest[h].p3+"<br>"+theform[farray[h]]
+	showquest(thequest)
+	buildanswer(h)
+}
+function buildanswer(h){
+	thesolution=ansphrase[h][0]
+	if(h==0 || h==2 || h==3 || h==5 ||h==8){
+		thesolution+=theanswer
+	}
+	else{
+		if(h==1){
+			thedata[1]<thedata[0]?thesolution+=("within"+ansphrase[h][1]+"Y"):thesolution+=("outside"+ansphrase[h][1]+"N");
+	}
+		if(h==4){
+			Math.abs(thedata[2])<=thedata[1]?thesolution+="within"+ansphrase[h][1]+"Y":thesolution+="outside"+ansphrase[h][1]+"N";
+	}
+		if(h==6){
+			thesolution+=thedata[0]+ansphrase[h][1]+thedata[1]+ansphrase[h][2]
+			thedata[1]<thedata[0]?thesolution+="Y":thesolution+="N";
+	}
+		if(h==7){
+			thesolution+=thedata[3]+ansphrase[h][1]+thedata[1]
+	}
+	}
+	showanswer()
+}
+function showquest(thequest){
+	if(ie4){
+		qspot.innerHTML=thequest
+		}
+	else{
+		document.qspot.document.open()
+		document.qspot.document.write(thequest);
+		document.qspot.document.close()
+	}
+}
+
+function answer(ans){
+	if(tried==1)alert("You've done this one. Get a new problem!")
+	else{
+	attempts++
+	if(tried==2){totl++;document.forms[0].total.value=totl}
+	if(ans==theanswer){
+		document.forms[0].results.value="correct"
+		corrt++
+		document.forms[0].correct.value=corrt
+		tried=1
+	}
+	else{
+		document.forms[0].results.value="incorrect"
+		tried=2
+	}}
+}
+function showanswer(){
+if(attempts>=3){
+	if(ie4){
+		ansspot.innerHTML=thesolution
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.write(thesolution)
+		document.ansspot.document.close()
+	}
+	}
+}	
+function clearansspot(){
+	if(ie4){
+		ansspot.innerHTML=""
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.clear()
+		document.ansspot.document.close()
+	}
+}
+</script>
+</head>
+<body onLoad="cleanse(),setrefs()">
+<h2>Quantum Numbers</h2>
+This is an exercise in using using and understanding the quantum numbers. When you press "New Question", a question will appear in the top frame. Determine the value of the answer, enter it in the cell and press "Check Answer." Results appear in the second
+table. Based upon the nature of the question, you will answer it by entering a number, a string such as "3s" or clicking in from of <B>Y</B> or <B>N</B>(use uppercase). Once you have answered the question appropriately, press "Check Answer" (except of it's a Y or N question ) and the results will appear in the table. 
+<ul>
+<li>If you miss a problem three times, pressing "Show Answer" will cause the correct answer to appear.
+</ul>
+<form>
+<table>
+<tr>
+<input type="button" value="New Question" onClick="startit()">
+<input type="button" value="Show Answer" onClick="showanswer()">
+</tr>
+</table>
+<table border=4>
+<tr>
+<td><b>Results</b></td>
+<td><b>Total Done</b></td>
+<td><b>Total Correct</b></td></tr>
+</tr>
+<tr>
+<td align=center><input type="text" name=results size=10></td>
+<td align=center><input type="text" name=total size=3></td>
+<td align=center><input type="text" name=correct size=3></td>
+<tr>
+</table>
+</form>
+<div id=qspot></div>
+<div id=ansspot></div>
+<div id=refspot></div>
+</body>
+</html>

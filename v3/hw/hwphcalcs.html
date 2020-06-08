@@ -1,0 +1,191 @@
+<html>
+<head><title>pH Calculations-Homework</title>
+<script>
+//Last Update 7/28/98
+thepage="pH,POH,[H+]. and [OH-](33)"
+howlong=""
+totl=0
+corrt=0
+tried=0
+which=""
+tried=0
+theanswer=""
+ans = new Array()
+
+function clear(){
+	document.forms[0].first.value=""
+	document.forms[0].second.value=""
+	document.forms[0].third.value=""
+	document.forms[0].fourth.value=""
+	document.forms[0].results.value=""
+	theanswer=0
+	document.forms[0].total.value=0
+	document.forms[0].correct.value=0
+	document.forms[0].time.value=""
+}
+function empty(){
+	document.forms[0].first.value=""
+	document.forms[0].second.value=""
+	document.forms[0].third.value=""
+	document.forms[0].fourth.value=""
+}
+function display(pH,pOH,H,OH){
+//Chooses which problem to display and then puts cursor in the first
+//empty cell
+	var k=Math.random()
+	if (k<.25){
+		document.forms[0].first.value=pH
+		document.forms[0].second.value=""
+		document.forms[0].third.value=""
+		document.forms[0].fourth.value=""
+		document.forms[0].second.focus()
+		document.forms[0].second.select()
+	}
+	else {if (k<.5){
+		document.forms[0].first.value=""
+		document.forms[0].second.value=pOH
+		document.forms[0].third.value=""
+		document.forms[0].fourth.value=""
+		document.forms[0].first.focus()
+		document.forms[0].first.select()
+}
+	else {if (k<.75){
+		document.forms[0].first.value=""
+		document.forms[0].second.value=""
+		document.forms[0].third.value=H
+		document.forms[0].fourth.value=""
+		document.forms[0].first.focus()
+		document.forms[0].first.select()
+}
+	else {document.forms[0].first.value=""
+		document.forms[0].second.value=""
+		document.forms[0].third.value=""
+		document.forms[0].fourth.value=OH
+		document.forms[0].first.focus()
+		document.forms[0].first.select()
+}
+	}}}
+//Generates the starting values(pH,pOH)
+function begin(){
+totl++
+	document.forms[0].total.value=totl
+	empty()
+      tried=0
+	document.forms[0].results.value=""
+//Generates value with three significant figures
+	var start=Math.pow(14,Math.random())
+	start=Math.round(100*start)/100
+//chooses start to be pH or pOH
+	f=Math.random()
+	if (f>.5){var pH=start}
+	else {pH=14.00-start}
+	var pOH=14.00-pH
+//Separates the orders and mantissas of the logs
+	var CH1=pOH-Math.floor(pOH)
+//Calculates the coefficent for H and converts to three sig figures
+	var CH2=Math.pow(10,CH1)
+	var CH2=Math.round(100*CH2)/100
+//Calculates the coefficent for OH to 3 sig figures
+	var COH2=Math.round(1000/CH2)/100
+	var H=CH2+"e-"+Math.floor(pH+1)
+	var OH=COH2+"e-"+Math.floor(pOH+1)
+//Passes the numbers to the display function
+	display(pH,pOH,H,OH)
+}//Checks the answers by seeing how the various pairs compare
+function answer(form){
+if(tried==1){
+		alert("Sorry, you've already submitted this problem! We'll get you a new one!")
+		choose()}
+else{
+	if(tried==2){totl++;document.forms[0].total.value=totl}
+	var H=Math.pow(10,-(1.0*form.first.value))
+	var OH=Math.pow(10,-(1.0*form.second.value))
+	if (  1.0*form.first.value + 1.0*form.second.value>13.95 &
+		1.0*form.first.value + 1.0*form.second.value<14.05 &
+		form.third.value>.99*H &
+		form.third.value<1.01*H &
+		form.fourth.value>.99*OH &
+		form.fourth.value<1.01*OH){
+		document.forms[0].results.value="correct"
+		corrt++
+		document.forms[0].correct.value=corrt
+		tried=1
+		}
+	else {document.forms[0].results.value="incorrect"
+		tried=2}
+}}
+//this is the teacher select function
+function timer(z){
+tt=z
+var b=Math.floor(tt/60)
+var j = (tt % 60)
+if (j<10){c="0"}
+else {c=""}
+howlong=b + ":" + c + j
+running=setTimeout("timer(tt+1)",1000)
+}
+
+function update(){
+	document.forms[0].total.value=totl
+	document.forms[0].correct.value=corrt
+	document.forms[0].time.value=howlong
+	document.forms[0].page.value=thepage
+	document.forms[0].verify.value=Math.round(10000*Math.random())
+}
+</script>
+</head>
+<body onLoad="clear(), timer(0)">
+
+
+<h2>pH, pOH, [H<sup>+</sup>] and [OH<sup>-</sup>]</h2>
+This page is a drill and practice exercise in basic pH calculations. When
+you press "New Problem" a value will appear in one of the windows. You must
+properly fill in the other three windows. Pressing "Check Answer" does so and
+returns the result in the second table. If you get a problem incorrect, you
+should retry it until it is correct. Use the "e" notation to enter numbers
+in scientific notation:<br>
+<h4>Hints</h4>
+<ul>
+ <li>Use <b>TAB</b> to move between cells
+<li>1.2*10<sup>-3</sup> would be entered 1.2e-3
+</ul><hr>
+<form ACTION = "../cgi-bin/homework/hw_turnin.php" METHOD = "POST">
+
+<table border=4>
+<tr>
+<td align=center><b>pH</td>
+<td align=center><b>pOH</td>
+<td align=center><b>[H<sup>+</sup>]</td>
+<td align=center><b>[OH<sup>-</sup>]</td>
+</tr>
+<tr>
+<td><input type="text" name=first size=8></td>
+<td><input type="text" name=second size=8></td>
+<td><input type="text" name=third size=12></td>
+<td><input type="text" name=fourth size=12></td>
+</tr>
+<td><input type="button" value="New Problem" onClick=begin()></td>
+<td><input type="button" value="Check Answer" onClick=answer(this.form)></td>
+</tr>
+</table>
+<table border=4>
+<tr>
+<td align=center><b>Results</td>
+<td align=center>Total Taken</td>
+<td align=center>Correct</td>
+</tr>
+<tr>
+<td><input type="text" name="results" size=12></td>
+<td align=center><input type="text" name="total" size=4 ></td>
+<td align=center><input type="text" name="correct" size=4 ></td>
+</table>
+<input type=text name="page" size=1>
+<input type=text name="verify" size=1>
+<input type=text name="time" size=1><br>
+<INPUT TYPE = "submit" VALUE = "Submit your score" onClick="update()">
+</form>
+<br>
+<a href="index.html"><img src="back.gif"></a><br>
+</form>
+</body>
+</html>

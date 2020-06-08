@@ -1,0 +1,217 @@
+<head>
+<title>Composition of Buffers</title>
+<style>
+#qspot {position:absolute;left:320;top:280}
+#ansspot {position:absolute;left:320;top:350;height:200}
+#tspot {position:absolute;left:10;top:300}
+#refspot {position:absolute;left:10;top:600;height:50}
+</style>
+<script src="reflist.js"></script>
+<script src="reflist.js"></script>
+<script src="numberconvert.js"></script>
+<script language="javascript">
+//updated 11/14/00-added complete solution
+refnumber=119
+var ie4 = (document.all) ? true : false;
+attempts=0
+pK=0
+pH=0
+theacid=""
+thebase=""
+acidconc=0
+baseconc=0
+ratio=0
+askit=""
+newone=""
+totl=0
+corrt=0
+function clear(){
+	document.forms[0].theans.value=""
+	document.forms[0].results.value=""
+	attempts=0
+	tried=0
+	clearansspot()
+	}
+function cleanse(){
+	clear()
+	document.forms[0].total.value=0
+	document.forms[0].correct.value=0
+	}
+function dataset(acid,base,Ka,formacid,formbase){
+	this.acid=acid
+	this.base=base
+	this.Ka=Ka
+	this.formacid=formacid
+	this.formbase=formbase
+}
+function question(p1,p2,p3,p4,p5){
+	this.p1=p1
+	this.p2=p2
+	this.p3=p3
+	this.p4=p4
+	this.p5=p5
+}
+HH=new Array("pH=pKa+log([base]/[acid])","pH-pKa=log([base]/[acid])")
+quest=new Array(10)
+quest[1]=new question("A buffer solution contains "," and "," ion with concetrations of ","<b>M</b> and ","<b>M</b>, respectively. What is the pH of the buffer?")
+quest[2]=new question("What is the base/acid ratio in a buffer containing "," and "," ion, if the buffer has a pH of ","?")
+quest[3]=new question("A buffer has a pH of "," and a "," concentration of ","<b>M</b>. What is the "," concentration?")
+ansphrase=new Array()
+ansphrase[1]=new Array("The Henderson-Hasselbach equation has the form:<br>","<br>The pKa for "," is ",".<br> Substituting the ratio into the equation yields:<br>")
+ansphrase[2]=new Array("The pKa for "," is ",". Rearranging the Henderson-Hasselbach equation yields:<br>")
+ansphrase[3]=new Array("The pKa for "," is ",". Rearranging the Henderson-Hasselbach equation yields the following:<br>","<br>Since "," is given, one can readily solve for the needed concentration.")
+species=new Array(50)
+species[1]=new dataset("acetic acid","acetate",1.75e-5,"CH<SUB>3</SUB>COOH","CH<SUB>3</SUB>COO<SUP>-</SUP>")
+species[2]=new dataset("acrylic acid","acrylate",5.5e-5,"C<SUB>3</SUB>H<SUB>4</SUB>O<SUB>2</SUB>","C<SUB>3</SUB>H<SUB>3</SUB>O<SUB>2</SUB><SUP>-</SUP>")
+species[3]=new dataset("arsenous acid","arsenate",6.6e-10,"H<SUB>3</SUB>AsO<SUB>3</SUB>","H<SUB>2</SUB>AsO<SUB>3</SUB><SUP>-</SUP>")
+species[4]=new dataset("benzoic acid","benzoate",6.3e-5,"C<SUB>7</SUB>H<SUB>5</SUB>O<SUB>2</SUB>","C<SUB>7</SUB>H<SUB>4</SUB>O<SUB>2</SUB><SUP>-</SUP>")
+species[5]=new dataset("bromoacetic acid","bromoacetate",1.3e-3,"C<SUB>2</SUB>H<SUB>3</SUB>BrO<SUB>2</SUB>","C<SUB>2</SUB>H<SUB>2</SUB>BrO<SUB>2</SUB><SUP>-</SUP>")
+species[6]=new dataset("butyric acid","butyrate",1.5e-5,"C<SUB>4</SUB>H<SUB>8</SUB>O<SUB>2</SUB>","C<SUB>2</SUB>H<SUB>7</SUB>O<SUB>2</SUB><SUP>-</SUP>")
+species[7]=new dataset("chloroacetic acid","chloroacetate",1.4e-3,"C<SUB>2</SUB>H<SUB>3</SUB>ClO<SUB>2</SUB>","C<SUB>2</SUB>H<SUB>2</SUB>ClO<SUB>2</SUB><SUP>-</SUP>")
+species[8]=new dataset("cyanic acid","cyanate",3.5e-4,"HOCN","OCN<SUP>-</SUP>")
+species[9]=new dataset("formic","formate",1.8e-4,"H<SUB>2</SUB>CO<SUB>2</SUB>","HCO<SUB>2</SUB><SUP>-</SUP>")
+species[10]=new dataset("hydrofluoric acid","fluoride",6.6e-4,"HF","F-")
+species[11]=new dataset("nitrous acid","nitrite",7.2e-4,"HNO<SUB>2</SUB>","NO<SUB>2</SUB><SUP>-</SUP>")
+species[12]=new dataset("propionic acid","propionate",1.3e-5,"C<SUB>3</SUB>H<SUB>6</SUB>O<SUB>2</SUB>","C<SUB>3</SUB>H<SUB>5</SUB>O<SUB>2</SUB><SUP>-</SUP>")
+
+function startit(){
+	clear()
+	totl++
+	document.forms[0].total.value=totl
+	which=Math.ceil(12*Math.random())
+	theacid=species[which]['acid']
+	thebase=species[which]['base']
+	ratio=0
+	while(ratio<.5 || ratio>5){ratio=10*Math.random()}
+	ratio=number(ratio,3,3)
+	acidconc=0
+	while(acidconc<.1)acidconc=Math.random()
+	baseconc=acidconc*ratio
+	acidconc=number(acidconc,2,3)
+	baseconc=number(baseconc,2,3)
+	pK=-Math.log(1*species[which]['Ka'])/2.303
+	pK=number(pK,3,3)
+	pH=1*pK+Math.log(1*ratio)/2.303
+	pH=number(pH,3,3)
+	whichask=Math.ceil(4*Math.random())
+	makequestion(whichask)
+	buildanswer(whichask)
+}
+function makequestion(f){
+if(f==1){thequest=quest[1]['p1']+theacid+quest[1]['p2']+thebase+quest[1]['p3']+acidconc+quest[1]['p4']+baseconc+quest[1].p5;ansr=pH}
+if(f==2){thequest=quest[2]['p1']+theacid+quest[2]['p2']+thebase+quest[2]['p3']+pH+quest[2]['p4'];ansr=ratio}
+if(f==3){thequest=quest[3]['p1']+pH+quest[3]['p2']+theacid+quest[3]['p3']+acidconc+quest[3]['p4']+thebase+" ion "+quest[3]['p5'];ansr=baseconc}
+if(f==4){thequest=quest[3]['p1']+pH+quest[3]['p2']+thebase+quest[3]['p3']+baseconc+quest[3]['p4']+theacid+quest[3]['p5'];ansr=acidconc}
+showquest(thequest)
+}
+function buildanswer(f){
+	if(f==1)theanswer=ansphrase[1][0]+HH[0]+ansphrase[1][1]+theacid+ansphrase[1][2]+pK+ansphrase[1][3]+"pH="+pK+"+log("+baseconc+"/"+acidconc+")="+pH
+	if(f>1)theanswer=ansphrase[2][0]+theacid+ansphrase[2][1]+pK+ansphrase[2][2]+HH[1]+"<br>"+pH+"-"+pK+"="+number((pH-pK),2,3)+"=log(base/acid)<br>Taking the antilog yields<br>base/acid="+ratio
+	if(f==3)theanswer+=("<br>Since the acid concentration is given as "+acidconc+"<br>base="+ratio+"*"+acidconc+"="+baseconc)
+	if(f==4)theanswer+=("<br>Since the base concentration is given as "+baseconc+"<br>acid="+baseconc+"/"+ratio+"="+acidconc)
+	showanswer()
+}
+function answer(f){
+attempts++
+document.forms[0].total.value++
+if(f>.95*theanswer & f<1.05*theanswer){
+	document.forms[0].results.value="correct"
+	document.forms[0].correct.value++}
+else{document.forms[0].results.value="incorrect"}
+}
+function showquest(thequest){
+	if(ie4){
+		qspot.innerHTML=thequest
+		}
+	else{
+		document.qspot.document.open()
+		document.qspot.document.write(thequest)
+		document.qspot.document.close()
+	}
+}
+function answer(ans){
+	if(tried==1)alert("You've done this one. Get a new problem!");
+	else{
+	attempts++
+	if(ans>.95*ansr & ans<1.05*ansr){
+		document.forms[0].results.value="Correct"
+		corrt++
+		document.forms[0].correct.value=corrt
+		tried=1
+	}
+	else{
+		document.forms[0].results.value="Incorrect"
+		tried=2
+		if(tried==2){
+			totl++
+			document.forms[0].total.value=totl
+		}
+	}
+}}
+function showanswer(){
+if(attempts>=3){
+	if(ie4){
+		ansspot.innerHTML=theanswer
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.write(theanswer)
+		document.ansspot.document.close()
+	}
+	}
+}
+
+function clearansspot(){
+	if(ie4){
+		ansspot.innerHTML=""
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.clear()
+		document.ansspot.document.close()
+	}
+}
+
+</script>
+</head>
+<body onLoad=clear(),setrefs()>
+<h2>The Composition of Buffer Solutions</h2>
+This page presents basic questions dealing with the composition of buffer solutions. You will need a book with a table of Kas in order to answer the questions. Pressing "New Question" opens a new window with a question and an answer submit form. Determine the value of the answer and submit it. Results will appear on the table on the main page.<br>
+<ul>
+<li>To begin-press "New Problem" and a question will appear to the right of the button. 
+<li>Put the correct value into the answer cell and press "Check Answer."
+<li>The results on the problem and a running total will appear in the second table.
+<li>If you get a problem "incorrect", you should redo it and recheck your
+answer.
+<li>If you miss a problem three times, pressing the "Show Answer" button will cause a complete solution to appear.
+</ul>
+<form>
+<table>
+<tr><td><input type=button value="New Problem" onClick="startit()"><td></tr>
+<tr><td><b>Enter your answer</b></td>
+<td><input type="text" name=theans size=8></td>
+</tr>
+<tr>
+<td><input type=button value="Check answer" onClick="answer(this.form.theans.value)"></td>
+<td><input type=button value="Show answer" onClick="showanswer()"></td>
+</tr>
+</table>
+<table border=4>
+<tr><td align=center><b>Results</td>
+<td align=center><b>Total Done</td>
+<td><b>Total Correct</td>
+</tr>
+<tr>
+<td><input type="text" name=results size=12></td>
+<td align=center><input type="text" name=total size=4 ></td>
+<td align=center><input type="text" name=correct size=4 ></td>
+</tr>
+<tr>
+</table>
+</form>
+<div id=qspot></div>
+<div id=ansspot></div>
+<div id=refspot></div>
+<br>
+</body>
+</html>

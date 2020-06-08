@@ -1,0 +1,293 @@
+<html>
+<head><title>Elements</title>
+<style>
+#qspot {position:absolute;left:10;top:140}
+#ansspot {position:absolute;left:50;top:160;height:200}
+#tspot {position:absolute;left:10;top:300}
+#refspot {position:absolute;left:10;top:600;height:200}
+</style>
+<script src=reflist.js></script>
+<script language="javascript">
+//updated 11/21/00-added complete solution
+//tested w/ N4.7 and IE5
+//globals
+refnumber=40
+var ie4 = (document.all) ? true : false;
+d=0
+attempts=0
+whichset=0
+totl=0
+corrt=0
+option=0
+val=""
+ans=""
+theans=new Array()
+theanswer=""
+function cleanse(){
+	clear()
+	document.forms[0].total.value=0
+	document.forms[0].correct.value=0
+	}
+function clear(){
+	clearansspot()
+	tried=0
+	attempts=0
+	document.forms[0].theans.value=""
+	document.forms[0].results.value=""
+	}
+function dataset(name,sym,mass){
+	this.name=name
+	this.sym=sym
+	this.mass=mass
+}
+function clearansspot(){
+	if(ie4){
+		ansspot.innerHTML=""
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.clear()
+		document.ansspot.document.close()
+	}
+}
+atom=new Array();
+atom[1]=new dataset("hydrogen","H",1.00)
+atom[2]=new dataset("helium","He",4.00)
+atom[3]=new dataset("lithium","Li",6.94)
+atom[4]=new dataset("beryllium","Be",9.01)
+atom[5]=new dataset("boron","B",10.8)
+atom[6]=new dataset("carbon","C",12.0)
+atom[7]=new dataset("nitrogen","N",14.0)
+atom[8]=new dataset("oxygen","O",16.0)
+atom[9]=new dataset("fluorine","F",19.0)
+atom[10]=new dataset("neon","Ne",20.2)
+atom[11]=new dataset("sodium","Na",23)
+atom[12]=new dataset("magnesium","Mg",24.3)
+atom[13]=new dataset("aluminum","Al",27)
+atom[14]=new dataset("silicon","Si",28.1)
+atom[15]=new dataset("phosphorous","P",31)
+atom[16]=new dataset("sulfur","S",32.1)
+atom[17]=new dataset("chlorine","Cl",35.5)
+atom[18]=new dataset("argon","Ar",40)
+atom[19]=new dataset("potassium","K",39.1)
+atom[20]=new dataset("calcium","Ca",40.1)
+atom[21]=new dataset("scandium","Sc",45)
+atom[22]=new dataset("titanium","Ti",48)
+atom[23]=new dataset("vanadium","V",51)
+atom[24]=new dataset("chromium","Cr",52)
+atom[25]=new dataset("manganese","Mn",55)
+atom[26]=new dataset("iron","Fe",55.8)
+atom[27]=new dataset("cobalt","Co",59)
+atom[28]=new dataset("nickel","Ni",58.7)
+atom[29]=new dataset("copper","Cu",63.5)
+atom[30]=new dataset("zinc","Zn",65.4)
+atom[31]=new dataset("gallium","Ga",69.7)
+atom[32]=new dataset("germanium","Ge",72.6)
+atom[33]=new dataset("arsenic","As",74.9)
+atom[34]=new dataset("selenium","Se",79)
+atom[35]=new dataset("bromine","Br",80)
+atom[36]=new dataset("krypton","Kr",83.8)
+atom[37]=new dataset("rubidium","Rb",85.5)
+atom[38]=new dataset("strontium","Sr",87.6)
+atom[39]=new dataset("yttrium","Y",88.9)
+atom[40]=new dataset("zirconium","Zr",91.2)
+atom[41]=new dataset("niobium","Nb",93)
+atom[42]=new dataset("molybdenum","Mo",96)
+atom[43]=new dataset("technetium","Tc",97)
+atom[44]=new dataset("ruthenium","Ru",101)
+atom[45]=new dataset("rhodium","Rh",103)
+atom[46]=new dataset("palladium","Pd",106.4)
+atom[47]=new dataset("silver","Ag",108)
+atom[48]=new dataset("cadmium","Cd",112.4)
+atom[49]=new dataset("indium","In",114.8)
+atom[50]=new dataset("tin","Sn",50,118.7)
+atom[51]=new dataset("antimony","Sb",121.7)
+atom[52]=new dataset("tellurium","Te",127.6)
+atom[53]=new dataset("iodine","I",127)
+atom[54]=new dataset("xenon","Xe",131.3)
+atom[55]=new dataset("cesium","Cs",133)
+atom[56]=new dataset("barium","Ba",137.3)
+atom[57]=new dataset("lanthanum","La",139)
+atom[58]=new dataset("cerium","Ce",140)
+atom[59]=new dataset("praseodymium","Pr",141)
+atom[60]=new dataset("neodymium","Nd",144)
+atom[61]=new dataset("promethium","Pm",147)
+atom[62]=new dataset("samarium","Sm",150.4)
+atom[63]=new dataset("europium","Eu",152)
+atom[64]=new dataset("gadollinium","Gd",157)
+atom[65]=new dataset("terbium","Tb",159)
+atom[66]=new dataset("dysprosium","Dy",162.5)
+atom[67]=new dataset("holmium","Ho",165)
+atom[68]=new dataset("erbium","Er",167.3)
+atom[69]=new dataset("thullum","Tm",169)
+atom[70]=new dataset("ytterbium","Yb",173)
+atom[71]=new dataset("lutetium","Lu",175)
+atom[72]=new dataset("hafnium","Hf",178.5)
+atom[73]=new dataset("tantalum","Ta",181)
+atom[74]=new dataset("tungsten","W",184)
+atom[75]=new dataset("rhenium","Re",186)
+atom[76]=new dataset("osmium","Os",190)
+atom[77]=new dataset("iridium","Ir",192)
+atom[78]=new dataset("platinum","Pt",195)
+atom[79]=new dataset("gold","Au",197)
+atom[80]=new dataset("mercury","Hg",200)
+atom[81]=new dataset("thallium","Tl",204)
+atom[82]=new dataset("lead","Pb",82,207)
+atom[83]=new dataset("astatine","At",210)
+atom[84]=new dataset("radon","Rn",222)
+atom[85]=new dataset("francium","Fr",223)  
+atom[86]=new dataset("radium","Ra",226)
+atom[87]=new dataset("actinium","Ac",227)
+atom[88]=new dataset("thorium","Th",232)
+atom[89]=new dataset("protactinium","Pa",231)
+atom[90]=new dataset("uranium","U",238)
+atom[91]=new dataset("neptunium","Np",237)
+atom[92]=new dataset("plutonium","Pu",244)
+atom[93]=new dataset("americium","Am",243)
+atom[94]=new dataset("californium","Cf",251)
+atom[95]=new dataset("einsteinum","Es",254)
+atom[96]=new dataset("fermium","Fm",257)
+atom[97]=new dataset("mendelevium","Md",258)
+atom[98]=new dataset("nobelium","No",259)
+atom[99]=new dataset("lawrencium","Lr",260)
+function parts(p1,p2,p3){
+	this.p1=p1
+	this.p2=p2
+	this.p3=p3
+}
+question=new Array()
+question[1]=new parts("How many moles is "," grams of ","?")
+question[2]=new parts("What is the mass in grams of "," moles of ","?")
+question[3]=new parts("If a sample of an element has a mass of ","grams and contains ","moles, what is the element? Enter its atomic symbol in the answer cell.")
+question[4]=new parts("A "," mole sample of an element has a mass of "," grams. Identify the element and enter its atomic symbol in the answer cell.")
+bequation=new Array()
+bequation[1]="moles=mass/gaw<br>"
+bequation[2]="mass=moles*gaw<br>"
+bequation[3]="gaw=mass/moles<br>"
+function startit(){
+	clear()
+	totl++
+	document.forms[0].total.value=totl
+	d=Math.ceil(99*Math.random())
+	moles(d)
+}
+function moles(d){
+	var mass=Math.round(10000*Math.random())/100
+	var moles=Math.round(1000*mass/atom[d]["mass"])/1000
+	var id=atom[d].sym
+	thequest=mass+";"+moles+";"+id
+	buildquest(mass,moles,id)
+}
+function buildquest(mass,moles,id){
+	option=Math.ceil(3*Math.random())
+	if(option==1){
+		thequest=question[1].p1+mass+question[1].p2+id+question[1].p3
+		ans=moles
+		}
+	if(option==2){
+		thequest=question[2].p1+moles+question[2].p2+id+question[2].p3
+		ans=mass
+		}
+	if(option==3){
+		if(Math.random()>.5)thequest=question[3].p1+mass+question[3].p2+moles+question[3].p3;
+		else thequest=question[4].p1+moles+question[4].p2+mass+question[4].p3;
+		ans=id
+	}
+	buildanswer(option,mass,moles,id)
+	showquest(thequest)
+}
+function showquest(thequest){
+	if(ie4){
+		qspot.innerHTML=thequest
+		}
+	else{
+		document.qspot.document.open()
+		document.qspot.document.write(thequest)
+		document.qspot.document.close()
+	}
+}
+function answer(val){
+	attempts++
+	if(tried==1)alert("You've done this one. Get a new problem!");
+	else{
+	if(tried==2){totl++;document.forms[0].total.value=totl};
+	if(option==3){
+		if(val==ans){
+		tried=1
+		document.forms[0].results.value="Correct"
+		corrt++
+		document.forms[0].correct.value=corrt
+		}
+	else {tried=2;document.forms[0].results.value="Incorrect"}
+	}
+	else
+	if(val>.95*ans & val<1.05*ans){
+		tried=1
+		document.forms[0].results.value="Correct"
+		corrt++
+		document.forms[0].correct.value=corrt
+	}
+	else{
+		document.forms[0].results.value="Incorrect"
+		tried=2
+	}
+}}
+function buildanswer(option,mass,moles,id){
+	theanswer=bequation[option]
+	if(option==1){theanswer=theanswer+mass+"/"+atom[d].mass+"="+moles}
+	if(option==2){theanswer=theanswer+moles+"*"+atom[d].mass+"="+mass}
+	if(option==3){theanswer=theanswer+mass+"/"+moles+"="+atom[d].mass+"<br>The element is "+atom[d].sym}
+	showanswer(theanswer)
+}
+function showanswer(){
+if(attempts>=3){
+	if(ie4){
+		ansspot.innerHTML=theanswer
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.write(theanswer)
+		document.ansspot.document.close()
+	}
+	}
+}	
+</script>
+</head>
+<body onLoad="cleanse(),setrefs()">
+<h2>Elements, moles and masses</h2>
+This page provides exercises in relating elements, masses and moles. When you 
+press "New Problem" a problem will be presented above the table. Put the correct value in the answer cell and press
+"Check Ans." Results appear in the second table. You need a periodic table or list of
+elements and atomic weights to use this page.
+<ul>
+<li>If you miss a problem three times, pressing the "Show Answer" will cause the correct answer to appear.
+</ul>
+<form>
+<br><br><br><br><br><br>
+<input type=button value="New Problem" onClick="startit()">
+<table border=4>
+<tr>
+<td><input type="text" name=theans size=8>Enter your answer here</td>
+<td><input type="button" value="Check Answer" onClick=answer(this.form.theans.value)></td>
+<td><input type="button" value="Show Answer" onClick=showanswer()></td>
+</tr>
+</table>
+<br>
+<table border=4>
+<tr><td align=center><b>Results</td>
+<td align=center><b>Total Done</td>
+<td><b>Total Correct</td>
+</tr>
+<tr>
+<td><input type="text" name=results size=12></td>
+<td align=center><input type="text" name=total size=4 ></td>
+<td align=center><input type="text" name=correct  size=4 ></td>
+</tr>
+</table>
+</form>
+<div id=qspot></div>
+<div id=ansspot></div>
+<div id=refspot></div>
+</body>
+</html>
+

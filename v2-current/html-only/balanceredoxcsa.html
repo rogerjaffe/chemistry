@@ -1,0 +1,389 @@
+<html>
+<head><title>Redox Balance-cs</title>
+<style>
+#qspot {position:absolute;left:340;top:220}
+#ansspot {position:absolute;left:340;top:320;height:300}
+#tspot {position:absolute;left:10;top:300}
+#refspot {position:absolute;left:10;top:600;height:50}
+</style>
+<script src="reflist.js"></script>
+<script src="ionformulas.js"></script>
+<script language="javascript">
+refnumber=184
+var ie4=(document.all)?true:false;
+corrt=0
+tried=0
+totl=0
+theanswer=0
+which=0
+thesteps=new Array()
+thecmpds=""
+front=""
+back=""
+coeffs=""
+factor=""
+annset=""
+W=H=0
+attempts=0
+type=0
+first=3
+second=0
+reaction=""
+soltype=new Array("<b> (acidic)</b>","<b> (basic)</b>")
+acidtype=new Array("H<sup>+</sup>","OH<sup>-</sup>")
+water="H<sub>2</sub>O"
+thecell="<input type=text size=2 value=''>"
+thebutton="<input type=button value='Check Answer' onClick='answer(this.form)'>"
+function cleanse(){
+	clear()
+	document.forms[0].correct.value=0
+	document.forms[0].total.value=0
+}
+function clear(){
+	tried=0
+	attempts=0
+	document.forms[0].results.value=""
+	if(ie4)ansspot.innerHTML="";
+	else{ 
+		document.ansspot.document.open()
+		document.ansspot.document.clear()
+		document.ansspot.document.close()
+	}
+}
+phrases=new Array("First, separate the half reactions and do any simple mass balancing possible.<br>","Balance each half reaction as needed utilizing the acid/ base nature of the solution as appropriate.<br>","Determine the number of electrons for each half reaction.<br>","Combine and 'cleanup' the half reactions using the electrons as the guide.<br>")
+//halfrxn-reduction couples and the electrons 
+halfrxn=new Array()
+//information needed-coeffs,followed by H+ and H20 for acid, followed by OH-,H20 for base.If //sign is +its a reagent 
+dataset=new Array()
+halfrxn[0]=new Array("Fe+3","Fe+2",1)
+dataset[0]=new Array(1,1,0,0,0,0)
+halfrxn[1]=new Array("F2","F-",2)
+dataset[1]=new Array(1,2,0,0,0,0)
+halfrxn[2]=new Array("O3","O2",2)
+dataset[2]=new Array(1,1,2,1,-2,-1)
+halfrxn[3]=new Array("PbO2","Pb+2",2)
+dataset[3]=new Array(1,1,4,2,-4,-2)
+halfrxn[4]=new Array("Cl2","Cl-",2)
+dataset[4]=new Array(1,2,0,0,0,0)
+halfrxn[5]=new Array("Mg+2","Mg",2)
+dataset[5]=new Array(1,1,0,0,0,0)
+halfrxn[6]=new Array("Al+3","Al",3)
+dataset[6]=new Array(1,1,0,0,0,0)
+halfrxn[7]=new Array("Cr+2","Cr",2)
+dataset[7]=new Array(1,1,0,0,0,0)
+halfrxn[8]=new Array("MnO4-","Mn+2",5)
+dataset[8]=new Array(1,1,8,4,-8,-4)
+halfrxn[9]=new Array("Cr2O7-2","Cr+3",6)
+dataset[9]=new Array(1,2,14,7,-14,-7)
+halfrxn[10]=new Array("ClO2-","ClO-",2)
+dataset[10]=new Array(1,1,2,1,-2,-1)
+halfrxn[11]=new Array("ClO4-","Cl-",8)
+dataset[11]=new Array(1,1,8,4,-4,-8)
+halfrxn[12]=new Array("PbO2","PbO",2)
+dataset[12]=new Array(1,1,2,1,-1,-2)
+halfrxn[13]=new Array("Au+3","Au+",2)
+dataset[13]=new Array(1,1,0,0,0,0)
+halfrxn[14]=new Array("MnO4-","MnO2",3)
+dataset[14]=new Array(1,1,4,2,-4,-2)
+halfrxn[15]=new Array("IO3-","I2",10)
+dataset[15]=new Array(2,1,12,6,-6,-12)
+halfrxn[16]=new Array("ClO-","Cl-",2)
+dataset[16]=new Array(1,1,2,1,-2,-1)
+halfrxn[17]=new Array("Fe2O3","Fe",6)
+dataset[17]=new Array(1,2,6,3,99,99)
+halfrxn[18]=new Array("Br2","Br-",2)
+dataset[18]=new Array(1,2,0,0,0,0)
+halfrxn[19]=new Array("Ag+","Ag",1)
+dataset[19]=new Array(1,1,0,0,0,0)
+halfrxn[20]=new Array("S2O8-2","SO4-2",2)
+dataset[20]=new Array(1,2,0,0,0,0)
+halfrxn[21]=new Array("SO4-2","SO2",2)
+dataset[21]=new Array(1,1,4,2,-4,-2)
+halfrxn[22]=new Array("MnO2","Mn+2",2)
+dataset[22]=new Array(1,1,4,2,-4,-2)
+halfrxn[23]=new Array("NO3-","NO",3)
+dataset[23]=new Array(1,1,4,2,-4,-2)
+halfrxn[24]=new Array("I2","I-",2)
+dataset[24]=new Array(1,2,0,0,0,0)
+halfrxn[25]=new Array("Sn+4","Sn+2",2)
+dataset[25]=new Array(1,1,0,0,0,0)
+halfrxn[26]=new Array("Sn+2","Sn",2)
+dataset[26]=new Array(1,1,0,0,0,0)
+halfrxn[27]=new Array("BrO3-","Br2",10)
+dataset[27]=new Array(2,1,12,6,-6,-3)
+halfrxn[28]=new Array("VO2+","VO+2",1)
+dataset[28]=new Array(1,1,2,1,-2,-1)
+halfrxn[29]=new Array("NO2-","NO",1)
+dataset[29]=new Array(1,1,2,1,-2,-1)
+halfrxn[30]=new Array("Hg+2","Hg2+2",2)
+dataset[30]=new Array(2,1,0,0,0,0)
+halfrxn[31]=new Array("Sb2O5","SbO+",4)
+dataset[31]=new Array(1,2,6,3,-6,-3)
+halfrxn[32]=new Array("I3-","I-",2)
+dataset[32]=new Array(1,3,0,0,0,0)
+halfrxn[33]=new Array("VO+2","V+3",1)
+dataset[33]=new Array(1,1,2,1,-2,-1)
+halfrxn[34]=new Array("UO2+2","U+4",2)
+dataset[34]=new Array(1,1,4,2,-4,-2)
+halfrxn[35]=new Array("BiO+","Bi",3)
+dataset[35]=new Array(1,1,2,1,-2,-1)
+halfrxn[36]=new Array("SbO+","Sb",3)
+dataset[36]=new Array(1,1,2,1,-2,-1)
+halfrxn[37]=new Array("SO4-2","SO2",2)
+dataset[37]=new Array(1,1,4,2,-4,-2)
+halfrxn[38]=new Array("TiO+2","Ti+3",1)
+dataset[38]=new Array(1,1,2,1,-2,-1)
+halfrxn[39]=new Array("Mo+3","Mo",3)
+dataset[39]=new Array(1,1,0,0,0,0)
+halfrxn[40]=new Array("H3PO3","H3PO2",2)
+dataset[40]=new Array(1,1,2,1,99,99)
+halfrxn[41]=new Array("Th+4","Th",4)
+dataset[41]=new Array(1,1,0,0,0,0)
+halfrxn[42]=new Array("Sb2O3","Sb",6)
+dataset[42]=new Array(1,2,6,3,-6,-3)
+halfrxn[43]=new Array("H3BO3","B",3)
+dataset[43]=new Array(1,1,3,3,99,99)
+halfrxn[44]=new Array("AsO2-","As",3)
+dataset[44]=new Array(1,1,4,2,-4,-2)
+halfrxn[45]=new Array("Be2O3-2","Be",4)
+dataset[45]=new Array(1,2,6,3,-6,-3)
+halfrxn[46]=new Array("ClO2","ClO2-",1)
+dataset[46]=new Array(1,1,0,0,0,0)
+halfrxn[47]=new Array("F2O","F-",4)
+dataset[47]=new Array(1,2,2,1,-2,-1)
+halfrxn[48]=new Array("GeO2","GeO",2)
+dataset[48]=new Array(1,1,2,1,-2,-1)
+halfrxn[49]=new Array("HgO","Hg",2)
+dataset[49]=new Array(1,1,2,1,-2,-1)
+halfrxn[50]=new Array("NO3-","NO2",1)
+dataset[50]=new Array(1,1,2,1,99,99)
+
+function startit(){
+	clear()
+	totl++
+	document.forms[0].total.value=totl
+	Math.random()>.25?type=0:type=1;
+	document.forms[0].results.value=""
+	first=Math.floor(Math.random()*halfrxn.length)
+	second=first
+	while(second==first)second=Math.floor(Math.random()*halfrxn.length)
+	if(type==1){
+		if(dataset[first][4]==99 || dataset[second][4]==99)startit();
+		}
+	getcmpds(first,second)
+	gethalfs(first,second)
+	reaction=""
+	reaction=thecmpds[1]+" + "+thecmpds[2]+" => "+thecmpds[3]+" + "+thecmpds[4]+soltype[type]
+	getcoeffs(first,second)
+}
+function getcoeffs(first,second){
+	coeffs=new Array(0,dataset[first][0],dataset[second][1],dataset[first][1],dataset[second][0])
+	factor=new Array()
+	lost=halfrxn[first][2]
+	gain=halfrxn[second][2]
+	if(lost==gain)factor[0]=factor[1]=1;
+	else{
+		while(gain%2==0 & lost%2==0){
+			gain=gain/2
+			lost=lost/2
+			}
+		while(gain&3==0 & lost%2==0){
+			gain=gain/3
+			lost=lost/3
+			}
+	}
+	if(lost>gain){
+		if((lost%gain)==0){factor[0]=1;factor[1]=lost/gain}
+		else{factor[0]=gain;factor[1]=lost}
+	}
+	else{
+		if((gain%lost)==0){factor[0]=gain/lost;factor[1]=1}
+		else{factor[0]=gain;factor[1]=lost}
+	}
+	H=factor[0]*dataset[first][2+2*type]-factor[1]*dataset[second][2+2*type];
+	W=factor[0]*dataset[first][3+2*type]-factor[1]*dataset[second][3+2*type];
+	thesteps[6]=""
+	terms=new Array()
+	H>0?terms[0]=H:terms[5]=Math.abs(H);
+	W>0?terms[5]=W:terms[0]=Math.abs(W);
+	for(j=1;j<5;j++){
+		if(j==1 || j==3)terms[j]=factor[0]*coeffs[j];
+		else terms[j]=factor[1]*coeffs[j];
+	}
+	thesteps[6]=terms[1]+thecmpds[1]+" + "+terms[2]+thecmpds[2]+" => "+terms[3]+thecmpds[3]+" + "+terms[4]+thecmpds[4]
+	if(H!=0){
+		H>0?thesteps[6]=H+thecmpds[0]+" + "+thesteps[6]:thesteps[6]+=" + "+Math.abs(H)+thecmpds[0];
+	}
+	if(W!=0){
+		W>0?thesteps[6]+=" + "+W+thecmpds[5]:thesteps[6]=Math.abs(W)+thecmpds[5]+" + "+thesteps[6];
+	}
+	buildquest(terms)			
+}
+function getcmpds(first,second){
+	thecmpds=new Array()
+	thecmpds[0]=acidtype[type]
+	thecmpds[1]=completeformula(halfrxn[first][0])
+	thecmpds[2]=completeformula(halfrxn[second][1])
+	thecmpds[3]=completeformula(halfrxn[first][1])	
+	thecmpds[4]=completeformula(halfrxn[second][0])
+	thecmpds[5]=water
+}
+function gethalfs(first,second){
+	thesteps[0]=thesteps[1]=""
+	dataset[first][0]==1?thesteps[0]+=thecmpds[1]:thesteps[0]+=dataset[first][0]+thecmpds[1];
+	thesteps[0]+=" => "
+	dataset[first][1]==1?thesteps[0]+=thecmpds[3]:thesteps[0]+=dataset[first][1]+thecmpds[3];
+	dataset[second][1]==1?thesteps[1]+=thecmpds[2]:thesteps[1]+=dataset[second][1]+thecmpds[2];
+	thesteps[1]+=" => "
+	dataset[second][0]==1?thesteps[1]+=thecmpds[4]:thesteps[1]+=dataset[second][0]+thecmpds[4];
+	getends(first,second)
+}
+function getends(first,second){
+	front=new Array("","")
+	back=new Array("","")
+	choices=new Array(first,second)
+	if(dataset[first][2+2*type]>0){
+			dataset[first][2+2*type]==1?front[0]=acidtype[type]:front[0]=dataset[first][2+2*type]+acidtype[type];
+			dataset[first][3+2*type]==1?back[0]=water:back[0]=Math.abs(dataset[first][3+2*type])+water;
+			if(dataset[first][3+2*type]==0)back[0]="";
+		}
+		if(dataset[first][2+2*type]<0){
+			dataset[first][2+2*type]==-1?back[0]=acidtype[type]:back[0]=Math.abs(dataset[first][2+2*type])+acidtype[type];
+			Math.abs(dataset[first][3+2*type])==1?front[0]=water:front[0]=Math.abs(dataset[first][3+2*type])+water;
+			if(dataset[first][3+2*type]==0)front[0]="";
+		}
+	if(dataset[second][2+2*type]>0){
+			dataset[second][2+2*type]==1?back[1]=acidtype[type]:back[1]=dataset[second][2+2*type]+acidtype[type];
+			dataset[second][3+2*type]==1?front[1]=water:front[1]=Math.abs(dataset[second][3+2*type])+water;
+			if(dataset[second][3+2*type]==0)front[1]="";
+		}
+		if(dataset[second][2+2*type]<0){
+			dataset[second][2+2*type]==-1?front[1]=acidtype[type]:front[1]=Math.abs(dataset[second][2])+acidtype[type];
+			Math.abs(dataset[second][3+2*type])==1?back[1]=water:back[1]=Math.abs(dataset[second][3])+water;
+			if(dataset[second][3+2*type]==0)back[1]="";
+		}
+	combinethem()
+}	
+function combinethem(){
+	for(j=0;j<2;j++){
+		front[j]!=""?thesteps[j+2]=front[j]+" + "+thesteps[j]:thesteps[j+2]=thesteps[j];
+		back[j]!=""?thesteps[j+2]+=" + "+back[j]:thesteps[j+2]=thesteps[j];
+	}
+	addes()
+}
+function addes(){
+	thesteps[4]=(halfrxn[first][2]+"e<sup>-</sup> + "+thesteps[2])
+	thesteps[5]=(thesteps[3]+" + " +halfrxn[second][2]+"e<sup>-</sup>")
+}
+function buildquest(terms){
+	thequest=""
+		for(var j=1;j<5;j++){
+			if(terms[j]!=0){
+				thequest+=thecell+thecmpds[j];
+				if(j<2 || j==3)thequest+=" + "
+				if(j==2)thequest+=" => "
+			}
+		}
+		if(H!=0){
+			H<0?thequest+=" + "+thecell+thecmpds[0]:thequest=thecell+thecmpds[0]+" + "+thequest
+		}
+			if(W!=0){
+			W>0?thequest+=" + "+thecell+thecmpds[5]:thequest=thecell+thecmpds[5]+" + "+thequest
+		}
+	thequest+=soltype[type]
+	ansset=new Array()
+	for(j=0;j<6;j++){
+		if(terms[j]!=0)ansset[ansset.length]=Math.abs(terms[j])
+	}
+	thequest="<form>"+thequest+"<br>"+thebutton+"</form>"
+	showquest(thequest)
+}				
+function showquest(thequest){
+	if(ie4){
+		qspot.innerHTML=thequest
+		}
+	else{
+		document.qspot.document.open()
+		document.qspot.document.write(thequest)
+		document.qspot.document.close()
+	}
+}
+function showanswer(){
+if(attempts>=3){
+		if(ie4){
+		answerit=reaction+"<br>"+phrases[0]
+		for( var j=0;j<7;j++){
+			if(j==2)answerit+=phrases[1];
+			if(j==4)answerit+=phrases[2];
+			if(j==6)answerit+=phrases[3];
+			answerit+=thesteps[j]+"<br>";
+		}
+		ansspot.innerHTML=answerit
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.write(reaction,"<br>",phrases[0])
+		for( var j=0;j<7;j++){
+			if(j==2)document.ansspot.document.write(phrases[1]);
+			if(j==4)document.ansspot.document.write(phrases[2])
+			if(j==6)document.ansspot.document.write(phrases[3])
+			document.ansspot.document.write(thesteps[j],"<br>");
+		}
+		document.ansspot.document.write(ansset);
+		document.ansspot.document.close()
+	}
+}}
+function answer(form){
+	if(tried==1)alert("You've alerady done this one. Get a new problem.")
+	else{
+	if(tried==2){totl++;document.forms[0].total.value=totl};
+	attempts++
+	right=0
+	for(var j=0;j<ansset.length;j++){
+		if(form.elements[j].value!=ansset[j])right++
+	}
+	if(right==0){
+		corrt++
+		document.forms[0].correct.value=corrt
+		tried=1
+		document.forms[0].results.value="correct"
+	}
+	else{
+		document.forms[0].results.value="incorrect"
+		tried=2
+	}
+}}
+</script>
+</head>
+<body onLoad="cleanse(),setrefs()">
+<h3>Balancing Redox Equations</h3>
+This page will present redox equations in both acidic and basic solutions. It's operation is quite straightforward<ul>
+<li>Pressing New Reaction will cause an equation to be presented in the space below.
+<li>Playing close attention to whether the solution is acidic or basic, determine the lowest set of <b>integers</b> which will provide redox balance and enter them into the cells. Since you may be entering up to 6 coefficients, double check.
+<li>Press "Check Answer" and the results will appear in the table.
+<li>If you miss a problem three times, pressing show answer will cause a complete solution to appear.
+<li>Note:this page has a couple of small bugs still, so you may encounter an occasional error.
+</ul>
+<form>
+<input type="button" value="New Reaction" onClick="startit()"><br>
+<td><input type=button value="Show answer" onClick="showanswer()"></td>
+</tr>
+</table>
+<table border=4>
+<tr><td align=center><b>Results</td>
+<td align=center><b>Total Done</td>
+<td><b>Total Correct</td>
+</tr>
+<tr>
+<td><input type="text" name=results size=12></td>
+<td align=center><input type="text" name=total size=4 ></td>
+<td align=center><input type="text" name=correct size=4 ></td>
+</tr>
+<tr>
+</table>
+</FORM>
+<div id=qspot></div>
+<div id=ansspot></div>
+<div id=refspot></div>
+</body>
+</html>

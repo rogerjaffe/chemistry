@@ -1,0 +1,192 @@
+<html>
+
+<head><title>Converting Densities</title>
+
+<script language="javascript">
+//globals
+thepage="Convert Density"
+corrt=0
+tried=0
+totl=0
+theanswer=0
+//Last Revision 7/8/98
+function clear(){
+	document.forms[0].results.value=""
+	document.forms[0].correct.value=corrt
+	document.forms[0].total.value=totl
+	document.forms[0].second.value=""
+	document.forms[0].fourth.value=""
+	cleanup()
+}
+function cleanup(){
+	document.forms[0].first.value=""
+	document.forms[0].third.value=""
+}
+
+function begin(){
+	cleanup()
+	totl++
+	document.forms[0].total.value=totl
+	document.forms[0].results.value=""
+	tried=0
+	var gml=Math.pow(10,Math.random())
+	gml=Math.round(100*gml)/100
+	var gl=Math.round(1e6*gml)/1000
+	var kgl=gml
+	var mgl=gml + "e+6"
+	var kgml=gml + "e-3"
+	var mgml=Math.round(1e6*gml)/1000
+	display(gml,gl,kgl,mgl,kgml,mgml)
+}
+//Choose known and unknown
+function display(gml,gl,kgl,mgl,kgml,mgml){
+//Choose known
+	var d=Math.random()
+	if (d<.16){
+		a=1
+		document.forms[0].first.value=gml
+		document.forms[0].second.value="g/ml"}
+	else {if (d<.33){
+		a=2
+		document.forms[0].first.value=gl
+		document.forms[0].second.value="g/l"}
+	else {if (d<.50){
+		a=3
+		document.forms[0].first.value=kgl
+		document.forms[0].second.value="kg/l"}
+	else {if (d<.66){
+		a=4
+		document.forms[0].first.value=mgl
+		document.forms[0].second.value="mg/l"}
+	else {if (d<.83){
+		a=5
+		document.forms[0].first.value=kgml
+		document.forms[0].second.value="kg/ml"}	
+	else {
+		a=6
+		document.forms[0].first.value=mgml
+		document.forms[0].second.value="mg/ml"}}}}
+}
+//choose the unknown 
+	for (var i=1;i<10;i++){
+	var d=Math.random()
+	if (d<.16 & a!=1){
+		theanswer=gml
+		document.forms[0].fourth.value="g/ml"}
+	else {if (d<.33 & a!=2){
+		theanswer=gl
+		document.forms[0].fourth.value="g/l"}
+	else {if (d<.50 & a!=3){
+		theanswer=kgl
+		document.forms[0].fourth.value="kg/l"}
+	else {if (d<.66 & a!=4){
+		theanswer=mgl
+		document.forms[0].fourth.value="mg/l"}
+	else {if (d<.83 & a!=5){
+		theanswer=kgml
+		document.forms[0].fourth.value="kg/ml"}	
+	else {if (a!=6){
+		theanswer=mgml
+		document.forms[0].fourth.value="mg/ml"}}}}}}
+}}
+function answer(form){
+if(tried==1){
+		alert("Sorry, you've already submitted this problem! We'll get you a new one!")
+		begin()}
+else{
+	if(tried==2){totl++;document.forms[0].total.value=totl}
+		if (form.third.value>.99*theanswer &
+		form.third.value<1.01*theanswer){
+		document.forms[0].results.value="correct"
+		corrt++
+		document.forms[0].correct.value=corrt
+		tried=1
+}	
+else {
+		document.forms[0].results.value="incorrect"
+		tried=2}
+}}
+function timer(z){
+tt=z
+var b=Math.floor(tt/60)
+var j = (tt % 60)
+if (j<10){c="0"}
+else {c=""}
+howlong=b + ":" + c + j
+running=setTimeout("timer(tt+1)",1000)
+}
+function update(){
+	document.forms[0].total.value=totl
+	document.forms[0].correct.value=corrt
+	document.forms[0].time.value=howlong
+	document.forms[0].page.value=thepage
+	document.forms[0].verify.value=Math.round(10000*Math.random())
+}
+	
+</script>
+</head>
+<body onLoad=clear(),timer(0)>
+<h2>Converting Densities</h2>
+This page is an exercise in converting densities expressed in the metric system.
+It is not really an exercise in density, but rather drill and practice so that
+you can become familiar with using the metric system. To practice:
+<br>
+<ul>
+<li>Press New Problem-a number will appear in the left cell and a density
+dimension (mass/volume) in the second.
+<li>The third cell will be empty and the fourth will have the new density
+measure.
+<li>Enter the value which the density would have when expressed in the units
+shown in the fourth cell and press "Check Answer."
+<li>Results are shown in the second table.
+<li>If your answer is incorrect, you should redo it and recheck your new answer.
+<li> Scientific notation is represented using the "e" notation. Thus,
+2.3*10<sup>3</sup> will be shown by 2.3e3. You may use this in submitting your
+answers.
+</ul>
+<form ACTION = "../cgi-bin/homework/hw_turnin.php" METHOD = "POST">
+<table border=4>
+<tr>
+<td><input type="text" name=first size=8></td>
+<td><input type="text" name=second size=8></td>
+<td><b>equals</td>
+<td><input type="text" name=third size=8></td>
+<td><input type="text" name=fourth size=8></td>
+</tr>
+<tr>
+<td><input type="button" value="New Problem" onClick=begin()></td>
+<td><input type="button" value="Check Answer" onClick=answer(this.form)></td>
+</tr>
+</table>
+<table border=4>
+<tr>
+<td align=center><b>Results</td>
+<td align=center><b>Total Done</td>
+<td><b>Total Correct</td>
+</tr>
+<tr>
+<td><input type="text" name=results size=12></td>
+<td align=center><input name=total type="text" size=4 ></td>
+<td align=center><input name=correct type="text" size=4 ></td>
+</tr>
+</table>
+<input type=text name="page" size=1>
+<input type=text name="verify" size=1>
+<input type=text name="time" size=1><br>
+<INPUT TYPE = "submit" VALUE = "Submit your score" onClick="update()">
+</FORM>
+<br>
+<a href="hwintro.html"><img src="back.gif"></a><br>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+

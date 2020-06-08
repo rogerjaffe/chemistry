@@ -1,0 +1,401 @@
+<html>
+<head><title>First Order-cs</title>
+<style>
+#qspot {position:absolute;left:320;top:350}
+#ansspot {position:absolute;left:320;top:490;height:600}
+#tspot {position:absolute;left:10;top:300}
+#refspot {position:absolute;left:10;top:800;height:100}
+</style>
+<script src="reflist.js"></script>
+<script src="numberconvert.js"></script>
+<script language=javascript>
+//updated 3/7/01 added complete solution
+var ie4 = (document.all) ? true : false;
+refnumber=160
+totl=0
+corrt=0
+tried=0
+pleft=0
+attempts=0
+R=.008314
+A=1e12
+option=0
+theanswer=""
+k1=0
+k2=0
+basetime=0
+time=0
+solution=""
+fillin="<form><input type=text size=8 name=ans>"
+function clearall(){
+	clear()
+	document.forms[0].results.value=""
+	document.forms[0].total.value=""
+	document.forms[0].correct.value=""
+}
+//updated 9/7/98 added show answer
+//th=0.693/k-for first order
+//globals
+attempts=0
+time=0
+dim=""
+theanswer=0
+startmass=0
+left=0
+lost=0
+pleft=0
+plost=0
+cpd=""
+option=0
+which=0
+newone=""
+dim1=0
+dim2=0
+function clear(){
+	document.forms[0].results.value=""
+	document.forms[0].total.value=0
+	document.forms[0].correct.value=0
+}
+function nuclides(sym,halflife,unit){
+	this.sym=sym
+	this.halflife=halflife
+	this.unit=unit
+}
+function reactionset(react,cmpd,kconst){
+	this.react=react
+	this.cmpd=cmpd
+	this.kconst=kconst
+}
+function MakeArray(n){
+	this.length=n
+	for (var i=1;i<=n;i++){
+	this[i]= 0}
+}
+function question(p1,p2,p3,p4,p5){
+	this.p1=p1
+	this.p2=p2
+	this.p3=p3
+	this.p4=p4
+	this.p5=p5
+}
+timeunit=new Array("seconds","minutes","hours","days","years")
+tfactor=new Array(1,60,60,24,365)
+labels=new Array("[]<sub>o</sub>","[]<sub>t</sub>","k","t","[]<sub>t</sub>")
+theimage=new Array("<img src=hlife2.gif>","<img src=hlife3.gif>","<img src=hlife4.gif>")
+thedata=new Array()
+quest=new MakeArray(10)
+quest[1]=new question("If the sample originally contains "," grams of the isotope, how many "," will it take until only "," grams remain?")
+quest[2]=new question("A sample with an unknown mass of isotope is allowed to decay for "," After that time ","grams remain."," What was the mass of the original sample?")
+quest[3]=new question("If the sample originally has "," grams of isotope, what mass will remain after "," ?")
+quest[4]=new question("If the sample originally contains "," grams of the isotope, how much will be consumed in "," ?")
+quest[5]=new question("A sample containing an unknown mass of isotope is allowed to decay for "," During that time ","grams decay. How many grams of isotope were in the original sample?")
+quest[6]=new question("How long will it take, in<b> ","</b>, until only ","% of the original isotope mass remains?")
+quest[7]=new question("How long will it take, in<b> ","</b>, for ","% of the original isotope to decay?")
+quest[8]=new question("What percentage of the original sample will remain after ","?")
+quest[9]=new question("What percentage of the original sample will be consumed in ","?")
+quest[11]=new question("If the sample originally contains "," grams of ",", how many "," will it take until only "," grams remain?")
+quest[12]=new question("An unknown mass of ",", is allowed to react for "," After that time ","grams remain. What was the mass of the original sample?")
+quest[13]=new question("If the sample originally contains "," grams of ",", what mass will remain after "," ?")
+quest[14]=new question("If the sample originally contains "," grams of ",", how much will be consumed in "," ?")
+quest[15]=new question("An unknown mass of ",", is allowed to react for ",". During that time ","grams react. How many grams of compound were in the original sample?")
+quest[16]=new question("How long will it take, in<b> ","</b>, until only ","% of the original  mass remains?")
+quest[17]=new question("How long will it take, in<b> ","</b>, for ","% of the original sample to react?")
+quest[18]=new question("What percentage of the original sample will remain after ","?")
+quest[19]=new question("What percentage of the original sample will be consumed in ","?")
+basequest=new MakeArray(5)
+basequest[1]=new question("The nuclide "," has a half-life of ")
+basequest[2]=new question("The reaction below is first order in "," with a rate constant of ",".")
+introphrase=new Array("Regardless of the actual phrasing all of these problems involve the basic equation<br><img src='hlife1.gif'>.<br> First, if the halflife, rather than the k is provided, calculate k using k=.693/halflife. If the time dimension in the problem is different from the unit in k (or the half-life) be certain to convert it. This problem requires that we know the following:<br>","We rearrange the equation to solve for ")
+needed=new Array()
+needed[1]=needed[11]=new Array(0,1,2,3,0)
+needed[2]=needed[12]=new Array(1,2,3,0,1)
+needed[3]=needed[13]=new Array(0,2,3,1,2)
+needed[4]=needed[14]=new Array(0,2,3,1,2)
+needed[5]=needed[15]=new Array(2,3,4,0,1)
+needed[6]=needed[16]=new Array(0,1,2,3,0)
+needed[7]=needed[17]=new Array(0,1,2,4,0)
+needed[8]=needed[18]=new Array(0,2,3,1,2)
+needed[9]=needed[19]=new Array(0,2,3,1,2)  
+ansphrase=new Array()
+nuke=new MakeArray(30)
+nuke[1]=new nuclides("<sup>238</sup>U",4.5e9,4)
+nuke[2]=new nuclides("<sup>235</sup>U",7.1e8,4)
+nuke[3]=new nuclides("<sup>232</sup>Th",1.4e10,4)
+nuke[4]=new nuclides("<sup>40</sup>K",1.3e9,4)
+nuke[5]=new nuclides("<sup>14</sup>C",5730,4)
+nuke[6]=new nuclides("<sup>239</sup>Pu",24000,4)
+nuke[7]=new nuclides("<sup>137</sup>Cs",30,4)
+nuke[8]=new nuclides("<sup>90</sup>Sr",28.8,4)
+nuke[9]=new nuclides("<sup>8</sup>Li",.841,0)
+nuke[10]=new nuclides("<sup>11</sup>Be",13.6,0)
+nuke[11]=new nuclides("<sup>65</sup>Ge",1.5,1)
+nuke[12]=new nuclides("<sup>13</sup>N",9.96,1)
+nuke[13]=new nuclides("<sup>24</sup>Na",14.96,2)
+nuke[14]=new nuclides("<sup>23</sup>Mg",9.46,1)
+nuke[15]=new nuclides("<sup>25</sup>Al",7.24,0)
+nuke[16]=new nuclides("<sup>45</sup>Ca",165,3)
+nuke[17]=new nuclides("<sup>51</sup>Ti",5.79,1)
+nuke[18]=new nuclides("<sup>59</sup>Fe",45.6,3)
+nuke[19]=new nuclides("<sup>62</sup>Zn",9.13,2)
+nuke[20]=new nuclides("<sup>63</sup>Ga",33,0)
+nuke[21]=new nuclides("<sup>73</sup>Se",7.1,2)
+nuke[22]=new nuclides("<sup>77</sup>Br",57,2)
+nuke[23]=new nuclides("<sup>90</sup>Kr",33,0)
+nuke[24]=new nuclides("<sup>84</sup>Rb",33,3)
+nuke[25]=new nuclides("<sup>89</sup>Zr",4.18,1)
+nuke[26]=new nuclides("<sup>96</sup>Tc",4.35,3)
+nuke[27]=new nuclides("<sup>93</sup>Ru",50,0)
+nuke[28]=new nuclides("<sup>100</sup>Rh",20.8,2)
+nuke[29]=new nuclides("<sup>100</sup>Pd",4.0,3)
+nuke[30]=new nuclides("<sup>106</sup>Ag",24,1)
+reaction=new MakeArray(30)
+reaction[1]=new reactionset("2N<SUB>2</SUB>O<SUB>5</SUB>(g) => 4NO<SUB>2</SUB>(g)  +  O<SUB>2</SUB>(g)","N<SUB>2</SUB>O<SUB>5</SUB>",8.5e-3)
+reaction[2]=new reactionset("CH<SUB>3</SUB>NC(g) => CH<SUB>3</SUB>CN(g)","CH<SUB>3</SUB>NC",5.1e-5)
+reaction[3]=new reactionset("SO<SUB>2</SUB>Cl<SUB>2</SUB>  =>  SO<SUB>2</SUB>(g) +  Cl2(g)","SO<SUB>2</SUB>Cl<SUB>2</SUB>",150)
+reaction[4]=new reactionset("2H<SUB>2</SUB>O<SUB>2</SUB>(aq) + H<SUB>2</SUB>O(l) +  O<SUB>2</SUB>(g)","H<SUB>2</SUB>O<SUB>2</SUB>",6.3e-4)
+reaction[5]=new reactionset("N<SUB>2</SUB>O<SUB>4</SUB>(g) => 2NO<SUB>2</SUB>(g)","N<SUB>2</SUB>O<SUB>4</SUB>",.250)
+reaction[6]=new reactionset("2HCl(g) => H<SUB>2</SUB>(g) + Cl<SUB>2</SUB>(g)","HCl",.084)
+reaction[7]=new reactionset("C<SUB>8</SUB>H<SUB>18</SUB>O<SUB>2</SUB>(g)  =>  2C<SUB>3</SUB>H<SUB>6</SUB>O(g) +  C<SUB>2</SUB>H<SUB>6</SUB>(g)","C<SUB>8</SUB>H<SUB>18</SUB>O<SUB>2</SUB>",1.92e3)
+reaction[8]=new reactionset("C<SUB>2</SUB>H<SUB>4</SUB>O(g) => CH<SUB>4</SUB>(g) + CO(g)","C<SUB>2</SUB>H<SUB>4</SUB>O",2.05e-4)
+reaction[9]=new reactionset("2N<SUB>2</SUB>O<SUB>5</SUB>(g) => 2N<SUB>2</SUB>O<SUB>4</SUB>(g) + O<SUB>2</SUB>(g)","N<SUB>2</SUB>O<SUB>5</SUB>",6.21e-4)
+reaction[10]=new reactionset("C<SUB>12</SUB>H<SUB>22</SUB>O<SUB>11</SUB>(aq) + H<SUB>2</SUB>O  => 2C<SUB>6</SUB>H<SUB>12</SUB>O<SUB>6</SUB> ","C<SUB>12</SUB>H<SUB>22</SUB>O<SUB>11</SUB>",2.3e-5)
+reaction[11]=new reactionset("C<SUB>2</SUB>H<SUB>6</SUB>N<SUB>2</SUB>(g) => N<SUB>2</SUB>(g)  +  C<SUB>2</SUB>H<SUB>6</SUB>(g)","C<SUB>2</SUB>H<SUB>6</SUB>N<SUB>2</SUB>",2.55e-3)
+reaction[12]=new reactionset("COCl<SUB>2</SUB>(g) =>  CO(g) + Cl<SUB>2</SUB>(g)","COCl<SUB>2</SUB>",.045)
+reaction[13]=new reactionset("(CH<SUB>3</SUB>)<SUB>3</SUB>COH + HCl => (CH<SUB>3</SUB>)<SUB>3</SUB>CCl + H<SUB>2</SUB>0","(CH<SUB>3</SUB>)<SUB>3</SUB>COH",12.4)
+reaction[14]=new reactionset("HOF(g) => HF(g) +  1/2O<SUB>2</SUB>(g)","HOF",3.85e-4)
+reaction[15]=new reactionset("4PH<SUB>3</SUB>(g)  => P<SUB>4</SUB>(g) + 6H<SUB>2</SUB>(g)","PH<SUB>3</SUB>",1.83e-2)
+reaction[16]=new reactionset("2NO<SUB>2</SUB>Cl(g) => 2NO<SUB>2</SUB>(g) + Cl<SUB>2</SUB>(g)","NO<SUB>2</SUB>Cl",2.30e-2)
+reaction[17]=new reactionset("NO(g) +  N<SUB>2</SUB>O<SUB>5</SUB>(g) => 3NO<SUB>2</SUB>(g)","N<SUB>2</SUB>O<SUB>5</SUB>",.056)
+reaction[18]=new reactionset("CH<SUB>3</SUB>CH<SUB>2</SUB>Cl(g) => C<SUB>2</SUB>H<SUB>4</SUB>(g) + HCl(g)","CH<SUB>3</SUB>CH<SUB>2</SUB>Cl",3.55e-3)
+reaction[19]=new reactionset("C<SUB>2</SUB>H<SUB>4</SUB>O(g) => CH<SUB>4</SUB>(g) + CO(g)","C<SUB>2</SUB>H<SUB>4</SUB>O",2.05e-4)
+//begin program
+function clear(){
+	document.forms[0].theans.value=""
+	document.forms[0].results.value=""
+	attempts=0
+	tried=0
+	if(ie4)ansspot.innerHTML="";
+	else document.ansspot.document.clear();
+}
+function startit(){
+	clear()
+	document.forms[0].results.value=""
+	getmasses()
+	if(Math.random()>10){radioactive()}
+	else{chemical()}
+}
+function radioactive(){
+	rxn=""
+	g=Math.ceil(30*Math.random())
+	atom=nuke[g].sym
+	half=number((nuke[g].halflife),3,1)
+	if(half<10 & half>.1)shalf=number(half,3,3);
+	else shalf=number(half,3,2)
+	dim1=nuke[g].unit
+	whichquest=Math.ceil(9*Math.random())
+	ask=basequest[1].p1+atom+basequest[1].p2+shalf+timeunit[dim1]+"."
+	constant=calck(half)
+	time=-Math.log(left/startmass)/constant
+	dim2=dim1;
+	thedata[2]=constant
+	thedata[3]=time
+	if(time>.01 & time<100)stime=number(time,3,3);
+	else stime=number(time,3,2);
+	tunit=timeunit[dim2]
+	if(whichquest==1){finish=quest[1].p1+startmass+quest[1].p2+tunit+quest[1].p3+left+quest[1].p4;theanswer=time}
+	if(whichquest==2){finish=quest[2].p1+stime+tunit+quest[2].p2+left+quest[2].p3+quest[2].p4;theanswer=startmass}
+	if(whichquest==3){finish=quest[3].p1+startmass+quest[3].p2+stime+tunit+quest[3].p3;theanswer=left}
+	if(whichquest==4){finish=quest[4].p1+startmass+quest[4].p2+stime+tunit+quest[4].p3;theanswer=lost}
+	if(whichquest==5){finish=quest[5].p1+stime+tunit+quest[5].p2+lost+quest[5].p3;theanswer=startmass}
+	if(whichquest==6){finish=quest[6].p1+tunit+quest[6].p2+pleft+quest[6].p3;theanswer=time}
+	if(whichquest==7){finish=quest[7].p1+tunit+quest[7].p2+plost+quest[7].p3;theanswer=time}
+	if(whichquest==8){finish=quest[8].p1+stime + tunit+quest[8].p2;theanswer=pleft}
+	if(whichquest==9){finish=quest[9].p1+stime+tunit+quest[9].p2;theanswer=plost}
+	buildquest(ask,finish,rxn)
+	buildanswer(whichquest)
+}
+function chemical(){
+	which=Math.ceil(19*Math.random())
+	constant=reaction[which].kconst
+	half=calck(constant)
+	basetime=-Math.log(left/startmass)/constant
+	dim1=0
+	if(Math.random()>.5){
+		time=converttime(basetime,0,1)
+		dim2=1
+	}
+	else {
+		dim2=dim1;
+		time=basetime;
+		}
+	basetime=number(basetime,3,3)
+	time=number(time,3,3)
+	thedata[2]=constant
+	thedata[3]=basetime
+	cpd=reaction[which].cmpd
+	rxn=reaction[which].react
+	ask=basequest[2].p1+cpd+basequest[2].p2+reaction[which].kconst+"sec<sup>-1</sup> "+basequest[2].p3+"<br>"
+	whichquest=10+Math.ceil(9*Math.random())
+	tunit=timeunit[dim2]
+	if(whichquest==11){finish=quest[11].p1+startmass+quest[11].p2+cpd+quest[11].p3+tunit+quest[11].p4+left+quest[11].p5;theanswer=time}
+	if(whichquest==12){finish=quest[12].p1+cpd+quest[12].p2+time+tunit+quest[12].p3+left+quest[12].p4;theanswer=startmass}
+	if(whichquest==13){finish=quest[13].p1+startmass+quest[13].p2+cpd+quest[13].p3+time+tunit+quest[13].p4;theanswer=left}
+	if(whichquest==14){finish=quest[14].p1+startmass+quest[14].p2+cpd+quest[14].p3+time+tunit+quest[14].p4;theanswer=lost}
+	if(whichquest==15){finish=quest[15].p1+cpd+quest[15].p2+time+tunit+quest[15].p3+lost+quest[15].p4
+theanswer=startmass}
+	if(whichquest==16){finish=quest[16].p1+tunit+quest[16].p2+pleft+quest[16].p3;theanswer=time}
+	if(whichquest==17){finish=quest[17].p1+tunit+quest[17].p2+plost+quest[17].p3;theanswer=time}
+	if(whichquest==18){finish=quest[18].p1+time + tunit+quest[18].p2;theanswer=pleft}
+	if(whichquest==19){finish=quest[19].p1+time+tunit+quest[19].p2;theanswer=plost}
+	finish="<br>"+finish
+	buildquest(ask,finish,rxn)
+	buildanswer(whichquest)
+}
+function getmasses(){
+	startmass=0
+	while(startmass<1){startmass=Math.ceil(100*Math.random())/10}
+	left=startmass
+	while(left>.5*startmass || left<.1*startmass)left=startmass*Math.random();
+	startmass=number(startmass,3,3)
+	left=number(left,3,3)
+	lost=number((startmass-left),3,3)
+	pleft=number((left/startmass)*100,3,3)
+	plost=number((100-pleft),3,3)
+	thedata[0]=startmass
+	thedata[1]=left
+	thedata[4]=lost
+	thedata[5]=pleft
+	thedata[6]=plost
+}
+function calck(h){
+k=.693/(1*h)
+return number(k,3,3)
+}
+function converttime(time,a,b){
+	if(a>b){
+		for(j=a;j>b;j--)time=time*tfactor[j]
+	}
+	else{
+	for(j=a+1;j<=b;j++)time=time/tfactor[j]
+	}
+	return time
+}
+function buildquest(ask,finish,rxn){
+	thequest=ask+rxn+finish
+	showquest(thequest)
+}
+function showquest(thequest){
+	if(ie4){
+		qspot.innerHTML=thequest
+		}
+	else{
+		document.qspot.document.open()
+		document.qspot.document.write(thequest);
+		document.qspot.document.close()
+	}
+}
+function buildanswer(whichquest){
+	insert=""
+	if((whichquest>5 & whichquest<10)||whichquest>15)insert=getinsert(whichquest);
+	solution=introphrase[0]+insert
+	for(j=0;j<3;j++)solution+=("<br>"+labels[needed[whichquest][j]]+"="+thedata[needed[whichquest][j]]);
+	solution+="<br>"+introphrase[1]+labels[needed[whichquest][3]]+"<br>"+theimage[needed[whichquest][4]]+"<br>"+getfinish(whichquest)
+}
+function getinsert(){
+	insert="Since this problem deals with %, the []<sub>o</sub> is set as 100."
+	thedata[0]=100
+	thedata[1]=pleft
+	return insert
+} 
+function getfinish(whichquest){
+	conclude=""
+	if(whichquest==1|| whichquest==11 || whichquest==6 || whichquest==16){
+		conclude="time=-ln("+thedata[1]+"/"+thedata[0]+")*(1/*"+thedata[2]+")="+number(thedata[3],3,2)
+	}
+	if(whichquest==2||whichquest==12){
+		conclude=labels[0]+"="+thedata[1]+"/e<sup>-"+number(thedata[2],3,2)+"*"+number(thedata[3],3,2)+"</sup>="+thedata[0]
+	}
+	if(whichquest==3|| whichquest==13||whichquest==18 ||whichquest==8){
+		conclude=labels[1]+"="+thedata[0]+"*e<sup>-"+number(thedata[2],3,2)+"*"+number(thedata[3],3,2)+"</sup>="
+		if(whichquest==3 || whichquest==13)conclude+=+thedata[1];
+		else conclude+=thedata[5]
+	}
+	if(whichquest==4|| whichquest==14|| whichquest==9 || whichquest==19){
+		conclude="For this problem, we can use the relation []<SUB>r</SUB>=[]<SUB>o</SUB>*(1-e<SUP>-kt</SUP>)<br>"
+		conclude+=labels[4]+"="+thedata[0]+"*(1-e<sup>-"+number(thedata[2],3,2)+"*"+number(thedata[3],3,2)+"</sup>)="
+		if(whichquest==4 || whichquest==14)conclude+=+thedata[4];
+		else conclude+=thedata[6]
+	}
+	if(whichquest==5|| whichquest==15){
+		conclude="For this problem, we can use the relation []<SUB>o</SUB>=[]<SUB>r</SUB>/(1-e<SUP>-kt</SUP>)<br>"
+		conclude+=labels[0]+"="+thedata[4]+"/(1-e<sup>-"+number(thedata[2],3,2)+"*"+number(thedata[3],3,2)+"</sup>)="+thedata[0]
+	}
+	if(whichquest==7|| whichquest==17){
+		conclude="Since the percent remaining equals 100-%reacted<br>"
+		conclude+="time=-ln("+thedata[1]+"/"+thedata[0]+")*(1/*"+thedata[2]+"="+number(thedata[3],3,2)
+	}
+	if(whichquest==1|| whichquest==11 || whichquest==6 || whichquest==16|| whichquest==7 || whichquest==17){
+		if(basetime!=time)conclude+="<br>Then convert the time to the desired units:"+time;
+	}
+	return conclude
+}
+		
+function showanswer(){
+if(attempts>=3){
+	if(ie4){
+		ansspot.innerHTML=solution
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.write(solution)
+		document.ansspot.document.close()
+	}
+	}
+}
+function answer(ans){
+	attempts++
+	document.forms[0].total.value++
+	if(ans>.95*theanswer & ans<1.05*theanswer){
+		document.forms[0].results.value="correct"
+		document.forms[0].correct.value++
+		}
+	else{
+		document.forms[0].results.value="incorrect"
+		attempts++
+	}
+}
+</script>
+</head>
+<body onLoad=clear(),setrefs()>
+<h2>First Order processes</h2>
+This page will present questions based upon first order processes, either radioactive decays or chemical reactions. When you press "New Problem", a question will apear to the right of the table. Obtain and submit the required answer. Results appear in the table. Use the "e" notation for presenting very large or small numbers. All masses are in <b>grams</b>, but the time dimension will vary.<br>
+<h4>Note:This is nearly complete and should perform and present all of the problems, including time conversions. Some of the numbers may still be presented in awkward formats.</h4>
+<ul>
+<li>Read the question carefully. Sometimes you are asked about % or about the amount which has been consumed. In such cases, recall that the amount reacted,[]<sub><b>r</b></sub>=[]<sub>o</sub>-[]<sub>t</sub>
+<li>Be very careful about the time dimension as it changes occasionally.
+<li>Percentage problems can be simplified by assuming a initial sample size of 100. The percentage given then becomes either []<sub>r</sub> or []<sub>t</sub>, depending on the problem. 
+<li>If you miss a problem three times, pressing "Show Answer" will cause a complete solution to appear.
+<li>The solution is presented in what is viewed as the most error proof approach. It is certainly not the only method.
+</ul>
+<form>
+<input type="button" value="New Problem" onClick=startit()><br>
+<input type=text size=8 name=theans>
+<input type="button" value="Check Answer" onClick=answer(this.form.theans.value)><br>
+<td><input type="button" value="Show Answer" onClick=showanswer()><br>
+<table border=4>
+<tr><td align=center><b>Results</td>
+<td align=center><b>Total Done</td>
+<td><b>Total Correct</td>
+</tr>
+<tr>
+<td><input type="text" name=results size=12></td>
+<td align=center><input type="text" name=total size=4 ></td>
+<td align=center><input type="text" name=correct size=4 ></td>
+</tr>
+</table>
+</form>
+<div id=qspot></div>
+<div id=ansspot></div>
+<div id=refspot></div>
+</body>
+</html>

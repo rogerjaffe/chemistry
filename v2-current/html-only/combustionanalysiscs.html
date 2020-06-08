@@ -1,0 +1,352 @@
+<html>
+<head>
+<title>Combustion Analysis-cs</title>
+<style>
+#qspot {position:absolute;left:330;top:250}
+#ansspot {position:absolute;left:330;top:430;height:500}
+#tspot {position:absolute;left:10;top:300}
+#refspot {position:absolute;left:10;top:750;height:200}
+</style>
+<script src=reflist.js></script>
+<script src="numberconvert.js"></script>
+<script language="javascript">
+//updated 7/19/01-added complete solution
+//tested w/ N4.7 and IE5
+//globals
+refnumber=148
+cell="<input type=text size=5 value=''>"
+thebutton="<input type=button onClick='answer(this.form)' value='Check Answer'></form>"
+var ie4 = (document.all) ? true : false;
+corrt=0
+attempts=0
+tried=0
+totl=0
+elems=0
+xx=0
+themass=0
+percents=0
+formula=""
+gfw=0
+catsub=""
+ansub=""
+thequest=thesolution=""
+theanswer=closephrase=""
+qphrase=new Array()
+qphrase[0]=new Array("A sample of a compound containing "," is subjected to combustion analysis to determine the quantities of C and H present.")
+nextphrase=new Array(" Using a second sample, the "," is analyzed by converting it to"," The results of the analysis are shown below.")
+lastcmpd=new Array("","CO<sub>2</sub>","H<sub>2</sub>O"," NO<SUB>2</SUB>",""," Ca<SUB>3</SUB>(PO<SUB>4</SUB>)<SUB>2</SUB>","BaSO<SUB>4</SUB>"," AgCl"," AgBr"," CuI")
+factors=new Array(1,1,1,.304,1,.1997,.137,.247,.425,.666)
+ansphrase="The solution to this problem involves working backward from the data for each analysis toward the initial compound. The solution will present each step in this process. Note that though it is true that for compounds with only three elements, the third value can be obtained by difference, the presentation here will determine such values from the analytical data, when possible. For the analysis of C and H, the masses of CO<SUB>2</SUB> and H<SUB>2</SUB>0 are first converted into the masses of C and H, respectively, and then to percents:<br>"
+conclude=new Array("The next element is determined similarly, using the second sample.<br>","The final element is obtained by difference.<br>")
+function repelement(name,sym,an,mass){
+	this.name=name
+	this.sym=sym
+	this.an=an
+	this.mass=mass
+	}
+reps=new Array()
+reps[0]=""
+reps[1]=new repelement("hydrogen","H",1,1.0079)
+reps[2]=new repelement("carbon","C",6,12.011)
+reps[3]=new repelement("nitrogen","N",7,14.0067)
+reps[4]=new repelement("oxygen","O",8,15.9994)
+reps[5]=new repelement("phosphorous","P",15,30.97376)
+reps[6]=new repelement("sulfur","S",16,32.066,32)
+reps[7]=new repelement("chlorine","Cl",17,35.453)
+reps[8]=new repelement("bromine","Br",35,79.904)
+reps[9]=new repelement("iodine","I",53,126.9045)
+atoms=new Array(" C"," H"," N"," O"," P"," S"," Cl"," Br"," I")
+multipliers=new Array("12/44","2/18","14/46",1,"61.94/310.2","32.06/233.6","35.45/143.35","79.91/187.8","126.9/190.4")
+equations=""
+solved=new Array()
+function buildeqns(){
+	equations=new Array()
+	for(var j=0;j<atoms.length;j++)equations[j]="Mass of"+atoms[j]+"=Mass of "+lastcmpd[j+1]+"*"+multipliers[j];
+	equations[3]="Oxygen is obtained by difference:"
+}
+function cleanse(){
+	clear()
+	document.forms[0].total.value=0
+	document.forms[0].correct.value=0
+}		
+function clear(){
+	clearansspot()
+	document.forms[0].results.value=""
+	attempts=0
+	tried=0
+}
+function startit(){
+	buildeqns()
+	tried=0
+	totl++
+	document.forms[0].total.value=totl
+	clear()
+	buildcmpd()
+}
+function buildcmpd(){
+	elems=new Array()
+	themass=new Array()
+	percents=new Array()
+	c=2+Math.floor(10*Math.random())
+	h=2*c+2
+	h=h-removeh(h/2)
+	elems[0]=new Array(reps[2].sym,reps[2].mass,c,1)
+	elems[1]=new Array(reps[1].sym,reps[1].mass,h,2)
+	option=Math.ceil(7*Math.random())
+	if(option==1){
+		elems[elems.length]=new Array(reps[5].sym,reps[5].mass,1,5)
+		h++
+		}
+	if(option==2 || option==3){
+		n=Math.ceil(2*Math.random())
+		elems[elems.length]=new Array(reps[3].sym,reps[3].mass,n,3)
+		h++
+		}
+	if(option==2 || option==4 ||option==6){
+		o=Math.ceil(2*Math.random())
+		elems[elems.length]=new Array(reps[4].sym,reps[4].mass,o,4)
+		}
+	if(option==2 || option==5){
+		s=Math.ceil(2*Math.random())
+		elems[elems.length]=new Array(reps[6].sym,reps[6].mass,s,6)
+		}
+	if(option>4){
+		hal=Math.ceil(2*Math.random())
+		whichhal=7+Math.floor(3*Math.random())
+		elems[elems.length]=new Array(reps[whichhal].sym,reps[whichhal].mass,hal,whichhal)
+		h--
+		}
+	if(elems.length>4){totl--;buildcmpd()}
+	else{
+	formula="";
+	gfw=0
+	for(j=0;j<elems.length;j++){
+		themass[j]=(elems[j][1]*elems[j][2])
+		formula=formula+elems[j][0];
+		gfw+=themass[j]
+		if(elems[j][2]>1)formula=formula+("<sub>"+elems[j][2]+"</sub>")
+		}
+	gfw=number(gfw,4,3)
+	for(var j=0;j<themass.length;j++)percents[j]=number(100*themass[j]/gfw,3,3);
+	burnit()
+	}
+}	
+function removeh(x){
+	drop=Math.floor(Math.random()*x)
+	if(drop%2!=0)drop+=1
+	return drop
+}
+function getsubs(x,y){
+if(x>y){
+	if(x%y==0){
+		catsub=1
+		ansub=Math.ceil(x/y)}
+	else{
+	 	catsub=y
+		ansub=x
+	    }
+	}
+if(y>x){
+	if(y%x==0){
+		catsub=Math.ceil(y/x)
+		ansub=1}
+	else{
+	 	catsub=y
+		ansub=x
+	    }
+	}
+}
+function burnit(){
+	sample=new Array()
+	sample[0]=0
+	while(sample[0]<2)sample[0]=number(5*Math.random(),4,3)
+	comass=number((percents[0]*sample[0]/100*3.667),4,3)
+	hmass=number((percents[1]*sample[0]/100*9),4,3)
+	line1="<br><b>Sample 1 Mass:</b>"+sample[0]+"=><b>CO<SUB>2</SUB> Mass:</b>"+comass+";<b>H<SUB>2</SUB>O Mass:</b>"+hmass
+	masses=new Array(comass,hmass)
+	sample[1]=0
+	while(sample[1]<2)sample[1]=number(5*Math.random(),4,3)
+	lastmass=""
+	closephrase=""
+	exmass=0
+	if(elems.length==3){
+		if(elems[2][3]!=4){closephrase=nextphrase[0]+elems[2][0]+nextphrase[1]+lastcmpd[elems[2][3]];
+		exmass=number((percents[2]*sample[1]/(100*factors[elems[2][3]])),4,3)
+		xx=elems[2][3]
+		}}
+	if(elems.length==4){
+		if(elems[2][3]==4){
+			closephrase=nextphrase[0]+elems[3][0]+nextphrase[1]+lastcmpd[elems[3][3]]
+			exmass=number((percents[3]*sample[1]/(100*factors[elems[3][3]])),4,3)
+			xx=elems[3][3]
+			}
+		else{
+			closephrase=nextphrase[0]+elems[2][0]+nextphrase[1]+lastcmpd[elems[2][3]]
+			exmass=number((percents[2]*sample[1]/(100*factors[elems[2][3]])),4,3)
+			xx=elems[2][3]
+			}
+		}
+	line2=""
+	if(exmass>0){
+		line2="<br><b>Sample 2 Mass:</b>"+sample[1]+"=><b>"+lastcmpd[xx]+":</b>"+exmass
+		masses[masses.length]=exmass
+		}
+	closephrase+=nextphrase[2]+line1+line2
+	buildquest()
+	buildanswer(sample,masses)
+}	
+function buildquest(){
+	inserts=elems[0][0]
+	for(var j=1;j<elems.length;j++){
+		j<(elems.length-1)?inserts+=","+elems[j][0]:inserts+=" and "+elems[j][0];
+	}
+	thequest=qphrase[0][0]+inserts+qphrase[0][1]+closephrase
+	showquest()
+}
+function buildanswer(sample,masses){
+	themass=new Array()
+	percents=new Array()
+	themass[0]=number(masses[0]*12/44,4,3)
+	themass[1]=number(masses[1]/9,4,3)
+	percents[0]=number(themass[0]/sample[0]*100,4,3)
+	percents[1]=number(themass[1]/sample[0]*100,4,3)
+	if(masses.length==3){
+		themass[2]=number(masses[2]*factors[xx],4,3)
+		tpercent=number(themass[2]/sample[1]*100,4,3)
+	}	
+	if(elems.length==3){
+		if(masses.length==2)percents[2]=number(100-(1*percents[0]+1*percents[1]),4,3);
+		else percents[2]=tpercent;
+		}
+	if(elems.length==4){
+		if(elems[2][3]==4){percents[3]=tpercent;percents[2]=number(100-(1*percents[0]+1*percents[1]+1*percents[3]),4,3)}
+		else {percents[2]=tpercent;percents[3]=number(100-(1*percents[0]+1*percents[1]+1*percents[2]),4,3)} 
+	}
+	getsolved(masses,themass,percents)
+	thesolution=ansphrase
+	for(var j=0;j<2;j++)if(j<2)thesolution+=equations[elems[j][3]-1]+"<br>"+solved[j]+"<br>";
+	for(var j=2;j<elems.length;j++){
+		if(j==2){
+		elems[2][3]==4?thesolution+=equations[3]+"<br>"+solved[2]+"<br>":thesolution+=conclude[0]+equations[elems[j][3]-1]+"<br>"+solved[j]+"<br>";
+		}
+		if(j==3){
+		if(elems[2][3]==4)thesolution+=conclude[0]+equations[elems[j][3]-1]+"<br>"+solved[3];
+		else{
+		elems[3][3]==4?thesolution+=equations[3]+"<br>"+solved[3]+"<br>":thesolution+=conclude[1]+"%"+elems[3][0]+"="+solved[j]+"<br>";
+		}}
+	}
+	showanswer(thesolution)
+}
+function getsolved(masses,themass,percents){
+	solved=new Array()
+	solved[0]=masses[0]+"*"+multipliers[0]+"="+themass[0]+"<br>%"+atoms[0]+"="+themass[0]+"/"+sample[0]+"*100=<b>"+percents[0]+"%</b>"
+	solved[1]=masses[1]+"*"+multipliers[1]+"="+themass[1]+"<br>%"+atoms[1]+"="+themass[1]+"/"+sample[0]+"*100=<b>"+percents[1]+"%</b>"
+	if(elems.length==3){
+		if(masses.length==2)solved[2]=100+"-("+percents[0]+"+"+percents[1]+")=<b>"+percents[2]+"%</b>"
+		else solved[2]=masses[2]+"*"+multipliers[xx-1]+"="+themass[2]+"<br>%"+atoms[xx-1]+"="+themass[2]+"/"+sample[1]+"*100=<b>"+percents[2]+"%</b>"
+		}
+	if(elems.length==4){
+		if(elems[2][3]==4){solved[2]=100+"-("+percents[0]+"+"+percents[1]+"+"+percents[3]+")=<b>"+percents[2]+"</b>%";
+		solved[3]=masses[2]+"*"+multipliers[xx-1]+"="+themass[2]+"<br>%"+atoms[xx-1]+"="+themass[2]+"/"+sample[1]+"*100=<b>"+percents[3]+"%</b>"
+		}
+		else {solved[3]=100+"-("+percents[0]+"+"+percents[1]+"+"+percents[2]+")=<b>"+percents[3]+"</b>%";
+		solved[2]=masses[2]+"*"+multipliers[xx-1]+"="+themass[2]+"<br>%"+atoms[xx-1]+"="+themass[2]+"/"+sample[1]+"*100=<b>"+percents[2]+"%</b>"
+		} 
+	}
+}	
+function showquest(){
+	thequest+="<form>";
+	for(j=0;j<elems.length;j++)thequest+=elems[j][0]+cell;
+	thequest+=thebutton;
+	if(ie4){
+		qspot.innerHTML=thequest
+		}
+	else{
+		document.qspot.document.open()
+		document.qspot.document.write(thequest)
+		document.qspot.document.close()
+	}
+}
+function answer(form){
+	if(tried==1)alert("You've done this one. Get a new problem!");
+	else{
+	if(tried==2){totl++;document.forms[0].total.value=totl}
+	ok=0	
+	attempts++
+	for(j=0;j<percents.length;j++){
+		if(form.elements[j].value<.95*percents[j]|| form.elements[j].value>1.05*percents[j])ok++;
+	}
+	if(ok==0){
+		tried=1
+		document.forms[0].results.value="correct"
+		corrt++
+		document.forms[0].correct.value=corrt
+	}
+	else{
+		document.forms[0].results.value="incorrect"
+		tried=2
+	}
+}}
+function showanswer(){
+if(attempts>=3){
+	if(ie4){
+		ansspot.innerHTML=thesolution
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.write(thesolution)
+		document.ansspot.document.close()
+		}
+	}
+}
+function clearansspot(){
+	if(ie4){
+		ansspot.innerHTML=""
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.clear()
+		document.ansspot.document.close()
+	}
+}
+	
+</script>
+</head>
+<body onLoad="cleanse(),setrefs()">
+<h2>Combustion Analysis</h2>
+This page presents analytical data from which you are to determine the mass % composition for a compound of up to four elements.
+<ul>
+<li>To begin-press "New Compound" and a description of a compound and its analytical data will be presented.
+<li>Enter the mass %s into the cells "Check Answer." You should determine the values to 3 signifcant figures.
+<li>The results on the problem and a running total will appear in the table.
+<li>You shouldn't attempt this page without having mastered the more fundamental areas of working with chemical compounds.
+<li>If you miss a problem three times, pressing the "Show Answer" button will cause a complete solution to appear.
+</ul>
+<form>
+<table>
+<tr><td><input type=button value="New Compound" onClick="startit()"><td></tr>
+</tr>
+<tr>
+<td><input type=button value="Show answer" onClick="showanswer()"></td>
+</tr>
+</table>
+<table border=4>
+<tr><td align=center><b>Results</td>
+<td align=center><b>Total Done</td>
+<td><b>Total Correct</td>
+</tr>
+<tr>
+<td><input type="text" name=results size=12></td>
+<td align=center><input type="text" name=total size=4 ></td>
+<td align=center><input type="text" name=correct size=4 ></td>
+</tr>
+<tr>
+</table>
+</form>
+<div id=qspot></div>
+<div id=ansspot></div>
+<div id=refspot></div>
+<br>
+</body>
+</html>
+	

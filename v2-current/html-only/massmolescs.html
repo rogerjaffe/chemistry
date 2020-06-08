@@ -1,0 +1,174 @@
+<html>
+<head><title>Mass and moles</title>
+<style>
+#qspot {position:absolute;left:320;top:300}
+#ansspot {position:absolute;left:400;top:260;height:240}
+#tspot {position:absolute;left:10;top:300}
+#refspot {position:absolute;left:10;top:600}
+</style>
+<script src="reflist.js"></script>
+<script src="numberconvert.js"></script>
+<script language="javascript">
+var ie4 = (document.all) ? true : false;
+refnumber=144
+//updated 9/7/98 added show answer
+//globals
+attempts=corrt=totl=tried=0
+thesolution=missing=0
+given=0
+alldata=0
+symbols=new Array("gfw","mass","moles")
+equations=new Array()
+equations[0]=symbols[0]+"="+symbols[1]+"/"+symbols[2]
+equations[1]=symbols[1]+"="+symbols[2]+"*"+symbols[0]
+equations[2]=symbols[2]+"="+symbols[1]+"/"+symbols[0]
+ansphrase=new Array("To calculate the gfw, you divide the mass by the number of moles<br>","To calculate the mass, you take the product of the number of moles and thegfw<br>","To calculate the gfw, you divide the mass by the number of gfw<br>")
+//This function clears all values in both tables on loading the page
+function cleanse(){
+	clear()
+	document.forms[0].results.value=""
+	document.forms[0].total.value=0
+	document.forms[0].correct.value=0
+}
+//This function clears the first table
+function clear(){
+	document.forms[0].first.value=""
+	document.forms[0].second.value=""
+	document.forms[0].third.value=""
+	attempts=0
+	tried=0
+	clearansspot()
+}
+
+//This is the function started when "New Problem" is pushed	
+//This function first clears all old values using clear()
+//The three variables(mass,moles and gfw) are then determined, using Math.random() to 
+//generate gfw and mass and a ratio to generate moles. 
+function startit(){
+	clear()
+	totl++
+	document.forms[0].total.value=totl
+	alldata=new Array()
+	for(var j=0;j<3;j++)alldata[j]=0;	
+	while(alldata[0]<24)alldata[0]=400*Math.random();
+	while(alldata[1]<.01*alldata[0])alldata[1]=400*Math.random();
+	alldata[2]=alldata[1]/alldata[0]
+//The three variables are then converted to three significant figures.
+	for(var j=0;j<3;j++)alldata[j]=number(alldata[j],3,3)
+	setproblem()
+}
+//This function partially fills the table, setting the problem
+function setproblem(){
+	missing=Math.floor(3*Math.random())
+	for(var j=0;j<3;j++){
+		if(j!=missing)document.forms[0].elements[j].value=alldata[j];
+		}
+	document.forms[0].elements[missing].select()
+	document.forms[0].elements[missing].focus()
+	buildanswer()
+}
+function buildanswer(){
+	getsolved()
+	thesolution=ansphrase[missing]+equations[missing]+"<br>"+solved[missing]
+	showanswer()
+}
+function getsolved(){
+	solved=new Array()
+	solved[0]=alldata[1]+"/"+alldata[2]+"="+alldata[0]+"<b>g/mole</b>"
+	solved[1]=alldata[2]+"*"+alldata[0]+"="+alldata[1]+"<b>g</b>"
+	solved[2]=alldata[1]+"/"+alldata[0]+"="+alldata[2]+"<b>moles</b>"
+}
+// This is the "Check Answer Function
+//This function checks for correctness by simply seeing if a/b is within 1%
+//of c. The results are then posted to the second table. If you change the
+//relationship between a and b, above, make sure you change this also.
+function answer(form){
+	if(tried==1)alert("You've done this one. Get a new problem!")
+	else{
+	if(tried==2){totl++;document.forms[0].total.value=totl}
+	attempts++
+	if (form.elements[missing].value<1.05*alldata[missing] & form.elements[missing].value>.95*alldata[missing]){	
+		document.forms[0].results.value="correct"
+		corrt++
+		document.forms[0].correct.value=corrt
+		tried=1
+	}
+	else {
+		document.forms[0].results.value="incorrect"
+		tried=2
+		document.forms[0].elements[missing].select()
+		document.forms[0].elements[missing].focus()
+	}
+	}
+}
+function showanswer(){
+if(attempts>=3){
+	if(ie4){
+		ansspot.innerHTML=thesolution
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.write(thesolution)
+		document.ansspot.document.close()
+	}
+	}
+}
+function clearansspot(){
+	if(ie4){
+		ansspot.innerHTML=""
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.clear()
+		document.ansspot.document.close()
+	}
+}
+</script>
+</head>
+<body onLoad="cleanse(),setrefs()">
+<h2>Mass, moles and gfw</h2>
+This page permits practice with the relationships between mass, moles and the GFW.
+When you press "New Problem", values will appear in two of the windows. Enter the
+missing value and press "Check Answer". The results will appear in the second
+table.
+<h3>Hints</h3>
+<ul>
+<li>Redo any problems you get incorrect and resubmit the new results.
+<li>You may press "New Problem" rather than answer the one displayed.
+<li>If you miss a problem three times, pressing "Show Answer" will display the solution to the right of the table.
+</ul>
+<form>
+<table border=4>
+<tr>
+<TD ALIGN=CENTER><b>GFW(g/mole)</td>
+<td align=center><b>Mass(g)</td>
+<td align=center><b>Moles</td>
+</tr>
+<tr>
+<td align=center><input type="text" name="first" size=8 ></td>
+<td align=center><input type="text" name="second" size=8 ></td>
+<td align=center><input type="text" name="third" size=8 ></td>
+</tr>
+<tr>
+<td><input type="button" value="New Problem" onClick=startit()></td>
+<td><input type="button" value="Check Answer" onClick=answer(this.form)></td>
+<td><input type="button" value="Show Answer" onClick=showanswer()></td>
+</tr>
+</table>
+<table border=4>
+<tr><td align=center><b>Results</td>
+<td align=center><b>Total Done</td>
+<td><b>Total Correct</td>
+</tr>
+<tr>
+<td><input type="text" name="results" size=12></td>
+<td align=center><input type="text" name="total" size=4 ></td>
+<td align=center><input type="text" name="correct" size=4 ></td>
+</tr>
+</table>
+</form>
+<div id=qspot></div>
+<div id=ansspot></div>
+<div id=refspot></div>
+</body>
+</html>

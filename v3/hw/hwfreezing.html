@@ -1,0 +1,239 @@
+<html>
+<head><title>Freezing and Boiling Points of Aqueous Solutions-Homework</title>
+<script language=javascript>
+thepage="Freezing and Boiling Points of Aqueous Solutions(16)"
+howlong=""
+totl=0
+corrt=0
+tried=0
+which=""
+tried=0
+theanswer=""
+ans = new MakeArray()
+function clear(){
+	document.forms[0].first.value=""
+	document.forms[0].second.value=""
+	document.forms[0].third.value=""
+	document.forms[0].fourth.value=""
+	document.forms[0].fifth.value=""
+	document.forms[0].results.value=""
+	theanswer=0
+	document.forms[0].total.value=0
+	document.forms[0].correct.value=0
+	document.forms[0].time.value=""
+}
+function empty(){
+	document.forms[0].first.value=""
+	document.forms[0].second.value=""
+	document.forms[0].third.value=""
+	document.forms[0].fourth.value=""
+	document.forms[0].fifth.value=""
+}
+
+//This function creates an array
+function MakeArray(){
+	n=25
+	this.length=n
+	for (i=1;i<=n;i++){
+	this[i]= 0}
+}
+//This function creates array elements with four properties, formula,gfw and
+//"particles" per formula unit,and the gs(g/100mL). If the material is highly
+//miscible with water, its gs is set at 25g.
+function solute(cmpd,gfw,parts,gs){
+	this.cmpd=cmpd
+	this.gfw=gfw
+	this.parts=parts
+	this.gs=gs
+}
+//This creates an array of solutes with 20 elements
+theitem=new MakeArray(20);
+//The following are the elements in the theitem array which have the properties
+//shown in solute
+theitem[1]=new solute("NaCl",58.45,2,25)
+theitem[2]=new solute("NaNO3",85,2,25)
+theitem[3]=new solute("KI",166,2,25)
+theitem[4]=new solute("KOH",56,2,25)
+theitem[5]=new solute("Ca(NO3)2",164,3,25)
+theitem[6]=new solute("CH3OH",32,1,25)
+theitem[7]=new solute("HCl",36.5,2,25)
+theitem[8]=new solute("ethanol",46,1,25)
+theitem[9]=new solute("LiBr",104.9,2,25)
+theitem[10]=new solute("Fe(NO3)3",242,4,25)
+theitem[11]=new solute("Mg(NO3)2",148,3,25)
+theitem[12]=new solute("HNO3",63,2,25)
+theitem[13]=new solute("CaI2",294,3,25)
+theitem[14]=new solute("Co(NO3)2",183,3,25)
+theitem[15]=new solute("Na2SO4",142.08,3,27.8)
+theitem[16]=new solute("KClO4",138.5,2,1.54)
+theitem[17]=new solute("NaOH",40.01,2,25)
+theitem[18]=new solute("KNO2",85.1,2,25)
+theitem[19]=new solute("HI",128,2,25)
+theitem[20]=new solute("CsCl",168.4,2,25);
+//This is the function started when "New Problem" is pushed
+//This function first clears all old values using zeroout()
+//The four variables(a,b,t) are then determined, using Math.random()
+//They are then passed to the calculate function
+function begin(){
+	tried=0
+	totl++
+	document.forms[0].results.value=""
+	document.forms[0].total.value=totl
+	empty()
+	var a=Math.round(20*Math.random())
+	if (a<1){a=1}
+	for (var i=1;i<100;i++){
+      var b=25*Math.random()
+	if (b<theitem[a]["gs"]){
+	break}}
+	if (b>10){
+	b=Math.round(10*b)/10}
+	else{if (b<.1){b=Math.round(1000*b)/100}
+	else{b=Math.round(100*b)/100}}
+	var m=Math.round(100+1000*Math.random())
+      calculate(a,b,m)
+}
+function calculate(a,b,m){
+	moles=b/(theitem[a]["gfw"])
+	var u=(1000*moles)/m
+	u=u*theitem[a]["parts"]
+	var fp=-Math.round(100*1.86*u)/100
+	var bp=100+Math.round(100*.512*u)/100
+	display(a,b,m,fp,bp)
+}
+//This function creates the problem and the answer method by first filling up
+//two tables and then partially clearing the "problem" table
+//table
+function display(a,b,m,fp,bp){
+//this initially puts values in all cells in table 1
+	document.forms[0].first.value=theitem[a]["cmpd"]
+	document.forms[0].second.value=b
+	document.forms[0].third.value=m
+	document.forms[0].fourth.value=fp
+	document.forms[0].fifth.value=bp
+	ans[0]=theitem[a]["cmpd"]
+	ans[1]=b
+	ans[2]=m
+	ans[3]=fp
+	ans[4]=bp
+//the following resets two of the cells in the first table blank, thus
+//creating the problem
+	g=Math.random()
+	if (g<.33){document.forms[0].second.value=""
+	if (Math.random()<.5){document.forms[0].fourth.value=""}
+	else{document.forms[0].fifth.value=""}
+	document.forms[0].second.focus()
+	document.forms[0].second.select()}
+	else{if (g<.67){document.forms[0].third.value=""
+	if (Math.random()<.5){document.forms[0].fourth.value=""}
+	else{document.forms[0].fifth.value=""}
+	document.forms[0].third.focus()
+	document.forms[0].third.select()}
+	else{	document.forms[0].fourth.value=""
+	document.forms[0].fifth.value=""
+	document.forms[0].fourth.focus()
+	document.forms[0].fourth.select()}}
+}
+// This is the "Check Answer Function
+function answer(form){
+if(tried==1){
+		alert("Sorry, you've already submitted this problem! We'll get you a new one!")
+		begin()}
+else{
+	if(tried==2){totl++;document.forms[0].total.value=totl}
+	tally=0
+	for (var i=1;i<5;i++){
+	if (document.forms[0].elements[i].value>.99*ans[i] &
+	document.forms[0].elements[i].value<1.01*ans[i]){
+	tally++}}
+	if (document.forms[0].fourth.value>1.01*ans[3] &
+	document.forms[0].fourth.value<.99*ans[3]){
+	tally++}
+	if (tally==4){
+	document.forms[0].results.value="correct"
+	corrt++
+	document.forms[0].correct.value=corrt
+	tried=1}
+	else {
+	tried=2
+	document.forms[0].results.value="incorrect"}
+}}
+
+function timer(z){
+tt=z
+var b=Math.floor(tt/60)
+var j = (tt % 60)
+if (j<10){c="0"}
+else {c=""}
+howlong=b + ":" + c + j
+running=setTimeout("timer(tt+1)",1000)
+}
+function update(){
+	document.forms[0].total.value=totl
+	document.forms[0].correct.value=corrt
+	document.forms[0].time.value=howlong
+	document.forms[0].page.value=thepage
+	document.forms[0].verify.value=Math.round(10000*Math.random())
+}
+
+
+</script>
+</head>
+<body onLoad="clear(), timer(0)">
+
+<h2>Freezing and Boiling Points of Aqueous Solutions</h2>
+This page is an exercise in colligative properties. When you load the
+page (or press "New Problem") a solute formula appears in the first cell and
+two of the other cells will show values. Determine the value for the missing
+cells and press "Check Answer." Results appear in the second table.
+<h4>Hints</h4>
+<ul>
+<li>Be careful about dissociating solutes
+<li>All solutions are treated as ideal
+<li>It is assumed there are not additional processes beyond the possible solute dissociation
+<li>You can should continue to work on a problem until you get it correct, but
+you can get a new problem at any time.
+</ul>
+<form ACTION = "../cgi-bin/homework/hw_turnin.php" METHOD = "POST">
+
+<table border=4>
+<tr>
+<TD ALIGN=CENTER><b>Solute</td>
+<td align=center><b>Solute(grams)</td>
+<td align=center><b>Water Mass(g)</td>
+<td align=center><b>FP</td>
+<td align=center><b>BP</td>
+</tr>
+<tr>
+<td align=center><input type="text" name=first size=8 ></td>
+<td align=center><input type="text" name=second size=8 ></td>
+<td align=center><input type="text" name=third size=8 ></td>
+<td align=center><input type="text" name=fourth size=8 ></td>
+<td align=center><input type="text" name=fifth size=8 ></td>
+</tr>
+<tr>
+<td><input type="button" value="New Problem" onClick=begin()></td>
+<td><input type="button" value="Check Answer" onClick=answer(this.form)></td>
+</tr>
+</table>
+<table border=4>
+<tr><td align=center><b>Results</td>
+<td align=center><b>Total Done</td>
+<td><b>Total Correct</td>
+</tr>
+<tr>
+<td><input type="text" name="results" size=12></td>
+<td align=center><input type="text" name="total" size=4 ></td>
+<td align=center><input type="text" name="correct" size=4 ></td>
+</table>
+<input type=text name="page" size=1>
+<input type=text name="verify" size=1>
+<input type=text name="time" size=1><br>
+<INPUT TYPE = "submit" VALUE = "Submit your score" onClick="update()">
+</form>
+<br>
+<a href="index.html"><img src="back.gif"></a><br>
+
+</form>
+</body>
+</html>

@@ -1,0 +1,287 @@
+<html>
+<head><title>Simple Naming Page</title>
+<script>
+//global variables
+thepage="Simple Naming(59)"
+tried=0
+totl=0
+corrt=0
+howlong=""
+function clear(){
+document.forms[0].elements[5].value=""
+document.forms[0].results.value=""
+document.forms[0].total.value=totl
+document.forms[0].correct.value=corrt
+}
+function MakeArray(n){
+	this.length=n
+	for (var i=1;i<=n;i++){
+	this[i]= 0}
+}
+function atom(name,sym,charge){
+	this.name=name
+	this.sym=sym
+	this.charge=charge
+	}
+anion=new MakeArray(30);
+cation=new MakeArray(30);
+cation[1]=new atom("lithium","Li",1)
+cation[2]=new atom("beryllium","Be",2)
+cation[3]=new atom("potassium","K",1)
+cation[4]=new atom("calcium","Ca",2)
+cation[5]=new atom("sodium","Na",1)
+cation[6]=new atom("magnesium","Mg",2)
+cation[7]=new atom("cesium","Cs",1)
+cation[8]=new atom("barium","Ba",2)
+cation[9]=new atom("rubidium","Rb",1)
+cation[10]=new atom("strontium","Sr",2)
+cation[11]=new atom("aluminum","Al",3)
+cation[12]=new atom("ammonium","NH<sub>4</sub>",1)
+cation[13]=new atom("carbon","C",4)
+cation[14]=new atom("silicon","Si",4)
+cation[15]=new atom("phosphorus","P",3)
+cation[16]=new atom("phosphorus","P",5)
+cation[17]=new atom("boron","B",3)
+cation[18]=new atom("sulfur","S",4)
+cation[19]=new atom("sulfur","S",6)
+cation[20]=new atom("nitrogen","N",3)
+anion[1]=new atom("oxide","O",2)
+anion[2]=new atom("fluoride","F",1)
+anion[3]=new atom("sulfide","S",2)
+anion[4]=new atom("chloride","Cl",1)
+anion[5]=new atom("selenide","Se",2)
+anion[6]=new atom("bromide","Br",1)
+anion[7]=new atom("iodide","I",1)
+anion[8]=new atom("carbonate","CO<sub>3</sub>",2)
+anion[9]=new atom("hydroxide","OH",1)
+anion[10]=new atom("nitrate","NO<sub>3</sub>",1)
+anion[11]=new atom("nitrite","NO<sub>2</sub>",1)
+anion[12]=new atom("sulfate","SO<sub>4</sub>",2)
+anion[13]=new atom("sulfite","SO<sub>3</sub>",2)
+anion[14]=new atom("cyanide","CN",1)
+anion[15]=new atom("permanganate","MnO<sub>4</sub>",1)
+anion[16]=new atom("dichromate","Cr<sub>2</sub>O<sub>7</sub>",2)
+anion[17]=new atom("phosphate","PO<sub>4</sub>",3)
+anion[18]=new atom("perchlorate","ClO<sub>4</sub>",1)
+anion[19]=new atom("bicarbonate","HCO<sub>3</sub>",1)
+anion[20]=new atom("chlorite","ClO<sub>2</sub>",1)
+anion[21]=new atom("thiosulfate","S<sub>2</sub>O<sub>3</sub>",2)
+anion[22]=new atom("hypochlorite","ClO",1)
+anion[23]=new atom("chlorate","ClO<sub>3</sub>",1)
+anion[24]=new atom("phosphite","PO<sub>3</sub>",3)
+anion[25]=new atom("chromate","CrO<sub>4</sub>",2)
+
+function makecompound(){
+totl++
+document.forms[0].total.value=totl
+tried=0
+catpre=""
+anpre=""
+csub=""
+asub=""
+catsub=""
+ansub=""
+cat=Math.ceil(20*Math.random())
+if(cat>12){ani=Math.ceil(7*Math.random())}
+else{ani=Math.ceil(25*Math.random())}
+if((cat==18 || cat==19)& ani==3){total--;makecompound()}
+x=cation[cat]["charge"]
+y=anion[ani]["charge"]
+if(x==y){
+	csub=1
+	asub=1
+}
+if(x>y){
+	if(x%y==0){
+		csub=1
+		asub=Math.ceil(x/y)}
+	else{
+	 	csub=y
+		asub=x
+	    }
+}
+if(y>x){
+	if(y%x==0){
+		csub=Math.ceil(y/x)
+		asub=1}
+	else{
+	 	csub=y
+		asub=x
+	    }
+}
+if(csub==1){catsub=""}
+	else{catsub="<sub>"+csub+"</sub>"}
+if(asub==1){ansub=""}
+	else{ansub="<sub>"+asub+"</sub>"}
+//if(asub>6 || csub>6){makecompound()}
+if(catsub==""){catsym=cation[cat]["sym"]}
+else{
+	if(cat==12){catsym="(" + cation[cat]["sym"] + ")" +catsub}
+	else{catsym=cation[cat]["sym"]+catsub}}
+if(ansub==""){ansym=anion[ani]["sym"]}
+else{
+	if(ani>7){ansym="("+ anion[ani]["sym"] + ")"+ ansub}
+	else{ansym=anion[ani]["sym"]+ ansub}}
+theformula=catsym + ansym
+if(cat>12){
+if(csub==2){catpre="di"}
+if(csub==3){catpre="tri"}
+if(csub==4){catpre="tetra"}
+if(csub==5){catpre="penta"}
+if(asub==1 & ani==1){anpre="mon"}
+if(asub==2){anpre="di"}
+if(asub==3){anpre="tri"}
+if(asub==4){anpre="tetra"}
+if(asub==5){anpre="penta"}
+if(asub==6){anpre="hexa"}
+}
+thename=catpre+cation[cat]["name"]+ "  " + anpre + anion[ani]["name"]
+firstpart=catpre + cation[cat]["name"]
+secpart=anpre + anion[ani]["name"]
+var newone=window.open("","newone","scrollbars=yes,width=400,height=150")
+newone.document.clear()
+newone.document.writeln ("<html>");
+newone.document.writeln ("<head><title>newone</title>");
+newone.document.writeln ("</head>"); 
+newone.document.writeln ("<body bgcolor = FFFFFF");
+newone.document.writeln ("<font size = +1>");
+newone.document.writeln ("<b>",theformula,"</b><br>");
+newone.document.writeln ("<form method='post'>");
+newone.document.writeln ("<tr><TD><b>Name</b><input type='text' name='ident' size=40>")
+//newone.document.writeln ("<b>Second</b><input type='text' name='second' size=18></td></tr>")
+newone.document.writeln ("<TD><input type='button' value='Check Answer' onClick='opener.splitit(this.form.ident.value)'></TD></tr>")
+newone.document.writeln ("</form>");
+newone.document.writeln ("</font>");
+newone.document.writeln ("</html>");
+newone.document.close();
+newone.focus();
+newone.document.forms[0].elements[0].focus();
+newone.document.forms[0].elements[0].select();
+}
+
+function splitit(test){
+first=""
+two=""
+for(j=0;j<test.length;j++){
+if(test.charAt(j)!=" "){first=first+test.charAt(j)}
+else{if(first!=""){break}}
+}
+a=first
+for(h=j;h<test.length;h++){
+if(test.charAt(h)!=" "){two=two+test.charAt(h)}
+}
+b=two
+answer(a,b)    
+}
+function timer(z){
+tt=z
+var b=Math.floor(tt/60)
+var j = (tt % 60)
+if (j<10){c="0"}
+else {c=""}
+howlong=b + ":" + c + j
+running=setTimeout("timer(tt+1)",1000)
+}
+function update(){
+	document.forms[0].total.value=totl
+	document.forms[0].correct.value=corrt
+	document.forms[0].time.value=howlong
+	document.forms[0].page.value=thepage
+	document.forms[0].verify.value=Math.round(10000*Math.random())
+}
+
+function answer(a,b){
+if(tried==1){
+alert("You've already done this one. Get a new problem")
+}
+else{
+if(tried==2){totl++
+document.forms[0].total.value=totl}
+a=a.toLowerCase()
+b=b.toLowerCase()
+if ( a==firstpart & b==secpart){
+document.forms[0].results.value="both correct"
+corrt++
+document.forms[0].correct.value=corrt
+tried=1
+}
+else{ 
+	if(a!=firstpart & b!=secpart){
+		document.forms[0].results.value="both incorrect"
+		}
+	else{
+		if(a!=firstpart){
+		document.forms[0].results.value="first incorrect"
+		}
+			else{
+				document.forms[0].results.value="second incorrect"
+			}
+          }
+tried=2}
+}
+}
+function spellings(){
+var spellit=window.open("","spellit","scrollbars=yes,width=150,height=300")
+spellit.document.clear()
+spellit.document.writeln ("<html>");
+spellit.document.writeln ("<head><title>spellit</title>");
+spellit.document.writeln ("</head>"); 
+spellit.document.writeln ("<body bgcolor = FFFFFF");
+spellit.document.writeln ("<font size = +1>");
+spellit.document.writeln ("<b>Spellings</b><br>");
+spellit.document.writeln (cation[12]['name'],"<br>");
+for(i=8;i<26;i++){
+	spellit.document.writeln (anion[i]["name"],"<br>")};
+spellit.document.writeln ("</html>");
+document.forms[0].elements[0].focus();
+document.forms[0].elements[0].select();
+spellit.document.close();
+spellit.focus();
+}
+
+</script>
+</head>
+<body onLoad="clear(),timer(0)">
+<h3>Nomenclature of Simple Binary Compounds</h3>
+This is a basic exercise in naming simple binary compounds. Since its effective use requires analysis
+of text input there are some basic rules:<br><ul>
+<li>This page does not contain any transition elements and,thus, Stock notation is not used.
+<li>Spelling matters very much. No effort has been made to analyze input against possible spelling errors. There
+is a button below which can be pushed to display the spelling of all polyatomic ions used on this page.
+<li>Capitalization does not matter, the page can adjust for improper capitalization.
+<li>All compounds on this page can be viewed as simple binary compounds.
+<li>For those combinations for which prefixes are not needed,e.g. CaCl<sub>2</sub>, their use will result in an error.
+</ul>
+<h4>Operation:</h4>
+1. Pressing "Display Spellings" will open a window containing the spellings used for the polyatomic ions
+on this page. The user should refer to periodic tables or other sources for spelling of elements.<br>
+2. Pressing "New Compound" causes a small window to appear with a formula, an empty cell and a "Check Answer" button.<br>
+3. Enter the name of the compound in the cell, making sure that a space separates the two parts of the name.<br>
+4. Press "Check Answer."<br>
+5. Detailed results and score appear in the table on the main page.<br>
+6. If you get all or part of the name incorrect, you may go back and correct your answer and resubmit it.
+<hr>
+<form ACTION = "../cgi-bin/homework/hw_turnin.php" METHOD = "POST">
+<input type=button value="New Problem" onClick="makecompound()">
+<table border=4>
+<tr>
+<td>Results</td>
+<td>Total</td>
+<td>Correct</td>
+</tr>
+<tr>
+<td><input type=text name="results" size=10></td>
+<td align=center><input name="total" type=text size=3</td>
+<td align=center><input name="correct" type=text size=3></td>
+</tr>
+</table>
+<input type=text name="page" size=1>
+<input type=text name="verify" size=1>
+<input type=text name="time" size=1><br>
+<INPUT TYPE = "submit" VALUE = "Submit your score" onClick="update()">
+<input type="button" value="Show Spellings" onClick="spellings()"><hr>
+</form>
+<br>
+<a href="hwintro.html"><img src="back.gif"></a><br>
+</body>
+</html>

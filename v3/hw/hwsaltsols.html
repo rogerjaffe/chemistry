@@ -1,0 +1,220 @@
+<html>
+<head><title>Solutions of Slightly Soluble Salts-Homework</title>
+<script language=javascript>
+//Last Update 7/28/98
+thepage="Slightly Soluble Salts(37)"
+howlong=""
+totl=0
+corrt=0
+tried=0
+which=""
+tried=0
+theanswer=""
+ans = new Array()
+function clear(){
+	document.forms[0].first.value=""
+	document.forms[0].second.value=""
+	document.forms[0].third.value=""
+	document.forms[0].fourth.value=""
+	document.forms[0].fifth.value=""
+	document.forms[0].sixth.value=""
+	document.forms[0].results.value=""
+	tried=0
+}
+function cleanse(){
+clear()
+document.forms[0].total.value=0
+document.forms[0].correct.value=0
+document.forms[0].time.value=""
+}
+function data(cmpd,gfw,K,cation,anion){
+	this.cmpd=cmpd
+	this.gfw=gfw
+	this.K=K
+	this.cation=cation
+	this.anion=anion
+}
+c1=new data("AgCl",143,1.8e-10,1,1)
+c2=new data("BaCO3",197,5.1e-9,1,1)
+c3=new data("CaF2",78,5.3e-9,1,2)
+c4=new data("FeS",88,6e-19,1,1)
+c5=new data("PbCrO4",323,2.8e-19,1,1)
+c6=new data("Fe(OH)3",107,4e-38,1,3)
+c7=new data("LiF",26,3.8e-3,1,1)
+c8=new data("Co(OH)2",93,1.6e-15,1,2)
+c9=new data("TlBr",284,3.4e-6,1,1)
+c10=new data("Mg(OH)2",58,1.8e-11,1,2)
+
+function choose(){
+	totl++
+	document.forms[0].total.value=totl
+	clear()
+	g=Math.random()
+	if (g<.1){calculate(c1)}
+	else {if (g<.2) {calculate(c2)}
+	else {if (g<.3) {calculate(c3)}
+	else {if (g<.4) {calculate(c4)}
+	else {if (g<.5) {calculate(c5)}
+	else {if (g<.6) {calculate(c6)}
+	else {if (g<.7) {calculate(c7)}
+	else {if (g<.8) {calculate(c8)}
+	else {if (g<.9) {calculate(c9)}
+	else {calculate(c10)}}}}}}}}}
+}
+function calculate(a){
+	var f=a["cation"] + a["anion"]
+	if (f==2){var s=Math.sqrt(a["K"])}
+	else {if (f==3){s=Math.pow((a["K"]/4),.3333)}
+	else {s=Math.pow((a["K"]/27),.25)        }}
+	cat=a["cation"]*s
+	ani=a["anion"]*s
+	gs=.1*s*a["gfw"]
+	document.forms[0].elements[0].value=a["cmpd"]
+	number(a["K"],s,gs,cat,ani)
+
+}
+
+function answer(){
+if(tried==1){
+		alert("Sorry, you've already submitted this problem! We'll get you a new one!")
+		choose()}
+else{if(tried==2){totl++;document.forms[0].total.value=totl}
+	test=0
+	for (var i=1;i<6;i++){
+	if (document.forms[0].elements[i].value>.99*ans[i] &
+	document.forms[0].elements[i].value<1.01*ans[i]){
+	test=test+1}}
+	if (test==5){
+	document.forms[0].results.value="Correct"
+	corrt++
+	document.forms[0].correct.value=corrt
+	tried=1
+}
+	else{ tried=2
+		document.forms[0].results.value="Incorrect"}
+
+}}
+
+function timer(z){
+tt=z
+var b=Math.floor(tt/60)
+var j = (tt % 60)
+if (j<10){c="0"}
+else {c=""}
+howlong=b + ":" + c + j
+running=setTimeout("timer(tt+1)",1000)
+}
+
+function update(){
+	document.forms[0].total.value=totl
+	document.forms[0].correct.value=corrt
+	document.forms[0].time.value=howlong
+	document.forms[0].page.value=thepage
+	document.forms[0].verify.value=Math.round(10000*Math.random())
+}
+
+function number(x,b,c,d,f){
+	for (var i=1;i<50;i++){
+		x=x*10
+		if (x>100){
+		x=Math.round(x)/100 + "e-" + (i-2)
+		break}}
+	for (var i=1;i<50;i++){
+		b=b*10
+		if (b>100){
+		b=Math.round(b)/100 + "e-" + (i-2)
+		break}}
+	for (var i=1;i<50;i++){
+		c=c*10
+		if (c>100){
+		c=Math.round(c)/100 + "e-" + (i-2)
+		break}}
+	for (var i=1;i<50;i++){
+		d=d*10
+		if (d>100){
+		d=Math.round(d)/100 + "e-" + (i-2)
+		break}}
+	for (var i=1;i<50;i++){
+		f=f*10
+		if (f>100){
+		f=Math.round(f)/100 + "e-" + (i-2)
+		break}}
+	display(x,b,c,d,f)
+}
+function display(x,b,c,d,f){
+	for (var i=1;i<6;i++){
+	document.forms[0].elements[i].value=""}
+	h=Math.random()
+	if (h<.2){document.forms[0].elements[1].value=x}
+	else {if (h<.4){document.forms[0].elements[2].value=b}
+	else {if (h<.6){document.forms[0].elements[3].value=c}
+	else {if (h<.8) {document.forms[0].elements[4].value=d}
+	else {document.forms[0].elements[5].value=f}}}}
+	ans[1]=x
+	ans[2]=b
+	ans[3]=c
+	ans[4]=d
+	ans[5]=f
+}
+
+</script>
+</head>
+<body onLoad="cleanse(), timer(0)">
+<h2>Solutions of Slightly Soluble Salts</h2>
+This page let's you practice the fundamental calculations for solutions of slightly soluble salts.
+When you press "New Problem," the name of a chemical species will appear
+in the first cell and a value in one of the other cells. You must fill the remaining
+empty four cells correctly. Then, press "Check Answer". Results appear in the second table. In order to
+use this page, you need a table of slightly soluble salts and their Ksp values. If the
+compound which appears in the first cell is not in your table, press "New Problem" to
+get a new compound.
+<h4>Hints</h4>
+<ul>
+<li><b>Molar Sol.</b> is how many moles of the compound will dissolve per liter.
+<li><b>Gram Sol.</b> is how many grams of the compound will dissolve in 100mL of water.
+<li><b>[cation]</b> and <b>[anion]</b> are the molarities of the cation and anion in the saturated solution.
+</ul>
+<form ACTION = "../cgi-bin/homework/hw_turnin.php" METHOD = "POST">
+<table border=4>
+<tr>
+<td align=center><b>Compound</td>
+<td align=center><b>Ksp</td>
+<td align=center><b>Molar Sol.</td>
+<td align=center><b>Gram Sol.</td>
+<td align=center><b>[cation]</td>
+<td align=center><b>[anion]</td>
+</tr>
+<tr>
+<td><input type="text" name=first size =12></td>
+<td align=center><input name=second type="text" size =8></td>
+<td><input type="text" name=third size =8></td>
+<td><input type="text" name=fourth size =8></td>
+<td><input type="text" name=fifth size =8></td>
+<td><input type="text" name=sixth size =8></td>
+<tr>
+<td><input type="button" value="New Problem" onClick=choose()></td>
+<td><input type="button" value="Check Answer" onClick=answer()></td>
+</tr>
+</table>
+<br><br>
+<table border=4>
+<tr>
+<td><b>Results</td>
+<td><b>Total</td>
+<td><b>Correct</td>
+</tr>
+<tr>
+<td><input type="text" name="results" size=12></td>
+<td align=center><input type="text" name="total" size=4 ></td>
+<td align=center><input type="text" name="correct" size=4 ></td>
+</table>
+<input type=text name="page" size=1>
+<input type=text name="verify" size=1>
+<input type=text name="time" size=1><br>
+<INPUT TYPE = "submit" VALUE = "Submit your score" onClick="update()">
+</form>
+<br>
+<a href="index.html"><img src="back.gif"></a><br>
+</form>
+</body><h
+</html>

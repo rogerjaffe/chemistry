@@ -1,0 +1,322 @@
+<html>
+<head><title>Mixed Density</title>
+<script>
+//global variables
+thepage="Mass..Two elements(61)"
+answer=0
+totl=0
+corrt=0
+howlong=""
+tried=0
+function clear(){
+document.forms[0].results.value=""
+}
+function cleanse(){
+document.forms[0].elements[4].value=""
+document.forms[0].elements[5].value=""
+document.forms[0].results.value=""
+document.forms[0].total.value=totl
+document.forms[0].correct.value=corrt
+}
+function MakeArray(n){
+	this.length=n
+	for (var i=1;i<=n;i++){
+	this[i]= 0}
+}
+function atom(name,sym,mass,density){
+	this.name=name
+	this.sym=sym
+	this.mass=mass
+	this.density=density
+}
+function ask(p1,p2,p3,p4,p5){
+	this.p1=p1
+	this.p2=p2
+	this.p3=p3
+	this.p4=p4
+	this.p5=p5
+}
+questions=new MakeArray(30)
+questions[1]=new ask("What volume of "," in cm<sup>3</sup> will have the same mass as "," moles of ","?")
+questions[2]=new ask("What volume of "," in cm<sup>3</sup> will have the same mass as "," cm<sup>3</sup> of ","?")
+questions[3]=new ask("How many moles of "," will have the same mass as "," moles of ","?")
+questions[4]=new ask("How many moles of "," will have the same mass as "," cm<sup>3</sup> of ","?")
+questions[5]=new ask("What volume of "," in cm<sup>3</sup> will have the same number of moles as "," grams of ","?")
+questions[6]=new ask("What volume of "," in cm<sup>3</sup> will have the same number of moles as "," cm<sup>3</sup>  of ","?")
+questions[7]=new ask("What mass of "," in grams will have the same number of moles as "," grams of ","?")
+questions[8]=new ask("What mass of "," in grams will have the same number of moles as "," cm<sup>3</sup> of ","?")
+questions[9]=new ask("What mass of "," in grams will have the same volume as "," moles of ","?")
+questions[10]=new ask("What mass of "," in grams will have the same volume as "," grams of ","?")
+questions[11]=new ask("How many moles of "," will have the same volume as "," moles of ","?")
+questions[12]=new ask("How many moles of "," will have the same volume as "," grams of ","?")
+questions[13]=new ask("What volume of "," in cm<sup>3</sup> will have the same mass as "," of ","?")
+questions[14]=new ask("What volume of "," in cm<sup>3</sup> will have the same mass as "," of ","?")
+questions[15]=new ask("What volume of "," will have the same mass as "," of ","?")
+questions[16]=new ask("What volume of "," will have the same mass as "," of ","?")
+questions[17]=new ask("What volume of "," will have the same mass as "," of ","?")
+questions[18]=new ask("What volume of "," will have the same mass as "," of ","?")
+questions[19]=new ask("What volume of "," will have the same mass as "," of ","?")
+questions[20]=new ask("What volume of "," will have the same mass as "," of ","?")
+questions[21]=new ask("What volume of "," will have the same mass as "," of ","?")
+questions[22]=new ask("What volume of "," will have the same mass as "," of ","?")
+questions[23]=new ask("What volume of "," will have the same mass as "," of ","?")
+
+
+a=new MakeArray(100)
+a[1]=new atom("lithium","Li",6.941,.53)
+a[2]=new atom("beryllium","Be",9.01218,1.85)
+a[3]=new atom("boron","B",10.811,2.34)
+a[4]=new atom("carbon","C",12.011,2.26)
+a[5]=new atom("bismuth","Bi",208.9804,9.75)
+a[6]=new atom("polonium","Po",209,9.3)
+a[7]=new atom("gold","Au",196.9665,19.3)
+a[8]=new atom("platinum","Pt",195.08,21.45)
+a[9]=new atom("sodium","Na",22.98977,.97,24)
+a[10]=new atom("magnesium","Mg",24.305,1.74)
+a[11]=new atom("aluminum","Al",26.98154,2.70)
+a[12]=new atom("silicon","Si",28.086,2.33)
+a[13]=new atom("phosphorous","P",30.97376,1.82)
+a[14]=new atom("sulfur","S",16,32.066,2.07)
+a[15]=new atom("thallium","Tl",204.383,11.85)
+a[16]=new atom("lead","Pb",207.2,11.35)
+a[17]=new atom("potassium","K",39.098,.86)
+a[18]=new atom("calcium","Ca",40.08,1.55)
+a[19]=new atom("scandium","Sc",44.9559,2.99)
+a[20]=new atom("titanium","Ti",47.88,4.54)
+a[21]=new atom("vanadium","V",50.9415,6.11)
+a[22]=new atom("chromium","Cr",51.996,7.19)
+a[23]=new atom("manganese","Mn",54.9380,7.44)
+a[24]=new atom("iron","Fe",55.847,7.87)
+a[25]=new atom("cobalt","Co",58.9332,8.90)
+a[26]=new atom("nickel","Ni",58.69,8.90)
+a[27]=new atom("copper","Cu",63.546,8.96)
+a[28]=new atom("zinc","Zn",65.39,7.13)
+a[29]=new atom("gallium","Ga",69.723,5.91)
+a[30]=new atom("germanium","Ge",72.61,5.32)
+a[31]=new atom("arsenic","As",74.9216,5.76)
+a[32]=new atom("selenium","Se",78.98,4.79)
+a[33]=new atom("bromine","Br",79.904,3.12)
+a[34]=new atom("osmium","Os",190.2,22.6)
+a[35]=new atom("rubidium","Rb",85.4678,1.53)
+a[36]=new atom("strontium","Sr",87.62,2.54)
+a[37]=new atom("yttrium","Y",88.9059,4.47)
+a[38]=new atom("zirconium","Zr",91.224,6.51)
+a[39]=new atom("niobium","Nb",92.9064,8.57)
+a[40]=new atom("molybdenum","Mo",95.94,10.22)
+a[41]=new atom("iridium","Ir",192.22,22.6)
+a[42]=new atom("ruthenium","Ru",101.07,12.37)
+a[43]=new atom("rhodium","Rh",102.9055,12.41)
+a[44]=new atom("palladium","Pd",106.42,12.0)
+a[45]=new atom("silver","Ag",107.868,10.50)
+a[46]=new atom("cadmium","Cd",112.411,8.65)
+a[47]=new atom("indium","In",114.82,7.31)
+a[48]=new atom("tin","Sn",118.710,7.31)
+a[49]=new atom("antimony","Sb",121.75,6.69)
+a[50]=new atom("tellurium","Te",127.60,6.24)
+a[51]=new atom("iodine","I",126.9045,4.93)
+a[52]=new atom("mercury","Hg",200.59,13.55)
+a[53]=new atom("cesium","Cs",132.9054,1.87)
+a[54]=new atom("barium","Ba",137.27,3.59)
+a[55]=new atom("lanthanum","La",138.9055,6.15)
+a[56]=new atom("cerium","Ce",140.115,6.77)
+a[57]=new atom("praseodymium","Pr",140.9077,6.77)
+a[58]=new atom("neodymium","Nd",144.24,7.01)
+a[59]=new atom("promethium","Pm",145,7.22)
+a[60]=new atom("samarium","Sm",150.36,7.52)
+a[61]=new atom("europium","Eu",151.985,5.24)
+a[62]=new atom("gadolinium","Gd",157.25,7.90)
+a[63]=new atom("terbium","Tb",158.925,8.23)
+a[64]=new atom("dysprosium","Dy",162.50,8.55)
+a[65]=new atom("holmium","Ho",164.930,8.80)
+a[66]=new atom("erbium","Er",167.26,9.07)
+a[67]=new atom("thullum","Tm",168.9342,9.32)
+a[68]=new atom("ytterbium","Yb",173.04,6.97)
+a[69]=new atom("lutetium","Lu",174.97,9.84)
+a[70]=new atom("hafnium","Hf",178.49,13.31)
+a[71]=new atom("tantalum","Ta",180.9479,16.65)
+a[72]=new atom("tungsten","W",183.85,19.3)
+a[73]=new atom("rhenium","Re",186.207,21)
+
+function startit(){
+totl++
+tried=0
+clear()
+document.forms[0].total.value=totl
+first=Math.ceil(73*Math.random())
+second=first
+while(second==first){second=Math.ceil(73*Math.random())}
+z=Math.ceil(3*Math.random())
+if(z==1){samemass(first,second)}
+if(z==2){samevolume(first,second)}
+if(z==3){samemoles(first,second)}
+}
+
+function samemass(first,second){
+mass=0
+while(mass<1){mass=Math.round(Math.pow(1000,Math.random()))/10}
+massfirst=mass
+masssecond=mass
+molesfirst=mass/a[first]['mass']
+molesfirst=Math.round(1000*molesfirst)/1000
+molessecond=mass/a[second]['mass']
+molessecond=Math.round(1000*molessecond)/1000
+volumefirst=mass/a[first]['density']
+volumefirst=Math.round(100*volumefirst)/100
+volumesecond=mass/a[second]['density']
+volumesecond=Math.round(100*volumesecond)/100
+which=Math.ceil(4*Math.random())
+quest(which,first,second,massfirst,masssecond,molesfirst,molessecond,volumefirst,volumesecond)
+type="same mass"
+//tryit(type,first,second,massfirst,masssecond,molesfirst,molessecond,volumefirst,volumesecond)
+}
+function samemoles(first,second){
+moles=0
+while(moles<.1 || moles>2){moles=10*Math.random()}
+moles=Math.round(1000*moles)/1000
+molesfirst=moles
+molessecond=moles
+massfirst=moles*a[first]['mass']
+massfirst=Math.round(100*massfirst)/100
+masssecond=moles*a[second]['mass']
+masssecond=Math.round(100*masssecond)/100
+volumefirst=massfirst/a[first]['density']
+volumefirst=Math.round(100*volumefirst)/100
+volumesecond=masssecond/a[second]['density']
+volumesecond=Math.round(100*volumesecond)/100
+which=4+Math.ceil(4*Math.random())
+quest(which,first,second,massfirst,masssecond,molesfirst,molessecond,volumefirst,volumesecond)
+type="same moles"
+//tryit(type,first,second,massfirst,masssecond,molesfirst,molessecond,volumefirst,volumesecond)
+}
+function samevolume(first,second){
+volume=0
+while(volume<.1){volume=Math.pow(10,Math.random())}
+volume=Math.round(100*volume)/100
+volumefirst=volume
+volumesecond=volume
+massfirst=volume*a[first]['density']
+massfirst=Math.round(100*massfirst)/100
+masssecond=volume*a[second]['density']
+masssecond=Math.round(100*masssecond)/100
+molesfirst=massfirst/a[first]['mass']
+molesfirst=Math.round(100*molesfirst)/100
+molessecond=masssecond/a[second]['mass']
+molessecond=Math.round(100*molessecond)/100
+which=8+Math.ceil(4*Math.random())
+quest(which,first,second,massfirst,masssecond,molesfirst,molessecond,volumefirst,volumesecond)
+type="same volume"
+//tryit(type,first,second,massfirst,masssecond,molesfirst,molessecond,volumefirst,volumesecond)
+}
+
+function quest(which,first,second,massfirst,masssecond,molesfirst,molessecond,volumefirst,volumesecond){
+if(which==1 || which==2 || which==5 || which==6){part1=volumefirst}
+if(which==3 || which==4 || which==11 || which==12){part1=molesfirst}
+if(which==7 || which==8 || which==9 || which==10){part1=massfirst}
+if(which==2 || which==4 || which==6 || which==8){part2=volumesecond}
+if(which==5 || which==7 || which==10 || which==12){part2=masssecond}
+if(which==1 || which==3 || which==9 || which==11){part2=molessecond}
+answer=part1
+question=questions[which]['p1']+a[first]['name']+questions[which]['p2']+part2+questions[which]['p3']+a[second]['name']+questions[which]['p4']
+tryit(question)
+}
+function makeit(){
+mass=0
+which=Math.ceil(73*Math.random())
+document.forms[0].results.value=which
+while(mass<1){mass=Math.round(Math.pow(1000,Math.random()))/10}
+moles=mass/a[which]['mass']
+moles=Math.round(1000*moles)/1000
+volume=mass/a[which]['density']
+volume=Math.round(100*volume)/100
+tryit(which,mass,moles,volume)
+}
+function tryit(question){
+parent.frames[0].document.clear();
+parent.frames[0].document.open();
+parent.frames[0].document.writeln ("<html>");
+parent.frames[0].document.writeln ("<head>");
+parent.frames[0].document.writeln ("</head>");
+parent.frames[0].document.writeln ("<body bgcolor = FFFFFF");
+parent.frames[0].document.writeln ("<font size = +1>");
+parent.frames[0].document.writeln (question,"<br>");
+parent.frames[0].document.write ("<form><input type=text name='guess' size=8>");
+parent.frames[0].document.write ("<input type=button value='Check Answer' onClick='parent.frames[1].answerit(this.form.guess.value)'></form>");
+//parent.frames[0].document.write (b);
+//parent.frames[0].document.write ("<b>",e,"</b>");
+//parent.frames[0].document.write (c);
+parent.frames[0].document.writeln ("<br>")
+parent.frames[0].document.writeln ("</font>");
+parent.frames[0].document.close();;
+}
+
+function answerit(guess){
+if(tried==1){alert("You've already done this problem. Get a new one!")}
+else{
+if (1.05*answer>guess & .95*answer<guess){
+	document.forms[0].results.value="correct"
+	corrt++
+	tried=1
+	document.forms[0].correct.value=corrt}
+else{
+	if(tried==2){totl++
+		document.forms[0].total.value=totl
+	}
+	document.forms[0].results.value="incorrect"
+	tried=2
+}
+}}
+function timer(z){
+tt=z
+var b=Math.floor(tt/60)
+var j = (tt % 60)
+if (j<10){c="0"}
+else {c=""}
+howlong=b + ":" + c + j
+running=setTimeout("timer(tt+1)",1000)
+}
+function update(){
+	document.forms[0].total.value=totl
+	document.forms[0].correct.value=corrt
+	document.forms[0].time.value=howlong
+	document.forms[0].page.value=thepage
+	document.forms[0].verify.value=Math.round(10000*Math.random())
+}
+
+</script>
+</head>
+<body onLoad="cleanse(),timer(0)">
+<H3>Volume, mass and moles-relating two elements</h3>
+On this page you will be asked to use basic information provided about a sample of an
+ element to determine a property of a sample of a different element. To answer the
+questions you will need a periodic table which includes the densities of the elements.<br>
+<h4>Using the page</h4>
+<ul>
+<li>To obtain a question, press the "New Question" button and a question appears in the
+top frame, along with an empty cell and a "Check Answer" Button.
+<li>Enter your answer in the cell in the top frame and press "Check Answer."
+<li>Results will be displayed in the table on the main frame.
+</ul>
+<form ACTION = "../cgi-bin/homework/hw_turnin.php" METHOD = "POST">
+<input type=button value="New Question" onClick="startit()">
+<table border=4>
+<tr>
+<td>Results</td>
+<td>Total</td>
+<td>Correct</td>
+</tr>
+<tr>
+<td><input type=text name="results" size=10></td>
+<td align=center><input name="total" type=text size=3</td>
+<td align=center><input name="correct" type=text size=3></td>
+</tr>
+</table>
+<input type=text name="page" size=1>
+<input type=text name="verify" size=1>
+<input type=text name="time" size=1><br>
+<INPUT TYPE = "submit" VALUE = "Submit your score" onClick="update()">
+</form>
+<br>
+<a href="hwintro.html"><img src="back.gif"></a><br>
+</body>
+</html>
+

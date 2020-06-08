@@ -1,0 +1,257 @@
+<html>
+<head><title>Advanced Equilibria#1-cs</title>
+<style>
+#qspot {position:absolute;left:320;top:230}
+#ansspot {position:absolute;left:320;top:420;height:300}
+#tspot {position:absolute;left:10;top:300}
+#refspot {position:absolute;left:10;top:600}
+</style>
+<script src="reflist.js"></script>
+<script src="numberconvert.js"></script>
+<script language="javascript">
+//updated 11/14/00-added complete solution
+var ie4 = (document.all) ? true : false;
+//global variables
+refnumber=200
+attempts=0
+which=0
+theanswer=""
+corrt=0
+totl=0
+attempts=0
+order=0
+theanswer=0
+option=0
+tried=0
+order=""
+oreaction=""
+thereaction=""
+iconc=""
+conc=""
+theK=0
+theQ=0
+leaveout=""
+equation=""
+choice=0
+change=0
+function clear(){
+	document.forms[0].results.value=""
+	attempts=0
+	tried=0
+	kk=0
+	if(ie4)ansspot.innerHTML="";
+	else {
+		document.ansspot.document.open()
+		document.ansspot.document.clear()
+		document.ansspot.document.close()
+	}
+}
+function cleanse(){
+	clear()
+	document.forms[0].total.value=0
+	document.forms[0].correct.value=0
+	}
+cmpd=new Array()
+coef=new Array()
+cmpd[0]=new Array(2,"NO"," O<SUB>2</SUB>","NO<SUB>3</SUB>")
+coef[0]=new Array(-1,-1,1)
+cmpd[1]=new Array(1,"NO<SUB>3</SUB>","NO"," O<SUB>2</SUB>")
+coef[1]=new Array(-1,1,1)
+cmpd[2]=new Array(2,"SO<SUB>2</SUB>","Cl<SUB>2</SUB>","SO<SUB>2</SUB>Cl<SUB>2</SUB> ")
+coef[2]=new Array(-1,-1,1)
+cmpd[3]=new Array(2,"SO<SUB>2</SUB>Cl<SUB>2</SUB>","SO<SUB>2</SUB>","Cl<SUB>2</SUB>")
+coef[3]=new Array(-1,-1,1)
+cmpd[4]=new Array(2,"CO","Cl<SUB>2</SUB>","COCl<SUB>2</SUB>")
+coef[4]=new Array(-1,-1,1)
+cmpd[5]=new Array(1,"COCl<SUB>2</SUB>","CO","Cl<SUB>2</SUB>")
+coef[5]=new Array(-1,1,1)
+cmpd[6]=new Array(1,"PCl<SUB>5</SUB>","PCl<SUB>3</SUB>","Cl<SUB>2</SUB>")
+coef[6]=new Array(-1,1,1)
+cmpd[7]=new Array(2,"PCl<SUB>3</SUB>","Cl<SUB>2</SUB>","PCl<SUB>5</SUB> ")
+coef[7]=new Array(-1,-1,1)
+relate=new Array()
+relate[0]=new Array(" greater than "," right to left ","-x","+x")
+relate[1]=new Array(" less than "," left to right ","+x","-x")
+basequest="For reaction below with the K value, the system has the set of initial concentrations shown. The reaction will then proceed to equilibrium. After equilibrium is attained, what will be the equilibrium concentration of "
+ansphrase=new Array("The Q expression has the form:<br>","<br>Substituting in the initial concentrations and solving yields<br>","<br>Since Q is "," than K, the reaction will proceed from ",". All of the concentrations will change by the same amount, x, so the set of equilibrium concentrations can be represented as:<br>"," Substituting these into the Q expression yields:<br>","<br>Solving this for x yields a value of x= ","<br>and the concentration of "," is ")
+function startit(){
+	clear()
+	tried=0
+	totl++
+	document.forms[0].total.value=totl
+	which=Math.floor(8*Math.random())
+	leaveout=Math.floor(Math.random()*coef[which].length)
+	getreaction()
+	getconc()
+	theK=getK(conc)
+	theQ=getK(iconc)
+	theQ>theK?choice=0:choice=1;
+	buildanswer()
+	showquest()
+}
+function getreaction(){
+	cef=new Array()
+	oreaction=""
+	for(var b=0;b<coef[which].length;b++){
+		(Math.abs(coef[which][b])==1)?cef[b]="":cef[b]=Math.abs(coef[which][b]);
+	}
+	for(var l=1;l<=cmpd[which][0];l++){
+		l<cmpd[which][0]?oreaction+=(cef[l-1]+cmpd[which][l]+" + "):oreaction+=(cef[l-1]+cmpd[which][l]+"=>");
+	}
+	for(var l=(cmpd[which][0]+1);l<cmpd[which].length;l++){
+		l<(cmpd[which].length-1)?oreaction+=(cef[l-1]+cmpd[which][l]+" + "):oreaction+=(cef[l-1]+cmpd[which][l]);
+	}
+	return oreaction
+}
+function getK(thedata){
+	theC=1
+	for(var j=0;j<thedata.length;j++)theC=theC*Math.pow(thedata[j],coef[which][j]);
+	return theC
+}
+function getconc(){
+	conc=new Array()
+	iconc=new Array()
+	for(var j=0;j<coef[which].length;j++){
+		conc[j]=0
+		while(conc[j]<.01 || conc[j]>.5)conc[j]=number(Math.random(),3,3)
+	}
+	fract=0
+	while(fract<.05 || fract>.3)fract=number(Math.random(),2,3);
+	least=getleast(conc)
+	change=fract*least
+	if(Math.random()>.5){
+		for(var k=0;k<conc.length;k++){
+			k<cmpd[which][0]?(iconc[k]=1*conc[k]+change):(iconc[k]=1*conc[k]-change);
+			iconc[k]=number(iconc[k],3,3)
+		}
+	}
+	else{
+	for(var k=0;k<conc.length;k++){
+			k<cmpd[which][0]?(iconc[k]=1*conc[k]-change):(iconc[k]=1*conc[k]+change);
+			iconc[k]=number(iconc[k],3,3)
+		}
+	}
+}
+function getleast(conc){
+	least=conc[0]
+	for(j=1;j<conc.length;j++){
+		if(conc[j]<least)least=conc[j];
+	}
+	return least
+}
+function buildanswer(){
+	equation=new Array()
+	equation[0]="Q="
+	for(var j=3;j>0;j--){
+		if(j>cmpd[which][0]+1)equation[0]+="["+cmpd[which][j]+"]";
+		if(j==(cmpd[which][0]+1))equation[0]+="["+cmpd[which][j]+"]/";
+		if(j<(cmpd[which][0]+1))equation[0]+="["+cmpd[which][j]+"]";
+	}
+	equation[1]="Q="
+	for(var j=2;j>=0;j--){
+		if(j>cmpd[which][0])equation[1]+="["+iconc[j]+"]";
+		if(j==(cmpd[which][0]))equation[1]+="["+iconc[j]+"]/";
+		if(j<(cmpd[which][0]))equation[1]+="["+iconc[j]+"]";
+	}
+	equation[2]="K="
+	for(var j=3;j>0;j--){
+		if(j>cmpd[which][0]+1)equation[2]+="["+cmpd[which][j]+relate[choice][2]+"]";
+		if(j==(cmpd[which][0]+1))equation[2]+="["+cmpd[which][j]+relate[choice][2]+"]/";
+		if(j<(cmpd[which][0]+1))equation[2]+="["+cmpd[which][j]+relate[choice][3]+"]";
+	}
+	equation[1]+=("="+number(theQ,3,3))
+	theanswer=ansphrase[0]+equation[0]+ansphrase[1]+equation[1]+ansphrase[2]+relate[choice][0]+ansphrase[3]+relate[choice][1]+ansphrase[4]+series()+ansphrase[5]+equation[2]+ansphrase[6]+number(change,2,3)+ansphrase[7]+cmpd[which][leaveout+1]+"="+conc[leaveout]
+	showanswer()
+}
+function series(){
+	seq=""
+	for(var j=3;j>0;j--){
+		if(j>cmpd[which][0])seq+="["+cmpd[which][j]+relate[choice][2]+"]<br>";
+		else seq+="["+cmpd[which][j]+relate[choice][3]+"]<br>";
+	}
+	return seq
+}
+	
+function showquest(){
+	if(ie4){
+		qspot.innerHTML=thequest
+		}
+	else{
+		document.qspot.document.open()
+		document.qspot.document.write(basequest+cmpd[which][leaveout+1]+"<br>"+oreaction,"<br>K=",number(theK,3,3),"<br>")
+		for(j=1;j<=coef[which].length;j++){
+			document.qspot.document.write("["+cmpd[which][j]+"]<sub>i</sub>="+iconc[j-1]+"<b>M</b><br>");
+		}
+		document.qspot.document.close()
+	}
+}
+function answer(ans){
+	if(tried==1){alert("You've already done this one! Get a new problem>")}
+	else{
+	attempts++
+	if(tried==2){
+		totl++
+		document.forms[0].total.value=totl
+	}
+	if(ans<1.05*conc[leaveout] & ans>.95*conc[leaveout]){
+		document.forms[0].results.value="correct"
+		corrt++
+		document.forms[0].correct.value=corrt
+		tried=1
+	}
+	else{
+		document.forms[0].results.value="incorrect"
+		tried=2
+	}
+}}
+function showanswer(){
+if(attempts>=3){
+	if(ie4){
+		ansspot.innerHTML=theanswer
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.write(theanswer)
+		document.ansspot.document.close()
+	}
+	}
+}	
+</script>
+</head>
+<body onLoad=cleanse(),setrefs()>
+<h2>Advanced Equilibria #1</h2>
+This page presents problems relating initial and equilibrium concentrations. When you press "New Question",a balanced equation with an K value and a set of initial concentrations will appear to the right of the table. For purposes of this page, assume all species shown appear in the reaction quotient equation. Calculate the concentration of the requested species, enter it in the answer and press "Check Answer." Results appear in the table.
+<ul>
+<li>This page requires Netscape 4.x or IE 5 or higher
+<li>If you miss a problem three times, pressing "Show Answer" will cause the correct answer to appear.
+</ul>
+<form>
+<table>
+<tr><td><input type=button value="New Question" onClick="startit()"><td></tr>
+<tr><td><b>Enter your answer</b></td>
+<td><input type="text" name=theans size=8></td>
+</tr>
+<tr>
+<td><input type=button value="Check answer" onClick="answer(this.form.theans.value)"></td>
+<td><input type=button value="Show answer" onClick="showanswer()"></td>
+</tr>
+</table>
+<table border=4>
+<tr><td align=center><b>Results</td>
+<td align=center><b>Total Done</td>
+<td><b>Total Correct</td>
+</tr>
+<tr>
+<td><input type="text" name=results size=12></td>
+<td align=center><input type="text" name=total size=4 ></td>
+<td align=center><input type="text" name=correct size=4 ></td>
+</tr>
+<tr>
+</table>
+</form>
+<div id=qspot></div>
+<div id=ansspot></div>
+<div id=refspot></div>
+<br>
+</body>
+</html>

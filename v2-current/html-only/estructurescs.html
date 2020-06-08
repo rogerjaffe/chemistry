@@ -1,0 +1,338 @@
+<html>
+<head>
+<title>Electronic Structures</title>
+<style>
+#qspot {position:absolute;left:400;top:400}
+#ansspot {position:absolute;left:400;top:450;height:500}
+#tspot {position:absolute;left:10;top:300}
+#refspot {position:absolute;left:10;top:600}
+</style>
+<script src="reflist.js"></script>
+<script language="javascript">
+//updated 11/28/00-added complete solution
+var ie4 = (document.all) ? true : false;
+refnumber=43
+a=new Array()
+epop=new Array()
+lpop=new Array()
+sum=new Array()
+toporb=new Array()
+showit=""
+config=""
+configstring=""
+theanswer=""
+astring=""
+totales=0
+highest=0
+q=0
+electrons=0
+fullonly=0
+ivalue=0
+totales=0
+totl=0
+corrt=0
+attempts=0
+function cleanse(){
+	clear()
+	document.forms[0].results.value=""
+	document.forms[0].total.value=0
+	document.forms[0].correct.value=0
+}
+function clear(){
+	clearansspot()
+	for(j=0;j<=17;j++){
+		document.forms[0].elements[j].value=""}
+	attempts=0
+	tried=0
+}
+function atom(name,sym){
+	this.name=name
+	this.sym=sym
+}
+product=new Array()
+for(j=1;j<=10;j++){sum[j]=0;product[j]=0}
+for(j=0;j<=20;j++){epop[j]=""}
+occupancy=new Array()
+splits=new Array()
+occupancy[1]=new Array(2,2,6,2,6,2,10,6,"1s","2s","2p","3s","3p","4s","3d","4p")
+splits[1]=new Array(1,1,3,1,3,1,5,3)
+occupancy[2]=new Array(2,2,6,2,6,10,2,6,"1s","2s","2p","3s","3p","3d","4s","4p")
+splits[2]=new Array(1,1,3,1,3,5,1,3)
+orbitals=new Array()
+orbitals[1]="1s"
+orbitals[4]="2s"
+orbitals[6]="2p"
+orbitals[9]="3s"
+orbitals[12]="3p"
+orbitals[15]="3d"
+orbitals[16]="4s"
+orbitals[20]="4p"
+pop=new Array()
+special=new Array(222222222111111,222222222122222,"1s<SUP>2</SUP>2s<SUP>2</SUP>2p<SUP>6</SUP>3s<SUP>2</SUP>3p<SUP>6</SUP>4s<SUP>1</SUP>3d<SUP>5</SUP>","1s<SUP>2</SUP>2s<SUP>2</SUP>2p<SUP>6</SUP>3s<SUP>2</SUP>3p<SUP>6</SUP>4s<SUP>1</SUP>3d<SUP>10</SUP>")
+ansphrase=new Array(" has a total of "," electrons. Since this is ",", the electron configuration is ",".")
+inserts=new Array(0," not a special case"," is a special case(transition metal cation)"," is a special case (24 or 29 electrons)") 
+a[1]=new atom("hydrogen","H")
+a[2]=new atom("helium","He")
+a[3]=new atom("lithium","Li")
+a[4]=new atom("beryllium","Be")
+a[5]=new atom("boron","B")
+a[6]=new atom("carbon","C")
+a[7]=new atom("nitrogen","N")
+a[8]=new atom("oxygen","O")
+a[9]=new atom("fluorine","F")
+a[10]=new atom("neon","Ne")
+a[11]=new atom("sodium","Na")
+a[12]=new atom("magnesium","Mg")
+a[13]=new atom("aluminum","Al")
+a[14]=new atom("silicon","Si")
+a[15]=new atom("phosphorous","P")
+a[16]=new atom("sulfur","S")
+a[17]=new atom("chlorine","Cl")
+a[18]=new atom("argon","Ar")
+a[19]=new atom("potassium","K")
+a[20]=new atom("calcium","Ca")
+a[21]=new atom("scandium","Sc")
+a[22]=new atom("titanium","Ti")
+a[23]=new atom("vanadium","V")
+a[24]=new atom("chromium","Cr")
+a[25]=new atom("manganese","Mn")
+a[26]=new atom("iron","Fe")
+a[27]=new atom("cobalt","Co")
+a[28]=new atom("nickel","Ni")
+a[29]=new atom("copper","Cu")
+a[30]=new atom("zinc","Zn")
+a[31]=new atom("gallium","Ga")
+a[32]=new atom("germanium","Ge")
+a[33]=new atom("arsenic","As")
+a[34]=new atom("selenium","Se")
+a[35]=new atom("bromine","Br")
+a[36]=new atom("krypton","Kr")
+function startit(){
+	totl++
+	attempts=0
+	document.forms[0].total.value=totl
+	document.forms[0].results.value=""
+	clear()
+	for(j=0;j<=20;j++){
+		//epop[j]=""
+		lpop[j]=0
+		}
+	element=Math.ceil(36*Math.random())
+	charge=Math.floor(3*Math.random())
+	if(Math.random()>.5){charge=-1*charge}
+	present(element,charge)
+	buildconfig(element,charge)
+}
+function present(element,charge){
+symbol=a[element]['sym']
+if(charge!=0){
+	if(charge>0){showit=symbol+"<sup>"+charge+"+</sup>"}
+	else{showit=symbol+"<sup>"+Math.abs(charge)+"-</sup>"}
+}
+else{showit=symbol}
+}
+function buildconfig(element,charge){
+	if((element>20 & element<=30) & charge>0)q=2;
+		else q=1;
+	config=""
+	electrons=element-charge;
+	totales=electrons;
+	if(electrons==24 || electrons==29 & charge<2){
+		(electrons==24)?configstring=special[0]:configstring=special[1];
+		(electrons==24)?config=special[2]:config=special[3];
+		q=3;
+		showquest();
+	}
+	else{
+	for(j=0;j<=7;j++){
+		if(electrons>=occupancy[q][j]){
+					lpop[j]=occupancy[q][j]
+					electrons=electrons-occupancy[q][j]
+					}
+		else{
+				lpop[j]=electrons
+				electrons=0
+				}
+		config=config+occupancy[q][8+j]+"<sup>"+lpop[j]+"</sup>"				
+		if(electrons==0){highest=j
+				break;
+				}
+	}
+	getsplits(highest,q)
+}}
+function halfd(electrons){
+	fullonly=0
+	if(Math.random()>.5)electrons=29;
+	configstring="2222222221"
+	electrons==24 ? configstring+=11111:configstring+=22222;
+	for(j=0;j<=8;j++)document.forms[0].elements[j].value=2;
+	document.forms[0].elements[9].value=1
+	if(electrons==24)for(j=10;j<=14;j++)document.forms[0].elements[j].value=1;
+	else for(j=10;j<=14;j++)document.forms[0].elements[j].value=2;
+}	
+function getsplits(level,type){
+	filledorbs=0
+	for(j=0;j<=level-1;j++)filledorbs+=splits[type][j];
+	eused=2*filledorbs
+	esleft=totales-eused
+	if(esleft==(2*splits[type][level])){
+		filledorbs+=splits[type][level]
+		fullonly=1
+		}
+	else{
+	fullonly=0
+	orbcount=splits[type][level]
+	for(j=1;j<=orbcount;j++)toporb[j]="";
+	for(k=1;k<=2;k++){
+		for(j=1;j<=orbcount;j++){
+			if(esleft>0){
+				toporb[j]++
+				esleft--
+				}
+			}
+		}
+	}
+	configstring=""
+	for(j=1;j<=filledorbs;j++){
+			if(type==2 & j>9)jump=1;
+			else jump=0;
+			if(type==2 & j==10)configstring+="0";
+			configstring+="2";
+			}
+	if(fullonly==0){
+	if(type==2)configstring+="0"
+	for(j=1;j<=orbcount;j++)if(toporb[j]!=""){
+			configstring+=toporb[j]
+			if(type==2)jump=1;
+			else jump=0;
+			}
+	}
+	showquest()
+}
+function showquest(){
+	if(ie4){
+		qspot.innerHTML="Determine the electron configuration for "+showit		}
+	else{
+		document.qspot.document.open()
+		document.qspot.document.write("Determine the electron configuration for ",showit)
+		document.qspot.document.close()
+	}
+	getanswer()
+}
+function ansstring(form){
+	if(fullonly==0 & q!=3)finish=arrange();
+	astring=""
+	for(j=0;j<=17;j++){
+		if(form.elements[j].value=="" & form.elements[j+1].value>=1)astring+="0";
+		else astring+=form.elements[j].value;
+	}
+	//alert(astring)
+	answer()
+}
+//thefollowing function will rearrange data in the highest unfilled subshell for form submission
+function arrange(){
+	startcell=0
+	for(j=0;j<highest;j++)startcell+=splits[q][j];
+	if(q==2)startcell++
+	topmost=startcell+splits[q][highest]-1
+	vals=new Array()
+	for(j=startcell;j<=topmost;j++)vals[j]=document.forms[0].elements[j].value;
+	for(j=startcell;j<=topmost;j++){
+		for(k=j+1;k<=topmost;k++){
+			if(vals[j]<vals[k]){
+				store=vals[j];
+				vals[j]=vals[k];
+				vals[k]=store;
+			}
+		}
+	}
+	for(j=startcell;j<=topmost;j++)document.forms[0].elements[j].value=vals[j]
+	return
+}
+function getanswer(){
+	theanswer=showit+ansphrase[0]+totales+ansphrase[1]+inserts[q]+ansphrase[2]+config+ansphrase[3];
+	showanswer()
+}	
+function showanswer(){
+if(attempts>=3){
+	if(ie4){
+		ansspot.innerHTML=theanswer
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.write(theanswer)
+		document.ansspot.document.close()
+	}
+	}
+}
+function clearansspot(){
+	if(ie4){
+		ansspot.innerHTML=""
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.clear()
+		document.ansspot.document.close()
+	}
+}
+
+function answer(){
+	attempts++
+	if(tried==1)alert("You're already done this one! Get a new question.")
+	else{
+	if(tried==2){totl++;document.forms[0].total.value=totl}
+	if(astring==configstring){
+		tried=1
+		corrt++
+		document.forms[0].correct.value=corrt
+		document.forms[0].results.value="correct"
+	}
+	else{
+		tried=2
+		document.forms[0].results.value="incorrect"
+		attempts++
+	}
+}}		
+</script>
+</head>	
+<body onLoad="cleanse(),setrefs()">
+<h2>Electronic Structures of Atoms and Ions</h2>
+On this page you can practice constructing electronic structures of atoms and ions. When you press "New Problem", an atom or ion will appear in the left side of the page. Place the electrons in the appropriate orbitals in the left side of the page, following the rules for electronic structures. To indicate the degree of occupancy of a given orbital, do the following:<ul>
+<li>If the orbital has no electrons leave the cell empty. If it has a single electron, enter a 1 in the cell. If it has a pair of electrons, enter a 2 in the cell.
+<li>Anything other than empty, a 1 or a 2 will cause your answer to be ruled incorrect.
+<li>Special cases<ul> 
+<li>Half or fully filled d subshells (24 or 29 electrons)such as Cr,Cu must be properly noted. In general, all s<SUP>1</SUP>d<SUP>5</SUP>(24 electrons) and s<SUP>1</SUP>d<SUP>10</sup>(29 electrons) configurations will be considered as preferred, provided the species has a charge of 1+ or less. Thus Mn<sup>1+</sup> is a special case, but Fe<sup>2+</sup> is not. 
+<li>For neutrals and anions the 4s fills before the 3d. For cations, the 3d fills first.
+</ul>
+<li>Since this is an exercise in determining electronic configurations, no effort has been made to limit the possible species to observed ions. Thus, don't be surprised to see Na<sup>3-</sup>.
+<li>Be certain to follow Hund's rule and, for simplicity, fill the orbitals in partially filled subshells from left to right. Thus, if you have 4 electrons in a p subshell, enter them 2 1 1. If you enter other than this, the program will try rearrange your entries according to the above convention.
+</ul>
+<form>
+1s<input type=text size=2>
+2s<input type=text size=2>2p<input type=text size=2><input type=text size=2><input type=text size=2>
+3s<input type=text size=2>3p<input type=text size=2><input type=text size=2><input type=text size=2>
+4s<input type=text size=2>
+3d<input type=text size=2><input type=text size=2><input type=text size=2><input type=text size=2><input type=text size=2>
+4p<input type=text size=2><input type=text size=2><input type=text size=2><br>
+<input type=button value="New Problem" onClick="startit()"><br>
+<input type=button value="Check answer" onClick="ansstring(this.form)">
+<input type=button value="Show answer" onClick="showanswer()"><br>
+<table>
+<tr><td align=center><b>Results</td>
+<td align=center><b>Total Done</td>
+<td><b>Total Correct</td>
+</tr>
+<tr>
+<td><input type="text" name=results size=12></td>
+<td align=center><input type="text" name=total size=4 ></td>
+<td align=center><input type="text" name=correct size=4 ></td>
+</tr>
+<tr>
+</table>
+</form>
+<div id=qspot></div>
+<div id=ansspot></div>
+<div id=refspot></div>
+<br>
+</body>
+</html>

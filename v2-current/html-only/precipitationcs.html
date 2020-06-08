@@ -1,0 +1,205 @@
+<html>
+<head>
+<title>Predicting Precipitation</title>
+<style>
+#qspot {position:absolute;left:310;top:220}
+#ansspot {position:absolute;left:20;top:360;height:300}
+#tspot {position:absolute;left:10;top:300}
+#refspot {position:absolute;left:10;top:600;height:50}
+</style>
+<script src="reflist.js"></script>
+<script src="numberconvert.js"></script>
+<script language="javascript">
+//updated 11/14/00-added complete solution
+var ie4 = (document.all) ? true : false;
+//global variables
+refnumber=130
+theanswer=""
+attempts=0
+tried=0
+anrs=0
+corrt=0
+totl=0
+theformula=""
+K=0
+Q=0
+showK=0
+showQ=0
+mindex=0
+xindex=0
+conc=new Array()
+salt1=new Array("MNO<SUB>3</SUB>","M(NO<SUB>3</SUB>)<SUB>2</SUB>","M(NO<SUB>3</SUB>)<SUB>3</SUB>")
+salt2=new Array("NaX","Na<SUB>2</SUB>X","Na<SUB>3</SUB>X")
+theform="<form><input type=radio name=choice onClick=answer(0)>Yes<input type=radio name=choice onClick=answer(1)>No</form>"
+function clear(){
+	document.forms[0].results.value=""
+	tried=0
+	clearansspot()
+	}
+function cleanse(){
+	clear()
+	document.forms[0].total.value=0
+	document.forms[0].correct.value=0
+	}
+function startit(){
+	clear()
+	totl++
+	document.forms[0].total.value=totl
+	getformula()
+	buildquest()
+}
+function getformula(){
+	Math.random()>.3?cation=1:cation=2;
+	anion=Math.ceil(3*Math.random())
+	if(cation==2 & anion==2)getformula();
+	else{
+	cation==1?theformula="M":theformula=("M<sub>"+cation+"</sub>");
+	anion==1?theformula+="X":theformula+=("X<sub>"+anion+"</sub>");
+	factor=cation+anion
+	getK(factor)
+	getsalts(cation,anion)
+	}
+}
+function getK(factor){
+	s=""
+	for(j=0;j<3;j++)s+=(""+Math.floor(10*Math.random()))
+	s=1/s
+	if(factor==2)K=s*s
+	if(factor==3)K=4*(Math.pow(s,3))
+	if(factor==4)K=27*(Math.pow(s,4))
+	if(factor==5)K=108*(Math.pow(s,5))
+	showK=number(K,3,2)
+	getconcs(s)
+}
+function getsalts(a,b){
+	if(a==1){
+		if(b==1){
+			if(Math.random()>.5){mindex=0;xindex=0}
+			else {mindex=1;xindex=1};
+		}
+		if(b==2){mindex=1;xindex=0};
+		if(b==3){mindex=2;xindex=0};
+	}
+	else{
+		if(b==1){mindex=0;xindex=1};
+		if(b==3){mindex=2;xindex=1}
+	}
+}
+function getconcs(s){
+	conc[1]=s*cation
+	conc[2]=s*anion
+	if(Math.random()>.5){
+		conc[1]=conc[1]/Math.random()
+		conc[2]=conc[2]/Math.random()
+	}
+	else{
+		conc[1]=conc[1]*Math.random()
+		conc[2]=conc[2]*Math.random()
+	}
+	conc[1]=number(conc[1],2,3)
+	conc[2]=number(conc[2],1,3)
+	conc[3]=number(1*conc[1]/2,2,3)
+	conc[4]=number(1*conc[2]/2,2,3)
+	getQ()
+}
+function getQ(){
+	Q=Math.pow(conc[3],cation)*Math.pow(conc[4],anion)
+	showQ=number(Q,2,2)
+	Q>K?ansr=0:ansr=1;
+}
+function buildquest(){
+	thequest="The salt,"+theformula+" has a Ksp of "+showK+". If equal volumes of "+conc[1]+"<b>M</b> "+salt1[mindex]+" and "+conc[2]+"<b>M</b> "+salt2[xindex]+" are mixed, will solid form?"
+	thequest+=theform
+	buildanswer()
+	showquest(thequest)
+}
+function buildanswer(){
+	genform="Q=[M]<sup>"+cation+"</sup>[X]<sup>"+anion+"</sup><br>"
+	specform="Q=["+conc[3]+"]<sup>"+cation+"</sup>["+conc[4]+"]<sup>"+anion+"</sup>="+showQ+"<br>"
+	theanswer="First, determine the concentrations that will result on mixing. In the problems on this page, since equal volumes are used, the new concentrations are 1/2 the initial ones.<Br>"
+	theanswer+=(salt1[mindex]+"="+conc[3]+"<b>M</b><br> "+salt2[xindex]+"="+conc[4]+"<b>M</b><br> ")
+	theanswer+=genform+specform
+	Q>K?theanswer+="Since Q>K,precipitate will form":theanswer+="Since Q<K, precipitate will not form."
+}
+function showquest(thequest){
+	if(ie4){
+		qspot.innerHTML=thequest
+		}
+	else{
+		document.qspot.document.open()
+		document.qspot.document.write(thequest)
+		document.qspot.document.close()
+	}
+}
+function showanswer(){
+	if(ie4){
+		ansspot.innerHTML=theanswer
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.write(theanswer)
+		document.ansspot.document.close()
+	}
+}
+function clearansspot(){
+	if(ie4){
+		ansspot.innerHTML=""
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.clear()
+		document.ansspot.document.close()
+	}
+}
+function answer(theans){
+	if(tried==1)alert("You've already done this one, get a new problem!");
+	else{
+	if(ansr==theans){
+		document.forms[0].results.value="correct";
+		corrt++
+		document.forms[0].correct.value=corrt
+		tried=1
+	}
+	else {
+		document.forms[0].results.value="incorrect";
+		tried=1
+		showanswer()
+		}
+}}
+</script>
+</head>
+
+<body onLoad="cleanse(),setrefs()">
+<h3>Precipitation Reactions</h3>
+<br>
+This page tests your ability to predict precipitation. The problems are generic in that the metal is represented as M and the anion as X. 
+<ul>
+<li>To begin-press "New Problem" and a question will appear to the right of the button. 
+<li>Determine whether a precipitate will form and click on the appropriate circle.
+<li>The results on the problem and a running total will appear in the table.
+<li>If you get a problem "incorrect", a complete solution will appear.
+</ul>
+<form>
+<table>
+<tr><td><input type=button value="New Problem" onClick="startit()"><td>
+</tr>
+</table>
+<table border=4>
+<tr><td align=center><b>Results</td>
+<td align=center><b>Total Done</td>
+<td><b>Total Correct</td>
+</tr>
+<tr>
+<td><input type="text" name=results size=12></td>
+<td align=center><input type="text" name=total size=4 ></td>
+<td align=center><input type="text" name=correct size=4 ></td>
+</tr>
+<tr>
+</table>
+</form>
+<div id=qspot></div>
+<div id=ansspot></div>
+<div id=refspot></div>
+<br>
+</body>
+</html>

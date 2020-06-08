@@ -1,0 +1,185 @@
+<html>
+<head><title>Using Limiting Reagents</title>
+<style>
+#qspot {position:absolute;left:320;top:220}
+#ansspot {position:absolute;left:320;top:360;height:200}
+#tspot {position:absolute;left:10;top:300}
+#refspot {position:absolute;left:10;top:600}
+</style>
+<script src=reactionsets.js></script>
+<script src="reflist.js"></script>
+<script src="numberconvert.js"></script>
+<script language="javascript">
+refnumber=176
+var ie4=(document.all)?true:false;
+totl=0
+corrt=0
+first=0
+second=0
+theanswer=0
+thecmpds=""
+masses=""
+given=""
+ansr=0
+attempts=0
+seq=new Array()
+theunits=new Array("moles","grams")
+qphrase=new Array("For the balanced equation shown below, if "," grams of "," were reacted with "," grams of ",", how many grams of "," would be produced?")
+ansphrase=new Array("To answer this question, first identify the limiting reagent. If your are not familiar with that process, you should review it or go to the following web page <a href='limitreagentcs.html'>Limiting reagents</a> to practice. In this case, the limiting reagent is "," The mass of "," is then determined using the <B>mass ratio from the balanced equation:</B><br>") 
+function cleanse(){
+	clear()
+	document.forms[0].total.value=0
+	document.forms[0].correct.value=0
+}
+function clear(){
+	document.forms[0].results.value=""
+	document.forms[0].theans.value=""
+	clearansspot()
+	tried=0
+	attempts=0
+}
+//clears values and selects an equation using the choose function(part of reactionsets.js)
+function startit(){
+	clear()
+	totl++
+	document.forms[0].total.value=totl
+	document.forms[0].results.value=""
+	choose()
+	if(rxn[choice][0]<1)startit();
+	else{
+	buildquestion()
+	}
+}
+//choice is the index of the selected reaction
+function buildquestion(){
+	first=Math.ceil(rxn[choice][0]*Math.random())
+	second=first
+	while(second==first)second=Math.ceil(rxn[choice][0]*Math.random())
+	first+=1
+	second+=1
+	third=1+rxn[choice][0]+Math.ceil(rxn[choice][1]*Math.random())
+	if(second<first){
+		temp=second
+		second=first
+		first=temp
+	}
+	//this creates a random factor that will generate the values for the question
+	factor=0
+	while(factor<.5 || factor>.8)factor=Math.random();
+	factor=number(factor,3,3)
+	masses=new Array()
+	thecmpds=new Array()
+	thecmpds[0]=getformula(first)
+	thecmpds[1]=getformula(second)
+	thecmpds[2]=getformula(third)
+	masses[0]=getmass(first)
+	masses[1]=getmass(second)
+	masses[2]=getmass(third)
+	given=new Array()
+	given[0]=number(100*Math.random(),3,3)
+	given[1]=number(given[0]*masses[1]/masses[0],3,3)
+	if(Math.random()>.5){
+		given[2]=number(given[1]*factor,3,3)
+		ansr=number(given[2]*masses[2]/masses[1],3,3)
+		buildanswer(1,2)
+	}
+	else{
+		given[2]=number(given[1]/factor,3,3)
+		ansr=number(given[0]*masses[2]/masses[0],3,3)
+		buildanswer(0,1)
+	}
+	thequest=qphrase[0]+given[0]+qphrase[1]+thecmpds[0]+qphrase[2]+given[2]+qphrase[3]+thecmpds[1]+qphrase[4]+thecmpds[2]+qphrase[5]+"<br><br>"+equation+"<br>"
+	showquest(thequest)
+}
+function buildanswer(x,y){
+	eqn="(mass of "+thecmpds[2]+")/(mass of "+thecmpds[x]+")="+masses[2]+"/"+masses[x]+"=(mass of "+thecmpds[2]+")/"+given[y]+"<br>"
+	eqn+="("+masses[2]+"/"+masses[x]+")*"+given[y]+"="+ansr
+	theanswer=ansphrase[0]+thecmpds[x]+ansphrase[1]+thecmpds[2]+ansphrase[2]+eqn
+	showanswer(theanswer)
+}	
+function showquest(thequest){
+	if(ie4){
+		qspot.innerHTML=thequest
+		}
+	else{
+		document.qspot.document.open()
+		document.qspot.document.write(thequest);
+		document.qspot.document.close()
+	}
+}
+
+function answer(ans){
+	attempts++
+	if(tried==1)alert("You've done this one. Get a new problem!")
+	else{
+	if(tried==2){totl++;document.forms[0].total.value=totl}
+	if(ans>.95*ansr & ans<1.05*ansr){
+		document.forms[0].results.value="correct"
+		corrt++
+		document.forms[0].correct.value=corrt
+		tried=1
+	}
+	else{
+		document.forms[0].results.value="incorrect"
+		tried=2
+	}}
+}
+function showanswer(){
+if(attempts>=3){
+	if(ie4){
+		ansspot.innerHTML=theanswer
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.write(theanswer)
+		document.ansspot.document.close()
+	}
+ }
+}	
+function clearansspot(){
+	if(ie4){
+		ansspot.innerHTML=""
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.clear()
+		document.ansspot.document.close()
+	}
+}
+
+</script>	
+</head>
+<body onLoad=cleanse(),setrefs()>
+<h3>Using the Limiting Reagent</h3>
+This page provides exercises in using the limiting reagent to determine the quantity of a product that should be produced. When you press "New Problem", a balanced chemical equation with a question will be displayed. Determine the correct value of the answer, enter it in the cell and press "Check Answer." Results will appear immediately in the scoring table. If you miss a problem three times, pressing "Show Answer" will cause a complete solution to appear.
+<form>
+<table>
+<tr><td><input type=button value="New Problem" onClick="startit()"><td></tr>
+<tr><td><b>Enter your answer</b></td>
+<td><input type="text" name=theans size=8></td>
+</tr>
+<tr>
+<td><input type=button value="Check answer" onClick="answer(this.form.theans.value)"></td>
+<td><input type=button value="Show answer" onClick="showanswer()"></td>
+</tr>
+</table>
+<table border=4>
+<tr><td align=center><b>Results</td>
+<td align=center><b>Total Done</td>
+<td><b>Total Correct</td>
+</tr>
+<tr>
+<td><input type="text" name=results size=12></td>
+<td align=center><input type="text" name=total size=4 ></td>
+<td align=center><input type="text" name=correct size=4 ></td>
+</tr>
+<tr>
+</table>
+</form>
+<div id=qspot></div>
+<div id=ansspot></div>
+<div id=refspot></div>
+<br>
+</body>
+</html>
+

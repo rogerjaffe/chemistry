@@ -1,0 +1,206 @@
+<html>
+<head><title>Significant Figures</title>
+<style>
+#qspot {position:absolute;left:500;top:220}
+#ansspot {position:absolute;left:400;top:300;height:200}
+#tspot {position:absolute;left:10;top:300}
+#refspot {position:absolute;left:10;top:600;height:200}
+</style>
+<script src=reflist.js></script>
+<script language="javascript">
+//updated 12/6/00-added complete solution
+//tested w/ N4.7 and IE5
+//globals
+refnumber=1
+var ie4 = (document.all) ? true : false;
+attempts=0
+theanswer=""
+totl=0
+corrt=0
+answered=0
+tried=0
+numbers=new Array()
+thenumber=0
+howlong=0
+zeros=0
+function parts(p1,p2,p3,p4,p5,p6){
+	this.p1=p1
+	this.p2=p2
+	this.p3=p3
+	this.p4=p4
+	this.p5=p5
+	this.p6=p6
+}
+ansphrase=new Array()
+ansphrase[1]=new parts("The number presented is an integer. In this case, the number of signficant figures is determined by counting from the left until you reach the last non-zero value. 'Trailing' zeros (those to the right of the last non-zero digit) are not significant. Thus,<b> ","</b> has <b>","</b> significant figures.")
+ansphrase[3]=new parts("This is a real number containing a decimal point. To determine the number of significant figures, count from the right to the last non-zero value. 'Leading zeros'( those to the left of the last non-zero digit are not significant.Thus,<b> ","</b> has <b>","</b> significant figures.")
+ansphrase[2]=new parts("This number is presented in scientific notation. The number of significant figures is determined solely by the coefficient, using the rule for real numbers. To determine the number of significant figures, count from the rightmost position in the coefficient to the last non-zero value. Thus,<b> ","</b> has <b>","</b> significant figures.")
+ansphrase[4]=ansphrase[3]
+function cleanse(){
+	clear()
+	document.forms[0].total.value=0
+	document.forms[0].correct.value=0
+}
+function clear(){
+	document.forms[0].theans.value=""
+	document.forms[0].results.value=""
+	tried=0
+	clearansspot()
+	attempts=0
+}
+function clearansspot(){
+	if(ie4){
+		ansspot.innerHTML=""
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.clear()
+		document.ansspot.document.close()
+	}
+}
+//This is the function started when "New Problem" is pushed	
+//This function first clears all old values.
+//The coefficient is then generated using Math.random(). 
+function startit(){
+	clear()
+	totl++
+	document.forms[0].total.value=totl
+	thenumber=""
+	choice=Math.ceil(4*Math.random())
+	if(choice==1)thenumber=getinteger();
+	if(choice>2)thenumber=getreal();
+	if(choice==2)thenumber=getscinot();
+	buildquest()
+	buildanswer(choice)
+	document.forms[0].theans.focus()
+	document.forms[0].theans.select()
+}
+function getinteger(){
+	howlong=Math.ceil(5*Math.random())
+	for(j=1;j<=howlong;j++)thenumber+=Math.ceil(9*Math.random());
+	ans=howlong
+	return addzeros(thenumber)
+}
+function getreal(){
+	if(Math.random()<.5){
+		thenumber="0."
+		thenumber=addzeros(thenumber)
+		howlong=Math.ceil(5*Math.random())
+		for(j=1;j<=howlong;j++)thenumber+=Math.ceil(9*Math.random());
+		thenumber=addzeros(thenumber)
+		ans=howlong+zeros
+		return thenumber
+	}
+	else{
+		howlong=Math.ceil(3*Math.random())
+		for(j=1;j<=howlong;j++)thenumber+=Math.ceil(9*Math.random());
+		thenumber+="."
+		howlong=Math.ceil(3*Math.random())
+		for(j=1;j<=howlong;j++)thenumber+=Math.ceil(9*Math.random());
+		thenumber=addzeros(thenumber)
+		key=""+thenumber
+		ans=key.length-1
+		return thenumber
+	}
+}
+function getscinot(){
+	thenumber=Math.ceil(9*Math.random())+"."
+	for(j=1;j<=(Math.floor(4*Math.random()));j++)thenumber+=Math.ceil(9*Math.random());
+	thenumber=addzeros(thenumber)
+	key=""+thenumber
+	ans=key.length-1
+	if(Math.random()>.5)sign="+";
+		else sign="-";
+	exponent=Math.ceil(10*Math.random())
+	return (thenumber+"*10<sup>"+sign+exponent+"</sup>")
+}
+function addzeros(thenumber){
+		zeros=Math.ceil(3*Math.random())
+		for(j=1;j<=zeros;j++)thenumber+="0"
+		return thenumber
+}
+function buildquest(){
+	showquest()
+}
+function showquest(thequest){
+	if(ie4){
+		qspot.innerHTML="Determine the number of signficant figures in "+thenumber
+		}
+	else{
+		document.qspot.document.open()
+		document.qspot.document.write("Determine the number of signifcant figures in ",thenumber)
+		document.qspot.document.close()
+	}
+}
+function buildanswer(choice){
+	theanswer=ansphrase[choice].p1+thenumber+ansphrase[choice].p2+ans+ansphrase[choice].p3	
+	showanswer(theanswer)
+}
+function showanswer(){
+if(attempts>=3){
+	if(ie4){
+		ansspot.innerHTML=theanswer
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.write(theanswer)
+		document.ansspot.document.close()
+	}
+	}
+}	
+	
+// This is the "Check Answer Function
+function answer(val){	
+if(tried==1){
+	alert("You've already done this one! Get a new problem.")
+	}
+else{
+	if(tried==2){totl++;document.forms[0].total.value=totl;}
+	attempts++
+	if (val==ans){
+	tried=1
+	document.forms[0].results.value="correct"
+	document.forms[0].correct.value++}
+	else 	{document.forms[0].results.value="incorrect"
+		tried=2
+		}
+	}
+}
+</script>
+</head>
+<body onLoad="cleanse(),setrefs()">
+<h2>Significant Figures</h2>
+Here you can drill regarding significant figures. When you hit "New Number",
+a question will appear to the right of the table. Enter the number of signifcant figures
+in the answer cell and press "Check Answer". The results appear in the second table.
+<ul>
+<li>If you miss a problem three times, pressing "Show Answer" will cause the correct answer to appear.
+</ul>
+<form>
+<br><br>
+<input type=button value="New Problem" onClick="startit()">
+<table border=4>
+<tr>
+<td><input type="text" name=theans size=8>Enter your answer here</td>
+<td><input type="button" value="Check Answer" onClick=answer(this.form.theans.value)></td>
+<td><input type="button" value="Show Answer" onClick=showanswer()></td>
+</tr>
+</table>
+<br>
+<table border=4>
+<tr><td align=center><b>Results</td>
+<td align=center><b>Total Done</td>
+<td><b>Total Correct</td>
+</tr>
+<tr>
+<td><input type="text" name=results size=12></td>
+<td align=center><input type="text" name=total size=4 ></td>
+<td align=center><input type="text" name=correct  size=4 ></td>
+</tr>
+</table>
+</form>
+<div id=qspot></div>
+<div id=ansspot></div>
+<div id=refspot></div>
+</body>
+</html>

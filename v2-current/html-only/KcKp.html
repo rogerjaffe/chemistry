@@ -1,0 +1,258 @@
+<html>
+<head><title>Kp and Kc-cs</title>
+<style>
+#qspot {position:absolute;left:320;top:240}
+#ansspot {position:absolute;left:320;top:400;height:300}
+#tspot {position:absolute;left:10;top:300}
+#refspot {position:absolute;left:10;top:600}
+</style>
+<script src="reflist.js"></script>
+<script src="numberconvert.js"></script>
+<script language=javascript>
+//updated 1/9/01 added complete solution
+var ie4 = (document.all) ? true : false;
+refnumber=201
+totl=0
+corrt=0
+tried=0
+attempts=0
+which=0
+threaction=0
+theK=0
+kp=0
+t=0
+dn=0
+anser=0
+theanswer=""
+cmpd=new Array()
+coef=new Array()
+cmpd[1]=new Array(2,"H<SUB>2</SUB>","O<SUB>2</SUB>","H<SUB>2</SUB>O")
+coef[1]=new Array(-2,-1,2)
+cmpd[2]=new Array(2,"N<SUB>2</SUB>","H<SUB>2</SUB>","NH<SUB>3</SUB>") 
+coef[2]=new Array(-1,-3,2)
+cmpd[3]=new Array(1,"CH<SUB>3</SUB>OH","CO","H<SUB>2</SUB>")
+coef[3]=new Array(-1,1,2)
+cmpd[4]=new Array(2,"CO","H<SUB>2</SUB>","CH<SUB>3</SUB>OH")
+coef[4]=new Array(-1,-2,1)
+cmpd[5]=new Array(2,"NO","O<SUB>2</SUB>","NO<SUB>3</SUB>")
+coef[5]=new Array(-1,-1,1)
+cmpd[6]=new Array(1,"NO<SUB>3</SUB>","NO"," O<SUB>2</SUB>")
+coef[6]=new Array(-1,1,1)
+cmpd[7]=new Array(2,"NO<SUB>3</SUB>"," NO","NO<SUB>2</SUB>")
+coef[7]=new Array(-1,-1,2)
+cmpd[8]=new Array(1,"NO<SUB>2</SUB>","NO<SUB>3</SUB>"," NO")
+coef[8]=new Array(-2,1,1)
+cmpd[9]=new Array(2,"NO","O<SUB>2</SUB>","NO<SUB>2</SUB>")
+coef[9]=new Array(-2,-1,2)
+cmpd[10]=new Array(2,"H<SUB>2</SUB>","ICl","I<SUB>2</SUB>","HCl")
+coef[10]=new Array(-1,-2,1,2)
+cmpd[11]=new Array(2,"I<SUB>2</SUB>","HCl","H<SUB>2</SUB>","ICl")
+coef[11]=new Array(-1,-2,1,2)
+cmpd[12]=new Array(2,"CO","NO","CO<SUB>2</SUB>","N<SUB>2</SUB>")
+coef[12]=new Array(-2,-2,2,1)
+cmpd[13]=new Array(2,"CO<SUB>2</SUB>","N<SUB>2</SUB>","CO","NO")
+coef[13]=new Array(-2,-1,2,2)
+cmpd[14]=new Array("SO<SUB>2</SUB>","O<SUB>2</SUB>","SO<SUB>3</SUB>")
+coef[14]=new Array(2,1,2)
+cmpd[15]=new Array(1,"SO<SUB>3</SUB>","SO<SUB>2</SUB>","O<SUB>2</SUB>")
+coef[15]=new Array(-2,2,1)
+cmpd[16]=new Array(1,"N<SUB>2</SUB>O<SUB>4</SUB>","NO<SUB>2</SUB>")
+coef[16]=new Array(-1,2)
+cmpd[17]=new Array(1,"NO<SUB>2</SUB>","N<SUB>2</SUB>O<SUB>4</SUB>")
+coef[17]=new Array(-2,1)
+cmpd[18]=new Array(1,"NOBr","NO"," Br<SUB>2</SUB>")
+coef[18]=new Array(-2,1,2)
+cmpd[19]=new Array(2,"CH<SUB>4</SUB>"," O<SUB>2</SUB>","H<SUB>2</SUB>CO","H<SUB>2</SUB>O")
+coef[19]=new Array(-1,-1,1,1)
+cmpd[20]=new Array(2,"NO","Br<SUB>2</SUB>","NOBr")
+coef[20]=new Array(-2,-1,2)
+cmpd[21]=new Array(2,"CS<SUB>2</SUB>","4H<SUB>2</SUB>","CH<SUB>4</SUB>","H<SUB>2</SUB>S")
+coef[21]=new Array(-1,-4,1,2)
+cmpd[22]=new Array(2,"CO","H<SUB>2</SUB>O","CO<SUB>2</SUB>","H<SUB>2</SUB>")
+coef[22]=new Array(-1,-1,1,1)
+cmpd[23]=new Array(2,"CO<SUB>2</SUB>","H<SUB>2</SUB>","CO","H<SUB>2</SUB>O")
+coef[23]=new Array(-1,-1,1,1)
+cmpd[24]=new Array(2,"CH<SUB>4</SUB>","H<SUB>2</SUB>S","CS<SUB>2</SUB>","4H<SUB>2</SUB>")
+coef[24]=new Array(-1,-2,1,4)
+cmpd[25]=new Array(1,"SO<SUB>2</SUB>Cl<SUB>2</SUB>","SO<SUB>2</SUB>","Cl<SUB>2</SUB>")
+coef[25]=new Array(-1,1,1)
+cmpd[26]=new Array(2,"SO<SUB>2</SUB>","Cl<SUB>2</SUB>","SO<SUB>2</SUB>Cl<SUB>2</SUB>")
+coef[26]=new Array(-1,-1,1)
+cmpd[27]=new Array(2,"Cl<SUB>2</SUB>","F<SUB>2</SUB>","ClF<SUB>3</SUB>")
+coef[27]=new Array(-1,-3,2)
+cmpd[28]=new Array(1,"ClF<SUB>3</SUB>","Cl<SUB>2</SUB>","F<SUB>2</SUB>")
+coef[28]=new Array(-2,1,3)
+cmpd[29]=new Array(1,"COF<SUB>2</SUB>","CO<SUB>2</SUB>","CF<SUB>4</SUB>")
+coef[29]=new Array(-2,1,1)
+cmpd[30]=new Array(2,"CO<SUB>2</SUB>","CF<SUB>4</SUB>","COF<SUB>2</SUB>")
+coef[30]=new Array(-1,-1,2)
+cmpd[31]=new Array(2,"CO","Cl<SUB>2</SUB>","COCl<SUB>2</SUB>")
+coef[31]=new Array(-1,-1,1)
+cmpd[32]=new Array(1,"COCl<SUB>2</SUB>","CO","Cl<SUB>2</SUB>")
+coef[32]=new Array(-1,1,1)
+cmpd[33]=new Array(1,"PCl<SUB>5</SUB>","PCl<SUB>3</SUB>","Cl<SUB>2</SUB>")
+coef[33]=new Array(-1,1,1)
+cmpd[34]=new Array(2,"PCl<SUB>3</SUB>","Cl<SUB>2</SUB>","PCl<SUB>5</SUB>")
+coef[34]=new Array(-1,-1,1)
+cmpd[35]=new Array(2,"N<SUB>2</SUB>O","O<SUB>2</SUB>","N<SUB>2</SUB>O<SUB>4</SUB>")
+coef[35]=new Array(-2,-3,2)
+cmpd[36]=new Array(1,"N<SUB>2</SUB>O<SUB>4</SUB>","N<SUB>2</SUB>O","O<SUB>2</SUB>")
+coef[36]=new Array(-2,2,3)
+basequest=new Array("Given the balanced equation and the value of K<sub>c</sub><br>","<br>What is the value of K<sub>p</sub>?")
+ansphrase=new Array("First, write the equation for Q","Then carefully substitute in the values and calculate K, making sure that you include the exponents in your calculation.")
+//begin programs
+function clear(){
+	document.forms[0].results.value=""
+	document.forms[0].theans.value=""
+	attempts=0
+	tried=0
+	if(ie4) ansspot.innerHTML=""
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.clear()
+		document.ansspot.document.close()
+		}
+}
+function startit(){
+	clear()
+	tried=0
+	totl++
+	document.forms[0].total.value=totl
+	which=Math.ceil(36*Math.random())
+	prods=0;reags=0;
+	for(j=0;j<cmpd[which][0];j++)reags+=Math.abs(coef[which][j])
+	for(j=cmpd[which][0];j<coef[which].length;j++)prods+=Math.abs(coef[which][j])
+	dn=prods-reags
+	getreaction()
+	theK=0
+	while(theK<1)theK=number(10*Math.random(),3,3);
+	t=0
+	while(t<250)t=number(500*Math.random(),3,3);
+	buildquest()
+	buildanswer(theK,t,dn)
+}
+function getreaction(){
+	cef=new Array()
+	thereaction=""
+	for(var b=0;b<coef[which].length;b++){
+		(Math.abs(coef[which][b])==1)?cef[b]="":cef[b]=Math.abs(coef[which][b]);
+	}
+	for(var l=1;l<=cmpd[which][0];l++){
+		l<cmpd[which][0]?thereaction+=(cef[l-1]+cmpd[which][l]+" + "):thereaction+=(cef[l-1]+cmpd[which][l]+"=>");
+	}
+	for(var l=(cmpd[which][0]+1);l<cmpd[which].length;l++){
+		l<(cmpd[which].length-1)?thereaction+=(cef[l-1]+cmpd[which][l]+" + "):thereaction+=(cef[l-1]+cmpd[which][l]);
+	}
+	return thereaction
+}
+function getform(){
+	gformula="Q="
+	vformula=""
+	for(var j=cmpd[which][0]+1;j<cmpd[which].length;j++){
+		gformula+=("["+cmpd[which][j]+"]")
+		vformula+=("["+conc[j-1]+"]")
+		if(Math.abs(coef[which][j-1])!=1){
+			gformula+=("<sup>"+Math.abs(coef[which][j-1])+"</sup>");
+			vformula+=("<sup>"+Math.abs(coef[which][j-1])+"</sup>");
+		}
+	}
+	gformula+="<B>/</B>"
+	vformula+="<B>/</B>"
+	for(var j=1;j<=cmpd[which][0];j++){
+		gformula+=("["+cmpd[which][j]+"]")
+		vformula+=("["+conc[j-1]+"]")
+		if(Math.abs(coef[which][j-1])!=1){
+			gformula+=("<sup>"+Math.abs(coef[which][j-1])+"</sup>");
+			vformula+=("<sup>"+Math.abs(coef[which][j-1])+"</sup>");
+		}
+	}
+}
+function buildquest(){
+	thequest=basequest[0]+thereaction+"<br>K="+theK+"<br>T="+t+"K<br>"
+	thequest+=basequest[1]
+	showquest(thequest)
+}
+function buildanswer(theK,t,dn){
+	term=.0821*t
+	kp=theK*Math.pow(term,dn)
+	kp=number(kp,3,3)
+	theanswer="Kp=Kc*(RT)<sup>dn</sup><br>dn="
+	theanswer+=(prods+"-"+reags+"="+dn);
+	theanswer+="<br>Kp="+theK+"*"+"(.0821*"+t+")<sup>"+dn+"</sup>="+kp
+	showanswer()
+}
+function showquest(thequest){
+	if(ie4){
+		qspot.innerHTML=thequest
+		}
+	else{
+		document.qspot.document.open()
+		document.qspot.document.write(thequest)	
+		document.qspot.document.close()
+	}
+}
+
+function showanswer(){
+if(attempts>=3){
+	if(ie4){
+		ansspot.innerHTML=theanswer
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.write(theanswer)
+		document.ansspot.document.close()
+	}
+	}
+}	
+	
+function answer(ans){
+	attempts++
+	if(tried==1)alert("You've done this one! Get a new problem.");
+	else{
+	if(tried==2){
+		totl++
+		document.forms[0].total.value=totl
+	}
+	if(ans>.95*kp & ans<1.05*kp){
+		document.forms[0].results.value="correct"
+		corrt++
+		document.forms[0].correct.value=corrt
+		tried=1
+	}
+	else{
+		document.forms[0].results.value="incorrect"
+		tried=2
+	}
+}}
+</script>
+</head>
+<body onLoad="clear(),setrefs()">
+<h2>Kp and Kc</h2>
+This page is an exercise in converting K<SUB>c</SUB> to K<SUB>p</SUB>. When you press "New Question" a  a balanced equation, an  equilibrium constant(K<SUB>c</SUB>) and a temperature will be displayed to the right of the table.  Use the information provided to determine the value of K<SUB>p</SUB>. Enter it in the answer cell and press "Check Answer." The results will appear in the table on the main page.<br>
+<ul>
+<li>All species shown in the reaction are considered to be gaseous under the reaction conditions.
+<li>'dn' represents "moles product-moles reagent"
+<li>If you miss a problem three times, pressing "Show Answer" will cause a complete solution to appear.
+</ul>
+<form>
+<input type="button" value="New Problem" onClick=startit()><br>
+<input type="text" name=theans size=12>
+<input type="button" value="Check Answer" onClick=answer(this.form.theans.value)><br>
+<td><input type="button" value="Show Answer" onClick=showanswer()><br>
+<table border=4>
+<tr><td align=center><b>Results</td>
+<td align=center><b>Total Done</td>
+<td><b>Total Correct</td>
+</tr>
+<tr>
+<td><input type="text" name=results size=12></td>
+<td align=center><input type="text" name=total size=4 ></td>
+<td align=center><input type="text" name=correct size=4 ></td>
+</tr>
+</table>
+</form>
+<div id=qspot></div>
+<div id=ansspot></div>
+<div id=refspot></div>
+</body>
+</html>

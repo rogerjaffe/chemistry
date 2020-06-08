@@ -1,0 +1,268 @@
+<html>
+<head><title>Elements,mass and moles-homework</title>
+<script language=javascript>
+thepage="Elements, moles and masses(9)"
+howlong=""
+totl=0
+corrt=0
+tried=0
+which=""
+tried=0
+theanswer=""
+ans = new Array()
+function clear(){
+	for (var i=0;i<3;i++){
+		document.forms[0].elements[i].value=""}
+	document.forms[0].results.value=""
+	tried=0
+}
+function cleanse(){
+clear()
+document.forms[0].total.value=0
+document.forms[0].correct.value=0
+document.forms[0].time.value=""
+}
+function MakeArray(n){
+	this.length=n
+	for (var i=1;i<=n;i++){
+	this[i]= 0}
+}
+function atom(name,sym,an,mass,ione,itwo,ithree){
+	this.name=name
+	this.sym=sym
+	this.an=an
+	this.mass=mass
+	this.ione=ione
+	this.itwo=itwo
+	this.ithree=ithree
+}
+a=new MakeArray(107);
+a[1]=new atom("hydrogen","H",1,1.0079,1,2,3)
+a[2]=new atom("helium","He",2,4.00260,3,4,6)
+a[3]=new atom("lithium","Li",3,6.941,6,7,8)
+a[4]=new atom("beryllium","Be",4,9.01218,9,10,11)
+a[5]=new atom("boron","B",5,10.811,8,10,11)
+a[6]=new atom("carbon","C",6,12.011,12,13,14)
+a[7]=new atom("nitrogen","N",7,14.0067,14,15,16)
+a[8]=new atom("oxygen","O",8,15.9994,16,17,18)
+a[9]=new atom("fluorine","F",9,18.99840,17,18,19)
+a[10]=new atom("neon","Ne",10,20.1797,20,21,22)
+a[11]=new atom("sodium","Na",11,22.98977,22,23,24)
+a[12]=new atom("magnesium","Mg",12,24.305,24,25,26)
+a[13]=new atom("aluminum","Al",13,26.98154,26,27,28)
+a[14]=new atom("silicon","Si",14,28.086,28,29,30)
+a[15]=new atom("phosphorus","P",15,30.97376,30,31,32)
+a[16]=new atom("sulfur","S",16,32.066,32,33,34)
+a[17]=new atom("chlorine","Cl",17,35.453,35,36,37)
+a[18]=new atom("argon","Ar",18,39.948,39,40,41)
+a[19]=new atom("potassium","K",19,39.098,39,40,41)
+a[20]=new atom("calcium","Ca",20,40.08,40,42,44)
+a[21]=new atom("scandium","Sc",21,44.9559,44,45,46)
+a[22]=new atom("titanium","Ti",22,47.88,46,47,48)
+a[23]=new atom("vanadium","V",23,50.9415,50,51,52)
+a[24]=new atom("chromium","Cr",24,51.996,52,53,54)
+a[25]=new atom("manganese","Mn",25,54.9380,54,55,56)
+a[26]=new atom("iron","Fe",26,55.847,54,56,57)
+a[27]=new atom("cobalt","Co",27,58.9332,58,59,60)
+a[28]=new atom("nickel","Ni",28,58.69,58,60,62)
+a[29]=new atom("copper","Cu",29,63.546,63,64,65)
+a[30]=new atom("zinc","Zn",30,65.39,64,66,68)
+a[31]=new atom("gallium","Ga",31,69.723,69,70,71)
+a[32]=new atom("germanium","Ge",32,72.61,70,72,74)
+a[33]=new atom("arsenic","As",33,74.9216,74,75,76)
+a[34]=new atom("selenium","Se",34,78.98,76,78,80)
+a[35]=new atom("bromine","Br",35,79.904,79,80,81)
+a[36]=new atom("krypton","Kr",36,83.80,83,84,86)
+a[37]=new atom("rubidium","Rb",37,85.4678,85,86,87)
+a[38]=new atom("strontium","Sr",38,87.62,86,87,88)
+a[39]=new atom("yttrium","Y",39,88.9059,88,89,90)
+a[40]=new atom("zirconium","Zr",40,91.224,90,92,94)
+a[41]=new atom("niobium","Nb",41,92.9064,90,93,95)
+a[42]=new atom("molybdenum","Mo",42,95.94,95,96,98)
+a[43]=new atom("technetium","Tc",43,98,101,102,104)
+a[44]=new atom("ruthenium","Ru",44,101.07,102,103,104)
+a[45]=new atom("rhodium","Rh",45,102.9055,103,105,108)
+a[46]=new atom("palladium","Pd",46,106.42,105,106,108)
+a[47]=new atom("silver","Ag",47,107.868,107,109,110)
+a[48]=new atom("cadmium","Cd",48,112.411,112,113,114)
+a[49]=new atom("indium","In",49,114.82,113,115,117)
+a[50]=new atom("tin","Sn",50,118.710,116,118,120)
+a[51]=new atom("antimony","Sb",51,121.75,121,123,125)
+a[52]=new atom("tellurium","Te",52,127.60,126,128,130)
+a[53]=new atom("iodine","I",53,126.9045,126,127,128)
+a[54]=new atom("xenon","Xe",54,131.29,129,131,132)
+a[55]=new atom("cesium","Cs",55,132.9054,132,133,136)
+a[56]=new atom("barium","Ba",56,137.27,136,137,138)
+a[57]=new atom("lanthanum","La",57,138.9055,138,139,140)
+a[58]=new atom("cerium","Ce",58,140.115,140,142,144)
+a[59]=new atom("praseodymium","Pr",59,140.9077,141,143,144)
+a[60]=new atom("neodymium","Nd",60,144.24,142,144,145)
+a[61]=new atom("promethium","Pm",61,145,147,148,150)
+a[62]=new atom("samarium","Sm",62,150.36,149,152,154)
+a[63]=new atom("europium","Eu",63,151.985,151,153,155)
+a[64]=new atom("gadollinium","Gd",64,157.25,156,158,160)
+a[65]=new atom("terbium","Tb",65,158.925,158,159,160)
+a[66]=new atom("dysprosium","Dy",66,162.50,162,163,164)
+a[67]=new atom("holmium","Ho",67,164.930,164,165,166)
+a[68]=new atom("erbium","Er",68,167.26,166,167,168)
+a[69]=new atom("thullum","Tm",69,168.9342,168,169,170)
+a[70]=new atom("ytterblum","Yb",70,173.04,172,173,174)
+a[71]=new atom("lutetium","Lu",71,174.97,174,174,176)
+a[72]=new atom("hafnium","Hf",72,178.49,178,179,180)
+a[73]=new atom("tantalum","Ta",73,180.9479,180,181,182)
+a[74]=new atom("tungsten","W",74,183.85,183,184,186)
+a[75]=new atom("rhenium","Re",75,186.207,185,186,187)
+a[76]=new atom("osmium","Os",76,190.2,189,190,192)
+a[77]=new atom("iridium","Ir",77,192.22,191,192,193)
+a[78]=new atom("platinum","Pt",78,195.08,194,195,196)
+a[79]=new atom("gold","Au",79,196.9665,196,197,198)
+a[80]=new atom("mercury","Hg",80,200.59,200,201,202)
+a[81]=new atom("thallium","Tl",81,204.383,203,205,207)
+a[82]=new atom("lead","Pb",82,207.2,206,207,208)
+a[83]=new atom("bismuth","Bi",83,208.9804,208,209,210)
+a[84]=new atom("polonium","Po",84,209,209,210,211)
+a[85]=new atom("astatine","At",85,210,211,212,213)
+a[86]=new atom("radon","Rn",86,222,220,222,224)
+a[87]=new atom("francium","Fr",87,223,221,223,225)
+a[88]=new atom("radium","Ra",88,226.0254,225,226,228)
+a[89]=new atom("actinium","Ac",89,227.0278,227,228,229)
+a[90]=new atom("thorium","Th",90,232.0381,230,232,234)
+a[91]=new atom("protactinium","Pa",91,231.0359,234,236,237)
+a[92]=new atom("uranium","U",92,238.029,235,238,240)
+a[93]=new atom("neptunium","Np",93,237.0482,238,240,241)
+a[94]=new atom("plutonium","Pu",94,244,244,246,247)
+a[95]=new atom("americium","Am",95,243,243,245,247)
+a[96]=new atom("curium","Cm",96,247,245,248,250)
+a[97]=new atom("berkelium","Bk",97,247,249,250,251)
+a[98]=new atom("californium","Cf",98,251,250,253,254)
+a[99]=new atom("einsteinum","Es",99,252,252,253,255)
+a[100]=new atom("fermium","Fm",100,257,256,257,258)
+a[101]=new atom("mendelevium","Md",101,258,256,257,258)
+a[102]=new atom("nobelium","No",102,259,252,257,258)
+a[103]=new atom("lawrencium","Lr",103,260,258,259,260)
+a[104]=new atom("unnilquadium","Rf",104,261,258,259,261)
+a[105]=new atom("unnilpentium","Ha",105,262,261,262,263)
+a[106]=new atom("unnilhexium","Unh",106,263,263,263,263)
+a[107]=new atom("unnilseptium","Uns",107,262,262,262,262);
+function begin(){
+	tried=0
+	totl++
+	document.forms[0].total.value=totl
+	clear()
+	d=Math.round(.5+103*Math.random())
+	if (d<1){d=1}
+	if (d>103){d=103}
+	moles(d)
+}
+function moles(d){
+	var mass=Math.round(100*90*Math.random())/100
+	var moles=mass/a[d]["mass"]
+	if(moles<.01){moles=Math.round(100000*moles)/100000}
+	else{
+	if(moles<.10){moles=Math.round(10000*moles)/10000}
+	else{moles=Math.round(1000*moles)/1000}}
+	display2(mass,moles,d)
+}
+function display2(mass,moles,z){
+	document.forms[0].elements[0].value=a[d]["an"]
+	document.forms[0].elements[1].value=moles
+	document.forms[0].elements[2].value=mass
+	ans[0]=a[d]["an"]
+	ans[1]=moles
+	ans[2]=mass
+	h=Math.random()
+	if (h<.33){document.forms[0].elements[0].value=""
+	document.forms[0].elements[0].focus()
+	document.forms[0].elements[0].select()}
+	else{if (h<.67){document.forms[0].elements[1].value=""
+	document.forms[0].elements[1].focus()
+	document.forms[0].elements[1].select()}
+	else{document.forms[0].elements[2].value=""
+	document.forms[0].elements[2].focus()
+	document.forms[0].elements[2].select()}}
+}
+function answer(form){
+if(tried==1){
+		alert("Sorry, you've already submitted this problem! We'll get you a new one!")
+		begin()}
+else{
+ 	if(tried==2){totl++;document.forms[0].total.value=totl}
+	var tally=0
+	for (var i=0;i<3;i++){
+	if (document.forms[0].elements[i].value>.99*ans[i] &
+	document.forms[0].elements[i].value<1.01*ans[i]){
+	tally++}}
+	if (tally==3){
+	document.forms[0].results.value="correct"
+	corrt++
+	document.forms[0].correct.value=corrt
+	tried=1
+	}
+	else {
+	tried=2
+	document.forms[0].results.value="incorrect"}
+}}
+
+function timer(z){
+tt=z
+var b=Math.floor(tt/60)
+var j = (tt % 60)
+if (j<10){c="0"}
+else {c=""}
+howlong=b + ":" + c + j
+running=setTimeout("timer(tt+1)",1000)
+}
+function update(){
+	document.forms[0].total.value=totl
+	document.forms[0].correct.value=corrt
+	document.forms[0].time.value=howlong
+	document.forms[0].page.value=thepage
+	document.forms[0].verify.value=Math.round(10000*Math.random())
+}
+
+
+</script>
+</head>
+<body onLoad="cleanse(), timer(0)">
+<h2>Elements, moles and masses</h2>
+This page contains an array for 103 elements. When you  press "New Problem" a problem is generated by filling two of the cells in
+the first table. Put the correct value in the empty cell and press
+"Check Ans." Results appear in the second table. You need a periodic table or list of
+elements and atomic weights to use this page.<br><br>
+<form ACTION = "../cgi-bin/homework/hw_turnin.php" METHOD = "POST">
+<table border=4>
+<tr>
+<td align=center><b>Atomic#</td>
+<td><b>moles</td>
+<td><b>mass</td>
+</tr>
+<tr>
+<td align=center><input type="text" size=3></td>
+<td align=center><input type="text" size=8></td>
+<td align=center><input type="text" size=8></td>
+</tr>
+<tr>
+<td><input type="button" value="New Problem" onClick=begin()></td>
+<td><input type="button" value="Check Ans" onClick=answer(this.form)></td>
+</tr>
+</table>
+<table border=4>
+<tr>
+<td align=center><b>Results</td>
+<td align=center><b>Total Done</td>
+<td><b>Total Correct</td>
+</tr>
+<tr>
+<td><input type="text" name="results" size=12></td>
+<td align=center><input type="text" name="total" size=4 ></td>
+<td align=center><input type="text" name="correct" size=4 ></td>
+</table>
+<input type=text name="page" size=1>
+<input type=text name="verify" size=1>
+<input type=text name="time" size=1><br>
+<INPUT TYPE = "submit" VALUE = "Submit your score" onClick="update()">
+<br>
+<a href="index.html"><img src="back.gif"></a><br>
+</form>
+</body>
+</html>

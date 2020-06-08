@@ -1,0 +1,252 @@
+<html>
+<head>
+<title>Drago-Wayland Parameters-#1</title>
+<script>
+thepage="Using Drago-Wayland #1(80)"
+totl=0
+corrt=0
+tried=0
+howlong=""
+reaction=""
+function clear(){
+	document.forms[0].results.value=""
+	document.forms[0].total.value=totl
+	document.forms[0].correct.value=corrt
+}
+function MakeArray(n){
+	this.length=n
+	for (var i=1;i<=n;i++){
+	this[i]= 0}
+}
+function acid(formula,EA,CA,RA){
+	this.formula=formula
+	this.EA=EA
+	this.CA=CA
+	this.RA=RA
+}
+function base(formula,EB,CB,TB){
+	this.formula=formula
+	this.EB=EB
+	this.CB=CB
+	this.TB=TB
+}
+lewisacid=new MakeArray(50)
+lewisbase=new MakeArray(50)
+lewisacid[1]=new acid("I<sub>2</sub>",.5,2,0)
+lewisacid[2]=new acid("H<sub>2</sub>O",1.54,.13,.2)
+lewisacid[3]=new acid("SO<sub>2</sub>",.56,1.52,.85)
+lewisacid[4]=new acid("HF",2.03,.30,.47)
+lewisacid[5]=new acid("HCN",1.77,.50,.54)
+lewisacid[6]=new acid("CH<SUB>3</SUB>OH",1.25,.75,.39)
+lewisacid[7]=new acid("H<SUB>2</SUB>S",.77,1.46,.56)
+lewisacid[8]=new acid("HCl",3.69,.74,.55)
+lewisacid[9]=new acid("C<SUB>6</SUB>H<SUB>5</SUB>OH",2.27,1.07,.39)
+lewisacid[10]=new acid("(CH<SUB>3</SUB>)<SUB>3</SUB>COH",1.36,.51,.48)
+lewisacid[11]=new acid("HCCl<SUB>3</SUB>",1.49,.46,.45)
+lewisacid[12]=new acid("CH<SUB>3</SUB>CO<SUB>2</SUB>H",1.72,.86,.63)
+lewisacid[13]=new acid("CF<SUB>3</SUB>CH<SUB>2</SUB>OH",2.07,1.06,.38)
+lewisacid[14]=new acid("C<SUB>2</SUB>H<SUB>5</SUB>OH",1.34,.69,.41)
+lewisacid[15]=new acid("i-C<SUB>3</SUB>H<SUB>7</SUB>OH",1.14,.90,.46)
+lewisacid[16]=new acid("PF<SUB>3</SUB>",.61,.36,.87)
+lewisacid[17]=new acid("B(OCH<SUB>3</SUB>)<SUB>3</SUB>",.54,1.22,.84)
+lewisacid[18]=new acid("AsF<SUB>3</SUB>",1.48,1.14,.78)
+lewisacid[19]=new acid("Fe(CO)<SUB>5</SUB>",.10,.27,1)
+lewisacid[20]=new acid("CHF<SUB>3</SUB>",1.32,.91,.27)
+lewisacid[21]=new acid("B(C<SUB>2</SUB>H<SUB>5</SUB>)<SUB>3</SUB>",1.70,2.71,.61)
+lewisacid[22]=new acid("H<SUP>+</SUP>",45.0,13.03,130.21)
+lewisacid[23]=new acid("CH3<SUP>+</SUP>",19.70,12.61,55.09)
+lewisacid[24]=new acid("Li<SUP>+</SUP>",11.72,1.45,24.21)
+lewisacid[25]=new acid("K<SUP>+</SUP>",3.78,.1,20.79)
+lewisacid[26]=new acid("NO<SUP>+</SUP>",.10,6.86,45.99)
+lewisacid[27]=new acid("NH<SUB>4</SUB><SUP>+</SUP>",4.31,4.31,18.52)
+lewisacid[28]=new acid("(CH<SUB>3</SUB>)<SUB>2</SUB>NH<SUB>2</SUB><SUP>+</SUP>",3.21,.70,20.72)
+lewisacid[29]=new acid("(CH<SUB>3</SUB>)<SUB>4</SUB>N<SUP>+</SUP>",1.96,2.36,8.33)
+lewisacid[30]=new acid("C<SUB>5</SUB>H<SUB>5</SUB>NH<SUP>+</SUP>",1.81,1.33,21.72)
+lewisacid[31]=new acid("(C<SUB>2</SUB>H<SUB>5</SUB>)<SUB>3</SUB>NH<SUP>+</SUP>",2.43,2.05,11.81)
+lewisacid[32]=new acid("(CH<SUB>3</SUB>)<SUB>3</SUB>NH<SUP>+</SUP>",2.60,1.33,15.95)
+lewisacid[33]=new acid("H<SUB>3</SUB>O<SUP>+</SUP>",13.27,7.89,20.01)
+lewisacid[34]=new acid("(H<SUB>2</SUB>0)<SUB>2</SUB>H<SUP>+</SUP>",11.39,6.03,7.36)
+lewisacid[35]=new acid("(H<SUB>2</SUB>0)<SUB>3</SUB>H<SUP>+</SUP>",11.21,4.66,2.34)
+lewisacid[36]=new acid("(H<SUB>2</SUB>0)<SUB>4</SUB>H<SUP>+</SUP>",10.68,4.11,3.25)
+lewisacid[37]=new acid("(CH<SUB>3</SUB>)<SUB>3</SUB>Sn<SUP>+</SUP>",7.05,3.15,26.93)
+lewisacid[38]=new acid("(C<SUB>5</SUB>H<SUB>5</SUB>)Ni<SUP>+</SUP>",11.88,3.49,32.64)
+lewisacid[39]=new acid("(CH<SUB>3</SUB>)NH<SUB>3</SUB><SUP>+</SUP>",2.18,2.38,20.68)
+lewisacid[40]=new acid()
+lewisacid[41]=new acid()
+lewisacid[42]=new acid()
+lewisacid[43]=new acid()
+lewisacid[44]=new acid()
+lewisacid[45]=new acid()
+lewisacid[46]=new acid()
+lewisacid[47]=new acid()
+lewisacid[48]=new acid()
+lewisacid[49]=new acid()
+lewisacid[50]=new acid()
+lewisbase[1]=new base("NH<SUB>3</SUB>",2.31,2.04,.56)
+lewisbase[2]=new base("CH<SUB>3</SUB>NH<SUB>2</SUB>",2.16,3.12,.59)
+lewisbase[3]=new base("(CH<SUB>3</SUB>)<SUB>2</SUB>NH",1.80,4.21,.64)
+lewisbase[4]=new base("(CH<SUB>3</SUB>)<SUB>3</SUB>N",1.21,5.61,.75)
+lewisbase[5]=new base("C<SUB>2</SUB>H<SUB>5</SUB>NH<SUB>2</SUB>",2.35,3.30,.54)
+lewisbase[6]=new base("(C<SUB>2</SUB>H<SUB>5</SUB>)<SUB>3</SUB>N",1.32,5.73,.76)
+lewisbase[7]=new base("HC(C<SUB>2</SUB>H<SUB>4</SUB>)<SUB>3</SUB>N",.80,6.72,.83)
+lewisbase[8]=new base("C<SUB>5</SUB>H<SUB>5</SUB>N",1.78,3.54,.73)
+lewisbase[9]=new base("4-CH<SUB>3</SUB>C<SUB>5</SUB>H<SUB>4</SUB>N",1.74,3.93,.73)
+lewisbase[10]=new base("3-CH<SUB>3</SUB>C<SUB>5</SUB>H<SUB>4</SUB>N",1.76,3.72,.74)
+lewisbase[11]=new base("3-ClC<SUB>5</SUB>H<SUB>4</SUB>N",1.78,2.81,.75)
+lewisbase[12]=new base("CH<SUB>3</SUB>CN",1.64,.71,.83)
+lewisbase[13]=new base("CH<SUB>3</SUB>C(O)CH<SUB>3</SUB>",1.74,1.26,.80)
+lewisbase[14]=new base("CH<SUB>3</SUB>C(O)OCH<SUB>3</SUB>",1.63,.95,.86)
+lewisbase[15]=new base("CH<SUB>3</SUB>C(O)OC<SUB>2</SUB>H<SUB>5</SUB>",1.62,.98,.89)
+lewisbase[16]=new base("HC(O)N(CH<SUB>3</SUB>)<SUB>2</SUB>",2.19,1.31,.74)
+lewisbase[17]=new base("(C<SUB>2</SUB>H<SUB>5</SUB>)<SUB>2</SUB>O",1.80,1.63,.86)
+lewisbase[18]=new base("O(C<SUB>2</SUB>H<SUB>2</SUB>)<SUB>2</SUB>)O",1.86,1.29,.71)
+lewisbase[19]=new base("(CH<SUB>2</SUB>)<SUB>4</SUB>O",1.64,2.18,.75)
+lewisbase[20]=new base("(CH<SUB>2</SUB>)<SUB>5</SUB>O",1.70,2.02,.74)
+lewisbase[21]=new base("(CH<SUB>2</SUB>)<SUB>5</SUB>S",.24,3.92,1.10)
+lewisbase[22]=new base("(CH<SUB>3</SUB>)<SUB>2</SUB>SO",2.40,1.47,.65)
+lewisbase[23]=new base("C<SUB>5</SUB>H<SUB>5</SUB>NO",2.29,2.33,.67)
+lewisbase[24]=new base("(CH<SUB>3</SUB>)<SUB>3</SUB>P",1.46,3.44,.90)
+lewisbase[25]=new base("(CH<SUB>3</SUB>)<SUB>2</SUB>O",1.68,1.50,.73)
+lewisbase[26]=new base("(CH<SUB>3</SUB>)<SUB>2</SUB>S",.25,3.75,1.07)
+lewisbase[27]=new base("CH<SUB>3</SUB>OH",1.80,.65,.70)
+lewisbase[28]=new base("C<SUB>2</SUB>H<SUB>5</SUB>OH",1.85,1.09,.70)
+lewisbase[29]=new base("C<SUB>6</SUB>H<SUB>6</SUB>",.70,.45,.81)
+lewisbase[30]=new base("H<SUB>2</SUB>S",.04,1.56,1.13)
+lewisbase[31]=new base("HCN",1.19,.10,.90)
+lewisbase[32]=new base("H<SUB>2</SUB>CO",1.56,.10,.76)
+lewisbase[33]=new base("CH<SUB>3</SUB>Cl",2.54,.10,.23)
+lewisbase[34]=new base("CH<SUB>3</SUB>CHO",1.76,.81,.74)
+lewisbase[35]=new base("C<SUB>6</SUB>H<SUB>5</SUB>CN",1.75,.62,.85)
+lewisbase[36]=new base("F<SUP>-</SUP>",9.73,4.28,37.40)
+lewisbase[37]=new base("Cl<SUP>-</SUP>",7.50,3.76,12.3)
+lewisbase[38]=new base("Br<SUP>-</SUP>",6.74,3.21,5.86)
+lewisbase[39]=new base("I<SUP>-</SUP>",5.48,2.97,6.26)
+lewisbase[40]=new base("CN<SUP>-</SUP>",7.23,6.52,9.20)
+lewisbase[41]=new base("OH<SUP>-</SUP>",10.43,4.60,50.73)
+lewisbase[42]=new base("CH<SUB>3</SUB>O<SUP>-</SUP>",10.03,4.42,33.77)
+lewisbase[43]=new base()
+lewisbase[44]=new base()
+lewisbase[45]=new base()
+lewisbase[46]=new base()
+lewisbase[47]=new base()
+lewisbase[48]=new base()
+lewisbase[49]=new base()
+lewisbase[50]=new base()
+//obviously the timer function
+function timer(z){
+tt=z
+var b=Math.floor(tt/60)
+var j = (tt % 60)
+if (j<10){c="0"}
+else {c=""}
+howlong=b + ":" + c + j
+running=setTimeout("timer(tt+1)",1000)
+}
+function begin(){
+document.forms[0].results.value=""
+tried=0
+totl++
+document.forms[0].total.value=totl
+whichbase=Math.ceil(42*Math.random())
+whichacid=Math.ceil(39*Math.random())
+theheat=lewisacid[whichacid]['EA']*lewisbase[whichbase]['EB']+lewisacid[whichacid]['CA']*lewisbase[whichbase]['CB']+lewisacid[whichacid]['RA']*lewisbase[whichbase]['TB'];
+theheat=-4.184*theheat
+//document.forms[0].results.value=theheat
+theanswer=theheat
+reaction=lewisacid[whichacid]['formula']+"+"+lewisbase[whichbase]['formula']+"=>["+lewisacid[whichacid]['formula']+"<b>*</b>"+lewisbase[whichbase]['formula']+"]"
+display()
+}
+function display(){
+checkit=window.open("","checkit","scrollbars=yes,width=450,height=150")
+checkit.document.clear()
+checkit.document.writeln ("<html>");
+checkit.document.writeln ("<head><title>Drago Wayland</title>");
+checkit.document.writeln ("</head>");
+checkit.document.writeln ("<body bgcolor = FFFFFF>");
+checkit.document.writeln (reaction,"<br>");
+checkit.document.writeln ("<form><input type=text name=ans size=8>");
+checkit.document.writeln ("<input type=button value=Submit onClick='opener.answer(this.form.ans.value)'>");
+checkit.document.writeln ("</form></body>");
+checkit.document.writeln ("</html>");
+checkit.document.close();
+checkit.document.forms[0].ans.focus()
+checkit.document.forms[0].ans.select()
+}
+function showtable(){
+showit=window.open("","showit","scrollbars=yes,menubar=yes,width=350,height=600")
+showit.document.clear()
+showit.document.writeln ("<html>");
+showit.document.writeln ("<head><title>Drago Wayland Parameters</title>");
+showit.document.writeln ("</head>");
+showit.document.writeln ("<body bgcolor = FFFFFF>");
+showit.document.writeln ("<table border=2><tr><td>Acid</td><td>E<sub>A</sub></td><td>C<sub>A</sub></td><td>R<sub>A</sub></td></tr>");
+for(j=1;j<=39;j++){
+	showit.document.writeln ("<tr><td width=100 align=left>",lewisacid[j]['formula'],"</td>");
+	showit.document.writeln ("<td width=50 align=middle>",lewisacid[j]['EA'],"</td>");
+	showit.document.writeln ("<td  width=50 align=middle>",lewisacid[j]['CA'],"</td>");
+	showit.document.writeln ("<td width=50 align=middle>",lewisacid[j]['RA'],"</td></tr>")};
+showit.document.writeln ("</table><br><table border=2><tr><td>Base</td><td>E<sub>B</sub></td><td>C<sub>B</sub></td><td>T<sub>B</sub></td></tr>");
+for(j=1;j<=42;j++){
+	showit.document.writeln ("<tr><td width=100 align=left>",lewisbase[j]['formula'],"</td>");
+	showit.document.writeln ("<td width=50 align=middle>",lewisbase[j]['EB'],"</td>");
+	showit.document.writeln ("<td  width=50 align=middle>",lewisbase[j]['CB'],"</td>");
+	showit.document.writeln ("<td width=50 align=middle>",lewisbase[j]['TB'],"</td></tr>")};
+
+showit.document.writeln ("</table></body>");
+showit.document.writeln ("</html>");
+showit.document.close();
+}
+
+function answer(f){
+if(tried==1){alert("You've already done this one. Get a new Problem!")}
+else{
+if(tried==2){totl++;document.forms[0].total.value=totl}
+if(f<.95*theanswer & f>1.05*theanswer){
+	document.forms[0].results.value="correct"
+	corrt++
+	document.forms[0].correct.value=corrt
+	tried=1}
+else{
+	document.forms[0].results.value="incorrect"
+	tried=2
+	}
+}
+}
+function update(){
+	document.forms[0].total.value=totl
+	document.forms[0].correct.value=corrt
+	document.forms[0].time.value=howlong
+	document.forms[0].page.value=thepage
+	document.forms[0].verify.value=Math.round(10000*Math.random())
+}
+</script>
+</head>
+<body onLoad=clear(),timer(0)>
+<h3>Using Drago-Wayland Acid/base Parameters-#1</h3>
+This page provides exercises in using the Drago-Wayland parameters to estimate heats of formation of Lewis acid-base adducts. In order to solve the problems presented, you need a table of the parameters. If you don't have such a table available, ou can click on the "Show Table" button below to display (and print) a table. It's more efficient to use tables generally available in inorganic textbooks. When you press "New Problem", a small window, which may need to be relocated, will open with a Lewis Acid/Base reaction and submit form. To help you follow the process, the complex is enclosed in brackets with <b>*</b> separating the acid and base. Determine the value of the answer in <b>KJ</b>, paying attention to the sign convention, and submit the answer. The results appear in the table on the main window.
+Before beginning, enter your name and select your instructor.
+<form ACTION = "../cgi-bin/homework/hw_turnin.php" METHOD = "POST">
+<input type=button value="Show Table" onClick="showtable()"><br>
+<input type=button value="New Problem" onClick=begin()>
+<table border=4>
+<tr>
+<td align=center>Results</td>
+<td>Total</td>
+<td>Correct</td>
+</tr>
+<tr>
+<td><input type=text size=12 name=results></td>
+<td align=center><input type=text size=5 name=total></td>
+<td align=center><input type=text size=5 name=correct></td>
+</tr>
+</table>
+<input type=text name="page" size=1>
+<input type=text name="verify" size=1>
+<input type=text name="time" size=1><br>
+<INPUT TYPE = "submit" VALUE = "Submit your score" onClick="update()">
+<br>
+<a href="index.html"><img src="back.gif"></a><br>
+</form>
+</body>
+</html>
+

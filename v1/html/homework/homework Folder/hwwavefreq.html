@@ -1,0 +1,181 @@
+<html>
+<head><title>Wavelength,frequency and energy-Homework</title>
+<script language=javascript>
+//globals
+thepage="Wavelength(43)"
+corrt=0
+tried=0
+totl=0
+theanswer=0
+which=0
+ans=new MakeArray(10)
+which=new MakeArray(5)
+function MakeArray(n){
+	this.length=n
+	for (var i=1;i<=n;i++){
+	this[i]= 0}
+}
+//This function clears all values in both tables on loading the page
+function clear(){
+	document.forms[0].results.value=""
+	document.forms[0].correct.value=corrt
+	document.forms[0].total.value=totl
+}
+//This is the function started when "New Problem" is pushed	
+//The three variables(wave,freq,E) are then determined, using Math.random() to 
+//generate wave and the known relationship to generate freq and E.
+function begin(){
+	totl++
+	document.forms[0].total.value=totl
+	document.forms[0].results.value=""
+	tried=0
+
+	clear()	
+      h=Math.round(Math.pow(15,Math.random()))
+	if (Math.random()>.5){sign="-"}
+	else{sign=""}
+	wave=Math.random()+"e"+sign+h
+	freq=3e10/wave
+	E=6.626e-34*freq
+	number(wave,0)
+	number(freq,1)
+	number(E,2)
+	problem()
+}
+function number(a,n){
+	if (a>=1 & a<10){
+	sign=""
+	display(a,n,sign,0)}
+	else{if(a>10){
+		sign="+"
+		for (var i=1;i<100;i++){
+		a=a/10
+		if (a<10){
+		display(a,n,sign,i)
+		break}}}
+	else {
+		sign="-"
+		for (var i=1;i<100;i++){
+		a=a*10
+		if (a>1){
+		display(a,n,sign,i)
+		break}}}
+}}
+//This adjusts the coefficient to three sig figures
+//and then displays the result.
+function display(a,n,sign,i){
+	a=Math.round(100*a)/100
+	if (sign==""){
+	a= a}
+	else{
+	a=a + "e" + sign +i}
+	ans[n]=a
+	document.forms[0].elements[n].value=a
+}
+//This function creates the problem and the answer method by displaying only
+//two of the three variables while passing all three to hidden cells in a hidden
+//table
+function problem(){
+//the following resets  of the cells in the first table blank, thus
+//creating the problem
+	g=Math.random()
+	if (g<.33){document.forms[0].first.value=""
+	document.forms[0].second.value=""
+	which[1]=0;which[2]=1
+	document.forms[0].elements[0].focus()
+	document.forms[0].elements[0].select()}
+	else{if (g<.67){document.forms[0].second.value=""
+	document.forms[0].third.value=""
+	which[1]=1;which[2]=2
+	document.forms[0].second.focus()
+	document.forms[0].second.select()}
+	else{	document.forms[0].third.value=""
+	document.forms[0].first.value=""
+	which[1]=0;which[2]=2
+	document.forms[0].first.focus()
+	document.forms[0].first.select()}}
+}
+function answer(form){
+if(tried==1){
+		alert("Sorry, you've already submitted this problem! We'll get you a new one!")
+		begin()}
+else{
+	if(tried==2){totl++;document.forms[0].total.value=totl}	var tally=0
+	for (var i=1;i<=2;i++){
+	if (form.elements[which[i]].value>.99*ans[which[i]] &
+	form.elements[which[i]].value<1.01*ans[which[i]]){
+	tally++}}
+	if (tally==2){ 
+	document.forms[0].results.value="correct"
+		corrt++
+		document.forms[0].correct.value=corrt
+		tried=1
+	}	
+else {
+		document.forms[0].results.value="incorrect"
+		tried=2}
+}
+}
+function timer(z){
+tt=z
+var b=Math.floor(tt/60)
+var j = (tt % 60)
+if (j<10){c="0"}
+else {c=""}
+howlong=b + ":" + c + j
+running=setTimeout("timer(tt+1)",1000)
+}
+function update(){
+	document.forms[0].total.value=totl
+	document.forms[0].correct.value=corrt
+	document.forms[0].time.value=howlong
+	document.forms[0].page.value=thepage
+	document.forms[0].verify.value=Math.round(10000*Math.random())
+}
+</script>
+</head>
+<body onLoad="clear(),timer(0)">
+<h2>Wavelength, frequency and energy</h2>
+This is simple drill and practice involving electromagnetic radiation. When you press "New Problem", one of the cells in the first table will be filled.
+Enter the two missing values and press "Check Ans" Results appear in the second
+table. Pay close attention to the dimensions. You should continue with a problem
+until you get it correct, but you can generate a new problem at any time.Use "e"
+notation for sci notation. Thus, 2.3e-4 equals 2.3*10<sup>-4</sup><br>
+<form ACTION = "../cgi-bin/homework/hw_turnin.php" METHOD = "POST">
+<table border=4>
+<tr>
+<TD ALIGN=CENTER><b>Wavelength(cm)</td>
+<td align=center><b>Frequency(Hz)</td>
+<td align=center><b>Energy(J)</td>
+</tr>
+<tr>
+<td align=center><input type="text" name=first size=8 ></td>
+<td align=center><input type="text" name=second size=8 ></td>
+<td align=center><input type="text" name=third size=8 ></td>
+</tr>
+<tr>
+<td><input type="button" value="New Problem" onClick=begin()></td>
+<td><input type="button" value="Check Ans" onClick=answer(this.form)></td>
+</tr>
+</table>
+<table border=4>
+<tr>
+<td align=center><b>Results</td>
+<td align=center><b>Total Done</td>
+<td><b>Total Correct</td>
+</tr>
+<tr>
+<td><input type="text" name=results size=12></td>
+<td align=center><input name=total type="text" size=4 ></td>
+<td align=center><input name=correct type="text" size=4 ></td>
+</tr>
+</table>
+<input type=text name="page" size=1>
+<input type=text name="verify" size=1>
+<input type=text name="time" size=1><br>
+<INPUT TYPE = "submit" VALUE = "Submit your score" onClick="update()">
+ </FORM>
+<br>
+<a href="hwintro.html" target=welcome><img src="back.gif"></a><br>
+</body>
+</html>

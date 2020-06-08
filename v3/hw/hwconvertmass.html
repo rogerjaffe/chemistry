@@ -1,0 +1,215 @@
+<html>
+
+<head><title>Converting Masses-Homework</title>
+
+<script language="javascript">
+
+thepage="Converting mass(4)"
+howlong=""
+totl=0
+corrt=0
+tried=0
+which=""
+tried=0
+theanswer=""
+flag=0
+//Last revision 12/10/96
+function clear(){
+	document.forms[0].first.value=""
+	document.forms[0].second.value=""
+	document.forms[0].third.value=""
+	document.forms[0].fourth.value=""
+	document.forms[0].results.value=""
+	theanswer=0
+	document.forms[0].total.value=0
+	document.forms[0].correct.value=0
+	document.forms[0].time.value=""
+}
+function empty(){
+	document.forms[0].first.value=""
+	document.forms[0].second.value=""
+	document.forms[0].third.value=""
+	document.forms[0].fourth.value=""
+}
+
+
+function begin(){
+	totl++
+	document.forms[0].total.value=totl
+	empty()
+      tried=0
+	document.forms[0].results.value=""
+	lb=Math.round(1000*Math.random())/100
+	var oz=Math.round(100*(16*lb))/100
+	var gram=Math.round(4536*lb)/10
+	var mg=1000*gram
+	var kg=Math.round(100*gram)/100000
+
+//decide whether to display metric or English
+	var d=Math.random()
+	if (d<.50){english(lb,oz,gram,mg,kg)}
+	else{metric(lb,oz,gram,mg,kg)}
+}
+function english(lb,oz,gram,mg,kg){
+	flag=1
+//decide to display lb or ounces
+	var d=Math.random()
+	if (d<.5){
+		document.forms[0].elements[0].value=lb
+		document.forms[0].elements[1].value="pounds"}
+	else {
+		document.forms[0].elements[0].value=oz
+		document.forms[0].elements[1].value="ounces"}
+
+//decide what the unknown is to be
+	var d=Math.random()
+	if (d<.33){
+		document.forms[0].elements[3].value="grams"
+		theanswer=gram}
+	else {if(d<.67){
+		document.forms[0].elements[3].value="milligrams"
+		theanswer=mg}
+	else {
+		document.forms[0].elements[3].value="kilograms"
+		theanswer=kg}}
+	document.forms[0].elements[2].focus()
+//	document.forms[0].elements[2].select()
+}
+function metric(lb,oz,gram,mg,kg){
+//decide on unknown lb or ounces
+	var d=Math.random()
+	if (d<.5){
+		theanswer=lb
+		document.forms[0].elements[1].value="pounds"}
+	else {
+		theanswer=oz
+		document.forms[0].elements[1].value="ounces"}
+
+//decide what the known is to be
+	var d=Math.random()
+	if (d<.33){
+		document.forms[0].elements[3].value="grams"
+		document.forms[0].elements[2].value=gram}
+	else {if(d<.67){
+		document.forms[0].elements[3].value="milligrams"
+		document.forms[0].elements[2].value=mg}
+	else {
+		document.forms[0].elements[3].value="kilograms"
+		document.forms[0].elements[2].value=kg}}
+	document.forms[0].elements[0].focus()
+	document.forms[0].elements[0].select()
+}
+
+function answer(form){
+if(tried==1){
+		alert("Sorry, you've already submitted this problem! We'll get you a new one!")
+		choose()}
+else{
+	if(tried==2){totl++;document.forms[0].total.value=totl}
+	if (which==1){
+		if (form.elements[2].value>.99*theanswer &
+		form.elements[2].value<1.01*theanswer){
+		document.forms[0].results.value="correct"
+		corrt++
+		document.forms[0].correct.value=corrt
+		tried=1}
+	else {
+		document.forms[0].results.value="incorrect"
+		tried=2
+		}}
+	else {
+		if (form.elements[0].value>.99*theanswer &
+		form.elements[0].value<1.01*theanswer){
+		document.forms[0].results.value="correct"
+		corrt++
+		document.forms[0].correct.value=corrt
+		tried=1}
+		else {
+		document.forms[0].results.value="incorrect"
+		tried=2
+		}}
+}}
+
+
+//obviously the timer function
+function timer(z){
+tt=z
+var b=Math.floor(tt/60)
+var j = (tt % 60)
+if (j<10){c="0"}
+else {c=""}
+howlong=b + ":" + c + j
+running=setTimeout("timer(tt+1)",1000)
+}
+function update(){
+	document.forms[0].total.value=totl
+	document.forms[0].correct.value=corrt
+	document.forms[0].time.value=howlong
+	document.forms[0].page.value=thepage
+	document.forms[0].verify.value=Math.round(10000*Math.random())
+}
+
+</script>
+</head>
+<body onLoad=timer(0),clear()>
+<h2>Converting Masses</h2>
+This page tests converting mass measures between the English (pounds and ounces) and the metric (grams, etc). It will help you
+with both your math skills and you understanding of both systems of measure.
+<h4>Usage</h4>
+<ul>
+<li>First, select and submit the instructor's name.
+<li>To begin-press "New Problem" and values will appear in three of the cells.
+<li>Put the appropriate numerical value in the empty cell and press "Check Answer."
+<li>The results will appear in the second table, along with your running score.
+<li>If your answer is incorrect, you should redo and resubmit it.
+</ul>
+
+
+<form ACTION = "../cgi-bin/homework/hw_turnin.php" METHOD = "POST">
+<table border=4>
+<tr>
+<td><input type="text" name=first size=8></td>
+<td><input type="text" name=second size=8></td>
+<td><b>equals</td>
+<td><input type="text" name=third size=8></td>
+<td><input type="text" name=fourth size=8></td>
+</tr>
+<tr>
+<td><input type="button" value="New Problem" onClick=begin()></td>
+<td><input type="button" value="Check Answer" onClick=answer(this.form)></td>
+</tr>
+</table>
+<br>
+<table border=4>
+<tr>
+<td align=center><b>Results</td>
+<td align=center><b>Total Done</td>
+<td><b>Total Correct</td>
+</tr>
+<tr>
+<td><input type="text" name="results" size=12></td>
+<td align=center><input type="text" name="total" size=4 ></td>
+<td align=center><input type="text" name="correct" size=4 ></td>
+
+</tr>
+</table>
+<input type=text name="page" size=1>
+<input type=text name="verify" size=1>
+<input type=text name="time" size=1><br>
+<INPUT TYPE = "submit" VALUE = "Submit your score" onClick="update()">
+</FORM>
+<br>
+<a href="index.html"><img src="back.gif"></a><br>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+

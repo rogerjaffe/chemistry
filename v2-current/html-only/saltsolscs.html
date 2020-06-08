@@ -1,0 +1,258 @@
+<html>
+<head>
+<title>Slightly Soluble Salts</title>
+<style>
+#qspot {position:absolute;left:320;top:280}
+#ansspot {position:absolute;left:10;top:480;height:300}
+#tspot {position:absolute;left:10;top:300}
+#refspot {position:absolute;left:10;top:600}
+</style>
+<script src="reflist.js"></script>
+<script src="numberconvert.js"></script>
+<script language="javascript">
+//updated 11/14/00-added complete solution
+var ie4 = (document.all) ? true : false;
+//global variables
+refnumber=128
+shown=0
+theanswer=""
+totl=0
+corrt=0
+factor=0
+which=0
+theeqn=new Array()
+ratio=new Array()
+function cleanse(){
+	clear()
+	document.forms[0].total.value=0
+	document.forms[0].correct.value=0
+}
+function clear(){
+	tried=0
+	attempts=0
+	clearansspot()
+	for(j=0;j<=5;j++)document.forms[0].elements[j].value=""
+	document.forms[0].results.value=""
+}
+function data(cmpd,gfw,K,cation,anion){
+	this.cmpd=cmpd
+	this.gfw=gfw
+	this.K=K
+	this.cation=cation
+	this.anion=anion
+}
+thedata=new Array()
+cmpds=new Array()
+cmpds[0]=new data("AgCl",143,1.8e-10,1,1)
+cmpds[1]=new data("BaCO3",197,5.1e-9,1,1)
+cmpds[2]=new data("CaF2",78,5.3e-9,1,2)
+cmpds[3]=new data("FeS",88,6e-19,1,1)
+cmpds[4]=new data("PbCrO4",323,2.8e-19,1,1)
+cmpds[5]=new data("Fe(OH)3",107,4e-38,1,3)
+cmpds[6]=new data("LiF",26,3.8e-3,1,1)
+cmpds[7]=new data("Co(OH)2",93,1.6e-15,1,2)
+cmpds[8]=new data("TlBr",284,3.4e-6,1,1)
+cmpds[9]=new data("Mg(OH)2",58,1.8e-11,1,2)
+cmpds[10]=new data("AlPO4",122,6.3e-19,1,1)
+cmpds[11]=new data("BaF2",175,1.0e-6,1,2)
+cmpds[12]=new data("Cd(OH)2",146,2.5e-14,1,2)
+cmpds[13]=new data("CuI",190,1.1e-12,1,1)
+cmpds[14]=new data("CuCN",89.6,3.2e-20,1,1)
+cmpds[15]=new data("PbBr2",367,4e-5,1,2)
+cmpds[16]=new data("Li2CO3",74,2.5e-2,2,1)
+cmpds[17]=new data("Ag2SO3",296,1.5e-14,2,1)
+cmpds[18]=new data("NiCO3",118.7,1.4e-11,1,1)
+cmpds[19]=new data("Tl(OH)3",255,6.3e-46,1,3)
+introphrase=new Array("","Starting with the Ksp, it is easiest to find the other values, from left to right as shown in the table.","With the  molar solubility given, first calculate the Ksp and then find the others","Beginning with the gram solubility, first calculate the molar solubility, then the Ksp and the other values.","With the [cation] given, determine the value of the [anion], then the molar solubility, the Ksp and the gram solubility.","With the [cation] given, determine the value of the [anion], then the molar solubility, the Ksp and the gram solubility.")
+kfroms=new Array("Ksp=s<sup>2</sup>","Ksp=4s<sup>3</sup>","Ksp=27s<sup>4</sup>")
+sfromk=new Array("s=(Ksp)<sup>1/2</sup>","s=(Ksp/4)<sup>1/3</sup>","s=(Ksp/27)<sup>1/4</sup>")
+sfromgs="s=(gs*10)/gfw"
+gsfroms="gs=(s*gfw)/10"
+function startit(){
+	clear()
+	totl++
+	document.forms[0].total.value=totl
+	which=Math.floor(20*Math.random())
+	calculate()
+}
+
+function calculate(){
+	catfactor=cmpds[which].cation
+	anfactor=cmpds[which].anion
+	getratios(catfactor,anfactor)
+	factor=catfactor+anfactor
+	if(factor==2){var s=Math.sqrt(cmpds[which]["K"])}
+	if(factor==3){s=Math.pow((cmpds[which]["K"]/4),.3333)}
+	if(factor==4){s=Math.pow((cmpds[which]["K"]/27),.25)        }
+	thedata[0]=cmpds[which]["cmpd"]
+	thedata[1]=cmpds[which]["K"]
+	thedata[2]=s
+	thedata[4]=cmpds[which]["cation"]*s
+	thedata[5]=cmpds[which]["anion"]*s
+	thedata[3]=.1*s*cmpds[which]["gfw"]
+	scaleit()
+	showquest()
+	buildanswer()
+}
+function getratios(a,b){
+	if(a==b)ratio[0]=ratio[1]="";
+	else{
+		if(a==1){ratio[0]="1/"+b;ratio[1]=b};
+		if(b==1){ratio[0]=a;ratio[1]="1/"+a};
+	}
+	a==1?ratio[2]="":ratio[2]=a;
+	b==1?ratio[3]="":ratio[3]=b;
+}
+function scaleit(){
+	for(k=1;k<=5;k++){
+		thedata[k]<.01?thedata[k]=number(thedata[k],3,1):thedata[k]=number(thedata[k],3,3)
+	}
+}
+function buildanswer(){
+	getequations()
+	theanswer=introphrase[shown]
+	for(var j=0;j<=3;j++)theanswer+=("<br>"+theeqn[j]);
+}
+function getequations(){
+	if(shown==1){
+		theeqn[0]=sfromk[factor-2]+"="+thedata[2]
+		theeqn[1]=gsfroms+"="+thedata[3]
+	}
+	if(shown==2){
+		theeqn[0]=kfroms[factor-2]+"="+thedata[1]
+		theeqn[1]=gsfroms+"="+thedata[3]
+	}
+	if(shown==3){
+		theeqn[0]=sfromgs+"="+thedata[2]
+		theeqn[1]=kfroms[factor-2]+"="+thedata[1]
+	}
+	if(shown==4){
+		ratio[1]==""?theeqn[0]="[anion]=[cation]":theeqn[0]="[anion]="+ratio[1]+"*[cation]";
+		theeqn[0]+=("="+thedata[5])
+	}
+	if(shown==5){
+		ratio[0]==""?theeqn[0]="[cation]=[anion]":theeqn[0]="[cation]="+ratio[0]+"*[anion]";
+		theeqn[0]+=("="+thedata[4])
+	}
+	if(shown<4){
+		ratio[2]==""?theeqn[2]="[cation]=s":theeqn[2]="[cation]=s*"+ratio[2];
+		ratio[3]==""?theeqn[3]="[anion]=s":theeqn[3]="[anion]=s*"+ratio[3];
+		theeqn[2]+=("="+thedata[4])
+		theeqn[3]+=("="+thedata[5])
+	}
+	else{
+		ratio[2]==""?theeqn[1]="s=[cation]":theeqn[1]="s=[cation]/"+ratio[2]
+		theeqn[2]=kfroms[factor-2]
+		theeqn[3]=gsfroms
+		theeqn[1]+=("="+thedata[2])
+		theeqn[2]+=("="+thedata[1])
+		theeqn[3]+=("="+thedata[3])
+	}
+		
+}
+	
+function showquest(thequest){
+	document.forms[0].elements[0].value=thedata[0];
+	shown=Math.ceil(5*Math.random())
+	document.forms[0].elements[shown].value=thedata[shown]
+}
+function answer(ans){
+	if(tried==1)alert("You've done this one. Get a new problem!");
+	else{
+	if(tried==2){totl++;document.forms[0].total.value=totl};
+	attempts++
+	test=0
+	for(var k=1;k<=5;k++){
+		if (document.forms[0].elements[k].value>.95*thedata[k] &
+	document.forms[0].elements[k].value<1.05*thedata[k])test++
+	}
+	if(test==5){
+		document.forms[0].results.value="Correct"
+		corrt++
+		document.forms[0].correct.value=corrt
+		tried=1}
+	else{document.forms[0].results.value="Incorrect"
+		tried=2}
+}}
+function showanswer(){
+if(attempts>=3){
+	if(ie4){
+		ansspot.innerHTML=theanswer
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.write(theanswer)
+		document.ansspot.document.close()
+	}
+	}
+}
+function clearansspot(){
+	if(ie4){
+		ansspot.innerHTML=""
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.clear()
+		document.ansspot.document.close()
+	}
+}
+
+</script>
+</head>
+<body onLoad="cleanse(),setrefs()">
+<h2>Solutions of Slightly Soluble Salts</h2>
+This page let's you practice the fundamental calculations for solutions of slightly soluble salts.
+When you press "New Problem," the name of a chemical species will appear
+in the first cell and a value in one of the other cells. You must fill the remaining
+empty four cells correctly. Then, press "Check Answer". Results appear in the second table. In order to
+use this page, you need a table of slightly soluble salts and their Ksp values. If the
+compound which appears in the first cell is not in your table, press "New Problem" to
+get a new compound. 
+<h4>Hints</h4>
+<ul>
+<li><b>Molar Sol.</b> is how many moles of the compound will dissolve per liter.
+<li><b>Gram Sol.</b> is how many grams of the compound will dissolve in 100mL of water.
+<li><b>[cation]</b> and <b>[anion]</b> are the molarities of the cation and anion in the saturated solution.
+</ul>
+<form method="post">
+<table border=4>
+<tr>
+<td align=center><b>Compound</td>
+<td align=center><b>Ksp</td>
+<td align=center><b>Molar Sol.</td>
+<td align=center><b>Gram Sol.</td>
+<td align=center><b>[cation]</td>
+<td align=center><b>[anion]</td>
+</tr>
+<tr>
+<td><input type="text" name="compound" size =12></td>
+<td align=center><input type="text" name="ksp" size =8></td>
+<td><input type="text" name="molar" size =8></td>
+<td><input type="text" name="gram" size =8></td>
+<td><input type="text" name="cation" size =8></td>
+<td><input type="text" name="anion" size =8></td>
+</tr>
+<tr>
+<td><input type=button value="New Problem" onClick="startit()"></td>
+<td><input type=button value="Check answer" onClick="answer(this.form)"></td>
+<td><input type=button value="Show answer" onClick="showanswer()"></td>
+</tr>
+</table>
+<table border=4>
+<tr><td align=center><b>Results</td>
+<td align=center><b>Total Done</td>
+<td><b>Total Correct</td>
+</tr>
+<tr>
+<td><input type="text" name=results size=12></td>
+<td align=center><input type="text" name=total size=4 ></td>
+<td align=center><input type="text" name=correct size=4 ></td>
+</tr>
+<tr>
+</table>
+</form>
+<div id=ansspot></div>
+<div id=refspot></div>
+<br>
+</body>
+</html>

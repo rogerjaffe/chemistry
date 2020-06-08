@@ -1,0 +1,174 @@
+<html>
+<head><title>Converting Temperatures-cs</title>
+<style>
+#qspot {position:absolute;left:320;top:300}
+#ansspot {position:absolute;left:50;top:400;height:200}
+#tspot {position:absolute;left:10;top:300}
+#refspot {position:absolute;left:10;top:600;height:200}
+</style>
+<script src="reflist.js"></script>
+<script src="numberconvert.js"></script>
+<script language=javascript>
+//updated 1/9/01 added complete solution
+var ie4 = (document.all) ? true : false;
+refnumber=20
+attempts=0
+KT=0
+CT=0
+FT=0
+totl=0
+corrt=0
+theanswer=""
+lines=new Array()
+lines[1]=new parts("<sup>o</sup>C+273.15=K","","+273.15=<b>","K</b>")
+lines[2]=new parts("9/5*(<sup>o</sup>F-32)=<sup>o</sup>C","9/5*(","-32)=<b>","<sup>o</sup>C</b>")
+lines[3]=new parts("5/9*<sup>o</sup>C+32=<sup>o</sup>F","5/9*","+32=<b>","<sup>o</sup>F</b>")
+lines[4]=new parts("K-273.15=<sup>o</sup>C","","-273.15=<b>","<sup>o</sup>C</b>")
+pairs=new Array()
+pairs[0]=new parts(4,3,1,2)
+pairs[1]=new parts(1,3,0,2)
+pairs[2]=new parts(2,1,1,0)
+//This function clears all values in both tables on loading the page
+function cleanse(){
+	clear()
+	document.forms[0].total.value=0
+	document.forms[0].correct.value=0
+}
+//This function clears the first table
+function clear(){
+	document.forms[0].Ktemp.value=""
+	document.forms[0].Ctemp.value=""
+	document.forms[0].Ftemp.value=""
+	document.forms[0].results.value=""
+	attempts=0
+	tried=0
+	clearansspot()
+}
+function parts(p1,p2,p3,p4,p5,p6,p7,p8){
+	this.p1=p1
+	this.p2=p2
+	this.p3=p3
+	this.p4=p4
+	this.p5=p5
+	this.p6=p6
+	this.p7=p7
+	this.p8=p8
+}
+function startit(){
+	clear()
+	totl++
+	document.forms[0].total.value=totl
+	KT=number((1000*Math.random()),4,3)
+	CT=number((KT-273.15),4,3)
+	FT=number((1.8*CT + 32),4,3)
+	option=Math.floor(3*Math.random())
+	if(option==0)document.forms[0].Ktemp.value=KT;
+	if(option==1)document.forms[0].Ctemp.value=CT;
+	if(option==2)document.forms[0].Ftemp.value=FT;
+	temps=new Array(KT,CT,FT)
+	buildanswer(option,temps)
+}
+function clearansspot(){
+	if(ie4)ansspot.innerHTML="";
+	else{ 
+		document.ansspot.document.open()
+		document.ansspot.document.clear()
+		document.ansspot.document.close()
+	}
+}
+
+function buildanswer(option,temps){
+	line1=lines[pairs[option].p1].p1+"<br>"+lines[pairs[option].p1].p2+temps[option]+lines[pairs[option].p1].p3+temps[pairs[option].p3]+lines[pairs[option].p1].p4
+	line2=lines[pairs[option].p2].p1+"<br>"+lines[pairs[option].p2].p2+temps[option]+lines[pairs[option].p2].p3+temps[pairs[option].p4]+lines[pairs[option].p2].p4
+	theanswer=line1+"<br>"+line2
+}
+function showanswer(){
+if(attempts>=3){
+	if(ie4){
+		ansspot.innerHTML=theanswer
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.write(theanswer)
+		document.ansspot.document.close()
+	}
+	}
+}	
+//This function checks for correctness by comparing the values. 
+//The results are then posted to the second table. 
+function answer(form){
+	attempts++
+	if(tried==1)alert("You've done this one! Get a new problem!");
+	else{
+	if(tried==2){totl++;document.forms[0].total.value=totl}
+	cval=0
+	if(option!=0){
+		if(form.Ktemp.value<.95*KT || form.Ktemp.value>1.05*KT)cval++;
+	}
+	if(option!=1){
+		if(form.Ctemp.value<.95*Math.abs(CT) || form.Ctemp.value>1.05*Math.abs(CT))cval++;
+	}
+	if(option!=2){
+		if(form.Ftemp.value<.95*Math.abs(FT) || form.Ftemp.value>1.05*Math.abs(FT))cval++;
+	}
+	if(cval==0)	{	
+		document.forms[0].results.value="correct"
+		corrt++
+		document.forms[0].correct.value=corrt
+		tried=1
+		}
+	else {
+		document.forms[0].results.value="incorrect"
+		tried=2
+		}
+	}
+}
+</script>
+</head>
+<body onLoad="cleanse(),setrefs()">
+<h2>Converting Temperatures</h2>
+On this page, you can practice converting between the three common temperature
+scales. When you press "New Problem", one of the cells will fill with a value. Fill in
+the missing two values and press "Check Answer". Results will show in the second
+table. It is recommended that you redo any problems reported incorrect until you
+get them right. 
+<ul>
+<li>If you miss a problem three times, pressing "Show Answer" will cause the solutions to appear.
+<li>All of the problems involve two conversions. The solutions shown are not the only possible set. For example, the program always determines K from <sup>o</sup>C.
+</ul>
+<form>
+<table border=4>
+<tr>
+<TD ALIGN=CENTER><b>K</td>
+<td align=center><b><sup>o</sup>C</td>
+<td align=center><b><sup>o</sup>F</td>
+</tr>
+<tr>
+<td align=center><input type="text" name=Ktemp size=6 ></td>
+<td align=center><input type="text" name=Ctemp size=6 ></td>
+<td align=center><input type="text" name=Ftemp size=6 ></td>
+</tr>
+<tr>
+<td><input type="button" value="New Problem" onClick=startit()></td>
+<td><input type="button" value="Check Answer" onClick=answer(this.form)></td>
+<td><input type="button" value="Show Answer" onClick=showanswer()></td>
+</tr>
+</table>
+<br>
+<table border=4>
+<tr><td align=center><b>Results</td>
+<td align=center><b>Total Done</td>
+<td><b>Total Correct</td>
+</tr>
+<tr>
+<td><input type="text" name=results size=12></td>
+<td align=center><input type="text" name=total size=4 ></td>
+<td align=center><input type="text" name=correct size=4 ></td>
+</tr>
+</table>
+</form>
+<div id=qspot></div>
+<div id=ansspot></div>
+<div id=refspot></div>
+</body>
+</html>

@@ -1,0 +1,175 @@
+<html>
+<head><title>Scientific Notation</title>
+<style>
+#qspot {position:absolute;left:350;top:250}
+#ansspot {position:absolute;left:350;top:350}
+#refspot {position:absolute;left:10;top:600;height:200}
+</style>
+<script src="reflist.js"></script>
+<script>
+//updated 10/24/00 added complete solution
+//checked with NS47 and IE5
+//globals
+refnumber=2
+var ie4 = (document.all) ? true : false;
+attempts=0
+tried=0
+totl=0
+corrt=0
+instruct=0
+problem=""
+thequest=""
+thesolution=""
+introphrase="If the term below is evaluated and the results expressed in proper scientific notation, what is the value of the resultant exponent?<br><br>"
+ansphrase=new Array()
+ansphrase[0]=new Array("Since this is a division problem, the 'preliminary' exponent is the denominator exponent subtracted from the numerator exponent:<br>","<br>In this case the numerator coefficient is "," than the denominator coefficient. Thus, the final exponent is:<br>")
+ansphrase[1]=new Array("Since this is a multiplication problem, the 'preliminary' exponent is the sum of the two exponents:<br>","<br>In this case the product of the coefficients is "," than ten. Thus, the final exponent is:<br>")
+
+function cleanse(){
+	clear()
+	document.forms[0].total.value=0
+	document.forms[0].correct.value=0
+}
+function clear(){
+	clearansspot()
+	attempts=0
+	tried=0
+	document.forms[0].results.value=""
+	document.forms[0].theans.value=""
+}
+function clearansspot(){
+	if(ie4){
+		ansspot.innerHTML=""
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.clear()
+		document.ansspot.document.close()
+	}
+}
+
+function startit(){
+	clear()
+	totl++
+	document.forms[0].total.value=totl
+	c1=0
+	c2=0
+	while(c1<1){c1=Math.ceil(600*Math.random())/100}
+	while(c2<1){c2=Math.ceil(600*Math.random())/100}
+	e1=Math.ceil(20*Math.random())
+	if(Math.random()>.5){e1=-e1}
+	e2=Math.ceil(30*Math.random())
+	if(Math.random()>.5){e2=-e2}
+	term1=c1+"*10<sup>"+e1+"</sup>"
+	term2=c2+"*10<sup>"+e2+"</sup>"
+	if(Math.random()<.5){
+    		operator="<b>/</b>"
+    		key=0
+	}
+	else{
+    	operator=" x "
+    	key=1
+	}
+	thequest=introphrase+term1+operator+term2
+	getvalue(c1,c2,e1,e2,key)
+	buildanswer(c1,c2,e1,e2,key)
+	showquest()
+}
+function getvalue(c1,c2,e1,e2,key){
+	if(key==1){
+    	if(c1*c2>=10){theanswer=e1+e2+1}
+    	else{theanswer=e1+e2}
+}
+else{
+    	if(c1>c2){theanswer=e1-e2}
+    	else{theanswer=e1-e2-1}
+	}
+	}
+function buildanswer(c1,c2,e1,e2,key){
+	thesolution=ansphrase[key][0]
+	if(key==0){
+		thesolution+=e1+"-"+e2+"="+(e1-e2)+ansphrase[0][1];
+		c1>c2?thesolution+=(" greater "+ansphrase[0][2]):thesolution+=(" less "+ansphrase[0][2]);
+		c1>c2?thesolution+=(e1-e2):thesolution+=((e1-e2)+"-1="+(e1-e2-1));
+	}
+	else{
+		thesolution+=e1+"+"+e2+"="+(e1+e2)+ansphrase[1][1];
+		(c1*c2>10)?thesolution+=(" greater "+ansphrase[1][2]):thesolution+=(" less "+ansphrase[1][2]);
+		(c1*c2>10)?thesolution+=((e1+e2)+"+1="+(e1+e2+1)):thesolution+=(e1+e2);
+	}
+	showanswer()
+}
+function showquest(){
+	if(ie4){
+		qspot.innerHTML=thequest
+		}
+	else{
+		document.qspot.document.open()
+		document.qspot.document.write(thequest)
+		document.qspot.document.close()
+	}
+}
+function showanswer(){
+if(attempts>=3){
+	if(ie4){
+		ansspot.innerHTML=thesolution
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.write(thesolution)
+		document.ansspot.document.close()
+	}
+	}
+}
+
+function answer(ans){
+	attempts++
+	if(tried==1)alert("You've already done this one. Get a new problem");
+	else{
+	if(tried==2){totl++;document.forms[0].total.value=totl};
+	if(ans==theanswer){
+		document.forms[0].results.value="correct"
+		corrt++
+		document.forms[0].correct.value=corrt
+		tried=1
+	}
+	else{
+		document.forms[0].results.value="incorrect"
+		tried=2
+	} 
+}}
+</script>
+</head>
+<body onLoad="setrefs(),cleanse()">
+<h2>Predicting Exponents</h2>
+This page allows you to practice predicting exponents for basic operations involving
+numbers in presented in proper scientific notation. When you press "New Problem" either a
+multiplication or division problem involving two numbers in scientific notation will be displayed to the left of the table. In the answer cell, enter the value of the exponent that results if the
+operation is carried out and the result expressed in proper scientific notation. Then, press
+"Check Answer." Results appear on the main page. When the small window appears for the first time, youmay have to drag it to an empty space. From then on, it will remain out of the way. Do not use a calculator on this page or you will defeat its purpose. 
+<ul>
+<li>If you miss a problem three times, pressing the "Show Answer" will cause the correct answer to appear.
+</ul>
+<form>
+<input type=button value="New Problem" onClick="startit()"><BR>
+<input type=text size=4 name=theans><b>Enter your answer here<br>
+<input type=button value="Check Answer" onClick="answer(this.form.theans.value)">
+<input type=button value="Show Answer" onClick="showanswer()">
+<table border=4>
+<tr>
+<td>Results</td>
+<td>Total</td>
+<td>Correct</td>
+</tr>
+<tr>
+<td><input type=text size=10 name=results></td>
+<td align=center><input name="total" type=text size=3</td>
+<td align=center><input name="correct" type=text size=3></td>
+</tr>
+</table>
+</form>
+<div id=qspot></div>
+<div id=ansspot></div>
+<div id=refspot></div>
+</body>
+</html>

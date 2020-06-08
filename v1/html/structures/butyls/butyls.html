@@ -1,0 +1,104 @@
+<html>
+<head>
+<title>The butyls</title>
+<script language=JavaScript>
+//globals
+theanswer=0
+tried=0
+total=0
+correct=0
+struct1="<input type=radio name=ans value=1 onClick='opener.answer(1)'><b><i>n</i>-butyl</b>"
+struct2="<input type=radio name=ans value=1 onClick='opener.answer(2)'><b><i>sec</i>-butyl</b>"
+struct3="<input type=radio name=ans value=1 onClick='opener.answer(3)'><b>isobutyl</b>"
+struct4="<input type=radio name=ans value=1 onClick='opener.answer(4)'><b><i>tert</i>-butyl</b>"
+struct5="<input type=radio name=ans value=1 onClick='opener.answer(5)'><b>isopentyl</b>"
+struct6="<input type=radio name=ans value=1 onClick='opener.answer(6)'><b><i>n</i>-pentyl</b>"
+struct7="<input type=radio name=ans value=1 onClick='opener.answer(7)'><b>isopropyl</b>"
+struct8="<input type=radio name=ans value=1 onClick='opener.answer(8)'><b><i>n</i>-propyl</b>"
+function MakeArray(n){
+	this.length=n
+	for (var i=1;i<=n;i++){
+	this[i]= 0}
+}
+function parts(name,ans){
+	this.name=name
+	this.ans=ans
+}
+function choose(){
+tried=0
+total++
+document.forms[0].elements[2].value=total
+h=Math.ceil(8*Math.random())
+if(h==8){k="nprop";theanswer=8}
+if(h==7){k="iprop";theanswer=7}
+if(h==6){k="npent";theanswer=6}
+if(h==5){k="ipent";theanswer=5}
+if(h==4){k="ibutyl";theanswer=3}
+if(h==3){k="nbutyl";theanswer=1}
+if(h==2){k="sbutyl";theanswer=2}
+if(h==1){k="tbutyl";theanswer=4}
+if(h==7){val=Math.ceil(18*Math.random())}
+else{if(h==1){val=Math.ceil(8*Math.random())}
+else{val=Math.ceil(16*Math.random())}}
+structure=k+val+".gif"
+display(structure)
+}
+function display(structure){
+var problem=window.open("","problem","scrollbars=yes,,width=400,height=250")
+problem.document.writeln ("<html>");
+problem.document.writeln ("<head>");
+problem.document.writeln ("</head>");
+problem.document.writeln ("<body bgcolor = FFFFFF>");
+//problem.document.writeln (structure);
+problem.document.writeln ("<img src='",structure,"'>");
+problem.document.writeln ("<form>",struct1,struct2,struct3,struct4,"<br>")
+problem.document.writeln (struct5,struct6,struct7,struct8,"</form>");
+//problem.document.writeln ("<h2>list of heats</h2>");
+problem.document.writeln ("</html>");
+problem.document.close();
+problem.focus();
+}
+function answer(f){
+if(tried==1){
+		alert("Sorry, you've already submitted this problem! Get a new one!")}
+else{
+if(tried==2){
+	total++
+	document.forms[0].elements[2].value=total
+}
+if(f==theanswer){document.forms[0].elements[1].value="correct"
+	correct++
+	tried=1
+	document.forms[0].elements[3].value=correct}
+else{ tried=2
+	document.forms[0].elements[1].value="incorrect"}
+}}
+</script>
+</head>
+<body>
+<h2>Recognizing Organic Fragments</h2>
+This is a drill and practice exercise in recognizing the basic propyl,butyl and pentyl radicals.
+When you press "New Strucure" a new window with a structure and 8 possible fragment names will 
+appear. The first time the window appears, it may obscure part of the scoring table. If so, simply drag the 
+window to an open area. It will remain in the new position for the remainder of the session. Click on the circle in front of the proper fragment. The results will appear in the table on the main page.
+If you get an incorrect answer, you should retry the same compound.<br>
+<form>
+<input type=button value="New Structure" onClick="this.form.elements[1].value='',choose()">
+<table border=4>
+<tr>
+<td align=center><b>Results</td>
+<td align=center><b>Total Done</td>
+<td align=center><b>Total Correct</td>
+</tr>
+<tr>
+<td><input type="text" size=12></td>
+<td align=center><input type="text" size=4 ></td>
+<td align=center><input type="text" size=4 ></td>
+</tr>
+</table>
+</form>
+<br><br>
+<a href="../../lecture_help/lechelp.html"><img src="back.gif"></a><br>
+<a href="mailto:gwiger@chemistry.csudh.edu"><img src=email1.gif></a>
+</body>
+</html>

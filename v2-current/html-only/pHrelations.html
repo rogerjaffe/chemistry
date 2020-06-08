@@ -1,0 +1,175 @@
+<html>
+<head>
+<title>pH Relationships cs</title>
+<style>
+#qspot {position:absolute;left:350;top:220}
+#ansspot {position:absolute;left:350;top:300;height:200}
+#refspot {position:absolute;left:10;top:600;height:200}
+</style>
+<script src=numberconvert.js></script>
+<script src=reflist.js></script>
+<script language="javascript">
+//updated 11/21/00-added complete solution
+//tested w/ N4.7 and IE5
+//globals
+refnumber=113
+totl=0
+corrt=0
+tried=0
+attempts=0
+theanswer=""
+missing=0
+given=0
+var ie4 = (document.all) ? true : false;
+//constants
+Kw=1e-14
+K="1.00*10<sup>-14</sup>"
+parts=new Array()
+aparts=new Array()
+labels=new Array()
+labels[0]="[H<sup>+</sup>]"
+labels[1]="[OH<sup>-</sup>]"
+labels[2]="pH"
+labels[3]="pOH"
+question=new Array("What is the<b> ","</b> if the<b> "," = ","</b>?")
+ansphrase=new Array("Since ",", the solution is obtained by the following step(s):<br>")
+equations=new Array("-log","1.00*10<sup>-14</sup>/","10<sup>-","14-")
+function clear(){
+	document.forms[0].results.value=""
+	attempts=0
+	tried=0
+	document.forms[0].theans.value=""
+}
+function startit(){
+	clear()
+	totl++
+	document.forms[0].total.value=totl
+	power=Math.round(12*Math.random())
+	first=1/(Math.random()+"e"+power)
+	if(first<1e-13 || first>.09)startit();
+	else{
+	if(Math.random()>.5){parts[0]=first;parts[1]=Kw/parts[0]}
+	else {parts[1]=first;parts[0]=Kw/parts[1]};
+	parts[2]=-Math.log(parts[0])/2.302;
+	parts[3]=-Math.log(parts[1])/2.302;
+	parts[2]=aparts[2]=Math.round(100*parts[2])/100
+	parts[3]=aparts[3]=Math.round(100*parts[3])/100
+	aparts[0]=parts[0]
+	aparts[1]=parts[1]
+	parts[0]=number(parts[0],3,2);
+	parts[1]=number(parts[1],3,2);
+	buildquest()
+}}
+function buildquest(){
+	given=Math.floor(4*Math.random());
+	missing=given;
+	while(missing==given)missing=Math.floor(4*Math.random());
+	buildanswer(given,missing)
+	thequestion=question[0]+labels[missing]+question[1]+labels[given]+question[2]+parts[given]+question[3]
+	showquest(thequestion)
+}
+function buildanswer(given,missing){
+	key=Math.round(1*(""+given+missing))
+	if(key>15){
+			if(given>1)bridge=given-2;
+			else bridge=given+2;
+			}
+	else{
+		if(missing>1)bridge=missing-2;
+		else bridge=missing+2;
+		}
+	if(key==2 || key==13){
+				theanswer=ansphrase[0]+equations[0]+labels[given]+"="+labels[missing]+"<br>";
+				theanswer=theanswer+equations[0]+parts[given]+"=<b>"+parts[missing]+"</b>";
+				}
+	if(key==1 || key==10 ){
+				theanswer=ansphrase[0]+equations[1]+labels[given]+"="+labels[missing]+"<br>";
+				theanswer=theanswer+equations[1]+parts[given]+"=<b>"+parts[missing]+"</b>";
+				}
+	if(key==3 || key==12){
+			theanswer=ansphrase[0]+equations[1]+labels[given]+"="+labels[bridge]+" and<br>";
+			theanswer=theanswer+equations[0]+labels[bridge]+"="+labels[missing]+"<br>";
+			theanswer=theanswer+equations[1]+parts[given]+"="+parts[bridge]+"<br>";
+			theanswer=theanswer+equations[0]+parts[bridge]+"=<b>"+parts[missing]+"</b>";				
+			}
+	if(key==20 || key==31){
+			theanswer=ansphrase[0]+equations[2]+labels[given]+"</sup>="+labels[missing]+"<br>";
+			theanswer=theanswer+equations[2]+parts[given]+"</sup>=<b>"+parts[missing]+"</b>";				
+			}
+	if(key==21 || key==30){
+			theanswer=ansphrase[0]+equations[2]+labels[given]+"</sup>="+labels[bridge]+" and<br>";
+			theanswer=theanswer+equations[1]+labels[bridge]+"="+labels[missing]+"<br>"
+			theanswer=theanswer+equations[2]+parts[given]+"</sup>="+parts[bridge]+"<br>";
+			theanswer=theanswer+equations[1]+parts[bridge]+"=<b>"+parts[missing]+"</b>";			
+			}
+	if(key==23 || key==32){
+			theanswer=ansphrase[0]+equations[3]+labels[given]+"="+labels[missing]+"<br>";
+			theanswer=theanswer+equations[3]+parts[given]+"=<b>"+parts[missing]+"</b>";				
+			}
+	showanswer()	
+}
+	
+function showquest(thequest){
+	if(ie4){
+		qspot.innerHTML=thequest
+		}
+	else{
+		document.qspot.document.open()
+		document.qspot.document.write(thequest)
+		document.qspot.document.close()
+	}
+}
+function answer(theans){
+	attempts++
+	if(theans>.95*aparts[missing] & theans<1.05*aparts[missing]){
+		document.forms[0].results.value="Correct"
+		corrt++
+		document.forms[0].correct.value=corrt
+	}
+	else{
+		document.forms[0].results.value="Incorrect"
+	}
+}
+function showanswer(){
+//if(attempts>=3){
+	if(ie4){
+		ansspot.innerHTML=theanswer
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.write(theanswer)
+		document.ansspot.document.close()
+	}
+//	}
+}	
+</script>
+</head>
+<body onLoad="setrefs(),clear()">
+<h3>Basic pH relationships</h3>
+This page provides basic exercises in relating properties of acidic/basic solutions. When you press "New Problem', you will be asked to relate one property of a solution to another. For example, "What is the pH if the pOH=2.34?" Determine the value of the answer, enter it in the answer cell and press "Check Answer". If you use scientific notation, make certain you follow the "e" convention. Thus, 2.3*10<sup>-4</sup> would be entered 2.3e-4. Results will appear in the table and detailed solution are provided.
+<form>
+<input type=button value="New Problem" onClick="startit()"><br>
+<b>Enter your answer</b></td>
+<input type="text" name=theans size=8></td>
+<input type=button value="Check answer" onClick="answer(this.form.theans.value)">
+<input type=button value="Show answer" onClick="showanswer()">
+</table>
+<table border=4>
+<tr><td align=center><b>Results</td>
+<td align=center><b>Total Done</td>
+<td><b>Total Correct</td>
+</tr>
+<tr>
+<td><input type="text" name=results size=12></td>
+<td align=center><input type="text" name=total size=4 ></td>
+<td align=center><input type="text" name=correct size=4 ></td>
+</tr>
+<tr>
+</table>
+</form>
+<div id=qspot></div>
+<div id=ansspot></div>
+<div id=refspot></div>
+<br>
+</body>
+</html>

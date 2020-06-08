@@ -1,0 +1,210 @@
+<html>
+<head><title>Scenario Analysis-Homework</title>
+<script language="javascript">
+thepage="Scenario Analysis(42)"
+
+howlng=""
+totl=0
+corrt=0
+tried=0
+which=""
+firsttry=""
+tried=0
+theanswer=""
+ans = new Array()
+function clear(){
+	document.forms[0].results.value=""
+	document.forms[0].correct.value=corrt
+	document.forms[0].total.value=totl
+}
+
+function MakeArray(n){
+	this.length=n
+	for (var i=1;i<=n;i++){
+	this[i]= 0}
+}
+function question(p1,p2,p3,p4){
+	this.p1=p1
+	this.p2=p2
+	this.p3=p3
+	this.p4=p4
+}
+quest=new MakeArray(4)
+	quest[1]=("Both elements are added with the rate of addition of Fe being ")
+	quest[2]=("Both elements are removed with the rate of removal of Fe being ")
+	quest[3]=("Fe is added while Cr is removed, with the rate of change for Fe being ")
+	quest[4]=("Fe is removed while Cr is added, with the rate of change for Fe being ")
+relrate=new MakeArray(5)
+	relrate[1]=("equal to")
+	relrate[2]=("twice")
+	relrate[3]=("three times")
+	relrate[4]=("one-half")
+	relrate[5]=("one-third")
+finfactor=new MakeArray(4)
+	finfactor[1]=("sum of the masses is")
+	finfactor[2]=("product of the masses is")
+	finfactor[3]=("mass of Fe minus the mass of Cr is ")
+	finfactor[4]=("mass of Cr minus the mass of Fe is ")
+finale=new MakeArray(4)
+	finale[1]=(" were in the final mixture?")
+	finale[2]=(" were removed?")
+	finale[3]=(" were added?")
+function begin()
+{	totl++
+	document.forms[0].total.value=totl
+	document.forms[0].results.value=""
+	tried=0
+	femass=Math.round(6300*Math.random() )/1000
+	for (i=1;i<100;i++)
+	{
+		crmass=Math.round(4700*Math.random() )/1000
+		if (crmass>.65*femass & 		crmass<1.55*femass){break}
+	}
+	//choose the question
+	keya=Math.round(.5+4*Math.random())
+	if (keya==0){keya=1}
+	a=quest[keya]
+	//choose ratio Fe to Cr changes
+	keyratio=Math.round(.5+5*Math.random())
+	ratio=relrate[keyratio]
+	//calculate the change
+	for (j=1;j<1000;j++){
+ 	h=Math.round(5000*Math.random())/1000
+	if (keya==1){break}
+	if (keyratio==2 & h<femass & h<.5*crmass){break}
+	if (keyratio==3 & h<femass & h<.33*crmass){break}
+	if (keyratio==4 & h<.5*femass & h<crmass){break}
+	if (keyratio==5 & h<.33*femass & h<crmass){break}
+}
+//choose whether question is to be Fe or Cr
+keyident=Math.random()
+if (keyident<.5){
+	ident="Fe"}
+else{ident="Cr"}
+if (keyratio==1){dfe=h;dcr=h}
+if (keyratio==2){dfe=h;dcr=.5*h}
+if (keyratio==3){dfe=h;dcr=.3333*h}
+if (keyratio==4){dfe=.5*h;dcr=h}
+if (keyratio==5){dfe=.333*h;dcr=h}
+if (keya==1){femassf=femass+dfe;crmassf=crmass+dcr}
+if (keya==2){femassf=femass-dfe;crmassf=crmass-dcr}
+if (keya==3){femassf=femass+dfe;crmassf=crmass-dcr}
+if (keya==4){femassf=femass-dfe;crmassf=crmass+dcr}
+if (femassf<0 || crmassf<0){ begin()}
+//choose whether end is a sum, product or difference
+keyfactor=Math.round(.5+4*Math.random())
+factor=finfactor[keyfactor]
+if (keyfactor==1){ans=Math.round(1000*(femassf+crmassf))/1000}
+if (keyfactor==2){ans=Math.round(1000*(femassf*crmassf))/1000}
+if (keyfactor==3){ans=Math.round(1000*(femassf-crmassf))/1000}
+if (keyfactor==4){ans=Math.round(1000*(crmassf-femassf))/1000}
+//assign final question part
+for (v=1;v<100;v++){
+	keyfinl=Math.round(.5+3*Math.random())
+	if (keya==1 & keyfinl!=2){break}
+	if (keya==2 & keyfinl!=3){break}
+	if (keya==3){
+		if(keyfinl==1){break}
+		if (keyident<.5 & keyfinl==3){break}
+		if (keyident>=.5 & keyfinl==2){break}}
+	if (keya==4){
+		if(keyfinl==1){break}
+		if (keyident<.5 & keyfinl==2){break}
+		if (keyident>=.5 & keyfinl==3){break}}
+		}
+finl=finale[keyfinl]
+if (keyident<.5){
+	if (keyfinl==1){fmass=femassf}
+	else {fmass=dfe}}
+else{	if (keyfinl==1){fmass=crmassf}
+	else {fmass=dcr}
+}
+theanswer=Math.round(1000*fmass)/1000
+tryit(femass,crmass,a,ratio,factor,ans,ident,finl)
+}
+function tryit (femass,crmass,a,ratio,factor,ans,ident,finl)   {
+parent.frames[0].document.clear();
+parent.frames[0].document.open();
+parent.frames[0].document.writeln ("<html>");
+parent.frames[0].document.writeln ("<head>");
+parent.frames[0].document.writeln ("</head>");
+parent.frames[0].document.writeln ("<body bgcolor = FFFFFF>");
+parent.frames[0].document.writeln   ("A mixture initially contains ",femass," grams of Fe and ",crmass)
+parent.frames[0].document.writeln   (" grams of Cr. ",a,ratio," that of Cr. When the changes are stopped, the ",factor)
+parent.frames[0].document.writeln   (ans,". How many grams of ",ident,finl)
+parent.frames[0].document.close();
+}
+function answer(){
+if(tried==1){
+		alert("Sorry, you've already submitted this problem! Get you a new one!")}
+else{
+	if(tried==2){totl++;document.forms[0].total.value=totl}
+	if (document.forms[0].fanswer.value<1.01*theanswer &
+	document.forms[0].fanswer.value>.99*theanswer){
+   	document.forms[0].results.value="correct"
+	corrt++
+   	 document.forms[0].correct.value=corrt
+
+	tried==1
+}
+else{document.forms[0].results.value="incorrect"
+	tried=2}
+	}
+}
+ function timer(z){
+tt=z
+var b=Math.floor(tt/60)
+var j = (tt % 60)
+if (j<10){c="0"}
+else {c=""}
+howlng=b + ":" + c + j
+running=setTimeout("timer(tt+1)",1000)
+}
+function update(){
+	document.forms[0].total.value=totl
+	document.forms[0].correct.value=corrt
+	document.forms[0].time.value=howlng
+	document.forms[0].page.value=thepage
+	document.forms[0].verify.value=Math.round(10000*Math.random())
+}
+</script>
+</head>
+<body onLoad="clear(), timer(0)">
+
+<H2>Scenario Analysis</h2>
+This page presents a "scenario" where the initial condition of a simple mixture
+is described and then a change is presented. You are then asked to determine
+some quantity related to the final state. In doing these problems, it is critical that you
+read the problem very carefully. To generate a problem, just press "New Problem".
+When you have determined the answer, enter it in the box and press "Check Answer." It is
+recommended that you redo any problems you get incorrect.<br>
+<form ACTION = "../cgi-bin/homework/hw_turnin.php" METHOD = "POST">
+<table>
+<tr>
+<td><input type=button value="New Problem" onClick="begin()"></td>
+<td><input type=button value="Check Answer" onClick="answer()"></td>
+</tr>
+<tr><td><b>Enter your answer here</b></td>
+<td><input type="text" name="fanswer" size=10></td>
+</tr>
+</table>
+<table border=4>
+<tr>
+<td><b>Results</b></td>
+<td><b>Total Done</b></td>
+<td><b>Total Correct</b></td></tr>
+</tr>
+<tr>
+<td><input type="text" name="results" size=12></td>
+<td align=center><input type="text" name="total" size=4 ></td>
+<td align=center><input type="text" name="correct" size=4 ></td>
+</table>
+<input type=text name="page" size=1>
+<input type=text name="verify" size=1>
+<input type=text name="time" size=1><br>
+<INPUT TYPE = "submit" VALUE = "Submit your score" onClick="update()">
+</form>
+<br>
+<a href="index.html"><img src="back.gif"></a><br>
+</body>
+</html

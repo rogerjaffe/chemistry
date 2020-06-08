@@ -1,0 +1,204 @@
+<html>
+<head><title>pH of solutions of weak acids-cs</title>
+<style>
+#qspot {position:absolute;left:320;top:300}
+#ansspot {position:absolute;left:320;top:340;height:200}
+#tspot {position:absolute;left:10;top:300}
+#refspot {position:absolute;left:10;top:600;height:50}
+</style>
+<script src="reflist.js"></script>
+<script src="numberconvert.js"></script>
+<script language="javascript">
+//updated 11/14/00-added complete solution
+var ie4 = (document.all) ? true : false;
+//global variables
+refnumber=114
+theanswer=""
+attempts=0
+phans=0
+corrt=0
+totl=0
+function cleanse(){
+	clear()
+	document.forms[0].total.value=0
+	document.forms[0].correct.value=0
+}
+function clear(){
+	clearansspot()
+	document.forms[0].results.value=""
+	document.forms[0].theans.value=""
+	attempts=0
+	tried=0
+}
+function clearansspot(){
+	if(ie4){
+		ansspot.innerHTML=""
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.clear()
+		document.ansspot.document.close()
+	}
+}
+function parts(p1,p2,p3,p4,p5){
+	this.p1=p1
+	this.p2=p2
+	this.p3=p3
+	this.p4=p4
+	this.p5=p5
+}
+function data(name,K){
+	this.name=name
+	this.K=K
+}
+hsym="[H<sup>+</sup>]"
+avalue="([HA]*K<sub>a</sub>)<sup>1/2</sup>="+hsym
+acids=new Array()
+acids[1]=new data("acetic",1.8e-5)
+acids[2]=new data("acrylic",5.5e-5)
+acids[3]=new data("benzoic",6.3e-5)
+acids[4]=new data("chloroacetic",1.4e-3)
+acids[5]=new data("formic",1.8e-4)
+acids[6]=new data("hydrofluoric",6.6e-4)
+acids[7]=new data("nitrous",7.2e-4)
+acids[8]=new data("butyric",1.5e-5)
+acids[9]=new data("fluoroacetic",2.6e-3)
+acids[10]=new data("propionic",1.3e-5)
+ansphrase=new Array()
+compare=new Array()
+compare[0]=new Array(" less "," valid")
+compare[1]=new Array(" greater "," invalid ")
+ansphrase[1]=new parts(" acid has a K of ",". First, calculate the value for the weak acid approximation.<br>"," Since this is "," than 5% of the inital concentration ",",  the approximate value is ",".")
+insphrase=new Array("<br> and the answer is pH=","<br> and you must calculate the 'exact' answer using either successive approximations or the quadratic. This yields [H<sup>+</sup>]=")
+pathway=new Array()
+pathway[0]=new Array(" less than "," valid ")
+pathway[1]=new Array(" greater than "," invalid ") 
+function startit(){
+	totl++
+	document.forms[0].results.value=document.forms[0].theans.value=""
+	document.forms[0].total.value=totl
+	which=Math.ceil(10*Math.random())
+	first=0
+	while(first<11)first=Math.ceil(100*Math.random());
+	conc="."+zero()+first
+	getanswer(which,conc)
+	buildquest(which,conc)
+}
+function zero(){
+	added=""
+	for(j=1;j<=Math.floor(3*Math.random());j++)added+="0";
+	return added
+}
+function getanswer(which,conc){
+	approx=Math.sqrt(conc*acids[which].K)
+	check=.05*conc
+	approx=number(approx,3,3)
+	check=number(check,3,3)
+	if(approx<check){ans=approx;vkey=0;exans=approx}
+	else{exans=(-acids[which].K+Math.sqrt(acids[which].K*acids[which].K+4*acids[which].K*conc))/2;vkey=1}
+	phans=number((-Math.log(exans)/2.302),3,3)	
+	buildanswer(which,conc,vkey,phans,exans,approx,check)
+}
+
+function buildanswer(which,conc,vkey,phans,exans,approx,check){
+	theanswer=""
+	theanswer=acids[which].name+ansphrase[1].p1+number(acids[which].K,3,2)+ansphrase[1].p2+avalue+"<br>("+conc+"*"+number(acids[which].K,3,2)+")<sup>1/2</sup>="+approx
+	theanswer+=("<br>"+ansphrase[1].p3+compare[vkey][0]+ansphrase[1].p4+"("+check+")"+ansphrase[1].p5+compare[vkey][1]+insphrase[vkey])
+	if(vkey==0)theanswer+=phans;
+	else theanswer=theanswer+number(exans,3,3)+" and pH="+phans;
+}
+function buildquest(){
+	thequest="What is the pH of a "+conc+"M solution of "+acids[which].name+" acid?"
+	showquest(thequest)
+}
+function showquest(thequest){
+	if(ie4){
+		qspot.innerHTML=thequest
+		}
+	else{
+		document.qspot.document.open()
+		document.qspot.document.write(thequest)
+		document.qspot.document.close()
+	}
+}
+function answer(ans){
+	if(tried==1)alert("You've done this one. Get a new problem.")
+	else{
+	if(tried==2){totl++;document.forms[0].total.value=totl}
+	attempts++
+	if(ans>.95*phans & ans<1.05*phans){
+		document.forms[0].results.value="Correct"
+		corrt++
+		document.forms[0].correct.value=corrt
+		tried=1
+	}
+	else{
+		document.forms[0].results.value="Incorrect"
+		tried=2
+	}}
+}
+function showanswer(){
+if(attempts>=3){
+	if(ie4){
+		ansspot.innerHTML=theanswer
+		}
+	else{
+		document.ansspot.document.open()
+		document.ansspot.document.write(theanswer)
+		document.ansspot.document.close()
+	}
+	}
+}
+function scinot(x){
+	split=x.indexOf("e")
+	coeff=x.substring(0,split)
+	expon=x.substring(split+1,x.length)
+	sciform=coeff+"*10<sup>"+expon+"</sup>"
+	return sciform
+}
+	
+</script>
+</head>
+<body onLoad=clear(),setrefs()>
+<h3>pH of Solutions of Weak Acids </h3>
+This page let's you practice the fundamental calculation in acid/base systems:
+determining the pH of the solution of a weak acid. When you press "New Problem", a questin will appear to the left of the table. Calculate the pH of the solution and press "Check Answer". Results appear in the second table. In order to
+use this page, you need a table of weak acids and their K values. If the compound which appears is not in your table, press "New Problem" to get a new compund. On this page all of the species are weak acids.
+<ul>
+<li>To begin-press "New Problem" and a question will appear to the right of the button. 
+<li>Put the correct value into the answer cell and press "Check Answer."
+<li>The results on the problem and a running total will appear in the table.
+<li>If you get a problem "incorrect", you should redo it and recheck your
+answer.
+<li>If you miss a problem three times, pressing the "Show Answer" button will cause a complete solution to appear.
+</ul>
+<form>
+<table>
+<tr><td><input type=button value="New Problem" onClick="startit()"><td></tr>
+<tr><td><b>Enter your answer</b></td>
+<td><input type="text" name=theans size=8></td>
+</tr>
+<tr>
+<td><input type=button value="Check answer" onClick="answer(this.form.theans.value)"></td>
+<td><input type=button value="Show answer" onClick="showanswer()"></td>
+</tr>
+</table>
+<table border=4>
+<tr><td align=center><b>Results</td>
+<td align=center><b>Total Done</td>
+<td><b>Total Correct</td>
+</tr>
+<tr>
+<td><input type="text" name=results size=12></td>
+<td align=center><input type="text" name=total size=4 ></td>
+<td align=center><input type="text" name=correct size=4 ></td>
+</tr>
+<tr>
+</table>
+</form>
+<div id=qspot></div>
+<div id=ansspot></div>
+<div id=refspot></div>
+<br>
+</body>
+</html>
